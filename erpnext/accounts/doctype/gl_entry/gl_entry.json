@@ -40,6 +40,7 @@
   "dimensions_section",
   "cost_center",
   "column_break_lmnm",
+  "asset",
   "project",
   "more_info_section",
   "finance_book",
@@ -297,6 +298,12 @@
    "fieldname": "voucher_subtype",
    "fieldtype": "Small Text",
    "label": "Voucher Subtype"
+  },
+  {
+   "fieldname": "asset",
+   "fieldtype": "Link",
+   "label": "Asset",
+   "options": "Asset"
   },
   {
    "fieldname": "dates_section",

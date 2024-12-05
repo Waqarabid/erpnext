@@ -19,9 +19,8 @@ class BlanketOrder(Document):
 	from typing import TYPE_CHECKING
 
 	if TYPE_CHECKING:
-		from frappe.types import DF
-
 		from erpnext.manufacturing.doctype.blanket_order_item.blanket_order_item import BlanketOrderItem
+		from frappe.types import DF
 
 		amended_from: DF.Link | None
 		blanket_order_type: DF.Literal["", "Selling", "Purchasing"]
@@ -31,6 +30,8 @@ class BlanketOrder(Document):
 		from_date: DF.Date
 		items: DF.Table[BlanketOrderItem]
 		naming_series: DF.Literal["MFG-BLR-.YYYY.-"]
+		order_date: DF.Date | None
+		order_no: DF.Data | None
 		supplier: DF.Link | None
 		supplier_name: DF.Data | None
 		tc_name: DF.Link | None

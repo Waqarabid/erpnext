@@ -158,6 +158,14 @@ frappe.query_reports["Accounts Receivable"] = {
 			fieldtype: "Check",
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "in_party_currency",
+			label: __("In Party Currency"),
+			fieldtype: "Check",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "for_revaluation_journals",
 			label: __("Revaluation Journals"),
 			fieldtype: "Check",
@@ -167,11 +175,14 @@ frappe.query_reports["Accounts Receivable"] = {
 			label: __("Group by Voucher"),
 			fieldtype: "Check",
 		},
+<<<<<<< HEAD
 		{
 			fieldname: "in_party_currency",
 			label: __("In Party Currency"),
 			fieldtype: "Check",
 		},
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 
 	formatter: function (value, row, column, data, default_formatter) {

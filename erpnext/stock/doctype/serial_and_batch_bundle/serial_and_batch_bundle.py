@@ -89,10 +89,13 @@ class SerialandBatchBundle(Document):
 		self.validate_serial_and_batch_no()
 		self.validate_duplicate_serial_and_batch_no()
 		self.validate_voucher_no()
+<<<<<<< HEAD
 
 		if self.docstatus == 0:
 			self.allow_existing_serial_nos()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.type_of_transaction == "Maintenance":
 			return
 
@@ -106,6 +109,7 @@ class SerialandBatchBundle(Document):
 		self.set_incoming_rate()
 		self.calculate_qty_and_amount()
 
+<<<<<<< HEAD
 	def allow_existing_serial_nos(self):
 		if self.type_of_transaction == "Outward" or not self.has_serial_no:
 			return
@@ -142,6 +146,8 @@ class SerialandBatchBundle(Document):
 				)
 			)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def reset_serial_batch_bundle(self):
 		if self.is_new() and self.amended_from:
 			for field in ["is_cancelled", "is_rejected"]:
@@ -176,12 +182,16 @@ class SerialandBatchBundle(Document):
 			return
 
 		serial_nos = [d.serial_no for d in self.entries if d.serial_no]
+<<<<<<< HEAD
 		kwargs = {
 			"item_code": self.item_code,
 			"warehouse": self.warehouse,
 			"check_serial_nos": True,
 			"serial_nos": serial_nos,
 		}
+=======
+		kwargs = {"item_code": self.item_code, "warehouse": self.warehouse}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.voucher_type == "POS Invoice":
 			kwargs["ignore_voucher_nos"] = [self.voucher_no]
 
@@ -222,7 +232,10 @@ class SerialandBatchBundle(Document):
 				"posting_date": self.posting_date,
 				"posting_time": self.posting_time,
 				"serial_nos": serial_nos,
+<<<<<<< HEAD
 				"check_serial_nos": True,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 
@@ -269,7 +282,11 @@ class SerialandBatchBundle(Document):
 				else:
 					valuation_rate = valuation_details["batches"].get(row.batch_no)
 
+<<<<<<< HEAD
 				row.incoming_rate = flt(valuation_rate)
+=======
+				row.incoming_rate = valuation_rate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				row.stock_value_difference = flt(row.qty) * flt(row.incoming_rate)
 
 				if save:
@@ -1729,7 +1746,11 @@ def get_serial_nos_based_on_posting_date(kwargs, ignore_serial_nos):
 	serial_nos = set()
 	data = get_stock_ledgers_for_serial_nos(kwargs)
 
+<<<<<<< HEAD
 	bundle_wise_serial_nos = get_bundle_wise_serial_nos(data, kwargs)
+=======
+	bundle_wise_serial_nos = get_bundle_wise_serial_nos(data)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	for d in data:
 		if d.serial_and_batch_bundle:
 			if sns := bundle_wise_serial_nos.get(d.serial_and_batch_bundle):
@@ -1753,12 +1774,17 @@ def get_serial_nos_based_on_posting_date(kwargs, ignore_serial_nos):
 	return serial_nos
 
 
+<<<<<<< HEAD
 def get_bundle_wise_serial_nos(data, kwargs):
+=======
+def get_bundle_wise_serial_nos(data):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	bundle_wise_serial_nos = defaultdict(list)
 	bundles = [d.serial_and_batch_bundle for d in data if d.serial_and_batch_bundle]
 	if not bundles:
 		return bundle_wise_serial_nos
 
+<<<<<<< HEAD
 	filters = {"parent": ("in", bundles), "docstatus": 1, "serial_no": ("is", "set")}
 
 	if kwargs.get("check_serial_nos") and kwargs.get("serial_nos"):
@@ -1768,6 +1794,12 @@ def get_bundle_wise_serial_nos(data, kwargs):
 		"Serial and Batch Entry",
 		fields=["serial_no", "parent"],
 		filters=filters,
+=======
+	bundle_data = frappe.get_all(
+		"Serial and Batch Entry",
+		fields=["serial_no", "parent"],
+		filters={"parent": ("in", bundles), "docstatus": 1, "serial_no": ("is", "set")},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	for d in bundle_data:
@@ -2328,8 +2360,11 @@ def get_ledgers_from_serial_batch_bundle(**kwargs) -> list[frappe._dict]:
 
 
 def get_stock_ledgers_for_serial_nos(kwargs):
+<<<<<<< HEAD
 	from erpnext.stock.utils import get_combine_datetime
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	stock_ledger_entry = frappe.qb.DocType("Stock Ledger Entry")
 
 	query = (
@@ -2340,16 +2375,25 @@ def get_stock_ledgers_for_serial_nos(kwargs):
 			stock_ledger_entry.serial_and_batch_bundle,
 		)
 		.where(stock_ledger_entry.is_cancelled == 0)
+<<<<<<< HEAD
 		.orderby(stock_ledger_entry.posting_datetime)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if kwargs.get("posting_date"):
 		if kwargs.get("posting_time") is None:
 			kwargs.posting_time = nowtime()
 
+<<<<<<< HEAD
 		timestamp_condition = stock_ledger_entry.posting_datetime <= get_combine_datetime(
 			kwargs.posting_date, kwargs.posting_time
 		)
+=======
+		timestamp_condition = CombineDatetime(
+			stock_ledger_entry.posting_date, stock_ledger_entry.posting_time
+		) <= CombineDatetime(kwargs.posting_date, kwargs.posting_time)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		query = query.where(timestamp_condition)
 

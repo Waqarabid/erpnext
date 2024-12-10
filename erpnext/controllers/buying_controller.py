@@ -251,16 +251,28 @@ class BuyingController(SubcontractingController):
 
 		if self.meta.get_field("base_in_words"):
 			if self.meta.get_field("base_rounded_total") and not self.is_rounded_total_disabled():
+<<<<<<< HEAD
 				amount = abs(self.base_rounded_total)
 			else:
 				amount = abs(self.base_grand_total)
+=======
+				amount = abs(flt(self.base_rounded_total))
+			else:
+				amount = abs(flt(self.base_grand_total))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.base_in_words = money_in_words(amount, self.company_currency)
 
 		if self.meta.get_field("in_words"):
 			if self.meta.get_field("rounded_total") and not self.is_rounded_total_disabled():
+<<<<<<< HEAD
 				amount = abs(self.rounded_total)
 			else:
 				amount = abs(self.grand_total)
+=======
+				amount = abs(flt(self.rounded_total))
+			else:
+				amount = abs(flt(self.grand_total))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			self.in_words = money_in_words(amount, self.currency)
 
@@ -744,6 +756,10 @@ class BuyingController(SubcontractingController):
 	def auto_make_assets(self, asset_items):
 		items_data = get_asset_item_details(asset_items)
 		messages = []
+<<<<<<< HEAD
+=======
+		alert = False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for d in self.items:
 			if d.is_fixed_asset:
@@ -793,9 +809,16 @@ class BuyingController(SubcontractingController):
 							frappe.bold(d.item_code)
 						)
 					)
+<<<<<<< HEAD
 
 		for message in messages:
 			frappe.msgprint(message, title="Success", indicator="green")
+=======
+					alert = True
+
+		for message in messages:
+			frappe.msgprint(message, title="Success", indicator="green", alert=alert)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def make_asset(self, row, is_grouped_asset=False):
 		if not row.asset_location:

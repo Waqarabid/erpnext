@@ -3,11 +3,19 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence,
 
+<<<<<<< HEAD
 erpnext/accounts/               @deepeshgarg007 @ruthra-kumar
 erpnext/assets/                 @khushi8112 @deepeshgarg007
 erpnext/regional                @deepeshgarg007 @ruthra-kumar
 erpnext/selling                 @deepeshgarg007 @ruthra-kumar
 erpnext/support/                @deepeshgarg007
+=======
+erpnext/accounts/               @ruthra-kumar
+erpnext/assets/                 @khushi8112
+erpnext/regional                @ruthra-kumar
+erpnext/selling                 @ruthra-kumar
+erpnext/support/                @ruthra-kumar
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 pos*                            
 
 erpnext/buying/                 @rohitwaghchaure
@@ -17,8 +25,15 @@ erpnext/quality_management/     @rohitwaghchaure
 erpnext/stock/                  @rohitwaghchaure
 erpnext/subcontracting          @rohitwaghchaure
 
+<<<<<<< HEAD
 erpnext/controllers/            @deepeshgarg007 @rohitwaghchaure
 erpnext/patches/                @deepeshgarg007 
 
 .github/                        @deepeshgarg007
+=======
+erpnext/controllers/            @ruthra-kumar @rohitwaghchaure
+erpnext/patches/                @ruthra-kumar
+
+.github/                        @ruthra-kumar
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 pyproject.toml                  @akhilnarang

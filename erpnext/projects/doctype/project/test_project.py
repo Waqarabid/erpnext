@@ -2,7 +2,11 @@
 # License: GNU General Public License v3. See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, getdate, nowdate
 
 from erpnext.projects.doctype.project_template.test_project_template import make_project_template
@@ -10,11 +14,27 @@ from erpnext.projects.doctype.task.test_task import create_task
 from erpnext.selling.doctype.sales_order.sales_order import make_project as make_project_from_so
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Project")
 test_ignore = ["Sales Order"]
 
 
 class TestProject(FrappeTestCase):
+=======
+IGNORE_TEST_RECORD_DEPENDENCIES = ["Sales Order"]
+
+
+class UnitTestProject(UnitTestCase):
+	"""
+	Unit tests for Project.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestProject(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_project_with_template_having_no_parent_and_depend_tasks(self):
 		project_name = "Test Project with Template - No Parent and Dependend Tasks"
 		frappe.db.sql(""" delete from tabTask where project = %s """, project_name)

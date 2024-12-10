@@ -113,7 +113,12 @@ class AutoMatchbyPartyNameDescription:
 
 		for party in parties:
 			filters = {"status": "Active"} if party == "Employee" else {"disabled": 0}
+<<<<<<< HEAD
 			names = frappe.get_all(party, filters=filters, pluck=party.lower() + "_name")
+=======
+			field = party.lower() + "_name"
+			names = frappe.get_all(party, filters=filters, fields=[f"{field} as party_name", "name"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			for field in ["bank_party_name", "description"]:
 				if not self.get(field):
@@ -132,7 +137,15 @@ class AutoMatchbyPartyNameDescription:
 
 	def fuzzy_search_and_return_result(self, party, names, field) -> tuple | None:
 		skip = False
+<<<<<<< HEAD
 		result = process.extract(query=self.get(field), choices=names, scorer=fuzz.token_set_ratio)
+=======
+		result = process.extract(
+			query=self.get(field),
+			choices={row.get("name"): row.get("party_name") for row in names},
+			scorer=fuzz.token_set_ratio,
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		party_name, skip = self.process_fuzzy_result(result)
 
 		if not party_name:
@@ -150,14 +163,22 @@ class AutoMatchbyPartyNameDescription:
 
 		Returns: Result, Skip (whether or not to discontinue matching)
 		"""
+<<<<<<< HEAD
 		PARTY, SCORE, CUTOFF = 0, 1, 80
+=======
+		SCORE, PARTY_ID, CUTOFF = 1, 2, 80
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not result or not len(result):
 			return None, False
 
 		first_result = result[0]
 		if len(result) == 1:
+<<<<<<< HEAD
 			return (first_result[PARTY] if first_result[SCORE] > CUTOFF else None), True
+=======
+			return (first_result[PARTY_ID] if first_result[SCORE] > CUTOFF else None), True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		second_result = result[1]
 		if first_result[SCORE] > CUTOFF:
@@ -166,7 +187,11 @@ class AutoMatchbyPartyNameDescription:
 			if first_result[SCORE] == second_result[SCORE]:
 				return None, True
 
+<<<<<<< HEAD
 			return first_result[PARTY], True
+=======
+			return first_result[PARTY_ID], True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			return None, False
 

@@ -14,7 +14,11 @@ from frappe.utils import nowdate, today, unique
 from pypika import Order
 
 import erpnext
+<<<<<<< HEAD
 from erpnext.stock.get_item_details import _get_item_tax_template
+=======
+from erpnext.stock.get_item_details import ItemDetailsCtx, _get_item_tax_template
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 # searches for active employees
@@ -158,7 +162,16 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 
 	searchfields = searchfields + [
 		field
+<<<<<<< HEAD
 		for field in [searchfield or "name", "item_code", "item_group", "item_name"]
+=======
+		for field in [
+			searchfield or "name",
+			"item_code",
+			"item_group",
+			"item_name",
+		]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if field not in searchfields
 	]
 	searchfields = " or ".join([field + " like %(txt)s" for field in searchfields])
@@ -808,6 +821,7 @@ def get_tax_template(doctype, txt, searchfield, start, page_len, filters):
 		valid_from = filters.get("valid_from")
 		valid_from = valid_from[1] if isinstance(valid_from, list) else valid_from
 
+<<<<<<< HEAD
 		args = {
 			"item_code": filters.get("item_code"),
 			"posting_date": valid_from,
@@ -816,6 +830,18 @@ def get_tax_template(doctype, txt, searchfield, start, page_len, filters):
 		}
 
 		taxes = _get_item_tax_template(args, taxes, for_validate=True)
+=======
+		ctx = ItemDetailsCtx(
+			{
+				"item_code": filters.get("item_code"),
+				"posting_date": valid_from,
+				"tax_category": filters.get("tax_category"),
+				"company": company,
+			}
+		)
+
+		taxes = _get_item_tax_template(ctx, taxes, for_validate=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return [(d,) for d in set(taxes)]
 
 

@@ -28,6 +28,10 @@ BOM_ITEM_FIELDS = [
 	"stock_uom",
 	"conversion_factor",
 	"do_not_explode",
+<<<<<<< HEAD
+=======
+	"operation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 ]
 
 
@@ -60,6 +64,10 @@ class BOMCreator(Document):
 		raw_material_cost: DF.Currency
 		remarks: DF.TextEditor | None
 		rm_cost_as_per: DF.Literal["Valuation Rate", "Last Purchase Rate", "Price List"]
+<<<<<<< HEAD
+=======
+		routing: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		set_rate_based_on_warehouse: DF.Check
 		status: DF.Literal["Draft", "Submitted", "In Progress", "Completed", "Failed", "Cancelled"]
 		uom: DF.Link | None
@@ -236,8 +244,15 @@ class BOMCreator(Document):
 
 		self.db_set("status", "In Progress")
 		production_item_wise_rm = OrderedDict({})
+<<<<<<< HEAD
 		production_item_wise_rm.setdefault(
 			(self.item_code, self.name), frappe._dict({"items": [], "bom_no": "", "fg_item_data": self})
+=======
+
+		final_product = (self.item_code, self.name)
+		production_item_wise_rm.setdefault(
+			final_product, frappe._dict({"items": [], "bom_no": "", "fg_item_data": self})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		for row in self.items:
@@ -297,6 +312,14 @@ class BOMCreator(Document):
 			}
 		)
 
+<<<<<<< HEAD
+=======
+		if row.item_code == self.item_code and (self.routing or self.has_operations()):
+			bom.routing = self.routing
+			bom.with_operations = 1
+			bom.transfer_material_against = "Work Order"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for field in BOM_FIELDS:
 			if self.get(field):
 				bom.set(field, self.get(field))
@@ -328,6 +351,16 @@ class BOMCreator(Document):
 
 		production_item_wise_rm[(row.item_code, row.name)].bom_no = bom.name
 
+<<<<<<< HEAD
+=======
+	def has_operations(self):
+		for row in self.items:
+			if row.operation:
+				return True
+
+		return False
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@frappe.whitelist()
 	def get_default_bom(self, item_code) -> str:
 		return frappe.get_cached_value("Item", item_code, "default_bom")
@@ -352,6 +385,19 @@ def get_children(doctype=None, parent=None, **kwargs):
 		"uom",
 		"rate",
 		"amount",
+<<<<<<< HEAD
+=======
+		"workstation_type",
+		"operation",
+		"operation_time",
+		"is_subcontracted",
+		"workstation",
+		"source_warehouse",
+		"wip_warehouse",
+		"fg_warehouse",
+		"skip_material_transfer",
+		"backflush_from_wip_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	]
 
 	query_filters = {
@@ -416,6 +462,10 @@ def add_sub_assembly(**kwargs):
 
 	name = kwargs.fg_reference_id
 	parent_row_no = ""
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not kwargs.convert_to_sub_assembly:
 		item_info = get_item_details(bom_item.item_code)
 		item_row = doc.append(
@@ -431,6 +481,10 @@ def add_sub_assembly(**kwargs):
 				"do_not_explode": 1,
 				"is_expandable": 1,
 				"stock_uom": item_info.stock_uom,
+<<<<<<< HEAD
+=======
+				"operation": bom_item.operation,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		)
 
@@ -449,6 +503,10 @@ def add_sub_assembly(**kwargs):
 			{
 				"item_code": row.item_code,
 				"qty": row.qty,
+<<<<<<< HEAD
+=======
+				"operation": row.operation,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"fg_item": bom_item.item_code,
 				"uom": item_info.stock_uom,
 				"fg_reference_id": name,
@@ -496,10 +554,24 @@ def delete_node(**kwargs):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def edit_qty(doctype, docname, qty, parent):
 	frappe.db.set_value(doctype, docname, "qty", qty)
+=======
+def edit_bom_creator(doctype, docname, data, parent):
+	if isinstance(data, str):
+		data = frappe.parse_json(data)
+
+	frappe.db.set_value(doctype, docname, data)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	doc = frappe.get_doc("BOM Creator", parent)
 	doc.set_rate_for_items()
 	doc.save()
 
+<<<<<<< HEAD
+=======
+	frappe.msgprint(_("Updated successfully"), alert=True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return doc

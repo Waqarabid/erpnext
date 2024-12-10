@@ -7,6 +7,10 @@
  "field_order": [
   "payment_request_type",
   "transaction_date",
+<<<<<<< HEAD
+=======
+  "failed_reason",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_2",
   "naming_series",
   "company",
@@ -52,13 +56,22 @@
   "message",
   "message_examples",
   "mute_email",
+<<<<<<< HEAD
   "payment_url",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_7",
   "payment_gateway",
   "payment_account",
   "payment_channel",
   "payment_order",
+<<<<<<< HEAD
   "amended_from"
+=======
+  "amended_from",
+  "column_break_pnyv",
+  "payment_url"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -268,7 +281,11 @@
    "label": "Recipient Message And Payment Details"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "print_format",
    "fieldtype": "Select",
    "label": "Print Format"
@@ -280,7 +297,11 @@
    "label": "To"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "subject",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -317,18 +338,30 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_request_type == 'Inward' || doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_request_type == 'Inward' || doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_10",
    "fieldtype": "Section Break"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "message",
    "fieldtype": "Text",
    "label": "Message"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "message_examples",
    "fieldtype": "HTML",
    "label": "Message Examples",
@@ -349,7 +382,11 @@
   {
    "fieldname": "payment_url",
    "fieldtype": "Data",
+<<<<<<< HEAD
    "hidden": 1,
+=======
+   "label": "Payment URL",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "length": 500,
    "options": "URL",
    "read_only": 1
@@ -380,7 +417,11 @@
    "fieldname": "payment_channel",
    "fieldtype": "Select",
    "label": "Payment Channel",
+<<<<<<< HEAD
    "options": "\nEmail\nPhone",
+=======
+   "options": "\nEmail\nPhone\nOther",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -400,6 +441,18 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "failed_reason",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reason for Failure",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "depends_on": "eval: doc.docstatus === 1",
    "description": "Amount in party's bank account currency",
    "fieldname": "outstanding_amount",
@@ -418,6 +471,13 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "column_break_pnyv",
+   "fieldtype": "Column Break"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "party_account_currency",
    "fieldtype": "Link",
    "label": "Party Account Currency",
@@ -471,7 +531,11 @@
   }
  ],
  "show_preview_popup": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

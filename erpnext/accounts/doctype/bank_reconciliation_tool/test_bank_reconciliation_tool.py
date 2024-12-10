@@ -4,7 +4,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, today
 
 from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import (
@@ -15,7 +19,11 @@ from erpnext.accounts.doctype.payment_entry.test_payment_entry import create_pay
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 
 
+<<<<<<< HEAD
 class TestBankReconciliationTool(AccountsTestMixin, FrappeTestCase):
+=======
+class TestBankReconciliationTool(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_customer()

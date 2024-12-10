@@ -83,7 +83,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "hidden": 1,
    "label": "Address",
    "read_only": 1
@@ -295,7 +299,11 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-06-03 16:19:07.902723",
+=======
+ "modified": "2024-03-27 13:10:04.257508",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Maintenance",
  "name": "Maintenance Visit",
@@ -319,7 +327,11 @@
  ],
  "search_fields": "status,maintenance_type,customer,customer_name,mntc_date,company",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "customer",

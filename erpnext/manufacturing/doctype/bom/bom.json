@@ -26,19 +26,36 @@
   "column_break_ivyw",
   "currency",
   "conversion_rate",
+<<<<<<< HEAD
   "materials_section",
   "items",
   "section_break_21",
   "operations_section_section",
   "with_operations",
+=======
+  "operations_section_section",
+  "with_operations",
+  "track_semi_finished_goods",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_23",
   "transfer_material_against",
   "routing",
   "fg_based_operating_cost",
+<<<<<<< HEAD
+=======
+  "column_break_joxb",
+  "default_source_warehouse",
+  "default_target_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "fg_based_section_section",
   "operating_cost_per_bom_quantity",
   "operations_section",
   "operations",
+<<<<<<< HEAD
+=======
+  "materials_section",
+  "items",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "scrap_section",
   "scrap_items_section",
   "scrap_items",
@@ -59,8 +76,13 @@
   "base_total_cost",
   "more_info_tab",
   "item_name",
+<<<<<<< HEAD
   "description",
   "column_break_27",
+=======
+  "column_break_27",
+  "description",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "has_variants",
   "quality_inspection_section_break",
   "inspection_required",
@@ -211,7 +233,11 @@
   },
   {
    "default": "Work Order",
+<<<<<<< HEAD
    "depends_on": "with_operations",
+=======
+   "depends_on": "eval: doc.with_operations === 1 && doc.track_semi_finished_goods === 0",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "transfer_material_against",
    "fieldtype": "Select",
    "label": "Transfer Material Against",
@@ -406,8 +432,13 @@
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "section_break0",
+<<<<<<< HEAD
    "fieldtype": "Section Break",
    "label": "Materials Required (Exploded)"
+=======
+   "fieldtype": "Tab Break",
+   "label": "Exploded Items"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "exploded_items",
@@ -486,11 +517,14 @@
    "label": "Show Operations"
   },
   {
+<<<<<<< HEAD
    "fieldname": "section_break_21",
    "fieldtype": "Tab Break",
    "label": "Operations"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break_23",
    "fieldtype": "Column Break"
   },
@@ -534,6 +568,11 @@
    "show_dashboard": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.with_operations",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "operations_section_section",
    "fieldtype": "Section Break",
    "label": "Operations"
@@ -617,7 +656,12 @@
    "no_copy": 1,
    "options": "BOM Creator",
    "print_hide": 1,
+<<<<<<< HEAD
    "read_only": 1
+=======
+   "read_only": 1,
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "bom_creator_item",
@@ -625,11 +669,43 @@
    "label": "BOM Creator Item",
    "no_copy": 1,
    "print_hide": 1,
+<<<<<<< HEAD
    "read_only": 1
+=======
+   "read_only": 1,
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_oxbz",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "depends_on": "with_operations",
+   "description": "Users can consume raw materials and add semi-finished goods or final finished goods against the operation using job cards.",
+   "fieldname": "track_semi_finished_goods",
+   "fieldtype": "Check",
+   "label": "Track Semi Finished Goods"
+  },
+  {
+   "fieldname": "column_break_joxb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_source_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "default_target_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Target Warehouse",
+   "options": "Warehouse"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-sitemap",
@@ -672,8 +748,16 @@
  ],
  "search_fields": "item, item_name",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

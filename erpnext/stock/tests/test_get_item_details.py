@@ -1,4 +1,5 @@
 import frappe
+<<<<<<< HEAD
 from frappe.test_runner import make_test_records
 from frappe.tests.utils import FrappeTestCase
 
@@ -13,6 +14,16 @@ class TestGetItemDetail(FrappeTestCase):
 		make_test_records("Price List")
 		super().setUp()
 
+=======
+from frappe.tests import IntegrationTestCase
+
+from erpnext.stock.get_item_details import get_item_details
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Customer", "Supplier", "Item", "Price List", "Item Price"]
+
+
+class TestGetItemDetail(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_get_item_detail_purchase_order(self):
 		args = frappe._dict(
 			{

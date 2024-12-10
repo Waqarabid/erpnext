@@ -3,8 +3,11 @@
 
 import frappe
 
+<<<<<<< HEAD
 # test_records = frappe.get_test_records('Designation')
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def create_designation(**args):
 	args = frappe._dict(args)

@@ -49,6 +49,10 @@ class Workstation(Document):
 		)
 
 		description: DF.Text | None
+<<<<<<< HEAD
+=======
+		disabled: DF.Check
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		holiday_list: DF.Link | None
 		hour_rate: DF.Currency
 		hour_rate_consumable: DF.Currency
@@ -59,6 +63,12 @@ class Workstation(Document):
 		on_status_image: DF.AttachImage | None
 		plant_floor: DF.Link | None
 		production_capacity: DF.Int
+<<<<<<< HEAD
+=======
+		status: DF.Literal["Production", "Off", "Idle", "Problem", "Maintenance", "Setup"]
+		total_working_hours: DF.Float
+		warehouse: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		working_hours: DF.Table[WorkstationWorkingHour]
 		workstation_name: DF.Data
 		workstation_type: DF.Link | None
@@ -68,6 +78,14 @@ class Workstation(Document):
 		self.set_data_based_on_workstation_type()
 		self.set_hour_rate()
 		self.set_total_working_hours()
+<<<<<<< HEAD
+=======
+		self.disabled_workstation()
+
+	def disabled_workstation(self):
+		if self.disabled:
+			self.status = "Off"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def set_total_working_hours(self):
 		self.total_working_hours = 0.0
@@ -121,6 +139,31 @@ class Workstation(Document):
 		self.validate_overlap_for_operation_timings()
 		self.update_bom_operation()
 
+<<<<<<< HEAD
+=======
+		if self.plant_floor:
+			self.publish_workstation_status()
+
+	def publish_workstation_status(self):
+		if not self._doc_before_save:
+			return
+
+		if self._doc_before_save.get("status") == self.status:
+			return
+
+		data = get_workstations(plant_floor=self.plant_floor, workstation_name=self.name)[0]
+
+		color_map = get_color_map()
+		data["old_color"] = color_map.get(self._doc_before_save.get("status"), "red")
+
+		frappe.publish_realtime(
+			"update_workstation_status",
+			data,
+			doctype="Plant Floor",
+			docname=self.plant_floor,
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_overlap_for_operation_timings(self):
 		"""Check if there is no overlap in setting Workstation Operating Hours"""
 		for d in self.get("working_hours"):
@@ -192,7 +235,11 @@ class Workstation(Document):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_job_cards(workstation):
+=======
+def get_job_cards(workstation, job_card=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if frappe.has_permission("Job Card", "read"):
 		jc_data = frappe.get_all(
 			"Job Card",
@@ -203,15 +250,31 @@ def get_job_cards(workstation):
 				"operation",
 				"total_completed_qty",
 				"for_quantity",
+<<<<<<< HEAD
+=======
+				"process_loss_qty",
+				"finished_good",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"transferred_qty",
 				"status",
 				"expected_start_date",
 				"expected_end_date",
 				"time_required",
 				"wip_warehouse",
+<<<<<<< HEAD
 			],
 			filters={
 				"workstation": workstation,
+=======
+				"skip_material_transfer",
+				"backflush_from_wip_warehouse",
+				"is_paused",
+				"manufactured_qty",
+			],
+			filters={
+				"workstation": workstation,
+				"is_subcontracted": 0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"docstatus": ("<", 2),
 				"status": ["not in", ["Completed", "Stopped"]],
 			},
@@ -219,13 +282,17 @@ def get_job_cards(workstation):
 		)
 
 		job_cards = [row.name for row in jc_data]
+<<<<<<< HEAD
 		raw_materials = get_raw_materials(job_cards)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		time_logs = get_time_logs(job_cards)
 
 		allow_excess_transfer = frappe.db.get_single_value(
 			"Manufacturing Settings", "job_card_excess_transfer"
 		)
 
+<<<<<<< HEAD
 		for row in jc_data:
 			row.progress_percent = (
 				flt(row.total_completed_qty / row.for_quantity * 100, 2) if row.for_quantity else 0
@@ -236,16 +303,43 @@ def get_job_cards(workstation):
 			row.work_order_link = get_link_to_form("Work Order", row.work_order)
 
 			row.raw_materials = raw_materials.get(row.name, [])
+=======
+		user_employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+
+		for row in jc_data:
+			if row.status == "Open":
+				row.status = "Not Started"
+
+			item_code = row.finished_good or row.production_item
+			row.fg_uom = frappe.get_cached_value("Item", item_code, "stock_uom")
+
+			row.status_colour = get_status_color(row.status)
+			row.job_card_link = f"""
+					<a class="ellipsis" data-doctype="Job Card" data-name="{row.name}" href="/app/job-card/{row.name}" title="" data-original-title="{row.name}">{row.name}</a>
+				"""
+
+			row.operation_link = f"""
+					<a class="ellipsis" data-doctype="Operation" data-name="{row.operation}" href="/app/operation/{row.operation}" title="" data-original-title="{row.operation}">{row.operation}</a>
+				"""
+			row.work_order_link = get_link_to_form("Work Order", row.work_order)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			row.time_logs = time_logs.get(row.name, [])
 			row.make_material_request = False
 			if row.for_quantity > row.transferred_qty or allow_excess_transfer:
 				row.make_material_request = True
 
+<<<<<<< HEAD
+=======
+			row.user_employee = user_employee
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return jc_data
 
 
 def get_status_color(status):
 	color_map = {
+<<<<<<< HEAD
 		"Pending": "var(--bg-blue)",
 		"In Process": "var(--bg-yellow)",
 		"Submitted": "var(--bg-blue)",
@@ -277,6 +371,66 @@ def get_raw_materials(job_cards):
 
 	for row in data:
 		raw_materials.setdefault(row.parent, []).append(row)
+=======
+		"Pending": "blue",
+		"In Process": "yellow",
+		"Submitted": "blue",
+		"Open": "gray",
+		"Closed": "green",
+		"Work In Progress": "orange",
+	}
+
+	return color_map.get(status, "blue")
+
+
+@frappe.whitelist()
+def get_raw_materials(job_card):
+	raw_materials = frappe.get_all(
+		"Job Card",
+		fields=[
+			"`tabJob Card`.`skip_material_transfer`",
+			"`tabJob Card`.`backflush_from_wip_warehouse`",
+			"`tabJob Card`.`wip_warehouse`",
+			"`tabJob Card Item`.`parent`",
+			"`tabJob Card Item`.`item_code`",
+			"`tabJob Card Item`.`item_group`",
+			"`tabJob Card Item`.`uom`",
+			"`tabJob Card Item`.`item_name`",
+			"`tabJob Card Item`.`source_warehouse`",
+			"`tabJob Card Item`.`required_qty`",
+			"`tabJob Card Item`.`transferred_qty`",
+		],
+		filters={"name": job_card},
+	)
+
+	if not raw_materials:
+		return []
+
+	for row in raw_materials:
+		warehouse = row.source_warehouse
+		if row.skip_material_transfer and row.backflush_from_wip_warehouse:
+			warehouse = row.wip_warehouse
+
+		row.stock_qty = (
+			frappe.db.get_value(
+				"Bin",
+				{
+					"item_code": row.item_code,
+					"warehouse": warehouse,
+				},
+				"actual_qty",
+			)
+			or 0.0
+		)
+
+		row.warehouse = warehouse
+
+		row.material_availability_status = 0
+		if row.skip_material_transfer and row.stock_qty >= row.required_qty:
+			row.material_availability_status = 1
+		elif row.transferred_qty >= row.required_qty:
+			row.material_availability_status = 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return raw_materials
 
@@ -316,7 +470,11 @@ def check_if_within_operating_hours(workstation, operation, from_datetime, to_da
 		if not frappe.db.get_single_value("Manufacturing Settings", "allow_production_on_holidays"):
 			check_workstation_for_holiday(workstation, from_datetime, to_datetime)
 
+<<<<<<< HEAD
 		if not cint(frappe.db.get_value("Manufacturing Settings", None, "allow_overtime")):
+=======
+		if not cint(frappe.db.get_single_value("Manufacturing Settings", "allow_overtime")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			is_within_operating_hours(workstation, operation, from_datetime, to_datetime)
 
 
@@ -379,8 +537,13 @@ def get_workstations(**kwargs):
 			_workstation.on_status_image,
 			_workstation.off_status_image,
 		)
+<<<<<<< HEAD
 		.orderby(_workstation.workstation_type, _workstation.name)
 		.where(_workstation.plant_floor == kwargs.plant_floor)
+=======
+		.orderby(_workstation.creation, _workstation.workstation_type, _workstation.name)
+		.where((_workstation.plant_floor == kwargs.plant_floor) & (_workstation.disabled == 0))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if kwargs.workstation:
@@ -392,6 +555,7 @@ def get_workstations(**kwargs):
 	if kwargs.workstation_status:
 		query = query.where(_workstation.status == kwargs.workstation_status)
 
+<<<<<<< HEAD
 	data = query.run(as_dict=True)
 
 	color_map = {
@@ -402,13 +566,81 @@ def get_workstations(**kwargs):
 		"Maintenance": "var(--yellow-600)",
 		"Setup": "var(--blue-600)",
 	}
+=======
+	if kwargs.workstation_name:
+		query = query.where(_workstation.name == kwargs.workstation_name)
+
+	data = query.run(as_dict=True)
+
+	color_map = get_color_map()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	for d in data:
 		d.workstation_name = get_link_to_form("Workstation", d.name)
 		d.status_image = d.on_status_image
+<<<<<<< HEAD
 		d.background_color = color_map.get(d.status, "var(--red-600)")
 		d.workstation_link = get_url_to_form("Workstation", d.name)
 		if d.status != "Production":
 			d.status_image = d.off_status_image
 
 	return data
+=======
+		d.workstation_off = ""
+		d.color = color_map.get(d.status, "red")
+		d.workstation_link = get_url_to_form("Workstation", d.name)
+		if d.status != "Production":
+			d.status_image = d.off_status_image
+			d.workstation_off = "workstation-off"
+
+	return data
+
+
+def get_color_map():
+	return {
+		"Production": "green",
+		"Off": "gray",
+		"Idle": "gray",
+		"Problem": "red",
+		"Maintenance": "yellow",
+		"Setup": "blue",
+	}
+
+
+@frappe.whitelist()
+def update_job_card(job_card, method, **kwargs):
+	if isinstance(kwargs, dict):
+		kwargs = frappe._dict(kwargs)
+
+	if kwargs.get("employees"):
+		kwargs.employees = frappe.parse_json(kwargs.employees)
+
+	if kwargs.qty and isinstance(kwargs.qty, str):
+		kwargs.qty = flt(kwargs.qty)
+
+	print(method)
+	doc = frappe.get_doc("Job Card", job_card)
+	doc.run_method(method, **kwargs)
+
+
+@frappe.whitelist()
+def validate_job_card(job_card, status):
+	job_card_details = frappe.db.get_value("Job Card", job_card, ["status", "for_quantity"], as_dict=1)
+
+	current_status = job_card_details.status
+	if current_status != status:
+		if status == "Open":
+			frappe.throw(
+				_("The job card {0} is in {1} state and you cannot start it again.").format(
+					job_card, current_status
+				)
+			)
+		else:
+			frappe.throw(
+				_("The job card {0} is in {1} state and you cannot complete.").format(
+					job_card, current_status
+				)
+			)
+
+	return job_card_details.for_quantity
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -134,7 +134,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-06-29 00:30:30.621636",
+=======
+ "modified": "2024-03-27 13:06:39.907810",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Blanket Order",
@@ -157,7 +161,13 @@
  ],
  "quick_entry": 1,
  "search_fields": "blanket_order_type, to_date",
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

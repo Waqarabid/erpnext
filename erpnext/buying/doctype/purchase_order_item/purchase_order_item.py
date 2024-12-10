@@ -37,6 +37,10 @@ class PurchaseOrderItem(Document):
 		description: DF.TextEditor | None
 		discount_amount: DF.Currency
 		discount_percentage: DF.Percent
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		expected_delivery_date: DF.Date | None
 		expense_account: DF.Link | None
 		fg_item: DF.Link | None

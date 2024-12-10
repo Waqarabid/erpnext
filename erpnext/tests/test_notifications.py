@@ -1,14 +1,24 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # MIT License. See license.txt
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import unittest
 
 import frappe
 from frappe.desk import notifications
+<<<<<<< HEAD
 
 
 class TestNotifications(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestNotifications(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_get_notifications_for_targets(self):
 		"""
 		Test notification config entries for targets as percentages

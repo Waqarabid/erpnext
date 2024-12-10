@@ -531,7 +531,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 					child: item,
 					args: {
 						doc: me.frm.doc,
+<<<<<<< HEAD
 						args: {
+=======
+						ctx: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							item_code: item.item_code,
 							barcode: item.barcode,
 							serial_no: item.serial_no,
@@ -751,6 +755,10 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 					child.charge_type = "On Net Total";
 					child.account_head = tax;
 					child.rate = 0;
+<<<<<<< HEAD
+=======
+					child.set_by_item_tax_template = true;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			});
 		}
@@ -1015,6 +1023,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 	due_date() {
 		// due_date is to be changed, payment terms template and/or payment schedule must
 		// be removed as due_date is automatically changed based on payment terms
+<<<<<<< HEAD
 		if (this.frm.doc.due_date && !this.frm.updating_party_details && !this.frm.doc.is_pos) {
 			if (this.frm.doc.payment_terms_template ||
 				(this.frm.doc.payment_schedule && this.frm.doc.payment_schedule.length)) {
@@ -1034,6 +1043,37 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 				}
 				frappe.msgprint(final_message);
 			}
+=======
+		if (
+			this.frm.doc.due_date &&
+			!this.frm.updating_party_details &&
+			!this.frm.doc.is_pos &&
+			(
+				this.frm.doc.payment_terms_template ||
+				this.frm.doc.payment_schedule?.length
+			)
+		) {
+			const to_clear = [];
+			if (this.frm.doc.payment_terms_template) {
+				to_clear.push("Payment Terms Template");
+			}
+
+			if (this.frm.doc.payment_schedule?.length) {
+				to_clear.push("Payment Schedule Table");
+			}
+
+			frappe.confirm(
+				__(
+					"Do you want to clear the selected {0}?",
+					[frappe.utils.comma_and(to_clear.map(dt => __(dt)))]
+				),
+				() => {
+					this.frm.set_value("payment_terms_template", "");
+					this.frm.clear_table("payment_schedule");
+					this.frm.refresh_field("payment_schedule");
+				}
+			);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	}
 
@@ -1371,7 +1411,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 		if(child.service_start_date) {
 			frappe.call({
 				"method": "erpnext.stock.get_item_details.calculate_service_end_date",
+<<<<<<< HEAD
 				args: {"args": child},
+=======
+				args: {ctx: child},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				callback: function(r) {
 					frappe.model.set_value(cdt, cdn, "service_end_date", r.message.service_end_date);
 				}
@@ -1538,7 +1582,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			frappe.call({
 				method: "erpnext.stock.get_item_details.get_batch_based_item_price",
 				args: {
+<<<<<<< HEAD
 					params: params,
+=======
+					pctx: params,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					item_code: row.item_code,
 				},
 				callback: function(r) {
@@ -1900,7 +1948,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 		me.in_apply_price_list = true;
 		return this.frm.call({
 			method: "erpnext.stock.get_item_details.apply_price_list",
+<<<<<<< HEAD
 			args: {	args: args, doc: me.frm.doc },
+=======
+			args: {	ctx: args, doc: me.frm.doc },
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			callback: function(r) {
 				if (!r.exc) {
 					frappe.run_serially([
@@ -1994,7 +2046,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			if(frappe.meta.has_field(me.frm.doc.doctype, fieldname) &&  !["Purchase Order","Purchase Invoice"].includes(me.frm.doc.doctype)) {
 				if (!me.frm.doc[fieldname]) {
 					frappe.msgprint(__("Please specify") + ": " +
+<<<<<<< HEAD
 						frappe.meta.get_label(me.frm.doc.doctype, fieldname, me.frm.doc.name) +
+=======
+						__(frappe.meta.get_label(me.frm.doc.doctype, fieldname, me.frm.doc.name)) +
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						". " + __("It is needed to fetch Item Details."));
 					valid = false;
 				}
@@ -2072,7 +2128,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			return this.frm.call({
 				method: "erpnext.stock.get_item_details.get_item_tax_info",
 				args: {
+<<<<<<< HEAD
 					company: me.frm.doc.company,
+=======
+					doc: me.frm.doc,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					tax_category: cstr(me.frm.doc.tax_category),
 					item_codes: item_codes,
 					item_rates: item_rates,
@@ -2103,7 +2163,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			return this.frm.call({
 				method: "erpnext.stock.get_item_details.get_item_tax_map",
 				args: {
+<<<<<<< HEAD
 					company: me.frm.doc.company,
+=======
+					doc: me.frm.doc,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					item_tax_template: item.item_tax_template,
 					as_json: true
 				},
@@ -2316,6 +2380,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 		];
 
 		const me = this;
+<<<<<<< HEAD
+=======
+		const inspection_type = ["Purchase Receipt", "Purchase Invoice", "Subcontracting Receipt"].includes(this.frm.doc.doctype)
+			? "Incoming" : "Outgoing";
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const dialog = new frappe.ui.Dialog({
 			title: __("Select Items for Quality Inspection"),
 			size: "extra-large",
@@ -2327,7 +2396,12 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 					args: {
 						doctype: me.frm.doc.doctype,
 						docname: me.frm.doc.name,
+<<<<<<< HEAD
 						items: data.items
+=======
+						items: data.items,
+						inspection_type: inspection_type
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					},
 					freeze: true,
 					callback: function (r) {
@@ -2385,9 +2459,15 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 	}
 
 	get_method_for_payment() {
+<<<<<<< HEAD
 		var method = "erpnext.accounts.doctype.payment_entry.payment_entry.get_payment_entry";
 		if(cur_frm.doc.__onload && cur_frm.doc.__onload.make_payment_via_journal_entry){
 			if(['Sales Invoice', 'Purchase Invoice'].includes( cur_frm.doc.doctype)){
+=======
+		let method = "erpnext.accounts.doctype.payment_entry.payment_entry.get_payment_entry";
+		if(this.frm.doc.__onload && this.frm.doc.__onload.make_payment_via_journal_entry){
+			if(['Sales Invoice', 'Purchase Invoice'].includes( this.frm.doc.doctype)){
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				method = "erpnext.accounts.doctype.journal_entry.journal_entry.get_payment_entry_against_invoice";
 			}else {
 				method= "erpnext.accounts.doctype.journal_entry.journal_entry.get_payment_entry_against_order";
@@ -2520,7 +2600,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			frappe.call({
 				method: "erpnext.stock.get_item_details.get_blanket_order_details",
 				args: {
+<<<<<<< HEAD
 					args:{
+=======
+					ctx:{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						item_code: item.item_code,
 						customer: doc.customer,
 						supplier: doc.supplier,

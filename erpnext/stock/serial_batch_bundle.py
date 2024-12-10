@@ -508,7 +508,11 @@ class SerialNoValuation(DeprecatedSerialNoValuation):
 			serial_nos = self.get_serial_nos()
 			for serial_no in serial_nos:
 				incoming_rate = self.get_incoming_rate_from_bundle(serial_no)
+<<<<<<< HEAD
 				if incoming_rate is None:
+=======
+				if not incoming_rate:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					continue
 
 				self.stock_value_change += incoming_rate
@@ -553,7 +557,11 @@ class SerialNoValuation(DeprecatedSerialNoValuation):
 			query = query.where(timestamp_condition)
 
 		incoming_rate = query.run()
+<<<<<<< HEAD
 		return flt(incoming_rate[0][0]) if incoming_rate else None
+=======
+		return flt(incoming_rate[0][0]) if incoming_rate else 0.0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_serial_nos(self):
 		if self.sle.get("serial_nos"):

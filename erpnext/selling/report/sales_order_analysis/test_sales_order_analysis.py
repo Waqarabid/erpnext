@@ -1,5 +1,9 @@
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days
 
 from erpnext.selling.doctype.sales_order.sales_order import make_delivery_note, make_sales_invoice
@@ -7,10 +11,17 @@ from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_orde
 from erpnext.selling.report.sales_order_analysis.sales_order_analysis import execute
 from erpnext.stock.doctype.item.test_item import create_item
 
+<<<<<<< HEAD
 test_dependencies = ["Sales Order", "Item", "Sales Invoice", "Delivery Note"]
 
 
 class TestSalesOrderAnalysis(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Sales Order", "Item", "Sales Invoice", "Delivery Note"]
+
+
+class TestSalesOrderAnalysis(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def create_sales_order(self, transaction_date, do_not_save=False, do_not_submit=False):
 		item = create_item(item_code="_Test Excavator", is_stock_item=0)
 		so = make_sales_order(

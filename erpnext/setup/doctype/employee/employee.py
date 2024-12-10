@@ -87,7 +87,11 @@ class Employee(NestedSet):
 	def update_user_permissions(self):
 		if not self.create_user_permission:
 			return
+<<<<<<< HEAD
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
+=======
+		if not has_permission("User Permission", ptype="write", print_logs=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		employee_user_permission_exists = frappe.db.exists(
@@ -126,7 +130,11 @@ class Employee(NestedSet):
 			user.gender = self.gender
 
 		if self.image:
+<<<<<<< HEAD
 			if not user.user_image:
+=======
+			if not user.user_image or self.has_value_changed("image"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				user.user_image = self.image
 				try:
 					frappe.get_doc(
@@ -187,7 +195,11 @@ class Employee(NestedSet):
 				throw(_("Please enter relieving date."))
 
 	def validate_for_enabled_user_id(self, enabled):
+<<<<<<< HEAD
 		if not self.status == "Active":
+=======
+		if self.status != "Active":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		if enabled is None:
@@ -254,7 +266,11 @@ def validate_employee_role(doc, method=None, ignore_emp_check=False):
 def update_user_permissions(doc, method):
 	# called via User hook
 	if "Employee" in [d.role for d in doc.get("roles")]:
+<<<<<<< HEAD
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
+=======
+		if not has_permission("User Permission", ptype="write", print_logs=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 		employee = frappe.get_doc("Employee", {"user_id": doc.name})
 		employee.update_user_permissions()

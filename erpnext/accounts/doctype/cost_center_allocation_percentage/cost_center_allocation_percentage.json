@@ -29,13 +29,21 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2022-02-01 22:22:31.589523",
+=======
+ "modified": "2024-03-27 13:06:47.100633",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Cost Center Allocation Percentage",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

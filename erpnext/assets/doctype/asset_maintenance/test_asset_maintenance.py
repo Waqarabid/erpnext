@@ -1,15 +1,23 @@
 # Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, get_last_day, nowdate
 
 from erpnext.assets.doctype.asset_maintenance.asset_maintenance import calculate_next_due_date
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
 
 
+<<<<<<< HEAD
 class TestAssetMaintenance(unittest.TestCase):
 	def setUp(self):
 		set_depreciation_settings_in_company()
@@ -21,15 +29,35 @@ class TestAssetMaintenance(unittest.TestCase):
 
 		asset_name = frappe.db.get_value("Asset", {"purchase_receipt": pr.name}, "name")
 		asset_doc = frappe.get_doc("Asset", asset_name)
+=======
+class TestAssetMaintenance(IntegrationTestCase):
+	def setUp(self):
+		set_depreciation_settings_in_company()
+		self.pr = make_purchase_receipt(
+			item_code="Photocopier", qty=1, rate=100000.0, location="Test Location"
+		)
+		self.asset_name = frappe.db.get_value("Asset", {"purchase_receipt": self.pr.name}, "name")
+		self.asset_doc = frappe.get_doc("Asset", self.asset_name)
+
+	def test_create_asset_maintenance_with_log(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		month_end_date = get_last_day(nowdate())
 
 		purchase_date = nowdate() if nowdate() != month_end_date else add_days(nowdate(), -15)
 
+<<<<<<< HEAD
 		asset_doc.available_for_use_date = purchase_date
 		asset_doc.purchase_date = purchase_date
 
 		asset_doc.calculate_depreciation = 1
 		asset_doc.append(
+=======
+		self.asset_doc.available_for_use_date = purchase_date
+		self.asset_doc.purchase_date = purchase_date
+
+		self.asset_doc.calculate_depreciation = 1
+		self.asset_doc.append(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"finance_books",
 			{
 				"expected_value_after_useful_life": 200,
@@ -40,6 +68,7 @@ class TestAssetMaintenance(unittest.TestCase):
 			},
 		)
 
+<<<<<<< HEAD
 		asset_doc.save()
 
 		if not frappe.db.exists("Asset Maintenance", "Photocopier"):
@@ -130,6 +159,42 @@ def get_maintenance_team(user_list):
 	return [
 		{"team_member": user, "full_name": user, "maintenance_role": "Technician"} for user in user_list[1:]
 	]
+=======
+		self.asset_doc.save()
+
+		asset_maintenance = frappe.get_doc(
+			{
+				"doctype": "Asset Maintenance",
+				"asset_name": self.asset_name,
+				"maintenance_team": "Team Awesome",
+				"company": "_Test Company",
+				"asset_maintenance_tasks": get_maintenance_tasks(),
+			}
+		).insert()
+
+		next_due_date = calculate_next_due_date(nowdate(), "Monthly")
+		self.assertEqual(asset_maintenance.asset_maintenance_tasks[0].next_due_date, next_due_date)
+
+		asset_maintenance_log = frappe.db.get_value(
+			"Asset Maintenance Log",
+			{"asset_maintenance": asset_maintenance.name, "task_name": "Change Oil"},
+			"name",
+		)
+
+		asset_maintenance_log_doc = frappe.get_doc("Asset Maintenance Log", asset_maintenance_log)
+		asset_maintenance_log_doc.update(
+			{
+				"completion_date": add_days(nowdate(), 2),
+				"maintenance_status": "Completed",
+			}
+		)
+
+		asset_maintenance_log_doc.save()
+		next_due_date = calculate_next_due_date(asset_maintenance_log_doc.completion_date, "Monthly")
+
+		asset_maintenance.reload()
+		self.assertEqual(asset_maintenance.asset_maintenance_tasks[0].next_due_date, next_due_date)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_maintenance_tasks():
@@ -153,6 +218,7 @@ def get_maintenance_tasks():
 	]
 
 
+<<<<<<< HEAD
 def create_asset_category():
 	asset_category = frappe.new_doc("Asset Category")
 	asset_category.asset_category_name = "Equipment"
@@ -170,6 +236,8 @@ def create_asset_category():
 	asset_category.insert()
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def set_depreciation_settings_in_company():
 	company = frappe.get_doc("Company", "_Test Company")
 	company.accumulated_depreciation_account = "_Test Accumulated Depreciations - _TC"

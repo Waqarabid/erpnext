@@ -38,6 +38,10 @@
   "column_break_30",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "sec_break2",
   "rate",
@@ -839,7 +843,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_26",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -970,6 +978,15 @@
    "no_copy": 1,
    "options": "Company:company:default_currency",
    "print_hide": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
@@ -982,7 +999,14 @@
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

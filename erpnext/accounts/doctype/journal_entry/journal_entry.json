@@ -603,9 +603,17 @@
   }
  ],
  "search_fields": "voucher_type,posting_date, due_date, cheque_no",
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

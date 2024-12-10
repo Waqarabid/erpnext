@@ -195,7 +195,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "section_break_24",
@@ -259,7 +263,11 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": [],
  "title_field": "item_name",

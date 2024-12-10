@@ -42,7 +42,11 @@ def get_data(filters):
 
 
 def get_chart_data(periodic_data, columns):
+<<<<<<< HEAD
 	labels = [_("Rejected"), _("Accepted")]
+=======
+	labels = ["Rejected", "Accepted"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	status_wise_data = {"Accepted": 0, "Rejected": 0}
 
@@ -53,7 +57,11 @@ def get_chart_data(periodic_data, columns):
 
 	datasets.append(
 		{
+<<<<<<< HEAD
 			"name": _("Qty Wise Chart"),
+=======
+			"name": "Qty Wise Chart",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"values": [status_wise_data.get("Rejected"), status_wise_data.get("Accepted")],
 		}
 	)

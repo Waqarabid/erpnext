@@ -40,6 +40,10 @@
   {
    "fieldname": "description",
    "fieldtype": "Text",
+<<<<<<< HEAD
+=======
+   "in_preview": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Description"
   },
   {
@@ -104,7 +108,11 @@
  "icon": "fa fa-wrench",
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-11-24 19:15:24.357187",
+=======
+ "modified": "2024-05-26 17:59:44.338741",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Operation",
@@ -134,7 +142,14 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "show_preview_popup": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

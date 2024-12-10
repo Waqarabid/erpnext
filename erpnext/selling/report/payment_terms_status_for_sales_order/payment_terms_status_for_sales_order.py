@@ -207,7 +207,11 @@ def get_so_with_invoices(filters):
 		)
 		.where(
 			(so.docstatus == 1)
+<<<<<<< HEAD
 			& (so.status.isin(["To Deliver and Bill", "To Bill"]))
+=======
+			& (so.status.isin(["To Deliver and Bill", "To Bill", "To Pay"]))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			& (so.company == conditions.company)
 			& (so.transaction_date[conditions.start_date : conditions.end_date])
 		)
@@ -270,11 +274,19 @@ def prepare_chart(s_orders):
 				"labels": [term.payment_term for term in s_orders],
 				"datasets": [
 					{
+<<<<<<< HEAD
 						"name": _("Payment Amount"),
 						"values": [x.base_payment_amount for x in s_orders],
 					},
 					{
 						"name": _("Paid Amount"),
+=======
+						"name": "Payment Amount",
+						"values": [x.base_payment_amount for x in s_orders],
+					},
+					{
+						"name": "Paid Amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"values": [x.paid_amount for x in s_orders],
 					},
 				],

@@ -3,7 +3,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import nowdate
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
@@ -13,7 +17,20 @@ from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_orde
 from erpnext.stock.doctype.item.test_item import create_item
 
 
+<<<<<<< HEAD
 class TestPaymentLedgerEntry(FrappeTestCase):
+=======
+class UnitTestPaymentLedgerEntry(UnitTestCase):
+	"""
+	Unit tests for PaymentLedgerEntry.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPaymentLedgerEntry(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.ple = qb.DocType("Payment Ledger Entry")
 		self.create_company()
@@ -445,7 +462,11 @@ class TestPaymentLedgerEntry(FrappeTestCase):
 		self.assertEqual(pl_entries_for_crnote[0], expected_values[0])
 		self.assertEqual(pl_entries_for_crnote[1], expected_values[1])
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1, "delete_linked_ledger_entries": 1},
 	)
@@ -474,7 +495,11 @@ class TestPaymentLedgerEntry(FrappeTestCase):
 		si.delete()
 		self.assertRaises(frappe.DoesNotExistError, frappe.get_doc, si.doctype, si.name)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1, "delete_linked_ledger_entries": 1},
 	)
@@ -507,7 +532,11 @@ class TestPaymentLedgerEntry(FrappeTestCase):
 		si.delete()
 		self.assertRaises(frappe.DoesNotExistError, frappe.get_doc, si.doctype, si.name)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,

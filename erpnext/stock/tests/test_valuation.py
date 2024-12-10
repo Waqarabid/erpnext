@@ -2,7 +2,11 @@ import json
 import unittest
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -15,7 +19,11 @@ value_gen = st.floats(min_value=1, max_value=1e6)
 stock_queue_generator = st.lists(st.tuples(qty_gen, value_gen), min_size=10)
 
 
+<<<<<<< HEAD
 class TestFIFOValuation(unittest.TestCase):
+=======
+class TestFIFOValuation(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.queue = FIFOValuation([])
 
@@ -195,7 +203,11 @@ class TestFIFOValuation(unittest.TestCase):
 			self.assertTotalValue(total_value)
 
 
+<<<<<<< HEAD
 class TestLIFOValuation(unittest.TestCase):
+=======
+class TestLIFOValuation(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.stack = LIFOValuation([])
 
@@ -317,7 +329,11 @@ class TestLIFOValuation(unittest.TestCase):
 			self.assertTotalValue(total_value)
 
 
+<<<<<<< HEAD
 class TestLIFOValuationSLE(FrappeTestCase):
+=======
+class TestLIFOValuationSLE(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	ITEM_CODE = "_Test LIFO item"
 	WAREHOUSE = "_Test Warehouse - _TC"
 

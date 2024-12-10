@@ -1,9 +1,16 @@
 # Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_months, getdate
 
 from erpnext.accounts.doctype.cost_center.test_cost_center import create_cost_center
@@ -15,9 +22,16 @@ from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 from erpnext.tests.utils import if_lending_app_installed, if_lending_app_not_installed
 
 
+<<<<<<< HEAD
 class TestBankClearance(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+class TestBankClearance(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		create_warehouse(
 			warehouse_name="_Test Warehouse",
 			properties={"parent_warehouse": "All Warehouses - _TC"},
@@ -26,9 +40,12 @@ class TestBankClearance(unittest.TestCase):
 		create_item("_Test Item")
 		create_cost_center(cost_center_name="_Test Cost Center", company="_Test Company")
 
+<<<<<<< HEAD
 		clear_payment_entries()
 		clear_loan_transactions()
 		clear_pos_sales_invoices()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		make_bank_account()
 		add_transactions()
 
@@ -123,6 +140,7 @@ class TestBankClearance(unittest.TestCase):
 		self.assertEqual(si_clearance_date, date)
 
 
+<<<<<<< HEAD
 def clear_payment_entries():
 	frappe.db.delete("Payment Entry")
 
@@ -140,6 +158,8 @@ def clear_loan_transactions():
 		frappe.db.delete(dt)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def make_bank_account():
 	if not frappe.db.get_value("Account", "_Test Bank Clearance - _TC"):
 		frappe.get_doc(

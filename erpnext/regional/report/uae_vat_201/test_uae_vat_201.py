@@ -16,7 +16,11 @@ from erpnext.regional.report.uae_vat_201.uae_vat_201 import (
 )
 from erpnext.stock.doctype.warehouse.test_warehouse import get_warehouse_account
 
+<<<<<<< HEAD
 test_dependencies = ["Territory", "Customer Group", "Supplier Group", "Item"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Territory", "Customer Group", "Supplier Group", "Item"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 class TestUaeVat201(TestCase):

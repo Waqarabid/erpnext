@@ -3,10 +3,17 @@
 
 
 # import frappe
+<<<<<<< HEAD
 from frappe.model.document import Document
 
 
 class POSInvoiceItem(Document):
+=======
+from erpnext.accounts.doctype.sales_invoice_item.sales_invoice_item import SalesInvoiceItem
+
+
+class POSInvoiceItem(SalesInvoiceItem):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -39,6 +46,10 @@ class POSInvoiceItem(Document):
 		description: DF.TextEditor
 		discount_amount: DF.Currency
 		discount_percentage: DF.Percent
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		dn_detail: DF.Data | None
 		enable_deferred_revenue: DF.Check
 		expense_account: DF.Link | None

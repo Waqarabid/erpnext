@@ -1,10 +1,17 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import json
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.response import json_handler
 
 from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
@@ -16,7 +23,11 @@ from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
 )
 
 
+<<<<<<< HEAD
 class TestPlaidSettings(unittest.TestCase):
+=======
+class TestPlaidSettings(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		pass
 

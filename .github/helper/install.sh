@@ -12,9 +12,22 @@ pip install frappe-bench
 
 githubbranch=${GITHUB_BASE_REF:-${GITHUB_REF##*/}}
 frappeuser=${FRAPPE_USER:-"frappe"}
+<<<<<<< HEAD
 frappebranch=${FRAPPE_BRANCH:-$githubbranch}
 
 git clone "https://github.com/${frappeuser}/frappe" --branch "${frappebranch}" --depth 1
+=======
+frappecommitish=${FRAPPE_BRANCH:-$githubbranch}
+
+mkdir frappe
+pushd frappe
+git init
+git remote add origin "https://github.com/${frappeuser}/frappe"
+git fetch origin "${frappecommitish}" --depth 1
+git checkout FETCH_HEAD
+popd
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 bench init --skip-assets --frappe-path ~/frappe --python "$(which python)" frappe-bench
 
 mkdir ~/frappe-bench/sites/test_site

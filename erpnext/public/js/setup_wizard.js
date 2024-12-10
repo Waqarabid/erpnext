@@ -24,7 +24,10 @@ erpnext.setup.slides_settings = [
 				fieldtype: "Data",
 				reqd: 1,
 			},
+<<<<<<< HEAD
 			{ fieldtype: "Column Break" },
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				fieldname: "company_abbr",
 				label: __("Company Abbreviation"),

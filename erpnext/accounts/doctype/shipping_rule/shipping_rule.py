@@ -143,12 +143,20 @@ class ShippingRule(Document):
 		}
 		if self.shipping_rule_type == "Selling":
 			# check if not applied on purchase
+<<<<<<< HEAD
 			if not doc.meta.get_field("taxes").options == "Sales Taxes and Charges":
+=======
+			if doc.meta.get_field("taxes").options != "Sales Taxes and Charges":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(_("Shipping rule only applicable for Selling"))
 			shipping_charge["doctype"] = "Sales Taxes and Charges"
 		else:
 			# check if not applied on sales
+<<<<<<< HEAD
 			if not doc.meta.get_field("taxes").options == "Purchase Taxes and Charges":
+=======
+			if doc.meta.get_field("taxes").options != "Purchase Taxes and Charges":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(_("Shipping rule only applicable for Buying"))
 
 			shipping_charge["doctype"] = "Purchase Taxes and Charges"

@@ -1,9 +1,16 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
 
 
 class TestAccountsSettings(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestAccountsSettings(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def tearDown(self):
 		# Just in case `save` method succeeds, we need to take things back to default so that other tests
 		# don't break

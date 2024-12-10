@@ -166,6 +166,7 @@ class StockReconciliation(StockController):
 			if not frappe.db.exists("Item", item.item_code):
 				frappe.throw(_("Item {0} does not exist").format(item.item_code))
 
+<<<<<<< HEAD
 			item_details = frappe.get_cached_value(
 				"Item", item.item_code, ["has_serial_no", "has_batch_no"], as_dict=1
 			)
@@ -184,6 +185,8 @@ class StockReconciliation(StockController):
 					)
 				)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if not item.reconcile_all_serial_batch and item.serial_and_batch_bundle:
 				bundle = self.get_bundle_for_specific_serial_batch(item)
 				item.current_serial_and_batch_bundle = bundle.name
@@ -199,6 +202,16 @@ class StockReconciliation(StockController):
 			if voucher_detail_no and voucher_detail_no != item.name:
 				continue
 
+<<<<<<< HEAD
+=======
+			item_details = frappe.get_cached_value(
+				"Item", item.item_code, ["has_serial_no", "has_batch_no"], as_dict=1
+			)
+
+			if not (item_details.has_serial_no or item_details.has_batch_no):
+				continue
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if not item.current_serial_and_batch_bundle:
 				serial_and_batch_bundle = frappe.get_doc(
 					{
@@ -411,6 +424,7 @@ class StockReconciliation(StockController):
 				item.qty = bundle_doc.total_qty
 				item.valuation_rate = bundle_doc.avg_rate
 
+<<<<<<< HEAD
 			elif item.serial_and_batch_bundle and item.qty:
 				self.update_existing_serial_and_batch_bundle(item)
 
@@ -433,6 +447,8 @@ class StockReconciliation(StockController):
 
 			frappe.db.set_value("Serial and Batch Entry", batch.name, update_values)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def remove_items_with_no_change(self):
 		"""Remove items if qty or rate is not changed"""
 		self.difference_amount = 0.0

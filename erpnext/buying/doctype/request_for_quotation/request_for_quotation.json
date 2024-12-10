@@ -303,7 +303,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address Details",
    "read_only": 1
   }
@@ -312,7 +316,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-06 12:45:28.898706",
+=======
+ "modified": "2024-03-27 13:10:33.030915",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Request for Quotation",
@@ -379,7 +387,11 @@
  ],
  "search_fields": "status, transaction_date",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

@@ -4,7 +4,11 @@
 frappe.listview_settings["Subcontracting Order"] = {
 	get_indicator: function (doc) {
 		const status_colors = {
+<<<<<<< HEAD
 			Draft: "red",
+=======
+			Draft: "grey",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			Open: "orange",
 			"Partially Received": "yellow",
 			Completed: "green",

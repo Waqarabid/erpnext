@@ -3,7 +3,11 @@
 
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_field
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import nowdate, nowtime
 
 from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
@@ -20,7 +24,20 @@ from erpnext.stock.doctype.stock_ledger_entry.stock_ledger_entry import Inventor
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 
 
+<<<<<<< HEAD
 class TestInventoryDimension(FrappeTestCase):
+=======
+class UnitTestInventoryDimension(UnitTestCase):
+	"""
+	Unit tests for InventoryDimension.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestInventoryDimension(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		prepare_test_data()
 		create_store_dimension()

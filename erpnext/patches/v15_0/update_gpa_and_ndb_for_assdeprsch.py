@@ -3,7 +3,10 @@ import frappe
 
 def execute():
 	# not using frappe.qb because https://github.com/frappe/frappe/issues/20292
+<<<<<<< HEAD
 	# nosemgrep
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.db.sql(
 		"""UPDATE `tabAsset Depreciation Schedule`
         JOIN `tabAsset`

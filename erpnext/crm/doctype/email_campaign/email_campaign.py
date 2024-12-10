@@ -144,3 +144,7 @@ def set_email_campaign_status():
 	for entry in email_campaigns:
 		email_campaign = frappe.get_doc("Email Campaign", entry.name)
 		email_campaign.update_status()
+<<<<<<< HEAD
+=======
+		email_campaign.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

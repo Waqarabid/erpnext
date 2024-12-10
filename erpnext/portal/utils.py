@@ -50,7 +50,11 @@ def create_customer_or_supplier():
 	party = frappe.new_doc(doctype)
 	fullname = frappe.utils.get_fullname(user)
 
+<<<<<<< HEAD
 	if not doctype == "Customer":
+=======
+	if doctype != "Customer":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		party.update(
 			{
 				"supplier_name": fullname,

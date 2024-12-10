@@ -19,7 +19,10 @@
   "lead_name",
   "job_title",
   "gender",
+<<<<<<< HEAD
   "source",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "col_break123",
   "lead_owner",
   "status",
@@ -53,13 +56,26 @@
   "country",
   "column_break2",
   "contact_html",
+<<<<<<< HEAD
+=======
+  "section_break_analytics",
+  "utm_source",
+  "utm_content",
+  "column_break_gkxo",
+  "utm_campaign",
+  "column_break_gqka",
+  "utm_medium",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "qualification_tab",
   "qualification_status",
   "column_break_64",
   "qualified_by",
   "qualified_on",
   "other_info_tab",
+<<<<<<< HEAD
   "campaign_name",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "company",
   "column_break_22",
   "language",
@@ -161,6 +177,7 @@
    "options": "Gender"
   },
   {
+<<<<<<< HEAD
    "fieldname": "source",
    "fieldtype": "Link",
    "label": "Source",
@@ -169,6 +186,8 @@
    "options": "Lead Source"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "depends_on": "eval:doc.source == 'Existing Customer'",
    "fieldname": "customer",
    "fieldtype": "Link",
@@ -179,6 +198,7 @@
    "options": "Customer"
   },
   {
+<<<<<<< HEAD
    "fieldname": "campaign_name",
    "fieldtype": "Link",
    "label": "Campaign Name",
@@ -187,6 +207,8 @@
    "options": "Campaign"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "hidden": 1,
@@ -510,13 +532,61 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "column_break_gkxo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gqka",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utm_content",
+   "print_hide": 1,
+   "fieldtype": "Data",
+   "label": "Content"
+  },
+  {
+   "fieldname": "utm_source",
+   "fieldtype": "Link",
+   "label": "Source",
+   "oldfieldname": "source",
+   "oldfieldtype": "Select",
+   "options": "UTM Source"
+  },
+  {
+   "fieldname": "utm_medium",
+   "fieldtype": "Link",
+   "label": "Medium",
+   "options": "UTM Medium"
+  },
+  {
+   "fieldname": "utm_campaign",
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "oldfieldname": "campaign_name",
+   "oldfieldtype": "Link",
+   "options": "UTM Campaign"
+  },
+  {
+   "fieldname": "section_break_analytics",
+   "fieldtype": "Section Break",
+   "label": "Analytics"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-user",
  "idx": 5,
  "image_field": "image",
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-12-01 18:46:49.468526",
+=======
+ "modified": "2024-06-28 10:29:32.676323",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Lead",
@@ -579,9 +649,17 @@
  "sender_field": "email_id",
  "sender_name_field": "lead_name",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "subject_field": "title",
  "title_field": "title"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

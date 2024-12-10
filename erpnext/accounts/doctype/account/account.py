@@ -92,9 +92,13 @@ class Account(NestedSet):
 			super().on_update()
 
 	def onload(self):
+<<<<<<< HEAD
 		frozen_accounts_modifier = frappe.db.get_value(
 			"Accounts Settings", "Accounts Settings", "frozen_accounts_modifier"
 		)
+=======
+		frozen_accounts_modifier = frappe.db.get_single_value("Accounts Settings", "frozen_accounts_modifier")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not frozen_accounts_modifier or frozen_accounts_modifier in frappe.get_roles():
 			self.set_onload("can_freeze_account", True)
 

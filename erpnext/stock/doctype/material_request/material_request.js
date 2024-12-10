@@ -44,6 +44,17 @@ frappe.ui.form.on("Material Request", {
 		});
 	},
 
+<<<<<<< HEAD
+=======
+	schedule_date(frm) {
+		if (frm.doc.schedule_date) {
+			frm.doc.items.forEach((d) => {
+				frappe.model.set_value(d.doctype, d.name, "schedule_date", frm.doc.schedule_date);
+			});
+		}
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	onload: function (frm) {
 		// add item, if previous view was item
 		erpnext.utils.add_item(frm);
@@ -107,6 +118,7 @@ frappe.ui.form.on("Material Request", {
 
 			if (flt(frm.doc.per_received, precision) < 100) {
 				frm.add_custom_button(__("Stop"), () => frm.events.update_status(frm, "Stopped"));
+<<<<<<< HEAD
 
 				if (frm.doc.material_request_type === "Purchase") {
 					frm.add_custom_button(
@@ -115,6 +127,8 @@ frappe.ui.form.on("Material Request", {
 						__("Create")
 					);
 				}
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 
 			if (flt(frm.doc.per_ordered, precision) < 100) {
@@ -159,6 +173,17 @@ frappe.ui.form.on("Material Request", {
 
 				if (frm.doc.material_request_type === "Purchase") {
 					frm.add_custom_button(
+<<<<<<< HEAD
+=======
+						__("Purchase Order"),
+						() => frm.events.make_purchase_order(frm),
+						__("Create")
+					);
+				}
+
+				if (frm.doc.material_request_type === "Purchase") {
+					frm.add_custom_button(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						__("Request for Quotation"),
 						() => frm.events.make_request_for_quotation(frm),
 						__("Create")
@@ -236,7 +261,11 @@ frappe.ui.form.on("Material Request", {
 		frappe.call({
 			method: "erpnext.stock.get_item_details.get_item_details",
 			args: {
+<<<<<<< HEAD
 				args: {
+=======
+				ctx: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					item_code: item.item_code,
 					from_warehouse: item.from_warehouse,
 					warehouse: item.warehouse,
@@ -259,21 +288,32 @@ frappe.ui.form.on("Material Request", {
 			},
 			callback: function (r) {
 				const d = item;
+<<<<<<< HEAD
 				let allow_to_change_fields = [
+=======
+				const allow_to_change_fields = [
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"actual_qty",
 					"projected_qty",
 					"min_order_qty",
 					"item_name",
+<<<<<<< HEAD
+=======
+					"description",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"stock_uom",
 					"uom",
 					"conversion_factor",
 					"stock_qty",
 				];
 
+<<<<<<< HEAD
 				if (overwrite_warehouse) {
 					allow_to_change_fields.push("description");
 				}
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (!r.exc) {
 					$.each(r.message, function (key, value) {
 						if (!d[key] || allow_to_change_fields.includes(key)) {

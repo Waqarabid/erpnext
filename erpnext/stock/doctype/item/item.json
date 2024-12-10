@@ -382,7 +382,11 @@
    "options": "fa fa-rss"
   },
   {
+<<<<<<< HEAD
    "description": "Will also apply for variants unless overrridden",
+=======
+   "description": "Will also apply for variants unless overridden",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "reorder_levels",
    "fieldtype": "Table",
    "label": "Reorder level based on Warehouse",
@@ -959,9 +963,17 @@
  "search_fields": "item_name,description,item_group,customer_code",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "item_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

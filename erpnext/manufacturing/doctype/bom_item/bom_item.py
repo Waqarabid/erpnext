@@ -25,9 +25,17 @@ class BOMItem(Document):
 		has_variants: DF.Check
 		image: DF.Attach | None
 		include_item_in_manufacturing: DF.Check
+<<<<<<< HEAD
 		item_code: DF.Link
 		item_name: DF.Data | None
 		operation: DF.Link | None
+=======
+		is_stock_item: DF.Check
+		item_code: DF.Link
+		item_name: DF.Data | None
+		operation: DF.Link | None
+		operation_row_id: DF.Int
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		original_item: DF.Link | None
 		parent: DF.Data
 		parentfield: DF.Data

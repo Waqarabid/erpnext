@@ -11,10 +11,17 @@ frappe.ui.form.on("Campaign", {
 				frappe.boot.sysdefaults.campaign_naming_by == "Naming Series"
 			);
 		} else {
+<<<<<<< HEAD
 			cur_frm.add_custom_button(
 				__("View Leads"),
 				function () {
 					frappe.route_options = { source: "Campaign", campaign_name: frm.doc.name };
+=======
+			frm.add_custom_button(
+				__("View Leads"),
+				function () {
+					frappe.route_options = { utm_source: "Campaign", utm_campaign: frm.doc.name };
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frappe.set_route("List", "Lead");
 				},
 				"fa fa-list",

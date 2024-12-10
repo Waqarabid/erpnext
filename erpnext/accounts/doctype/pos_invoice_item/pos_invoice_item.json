@@ -37,6 +37,10 @@
   "column_break_19",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "section_break1",
   "rate",
@@ -847,6 +851,15 @@
   {
    "fieldname": "column_break_ciit",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "istable": 1,
@@ -858,7 +871,14 @@
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

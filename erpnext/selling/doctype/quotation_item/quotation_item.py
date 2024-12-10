@@ -33,6 +33,10 @@ class QuotationItem(Document):
 		description: DF.TextEditor | None
 		discount_amount: DF.Currency
 		discount_percentage: DF.Percent
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		gross_profit: DF.Currency
 		has_alternative_item: DF.Check
 		image: DF.Attach | None

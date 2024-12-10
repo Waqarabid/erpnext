@@ -227,6 +227,10 @@
    "fieldname": "party_balance",
    "fieldtype": "Currency",
    "label": "Party Balance",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide": 1,
    "read_only": 1
   },
@@ -836,9 +840,17 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

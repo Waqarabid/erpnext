@@ -87,7 +87,11 @@
  "module": "Accounts",
  "name": "Fiscal Year",
  "naming_rule": "By fieldname",
+<<<<<<< HEAD
   "owner": "Administrator",
+=======
+ "owner": "Administrator",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "permissions": [
   {
    "create": 1,

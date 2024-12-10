@@ -1,5 +1,6 @@
 # Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -11,6 +12,19 @@ test_dependencies = ["Share Type", "Shareholder"]
 
 
 class TestShareTransfer(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+
+from erpnext.accounts.doctype.share_transfer.share_transfer import ShareDontExists
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Share Type", "Shareholder"]
+
+
+class TestShareTransfer(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		frappe.db.sql("delete from `tabShare Transfer`")
 		frappe.db.sql("delete from `tabShare Balance`")

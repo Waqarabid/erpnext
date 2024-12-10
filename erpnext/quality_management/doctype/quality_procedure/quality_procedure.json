@@ -116,7 +116,11 @@
    "link_fieldname": "procedure"
   }
  ],
+<<<<<<< HEAD
  "modified": "2023-08-28 22:33:36.483420",
+=======
+ "modified": "2024-03-27 13:10:29.849511",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Quality Management",
  "name": "Quality Procedure",
@@ -148,7 +152,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

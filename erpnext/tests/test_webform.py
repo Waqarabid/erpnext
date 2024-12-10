@@ -1,12 +1,20 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 from erpnext.buying.doctype.supplier.test_supplier import create_supplier
 
 
+<<<<<<< HEAD
 class TestWebsite(unittest.TestCase):
+=======
+class TestWebsite(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_permission_for_custom_doctype(self):
 		create_user("Supplier 1", "supplier1@gmail.com")
 		create_user("Supplier 2", "supplier2@gmail.com")
@@ -47,7 +55,11 @@ def get_data():
 	webform_list_contexts = frappe.get_hooks("webform_list_context")
 	if webform_list_contexts:
 		context = frappe._dict(frappe.get_attr(webform_list_contexts[0])("Buying") or {})
+<<<<<<< HEAD
 	kwargs = dict(doctype="Order Assignment", order_by="modified desc")
+=======
+	kwargs = dict(doctype="Order Assignment", order_by="creation desc")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return context.get_list(**kwargs)
 
 

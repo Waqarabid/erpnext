@@ -2,7 +2,11 @@
 # See license.txt
 from random import randint
 
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.data import today
 
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
@@ -14,7 +18,11 @@ from erpnext.stock.doctype.stock_reservation_entry.test_stock_reservation_entry 
 from erpnext.stock.report.reserved_stock.reserved_stock import get_data as reserved_stock_report
 
 
+<<<<<<< HEAD
 class TestReservedStock(FrappeTestCase):
+=======
+class TestReservedStock(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self) -> None:
 		super().setUp()
 		self.stock_qty = 100
@@ -24,7 +32,11 @@ class TestReservedStock(FrappeTestCase):
 		cancel_all_stock_reservation_entries()
 		return super().tearDown()
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Stock Settings",
 		{
 			"allow_negative_stock": 0,

@@ -1,10 +1,17 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import datetime
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt
 
 from erpnext.support.doctype.issue_priority.test_issue_priority import make_priorities
@@ -13,7 +20,11 @@ from erpnext.support.doctype.service_level_agreement.service_level_agreement imp
 )
 
 
+<<<<<<< HEAD
 class TestServiceLevelAgreement(unittest.TestCase):
+=======
+class TestServiceLevelAgreement(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		frappe.db.set_single_value("Support Settings", "track_service_level_agreement", 1)
@@ -333,7 +344,11 @@ class TestServiceLevelAgreement(unittest.TestCase):
 			holiday_list="__Test Holiday List",
 			entity_type=None,
 			entity=None,
+<<<<<<< HEAD
 			condition='doc.source == "Test Source"',
+=======
+			condition='doc.utm_source == "Test Source"',
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			response_time=14400,
 			sla_fulfilled_on=[{"status": "Replied"}],
 			apply_sla_for_resolution=0,
@@ -343,16 +358,28 @@ class TestServiceLevelAgreement(unittest.TestCase):
 		applied_sla = frappe.db.get_value("Lead", lead.name, "service_level_agreement")
 		self.assertFalse(applied_sla)
 
+<<<<<<< HEAD
 		source = frappe.get_doc(doctype="Lead Source", source_name="Test Source")
 		source.insert(ignore_if_duplicate=True)
 		lead.source = "Test Source"
+=======
+		source = frappe.new_doc(doctype="UTM Source")
+		source.name = "Test Source"
+		source.flags.name_set = True
+		source.insert(ignore_if_duplicate=True)
+		lead.utm_source = "Test Source"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		lead.save()
 		applied_sla = frappe.db.get_value("Lead", lead.name, "service_level_agreement")
 		self.assertEqual(applied_sla, lead_sla.name)
 
 		# check if SLA is removed if condition fails
 		lead.reload()
+<<<<<<< HEAD
 		lead.source = None
+=======
+		lead.utm_source = None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		lead.save()
 		applied_sla = frappe.db.get_value("Lead", lead.name, "service_level_agreement")
 		self.assertFalse(applied_sla)

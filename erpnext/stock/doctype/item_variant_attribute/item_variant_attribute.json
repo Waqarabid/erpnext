@@ -92,7 +92,14 @@
  "name": "Item Variant Attribute",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

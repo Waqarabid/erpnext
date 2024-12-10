@@ -27,7 +27,11 @@ def get_last_interaction(contact=None, lead=None):
 				FROM `tabCommunication`
 				WHERE `sent_or_received`='Received'
 				AND ({query_condition})
+<<<<<<< HEAD
 				ORDER BY `modified`
+=======
+				ORDER BY `creation`
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				LIMIT 1
 			""",
 				values,

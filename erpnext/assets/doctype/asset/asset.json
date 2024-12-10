@@ -8,13 +8,27 @@
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
+<<<<<<< HEAD
   "company",
   "item_code",
   "item_name",
+=======
+  "naming_series",
+  "item_code",
+  "item_name",
+  "asset_name",
+  "asset_category",
+  "location",
+  "image",
+  "column_break_3",
+  "status",
+  "company",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "asset_owner",
   "asset_owner_company",
   "is_existing_asset",
   "is_composite_asset",
+<<<<<<< HEAD
   "supplier",
   "customer",
   "image",
@@ -31,6 +45,8 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "purchase_details_section",
   "purchase_receipt",
   "purchase_receipt_item",
@@ -40,10 +56,19 @@
   "available_for_use_date",
   "column_break_23",
   "gross_purchase_amount",
+<<<<<<< HEAD
   "asset_quantity",
   "additional_asset_cost",
   "total_asset_cost",
   "section_break_23",
+=======
+  "purchase_amount",
+  "asset_quantity",
+  "additional_asset_cost",
+  "total_asset_cost",
+  "disposal_date",
+  "depreciation_tab",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "calculate_depreciation",
   "column_break_33",
   "opening_accumulated_depreciation",
@@ -60,7 +85,11 @@
   "next_depreciation_date",
   "depreciation_schedule_sb",
   "depreciation_schedule_view",
+<<<<<<< HEAD
   "insurance_details",
+=======
+  "insurance_details_tab",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "policy_number",
   "insurer",
   "insured_value",
@@ -68,6 +97,7 @@
   "insurance_start_date",
   "insurance_end_date",
   "comprehensive_insurance",
+<<<<<<< HEAD
   "section_break_31",
   "maintenance_required",
   "other_details",
@@ -78,12 +108,35 @@
   "default_finance_book",
   "depr_entry_posting_status",
   "amended_from"
+=======
+  "other_info_tab",
+  "accounting_dimensions_section",
+  "cost_center",
+  "section_break_jtou",
+  "custodian",
+  "default_finance_book",
+  "depr_entry_posting_status",
+  "booked_fixed_asset",
+  "customer",
+  "supplier",
+  "column_break_51",
+  "department",
+  "split_from",
+  "journal_entry_for_scrap",
+  "amended_from",
+  "maintenance_required",
+  "connections_tab"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+<<<<<<< HEAD
    "label": "Naming Series",
+=======
+   "label": "Series",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "ACC-ASS-.YYYY.-"
   },
   {
@@ -124,6 +177,10 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "Company",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "asset_owner",
    "fieldtype": "Select",
    "label": "Asset Owner",
@@ -258,6 +315,7 @@
    "options": "Company:company:default_currency"
   },
   {
+<<<<<<< HEAD
    "collapsible": 1,
    "collapsible_depends_on": "eval:doc.calculate_depreciation || doc.is_existing_asset",
    "fieldname": "section_break_23",
@@ -269,6 +327,11 @@
    "fieldname": "finance_books",
    "fieldtype": "Table",
    "label": "Finance Books",
+=======
+   "columns": 10,
+   "fieldname": "finance_books",
+   "fieldtype": "Table",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Asset Finance Book"
   },
   {
@@ -311,12 +374,15 @@
    "no_copy": 1
   },
   {
+<<<<<<< HEAD
    "collapsible": 1,
    "fieldname": "insurance_details",
    "fieldtype": "Section Break",
    "label": "Insurance details"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "policy_number",
    "fieldtype": "Data",
    "label": "Policy number"
@@ -351,6 +417,7 @@
    "label": "Comprehensive Insurance"
   },
   {
+<<<<<<< HEAD
    "fieldname": "section_break_31",
    "fieldtype": "Section Break",
    "label": "Maintenance"
@@ -359,17 +426,24 @@
    "allow_on_submit": 1,
    "default": "0",
    "description": "Check if Asset requires Preventive Maintenance or Calibration",
+=======
+   "allow_on_submit": 1,
+   "default": "0",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "maintenance_required",
    "fieldtype": "Check",
    "label": "Maintenance Required"
   },
   {
+<<<<<<< HEAD
    "collapsible": 1,
    "fieldname": "other_details",
    "fieldtype": "Section Break",
    "label": "Other Details"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "allow_on_submit": 1,
    "default": "Draft",
    "fieldname": "status",
@@ -385,6 +459,10 @@
    "default": "0",
    "fieldname": "booked_fixed_asset",
    "fieldtype": "Check",
+<<<<<<< HEAD
+=======
+   "hidden": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Booked Fixed Asset",
    "no_copy": 1,
    "read_only": 1
@@ -430,6 +508,7 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
    "label": "Accounting Dimensions"
@@ -440,6 +519,8 @@
   },
   {
    "collapsible": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "collapsible_depends_on": "is_existing_asset",
    "fieldname": "purchase_details_section",
    "fieldtype": "Section Break",
@@ -552,6 +633,40 @@
    "hidden": 1,
    "label": "Purchase Invoice Item",
    "options": "Purchase Invoice Item"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "insurance_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Insurance"
+  },
+  {
+   "fieldname": "other_info_tab",
+   "fieldtype": "Tab Break",
+   "label": "Other Info"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  },
+  {
+   "fieldname": "depreciation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Depreciation"
+  },
+  {
+   "fieldname": "accounting_dimensions_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Dimensions"
+  },
+  {
+   "fieldname": "section_break_jtou",
+   "fieldtype": "Section Break",
+   "label": "Additional Info"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 72,
@@ -595,7 +710,11 @@
    "link_fieldname": "target_asset"
   }
  ],
+<<<<<<< HEAD
  "modified": "2024-08-26 23:28:29.095139",
+=======
+ "modified": "2024-11-29 14:25:56.436124",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset",
@@ -639,4 +758,8 @@
  "states": [],
  "title_field": "asset_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

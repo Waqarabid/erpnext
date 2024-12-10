@@ -154,7 +154,11 @@
   {
    "fieldname": "raw_materials_consumption_section",
    "fieldtype": "Section Break",
+<<<<<<< HEAD
    "label": "Raw Materials Consumption "
+=======
+   "label": "Raw Materials Consumption"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_16",
@@ -263,7 +267,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

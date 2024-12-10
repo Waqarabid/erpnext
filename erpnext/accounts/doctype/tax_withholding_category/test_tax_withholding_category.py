@@ -6,19 +6,42 @@ import unittest
 
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, today
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.purchase_order import make_purchase_invoice
 
+<<<<<<< HEAD
 test_dependencies = ["Supplier Group", "Customer Group"]
 
 
 class TestTaxWithholdingCategory(FrappeTestCase):
 	@classmethod
 	def setUpClass(self):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Supplier Group", "Customer Group"]
+
+
+class UnitTestTaxWithholdingCategory(UnitTestCase):
+	"""
+	Unit tests for TaxWithholdingCategory.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestTaxWithholdingCategory(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# create relevant supplier, etc
 		create_records()
 		create_tax_withholding_category_records()

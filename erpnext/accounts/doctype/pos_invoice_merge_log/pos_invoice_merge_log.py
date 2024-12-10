@@ -13,6 +13,10 @@ from frappe.utils.background_jobs import enqueue, is_job_enqueued
 from frappe.utils.scheduler import is_scheduler_inactive
 
 from erpnext.accounts.doctype.pos_profile.pos_profile import required_accounting_dimensions
+<<<<<<< HEAD
+=======
+from erpnext.controllers.taxes_and_totals import ItemWiseTaxDetail
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 class POSInvoiceMergeLog(Document):
@@ -336,6 +340,7 @@ def update_item_wise_tax_detail(consolidate_tax_row, tax_row):
 		consolidated_tax_detail = {}
 
 	for item_code, tax_data in tax_row_detail.items():
+<<<<<<< HEAD
 		if consolidated_tax_detail.get(item_code):
 			consolidated_tax_data = consolidated_tax_detail.get(item_code)
 			consolidated_tax_detail.update(
@@ -345,6 +350,16 @@ def update_item_wise_tax_detail(consolidate_tax_row, tax_row):
 			consolidated_tax_detail.update({item_code: [tax_data[0], tax_data[1]]})
 
 	consolidate_tax_row.item_wise_tax_detail = json.dumps(consolidated_tax_detail, separators=(",", ":"))
+=======
+		tax_data = ItemWiseTaxDetail(**tax_data)
+		if consolidated_tax_detail.get(item_code):
+			consolidated_tax_detail[item_code]["tax_amount"] += tax_data.tax_amount
+			consolidated_tax_detail[item_code]["net_amount"] += tax_data.net_amount
+		else:
+			consolidated_tax_detail.update({item_code: tax_data})
+
+	consolidate_tax_row.item_wise_tax_detail = json.dumps(consolidated_tax_detail)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_all_unconsolidated_invoices():
@@ -399,7 +414,11 @@ def unconsolidate_pos_invoices(closing_entry):
 		"POS Invoice Merge Log", filters={"pos_closing_entry": closing_entry.name}, pluck="name"
 	)
 
+<<<<<<< HEAD
 	if len(merge_logs) >= 10:
+=======
+	if len(closing_entry.pos_transactions) >= 10:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		closing_entry.set_status(update=True, status="Queued")
 		enqueue_job(cancel_merge_logs, merge_logs=merge_logs, closing_entry=closing_entry)
 	else:

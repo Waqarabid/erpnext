@@ -32,14 +32,22 @@ class Dunning(AccountsController):
 
 		from erpnext.accounts.doctype.overdue_payment.overdue_payment import OverduePayment
 
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amended_from: DF.Link | None
 		base_dunning_amount: DF.Currency
 		body_text: DF.TextEditor | None
 		closing_text: DF.TextEditor | None
 		company: DF.Link
 		company_address: DF.Link | None
+<<<<<<< HEAD
 		company_address_display: DF.SmallText | None
+=======
+		company_address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		contact_display: DF.SmallText | None
 		contact_email: DF.Data | None
 		contact_mobile: DF.SmallText | None
@@ -85,7 +93,18 @@ class Dunning(AccountsController):
 				frappe.throw(
 					_(
 						"The currency of invoice {} ({}) is different from the currency of this dunning ({})."
+<<<<<<< HEAD
 					).format(row.sales_invoice, invoice_currency, self.currency)
+=======
+					).format(
+						frappe.get_desk_link(
+							"Sales Invoice",
+							row.sales_invoice,
+						),
+						invoice_currency,
+						self.currency,
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				)
 
 	def validate_overdue_payments(self):
@@ -186,10 +205,20 @@ def resolve_dunning(doc, state):
 					outstanding_ps = frappe.get_value(
 						"Payment Schedule", overdue_payment.payment_schedule, "outstanding"
 					)
+<<<<<<< HEAD
 					resolve = False if (outstanding_ps > 0 and outstanding_inv > 0) else True
 
 				dunning.status = "Resolved" if resolve else "Unresolved"
 				dunning.save()
+=======
+					resolve = resolve and (False if (outstanding_ps > 0 and outstanding_inv > 0) else True)
+
+				new_status = "Resolved" if resolve else "Unresolved"
+
+				if dunning.status != new_status:
+					dunning.status = new_status
+					dunning.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_linked_dunnings_as_per_state(sales_invoice, state):

@@ -208,6 +208,7 @@ class BankTransaction(Document):
 		if self.party_type and self.party:
 			return
 
+<<<<<<< HEAD
 		result = None
 		try:
 			result = AutoMatchParty(
@@ -219,6 +220,15 @@ class BankTransaction(Document):
 			).match()
 		except Exception:
 			frappe.log_error(title=_("Error in party matching for Bank Transaction {0}").format(self.name))
+=======
+		result = AutoMatchParty(
+			bank_party_account_number=self.bank_party_account_number,
+			bank_party_iban=self.bank_party_iban,
+			bank_party_name=self.bank_party_name,
+			description=self.description,
+			deposit=self.deposit,
+		).match()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not result:
 			return

@@ -1,6 +1,10 @@
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days
 
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
@@ -10,7 +14,11 @@ from erpnext.accounts.report.general_and_payment_ledger_comparison.general_and_p
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 
 
+<<<<<<< HEAD
 class TestGeneralAndPaymentLedger(FrappeTestCase, AccountsTestMixin):
+=======
+class TestGeneralAndPaymentLedger(IntegrationTestCase, AccountsTestMixin):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.cleanup()

@@ -282,7 +282,11 @@
    "fieldname": "campaign",
    "fieldtype": "Link",
    "label": "Campaign",
+<<<<<<< HEAD
    "options": "Campaign"
+=======
+   "options": "UTM Campaign"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "depends_on": "eval:doc.applicable_for==\"Supplier\"",
@@ -345,7 +349,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "col_break1",
@@ -706,7 +714,11 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title"

@@ -18,7 +18,11 @@
 					{% if doc.status == "Open" %}
 						{{ doc.priority }}
 					{% else %}
+<<<<<<< HEAD
 						{{ _(doc.status) }}
+=======
+						{{ doc.status }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					{%- endif -%}
 				</span>
 			</div>

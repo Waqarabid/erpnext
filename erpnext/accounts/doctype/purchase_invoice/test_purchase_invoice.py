@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, cint, flt, getdate, nowdate, today
 
 import erpnext
@@ -16,7 +20,11 @@ from erpnext.buying.doctype.purchase_order.test_purchase_order import (
 	create_purchase_order,
 )
 from erpnext.buying.doctype.supplier.test_supplier import create_supplier
+<<<<<<< HEAD
 from erpnext.controllers.accounts_controller import get_payment_terms
+=======
+from erpnext.controllers.accounts_controller import InvalidQtyError, get_payment_terms
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.controllers.buying_controller import QtyMismatchError
 from erpnext.exceptions import InvalidCurrency
 from erpnext.projects.doctype.project.test_project import make_project
@@ -38,6 +46,7 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 from erpnext.stock.doctype.stock_entry.test_stock_entry import get_qty_after_transaction
 from erpnext.stock.tests.test_utils import StockTestMixin
 
+<<<<<<< HEAD
 test_dependencies = ["Item", "Cost Center", "Payment Term", "Payment Terms Template"]
 test_ignore = ["Serial No"]
 
@@ -45,16 +54,43 @@ test_ignore = ["Serial No"]
 class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 	@classmethod
 	def setUpClass(self):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Cost Center", "Payment Term", "Payment Terms Template"]
+IGNORE_TEST_RECORD_DEPENDENCIES = ["Serial No"]
+
+
+class TestPurchaseInvoice(IntegrationTestCase, StockTestMixin):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		unlink_payment_on_cancel_of_invoice()
 		frappe.db.set_single_value("Buying Settings", "allow_multiple_items", 1)
 
 	@classmethod
+<<<<<<< HEAD
 	def tearDownClass(self):
+=======
+	def tearDownClass(cls):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		unlink_payment_on_cancel_of_invoice(0)
 
 	def tearDown(self):
 		frappe.db.rollback()
 
+<<<<<<< HEAD
+=======
+	def test_purchase_invoice_qty(self):
+		pi = make_purchase_invoice(qty=0, do_not_save=True)
+		with self.assertRaises(InvalidQtyError):
+			pi.save()
+
+		# No error with qty=1
+		pi.items[0].qty = 1
+		pi.save()
+		self.assertEqual(pi.items[0].qty, 1)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_purchase_invoice_received_qty(self):
 		"""
 		1. Test if received qty is validated against accepted + rejected
@@ -105,7 +141,11 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 
 	def test_gl_entries_without_perpetual_inventory(self):
 		frappe.db.set_value("Company", "_Test Company", "round_off_account", "Round Off - _TC")
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertTrue(not cint(erpnext.is_perpetual_inventory_enabled(pi.company)))
 		pi.insert()
 		pi.submit()
@@ -146,7 +186,11 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		self.check_gle_for_pi(pi.name)
 
 	def test_terms_added_after_save(self):
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[1])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.insert()
 		self.assertTrue(pi.payment_schedule)
 		self.assertEqual(pi.payment_schedule[0].due_date, pi.due_date)
@@ -373,13 +417,21 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		self.assertEqual(discrepancy_caused_by_exchange_rate_diff, amount)
 
 	def test_purchase_invoice_change_naming_series(self):
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[1])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.insert()
 		pi.naming_series = "TEST-"
 
 		self.assertRaises(frappe.CannotChangeConstantError, pi.save)
 
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.insert()
 		pi.load_from_db()
 
@@ -419,7 +471,11 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 			self.assertEqual(expected_values[i][2], gle.credit)
 
 	def test_purchase_invoice_calculation(self):
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.insert()
 		pi.load_from_db()
 
@@ -451,6 +507,7 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 			self.assertEqual(tax.tax_amount, expected_values[i][1])
 			self.assertEqual(tax.total, expected_values[i][2])
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1})
 	def test_purchase_invoice_with_advance(self):
 		from erpnext.accounts.doctype.journal_entry.test_journal_entry import (
@@ -462,6 +519,17 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		jv.submit()
 
 		pi = frappe.copy_doc(test_records[0])
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1}
+	)
+	def test_purchase_invoice_with_advance(self):
+		jv = frappe.copy_doc(self.globalTestRecords["Journal Entry"][1])
+		jv.insert()
+		jv.submit()
+
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.disable_rounded_total = 1
 		pi.allocate_advances_automatically = 0
 		pi.append(
@@ -506,6 +574,7 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 			)
 		)
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1})
 	def test_invoice_with_advance_and_multi_payment_terms(self):
 		from erpnext.accounts.doctype.journal_entry.test_journal_entry import (
@@ -517,6 +586,17 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		jv.submit()
 
 		pi = frappe.copy_doc(test_records[0])
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1}
+	)
+	def test_invoice_with_advance_and_multi_payment_terms(self):
+		jv = frappe.copy_doc(self.globalTestRecords["Journal Entry"][1])
+		jv.insert()
+		jv.submit()
+
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.disable_rounded_total = 1
 		pi.allocate_advances_automatically = 0
 		pi.append(
@@ -931,16 +1011,24 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		)
 
 	def test_outstanding_amount_after_advance_jv_cancelation(self):
+<<<<<<< HEAD
 		from erpnext.accounts.doctype.journal_entry.test_journal_entry import (
 			test_records as jv_test_records,
 		)
 
 		jv = frappe.copy_doc(jv_test_records[1])
+=======
+		jv = frappe.copy_doc(self.globalTestRecords["Journal Entry"][1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		jv.accounts[0].is_advance = "Yes"
 		jv.insert()
 		jv.submit()
 
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.append(
 			"advances",
 			{
@@ -990,7 +1078,11 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		pe.insert()
 		pe.submit()
 
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pi.is_pos = 0
 		pi.append(
 			"advances",
@@ -1026,7 +1118,11 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 			shipping_rule_type="Buying", shipping_rule_name="Shipping Rule - Purchase Invoice Test"
 		)
 
+<<<<<<< HEAD
 		pi = frappe.copy_doc(test_records[0])
+=======
+		pi = frappe.copy_doc(self.globalTestRecords["Purchase Invoice"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		pi.shipping_rule = shipping_rule.name
 		pi.insert()
@@ -1241,7 +1337,13 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		acc_settings.submit_journal_entriessubmit_journal_entries = 0
 		acc_settings.save()
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_gain_loss_with_advance_entry(self):
 		unlink_enabled = frappe.db.get_single_value(
 			"Accounts Settings", "unlink_payment_on_cancellation_of_invoice"
@@ -1442,7 +1544,13 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		)
 		frappe.db.set_value("Company", "_Test Company", "exchange_gain_loss_account", original_account)
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_payment_on_cancellation_of_invoice": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_purchase_invoice_advance_taxes(self):
 		from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 
@@ -2094,7 +2202,21 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		]
 		check_gl_entries(self, pi.name, expected_gle, nowdate())
 
+<<<<<<< HEAD
 	@change_settings("Buying Settings", {"supplier_group": None})
+=======
+	def test_create_purchase_invoice_without_mandatory(self):
+		pi = frappe.new_doc("Purchase Invoice")
+		pi.flags.ignore_mandatory = True
+		pi.insert(ignore_permissions=True)
+
+		self.assertTrue(pi.name)
+		self.assertEqual(pi.docstatus, 0)
+
+		pi.delete()
+
+	@IntegrationTestCase.change_settings("Buying Settings", {"supplier_group": None})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_purchase_invoice_without_supplier_group(self):
 		# Create a Supplier
 		test_supplier_name = "_Test Supplier Without Supplier Group"
@@ -2371,6 +2493,7 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 
 		frappe.db.set_single_value("Buying Settings", "maintain_same_rate", 1)
 
+<<<<<<< HEAD
 	def test_last_purchase_rate(self):
 		item = create_item("_Test Item For Last Purchase Rate from PI", is_stock_item=1)
 		pi1 = make_purchase_invoice(item_code=item.item_code, qty=10, rate=100)
@@ -2389,6 +2512,8 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		item.reload()
 		self.assertEqual(item.last_purchase_rate, 0)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_opening_invoice_rounding_adjustment_validation(self):
 		pi = make_purchase_invoice(do_not_save=1)
 		pi.items[0].rate = 99.98
@@ -2448,6 +2573,27 @@ class TestPurchaseInvoice(FrappeTestCase, StockTestMixin):
 		self.assertEqual(len(actual), 3)
 		self.assertEqual(expected, actual)
 
+<<<<<<< HEAD
+=======
+	def test_last_purchase_rate(self):
+		item = create_item("_Test Item For Last Purchase Rate from PI", is_stock_item=1)
+		pi1 = make_purchase_invoice(item_code=item.item_code, qty=10, rate=100)
+		item.reload()
+		self.assertEqual(item.last_purchase_rate, 100)
+
+		pi2 = make_purchase_invoice(item_code=item.item_code, qty=10, rate=200)
+		item.reload()
+		self.assertEqual(item.last_purchase_rate, 200)
+
+		pi2.cancel()
+		item.reload()
+		self.assertEqual(item.last_purchase_rate, 100)
+
+		pi1.cancel()
+		item.reload()
+		self.assertEqual(item.last_purchase_rate, 0)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def set_advance_flag(company, flag, default_account):
 	frappe.db.set_value(
@@ -2557,7 +2703,11 @@ def make_purchase_invoice(**args):
 	bundle_id = None
 	if not args.use_serial_batch_fields and (args.get("batch_no") or args.get("serial_no")):
 		batches = {}
+<<<<<<< HEAD
 		qty = args.qty or 5
+=======
+		qty = args.qty if args.qty is not None else 5
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item_code = args.item or args.item_code or "_Test Item"
 		if args.get("batch_no"):
 			batches = frappe._dict({args.batch_no: qty})
@@ -2586,7 +2736,11 @@ def make_purchase_invoice(**args):
 			"item_code": args.item or args.item_code or "_Test Item",
 			"item_name": args.item_name,
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
+<<<<<<< HEAD
 			"qty": args.qty or 5,
+=======
+			"qty": args.qty if args.qty is not None else 5,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"received_qty": args.received_qty or 0,
 			"rejected_qty": args.rejected_qty or 0,
 			"rate": args.rate or 50,
@@ -2713,6 +2867,9 @@ def toggle_provisional_accounting_setting(**args):
 	company.enable_provisional_accounting_for_non_stock_items = args.enable or 0
 	company.default_provisional_account = args.provisional_account
 	company.save()
+<<<<<<< HEAD
 
 
 test_records = frappe.get_test_records("Purchase Invoice")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

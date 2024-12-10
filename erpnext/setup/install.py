@@ -2,14 +2,20 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
 import click
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import frappe
 from frappe import _
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.desk.page.setup_wizard.setup_wizard import add_all_roles_to
 from frappe.utils import cint
 
+<<<<<<< HEAD
 import erpnext
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.setup.default_energy_point_rules import get_default_energy_point_rules
 from erpnext.setup.doctype.incoterm.incoterm import create_incoterms
 
@@ -25,6 +31,10 @@ def after_install():
 
 	set_single_defaults()
 	create_print_setting_custom_fields()
+<<<<<<< HEAD
+=======
+	create_marketgin_campagin_custom_fields()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	add_all_roles_to("Administrator")
 	create_default_success_action()
 	create_default_energy_point_rules()
@@ -33,8 +43,13 @@ def after_install():
 	add_company_to_session_defaults()
 	add_standard_navbar_items()
 	add_app_name()
+<<<<<<< HEAD
 	hide_workspaces()
 	update_roles()
+=======
+	update_roles()
+	make_default_operations()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.db.commit()
 
 
@@ -45,6 +60,7 @@ You can reinstall this site (after saving your data) using: bench --site [sitena
 		frappe.throw(message)  # nosemgrep
 
 
+<<<<<<< HEAD
 def check_frappe_version():
 	def major_version(v: str) -> str:
 		return v.split(".")[0]
@@ -62,6 +78,14 @@ def check_frappe_version():
 	)
 
 	raise SystemExit(1)
+=======
+def make_default_operations():
+	for operation in ["Assembly"]:
+		if not frappe.db.exists("Operation", operation):
+			doc = frappe.get_doc({"doctype": "Operation", "name": operation})
+			doc.flags.ignore_mandatory = True
+			doc.insert(ignore_permissions=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def set_single_defaults():
@@ -87,8 +111,11 @@ def set_single_defaults():
 			except frappe.ValidationError:
 				pass
 
+<<<<<<< HEAD
 	frappe.db.set_default("date_format", "dd-mm-yyyy")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	setup_currency_exchange()
 
 
@@ -138,6 +165,25 @@ def create_print_setting_custom_fields():
 	)
 
 
+<<<<<<< HEAD
+=======
+def create_marketgin_campagin_custom_fields():
+	create_custom_fields(
+		{
+			"UTM Campaign": [
+				{
+					"label": _("Messaging CRM Campagin"),
+					"fieldname": "crm_campaign",
+					"fieldtype": "Link",
+					"options": "Campaign",
+					"insert_after": "campaign_decription",
+				},
+			]
+		}
+	)
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def create_default_success_action():
 	for success_action in get_default_success_action():
 		if not frappe.db.exists("Success Action", success_action.get("ref_doctype")):
@@ -166,6 +212,14 @@ def add_company_to_session_defaults():
 def add_standard_navbar_items():
 	navbar_settings = frappe.get_single("Navbar Settings")
 
+<<<<<<< HEAD
+=======
+	# Translatable strings for below navbar items
+	__ = _("Documentation")
+	__ = _("User Forum")
+	__ = _("Report an Issue")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	erpnext_navbar_items = [
 		{
 			"item_label": "Documentation",
@@ -221,11 +275,14 @@ def add_app_name():
 	frappe.db.set_single_value("System Settings", "app_name", "ERPNext")
 
 
+<<<<<<< HEAD
 def hide_workspaces():
 	for ws in ["Integration", "Settings"]:
 		frappe.db.set_value("Workspace", ws, "public", 0)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def update_roles():
 	website_user_roles = ("Customer", "Supplier")
 	for role in website_user_roles:

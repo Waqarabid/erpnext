@@ -3,10 +3,26 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestSupplierScorecard(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestSupplierScorecard(UnitTestCase):
+	"""
+	Unit tests for SupplierScorecard.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSupplierScorecard(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_create_scorecard(self):
 		doc = make_supplier_scorecard().insert()
 		self.assertEqual(doc.name, valid_scorecard[0].get("supplier"))

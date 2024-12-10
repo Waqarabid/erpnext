@@ -207,7 +207,11 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	make_sales_return() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.pos_invoice.pos_invoice.make_sales_return",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 };
@@ -307,7 +311,11 @@ frappe.ui.form.on("POS Invoice", {
 									});
 								} else if (frappe.dom.freeze_count != 0) {
 									frappe.dom.unfreeze();
+<<<<<<< HEAD
 									cur_frm.reload_doc();
+=======
+									frm.reload_doc();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									cur_pos.payment.events.submit_invoice();
 
 									frappe.show_alert({

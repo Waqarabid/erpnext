@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, add_to_date, flt, now, nowtime, today
 
 from erpnext.accounts.doctype.account.test_account import create_account, get_inventory_account
@@ -21,7 +25,23 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 from erpnext.stock.serial_batch_bundle import SerialNoValuation
 
 
+<<<<<<< HEAD
 class TestLandedCostVoucher(FrappeTestCase):
+=======
+class UnitTestLandedCostVoucher(UnitTestCase):
+	"""
+	Unit tests for LandedCostVoucher.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Currency Exchange"]
+
+
+class TestLandedCostVoucher(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_landed_cost_voucher(self):
 		frappe.db.set_single_value("Buying Settings", "allow_multiple_items", 1)
 
@@ -499,12 +519,18 @@ class TestLandedCostVoucher(FrappeTestCase):
 		self.assertEqual(pr.items[1].landed_cost_voucher_amount, 100)
 
 	def test_multi_currency_lcv(self):
+<<<<<<< HEAD
 		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import (
 			save_new_records,
 			test_records,
 		)
 
 		save_new_records(test_records)
+=======
+		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import save_new_records
+
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		## Create USD Shipping charges_account
 		usd_shipping = create_account(
@@ -1156,6 +1182,9 @@ def distribute_landed_cost_on_items(lcv):
 	for item in lcv.get("items"):
 		item.applicable_charges = flt(item.get(based_on)) * flt(lcv.total_taxes_and_charges) / flt(total)
 		item.applicable_charges = flt(item.applicable_charges, lcv.precision("applicable_charges", item))
+<<<<<<< HEAD
 
 
 test_records = frappe.get_test_records("Landed Cost Voucher")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -2,13 +2,21 @@ import unittest
 from uuid import uuid4 as _uuid4
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def uuid4():
 	return str(_uuid4())
 
 
+<<<<<<< HEAD
 class TestTaxes(unittest.TestCase):
+=======
+class TestTaxes(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.company = frappe.get_doc(
 			{

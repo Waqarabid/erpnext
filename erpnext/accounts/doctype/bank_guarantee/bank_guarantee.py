@@ -48,11 +48,19 @@ class BankGuarantee(Document):
 
 	def on_submit(self):
 		if not self.bank_guarantee_number:
+<<<<<<< HEAD
 			frappe.throw(_("Enter the Bank Guarantee Number before submittting."))
 		if not self.name_of_beneficiary:
 			frappe.throw(_("Enter the name of the Beneficiary before submittting."))
 		if not self.bank:
 			frappe.throw(_("Enter the name of the bank or lending institution before submittting."))
+=======
+			frappe.throw(_("Enter the Bank Guarantee Number before submitting."))
+		if not self.name_of_beneficiary:
+			frappe.throw(_("Enter the name of the Beneficiary before submitting."))
+		if not self.bank:
+			frappe.throw(_("Enter the name of the bank or lending institution before submitting."))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()

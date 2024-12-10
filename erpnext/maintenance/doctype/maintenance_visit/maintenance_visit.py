@@ -22,7 +22,11 @@ class MaintenanceVisit(TransactionBase):
 			MaintenanceVisitPurpose,
 		)
 
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amended_from: DF.Link | None
 		company: DF.Link
 		completion_status: DF.Literal["", "Partially Completed", "Fully Completed"]

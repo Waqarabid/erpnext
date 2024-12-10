@@ -24,7 +24,11 @@
  ],
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-04-19 14:56:24.465218",
+=======
+ "modified": "2024-03-27 13:10:17.083132",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "POS Settings",
@@ -56,7 +60,13 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

@@ -22,7 +22,12 @@
   "column_break_14",
   "project",
   "accounting_details",
+<<<<<<< HEAD
   "purchase_invoice",
+=======
+  "invoices",
+  "section_break_y7cc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "capitalize_repair_cost",
   "stock_consumption",
   "column_break_8",
@@ -230,6 +235,7 @@
    "no_copy": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "purchase_invoice",
    "fieldtype": "Link",
    "label": "Purchase Invoice",
@@ -238,17 +244,38 @@
    "options": "Purchase Invoice"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fetch_from": "asset.company",
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "invoices",
+   "fieldtype": "Table",
+   "label": "Asset Repair Purchase Invoices",
+   "mandatory_depends_on": "eval: doc.repair_status == 'Completed' && doc.repair_cost > 0;",
+   "no_copy": 1,
+   "options": "Asset Repair Purchase Invoice"
+  },
+  {
+   "fieldname": "section_break_y7cc",
+   "fieldtype": "Section Break"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-06-13 16:14:14.398356",
+=======
+ "modified": "2024-09-30 13:02:06.931188",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Repair",
@@ -286,7 +313,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "asset_name",

@@ -129,7 +129,11 @@ class TallyMigration(Document):
 		self.default_cost_center, self.default_round_off_account = frappe.db.get_value(
 			"Company", self.erpnext_company, ["cost_center", "round_off_account"]
 		)
+<<<<<<< HEAD
 		self.default_warehouse = frappe.db.get_value("Stock Settings", "Stock Settings", "default_warehouse")
+=======
+		self.default_warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def _process_master_data(self):
 		def get_company_name(collection):
@@ -155,7 +159,11 @@ class TallyMigration(Document):
 			except RecursionError:
 				self.log(
 					_(
+<<<<<<< HEAD
 						"Error occured while parsing Chart of Accounts: Please make sure that no two accounts have the same name"
+=======
+						"Error occurred while parsing Chart of Accounts: Please make sure that no two accounts have the same name"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					)
 				)
 

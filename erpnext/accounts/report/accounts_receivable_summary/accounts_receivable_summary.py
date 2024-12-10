@@ -24,7 +24,11 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 	def run(self, args):
 		self.account_type = args.get("account_type")
 		self.party_type = get_party_types_from_account_type(self.account_type)
+<<<<<<< HEAD
 		self.party_naming_by = frappe.db.get_value(args.get("naming_by")[0], None, args.get("naming_by")[1])
+=======
+		self.party_naming_by = frappe.db.get_single_value(args.get("naming_by")[0], args.get("naming_by")[1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.get_columns()
 		self.get_data(args)
 		return self.columns, self.data

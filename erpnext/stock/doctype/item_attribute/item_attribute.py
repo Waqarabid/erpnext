@@ -38,9 +38,12 @@ class ItemAttribute(Document):
 		to_range: DF.Float
 	# end: auto-generated types
 
+<<<<<<< HEAD
 	def __setup__(self):
 		self.flags.ignore_these_exceptions_in_test = [InvalidItemAttributeValueError]
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		frappe.flags.attribute_values = None
 		self.validate_numeric()

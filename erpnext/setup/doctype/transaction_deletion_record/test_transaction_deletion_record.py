@@ -3,10 +3,26 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestTransactionDeletionRecord(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestTransactionDeletionRecord(UnitTestCase):
+	"""
+	Unit tests for TransactionDeletionRecord.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestTransactionDeletionRecord(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		create_company("Dunder Mifflin Paper Co")
 

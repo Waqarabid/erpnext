@@ -125,6 +125,7 @@
   "per_returned",
   "transporter_info",
   "transporter",
+<<<<<<< HEAD
   "driver",
   "lr_no",
   "vehicle_no",
@@ -132,6 +133,16 @@
   "transporter_name",
   "driver_name",
   "lr_date",
+=======
+  "lr_no",
+  "delivery_trip",
+  "driver",
+  "col_break34",
+  "transporter_name",
+  "lr_date",
+  "vehicle_no",
+  "driver_name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "customer_po_details",
   "po_no",
   "column_break_17",
@@ -159,8 +170,16 @@
   "inter_company_reference",
   "customer_group",
   "territory",
+<<<<<<< HEAD
   "source",
   "campaign",
+=======
+  "column_break_pxls",
+  "utm_source",
+  "utm_campaign",
+  "utm_medium",
+  "utm_content",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break5",
   "excise_page",
   "instructions",
@@ -352,7 +371,11 @@
   },
   {
    "fieldname": "shipping_address",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address",
    "read_only": 1
   },
@@ -409,7 +432,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address",
    "read_only": 1
   },
@@ -421,7 +448,11 @@
   },
   {
    "fieldname": "company_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Company Address",
    "read_only": 1
   },
@@ -970,6 +1001,7 @@
    "options": "Project"
   },
   {
+<<<<<<< HEAD
    "fieldname": "campaign",
    "fieldtype": "Link",
    "label": "Campaign",
@@ -988,6 +1020,8 @@
    "print_hide": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break5",
    "fieldtype": "Column Break",
    "oldfieldtype": "Column Break",
@@ -1047,9 +1081,18 @@
    "report_hide": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "language",
    "fieldtype": "Data",
    "label": "Print Language",
+=======
+   "fetch_from": "customer.language",
+   "fetch_if_empty": 1,
+   "fieldname": "language",
+   "fieldtype": "Link",
+   "label": "Print Language",
+   "options": "Language",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide": 1,
    "read_only": 1
   },
@@ -1290,7 +1333,11 @@
   {
    "depends_on": "dispatch_address_name",
    "fieldname": "dispatch_address",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Dispatch Address",
    "print_hide": 1,
    "read_only": 1
@@ -1394,6 +1441,51 @@
    "label": "Named Place"
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "delivery_trip",
+   "fieldtype": "Link",
+   "label": "Delivery Trip",
+   "options": "Delivery Trip",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "column_break_pxls",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utm_medium",
+   "fieldtype": "Link",
+   "label": "Medium",
+   "options": "UTM Medium",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "utm_content",
+   "fieldtype": "Data",
+   "label": "Content",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "utm_source",
+   "fieldtype": "Link",
+   "label": "Source",
+   "oldfieldname": "source",
+   "oldfieldtype": "Select",
+   "options": "UTM Source",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "utm_campaign",
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "oldfieldname": "campaign",
+   "oldfieldtype": "Link",
+   "options": "UTM Campaign",
+   "print_hide": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "company_contact_person",
    "fieldtype": "Link",
    "label": "Company Contact Person",
@@ -1498,7 +1590,11 @@
  ],
  "search_fields": "status,customer,customer_name, territory,base_grand_total",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "customer",

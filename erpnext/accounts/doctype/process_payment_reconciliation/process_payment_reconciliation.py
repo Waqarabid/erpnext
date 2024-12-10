@@ -476,9 +476,13 @@ def reconcile(doc: None | str = None) -> None:
 						frappe.db.set_value("Process Payment Reconciliation Log", log, "reconciled", True)
 						frappe.db.set_value("Process Payment Reconciliation", doc, "status", "Completed")
 					else:
+<<<<<<< HEAD
 						if not (
 							frappe.db.get_value("Process Payment Reconciliation", doc, "status") == "Paused"
 						):
+=======
+						if frappe.db.get_value("Process Payment Reconciliation", doc, "status") != "Paused":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							# trigger next batch in job
 							# generate reconcile job name
 							allocation = get_next_allocation(log)

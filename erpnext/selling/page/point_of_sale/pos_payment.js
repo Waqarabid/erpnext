@@ -204,7 +204,11 @@ erpnext.PointOfSale.Payment = class {
 			const paid_amount = doc.paid_amount;
 			const items = doc.items;
 
+<<<<<<< HEAD
 			if (paid_amount == 0 || !items.length) {
+=======
+			if (!items.length || (paid_amount == 0 && doc.additional_discount_percentage != 100)) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				const message = items.length
 					? __("You cannot submit the order without payment.")
 					: __("You cannot submit empty order.");
@@ -413,7 +417,11 @@ erpnext.PointOfSale.Payment = class {
 				df: {
 					label: p.mode_of_payment,
 					fieldtype: "Currency",
+<<<<<<< HEAD
 					placeholder: __("Enter {0} amount.", [p.mode_of_payment]),
+=======
+					placeholder: __("Enter {0} amount.", [__(p.mode_of_payment)]),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					onchange: function () {
 						const current_value = frappe.model.get_value(p.doctype, p.name, "amount");
 						if (current_value != this.value) {
@@ -589,7 +597,11 @@ erpnext.PointOfSale.Payment = class {
 		const remaining = grand_total - doc.paid_amount;
 		const change = doc.change_amount || remaining <= 0 ? -1 * remaining : undefined;
 		const currency = doc.currency;
+<<<<<<< HEAD
 		const label = __("Change Amount");
+=======
+		const label = change ? __("Change") : __("To Be Paid");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		this.$totals.html(
 			`<div class="col">

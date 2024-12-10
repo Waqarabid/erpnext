@@ -88,6 +88,16 @@ frappe.ui.form.on("BOM Creator", {
 					reqd: 1,
 					default: 1.0,
 				},
+<<<<<<< HEAD
+=======
+				{ fieldtype: "Section Break" },
+				{
+					label: __("Routing"),
+					fieldtype: "Link",
+					fieldname: "routing",
+					options: "Routing",
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			],
 			primary_action_label: __("Create"),
 			primary_action: (values) => {
@@ -121,6 +131,19 @@ frappe.ui.form.on("BOM Creator", {
 				query: "erpnext.controllers.queries.item_query",
 			};
 		});
+<<<<<<< HEAD
+=======
+
+		frm.set_query("workstation", (doc) => {
+			if (doc.workstation_type) {
+				return {
+					filters: {
+						workstation_type: doc.workstation_type,
+					},
+				};
+			}
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	refresh(frm) {

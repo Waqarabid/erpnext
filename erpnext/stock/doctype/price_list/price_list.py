@@ -39,11 +39,19 @@ class PriceList(Document):
 
 	def set_default_if_missing(self):
 		if cint(self.selling):
+<<<<<<< HEAD
 			if not frappe.db.get_value("Selling Settings", None, "selling_price_list"):
 				frappe.set_value("Selling Settings", "Selling Settings", "selling_price_list", self.name)
 
 		elif cint(self.buying):
 			if not frappe.db.get_value("Buying Settings", None, "buying_price_list"):
+=======
+			if not frappe.db.get_single_value("Selling Settings", "selling_price_list"):
+				frappe.set_value("Selling Settings", "Selling Settings", "selling_price_list", self.name)
+
+		elif cint(self.buying):
+			if not frappe.db.get_single_value("Buying Settings", "buying_price_list"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.set_value("Buying Settings", "Buying Settings", "buying_price_list", self.name)
 
 	def update_item_price(self):

@@ -5,7 +5,11 @@ import copy
 from collections import defaultdict
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import cint
 
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
@@ -25,7 +29,11 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 )
 
 
+<<<<<<< HEAD
 class TestSubcontractingController(FrappeTestCase):
+=======
+class TestSubcontractingController(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()

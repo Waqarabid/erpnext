@@ -15,9 +15,13 @@
    "label": "Document Type ",
    "no_copy": 1,
    "options": "DocType",
+<<<<<<< HEAD
    "read_only": 1,
    "show_days": 1,
    "show_seconds": 1
+=======
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "invoice",
@@ -26,22 +30,36 @@
    "label": "Invoice",
    "no_copy": 1,
    "options": "document_type",
+<<<<<<< HEAD
    "read_only": 1,
    "show_days": 1,
    "show_seconds": 1
+=======
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-02-09 15:43:32.026233",
+=======
+ "modified": "2024-03-27 13:10:47.880704",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Subscription Invoice",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

@@ -26,9 +26,16 @@ from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock import get_warehouse_account_map
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
 	get_default_cost_center,
 	get_default_expense_account,
 	get_item_warehouse,
+=======
+	ItemDetailsCtx,
+	get_default_cost_center,
+	get_default_expense_account,
+	get_item_warehouse_,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 from erpnext.stock.stock_ledger import get_previous_sle
 from erpnext.stock.utils import get_incoming_rate
@@ -748,7 +755,11 @@ def get_target_item_details(item_code=None, company=None):
 	item_group_defaults = get_item_group_defaults(item.name, company)
 	brand_defaults = get_brand_defaults(item.name, company)
 	out.cost_center = get_default_cost_center(
+<<<<<<< HEAD
 		frappe._dict({"item_code": item.name, "company": company}),
+=======
+		ItemDetailsCtx({"item_code": item.name, "company": company}),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item_defaults,
 		item_group_defaults,
 		brand_defaults,
@@ -785,6 +796,7 @@ def get_target_asset_details(asset=None, company=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_consumed_stock_item_details(args):
 	if isinstance(args, str):
 		args = json.loads(args)
@@ -795,11 +807,21 @@ def get_consumed_stock_item_details(args):
 	item = frappe._dict()
 	if args.item_code:
 		item = frappe.get_cached_doc("Item", args.item_code)
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_consumed_stock_item_details(ctx: ItemDetailsCtx):
+	out = frappe._dict()
+
+	item = frappe._dict()
+	if ctx.item_code:
+		item = frappe.get_cached_doc("Item", ctx.item_code)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	out.item_name = item.item_name
 	out.batch_no = None
 	out.serial_no = ""
 
+<<<<<<< HEAD
 	out.stock_qty = flt(args.stock_qty) or 1
 	out.stock_uom = item.stock_uom
 
@@ -824,6 +846,32 @@ def get_consumed_stock_item_details(args):
 				"company": args.company,
 				"serial_no": args.serial_no,
 				"batch_no": args.batch_no,
+=======
+	out.stock_qty = flt(ctx.stock_qty) or 1
+	out.stock_uom = item.stock_uom
+
+	out.warehouse = get_item_warehouse_(ctx, item, overwrite_warehouse=True) if item else None
+
+	# Cost Center
+	item_defaults = get_item_defaults(item.name, ctx.company)
+	item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+	brand_defaults = get_brand_defaults(item.name, ctx.company)
+	out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+
+	if ctx.item_code and out.warehouse:
+		incoming_rate_args = frappe._dict(
+			{
+				"item_code": ctx.item_code,
+				"warehouse": out.warehouse,
+				"posting_date": ctx.posting_date,
+				"posting_time": ctx.posting_time,
+				"qty": -1 * flt(out.stock_qty),
+				"voucher_type": ctx.doctype,
+				"voucher_no": ctx.name,
+				"company": ctx.company,
+				"serial_no": ctx.serial_no,
+				"batch_no": ctx.batch_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 		out.update(get_warehouse_details(incoming_rate_args))
@@ -851,6 +899,7 @@ def get_warehouse_details(args):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_consumed_asset_details(args):
 	if isinstance(args, str):
 		args = json.loads(args)
@@ -865,17 +914,39 @@ def get_consumed_asset_details(args):
 		)
 		if not asset_details:
 			frappe.throw(_("Asset {0} does not exist").format(args.asset))
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_consumed_asset_details(ctx):
+	out = frappe._dict()
+
+	asset_details = frappe._dict()
+	if ctx.asset:
+		asset_details = frappe.db.get_value(
+			"Asset", ctx.asset, ["asset_name", "item_code", "item_name"], as_dict=1
+		)
+		if not asset_details:
+			frappe.throw(_("Asset {0} does not exist").format(ctx.asset))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	out.item_code = asset_details.item_code
 	out.asset_name = asset_details.asset_name
 	out.item_name = asset_details.item_name
 
+<<<<<<< HEAD
 	if args.asset:
 		out.current_asset_value = flt(
 			get_asset_value_after_depreciation(args.asset, finance_book=args.finance_book)
 		)
 		out.asset_value = get_value_after_depreciation_on_disposal_date(
 			args.asset, args.posting_date, finance_book=args.finance_book
+=======
+	if ctx.asset:
+		out.current_asset_value = flt(
+			get_asset_value_after_depreciation(ctx.asset, finance_book=ctx.finance_book)
+		)
+		out.asset_value = get_value_after_depreciation_on_disposal_date(
+			ctx.asset, ctx.posting_date, finance_book=ctx.finance_book
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 	else:
 		out.current_asset_value = 0
@@ -884,7 +955,11 @@ def get_consumed_asset_details(args):
 	# Account
 	if asset_details.item_code:
 		out.fixed_asset_account = get_asset_category_account(
+<<<<<<< HEAD
 			"fixed_asset_account", item=asset_details.item_code, company=args.company
+=======
+			"fixed_asset_account", item=asset_details.item_code, company=ctx.company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 	else:
 		out.fixed_asset_account = None
@@ -892,14 +967,22 @@ def get_consumed_asset_details(args):
 	# Cost Center
 	if asset_details.item_code:
 		item = frappe.get_cached_doc("Item", asset_details.item_code)
+<<<<<<< HEAD
 		item_defaults = get_item_defaults(item.name, args.company)
 		item_group_defaults = get_item_group_defaults(item.name, args.company)
 		brand_defaults = get_brand_defaults(item.name, args.company)
 		out.cost_center = get_default_cost_center(args, item_defaults, item_group_defaults, brand_defaults)
+=======
+		item_defaults = get_item_defaults(item.name, ctx.company)
+		item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+		brand_defaults = get_brand_defaults(item.name, ctx.company)
+		out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return out
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_service_item_details(args):
 	if isinstance(args, str):
 		args = json.loads(args)
@@ -923,6 +1006,26 @@ def get_service_item_details(args):
 		args, item_defaults, item_group_defaults, brand_defaults
 	)
 	out.cost_center = get_default_cost_center(args, item_defaults, item_group_defaults, brand_defaults)
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_service_item_details(ctx):
+	out = frappe._dict()
+
+	item = frappe._dict()
+	if ctx.item_code:
+		item = frappe.get_cached_doc("Item", ctx.item_code)
+
+	out.item_name = item.item_name
+	out.qty = flt(ctx.qty) or 1
+	out.uom = item.purchase_uom or item.stock_uom
+
+	item_defaults = get_item_defaults(item.name, ctx.company)
+	item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+	brand_defaults = get_brand_defaults(item.name, ctx.company)
+
+	out.expense_account = get_default_expense_account(ctx, item_defaults, item_group_defaults, brand_defaults)
+	out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return out
 

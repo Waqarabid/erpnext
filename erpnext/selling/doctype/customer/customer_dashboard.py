@@ -11,7 +11,14 @@ def get_data():
 			"Bank Account": "party",
 			"Subscription": "party",
 		},
+<<<<<<< HEAD
 		"dynamic_links": {"party_name": ["Customer", "quotation_to"]},
+=======
+		"dynamic_links": {
+			"party_name": ["Customer", "quotation_to"],
+			"party": ["Customer", "party_type"],
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"transactions": [
 			{"label": _("Pre Sales"), "items": ["Opportunity", "Quotation"]},
 			{"label": _("Orders"), "items": ["Sales Order", "Delivery Note", "Sales Invoice"]},

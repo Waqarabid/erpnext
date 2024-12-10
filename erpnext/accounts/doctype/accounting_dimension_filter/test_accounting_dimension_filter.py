@@ -12,7 +12,11 @@ from erpnext.accounts.doctype.accounting_dimension.test_accounting_dimension imp
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.exceptions import InvalidAccountDimensionError, MandatoryAccountDimensionError
 
+<<<<<<< HEAD
 test_dependencies = ["Location", "Cost Center", "Department"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Location", "Cost Center", "Department"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 class TestAccountingDimensionFilter(unittest.TestCase):

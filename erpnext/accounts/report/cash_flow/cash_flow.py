@@ -263,7 +263,10 @@ def get_report_summary(summary_data, currency):
 
 def get_chart_data(columns, data, currency):
 	labels = [d.get("label") for d in columns[2:]]
+<<<<<<< HEAD
 	print(data)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	datasets = [
 		{
 			"name": section.get("section").replace("'", ""),

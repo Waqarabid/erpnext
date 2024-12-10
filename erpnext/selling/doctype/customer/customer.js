@@ -3,17 +3,42 @@
 
 frappe.ui.form.on("Customer", {
 	setup: function (frm) {
+<<<<<<< HEAD
+=======
+		frm.custom_make_buttons = {
+			Opportunity: "Opportunity",
+			Quotation: "Quotation",
+			"Sales Order": "Sales Order",
+			"Pricing Rule": "Pricing Rule",
+		};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.make_methods = {
 			Quotation: () =>
 				frappe.model.open_mapped_doc({
 					method: "erpnext.selling.doctype.customer.customer.make_quotation",
+<<<<<<< HEAD
 					frm: cur_frm,
+=======
+					frm: frm,
+				}),
+			"Sales Order": () =>
+				frappe.model.with_doctype("Sales Order", function () {
+					var so = frappe.model.get_new_doc("Sales Order");
+					so.customer = frm.doc.name; // Set the current customer as the SO customer
+					frappe.set_route("Form", "Sales Order", so.name);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}),
 			Opportunity: () =>
 				frappe.model.open_mapped_doc({
 					method: "erpnext.selling.doctype.customer.customer.make_opportunity",
+<<<<<<< HEAD
 					frm: cur_frm,
 				}),
+=======
+					frm: frm,
+				}),
+			"Pricing Rule": () => erpnext.utils.make_pricing_rule(frm.doc.doctype, frm.doc.name),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		};
 
 		frm.add_fetch("lead_name", "company_name", "customer_name");
@@ -159,6 +184,7 @@ frappe.ui.form.on("Customer", {
 				__("View")
 			);
 
+<<<<<<< HEAD
 			frm.add_custom_button(
 				__("Pricing Rule"),
 				function () {
@@ -166,6 +192,11 @@ frappe.ui.form.on("Customer", {
 				},
 				__("Create")
 			);
+=======
+			for (const doctype in frm.make_methods) {
+				frm.add_custom_button(__(doctype), frm.make_methods[doctype], __("Create"));
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			frm.add_custom_button(
 				__("Get Customer Group Details"),

@@ -76,7 +76,11 @@ def get_help_article_list():
 			"Help Article",
 			fields="*",
 			filters={"category": category.name, "published": 1},
+<<<<<<< HEAD
 			order_by="modified desc",
+=======
+			order_by="creation desc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			limit=5,
 		)
 		if help_articles:

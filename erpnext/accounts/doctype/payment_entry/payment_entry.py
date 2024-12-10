@@ -33,7 +33,11 @@ from erpnext.accounts.general_ledger import (
 	make_reverse_gl_entries,
 	process_gl_map,
 )
+<<<<<<< HEAD
 from erpnext.accounts.party import get_party_account
+=======
+from erpnext.accounts.party import complete_contact_details, get_party_account, set_contact_details
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.accounts.utils import (
 	cancel_exchange_gain_loss_journal,
 	get_account_currency,
@@ -53,6 +57,91 @@ class InvalidPaymentEntry(ValidationError):
 
 
 class PaymentEntry(AccountsController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.advance_taxes_and_charges.advance_taxes_and_charges import (
+			AdvanceTaxesandCharges,
+		)
+		from erpnext.accounts.doctype.payment_entry_deduction.payment_entry_deduction import (
+			PaymentEntryDeduction,
+		)
+		from erpnext.accounts.doctype.payment_entry_reference.payment_entry_reference import (
+			PaymentEntryReference,
+		)
+
+		amended_from: DF.Link | None
+		apply_tax_withholding_amount: DF.Check
+		auto_repeat: DF.Link | None
+		bank: DF.ReadOnly | None
+		bank_account: DF.Link | None
+		bank_account_no: DF.ReadOnly | None
+		base_paid_amount: DF.Currency
+		base_paid_amount_after_tax: DF.Currency
+		base_received_amount: DF.Currency
+		base_received_amount_after_tax: DF.Currency
+		base_total_allocated_amount: DF.Currency
+		base_total_taxes_and_charges: DF.Currency
+		book_advance_payments_in_separate_party_account: DF.Check
+		clearance_date: DF.Date | None
+		company: DF.Link
+		contact_email: DF.Data | None
+		contact_person: DF.Link | None
+		cost_center: DF.Link | None
+		custom_remarks: DF.Check
+		deductions: DF.Table[PaymentEntryDeduction]
+		difference_amount: DF.Currency
+		letter_head: DF.Link | None
+		mode_of_payment: DF.Link | None
+		naming_series: DF.Literal["ACC-PAY-.YYYY.-"]
+		paid_amount: DF.Currency
+		paid_amount_after_tax: DF.Currency
+		paid_from: DF.Link
+		paid_from_account_balance: DF.Currency
+		paid_from_account_currency: DF.Link
+		paid_from_account_type: DF.Data | None
+		paid_to: DF.Link
+		paid_to_account_balance: DF.Currency
+		paid_to_account_currency: DF.Link
+		paid_to_account_type: DF.Data | None
+		party: DF.DynamicLink | None
+		party_balance: DF.Currency
+		party_bank_account: DF.Link | None
+		party_name: DF.Data | None
+		party_type: DF.Link | None
+		payment_order: DF.Link | None
+		payment_order_status: DF.Literal["Initiated", "Payment Ordered"]
+		payment_type: DF.Literal["Receive", "Pay", "Internal Transfer"]
+		posting_date: DF.Date
+		print_heading: DF.Link | None
+		project: DF.Link | None
+		purchase_taxes_and_charges_template: DF.Link | None
+		received_amount: DF.Currency
+		received_amount_after_tax: DF.Currency
+		reference_date: DF.Date | None
+		reference_no: DF.Data | None
+		references: DF.Table[PaymentEntryReference]
+		remarks: DF.SmallText | None
+		sales_taxes_and_charges_template: DF.Link | None
+		source_exchange_rate: DF.Float
+		status: DF.Literal["", "Draft", "Submitted", "Cancelled"]
+		target_exchange_rate: DF.Float
+		tax_withholding_category: DF.Link | None
+		taxes: DF.Table[AdvanceTaxesandCharges]
+		title: DF.Data | None
+		total_allocated_amount: DF.Currency
+		total_taxes_and_charges: DF.Currency
+		unallocated_amount: DF.Currency
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		if not self.is_new():
@@ -418,6 +507,15 @@ class PaymentEntry(AccountsController):
 				self.party_name = frappe.db.get_value(self.party_type, self.party, "name")
 
 		if self.party:
+<<<<<<< HEAD
+=======
+			if not self.contact_person:
+				set_contact_details(
+					self, party=frappe._dict({"name": self.party}), party_type=self.party_type
+				)
+			else:
+				complete_contact_details(self)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if not self.party_balance:
 				self.party_balance = get_balance_on(
 					party_type=self.party_type, party=self.party, date=self.posting_date, company=self.company
@@ -428,12 +526,20 @@ class PaymentEntry(AccountsController):
 				self.set(self.party_account_field, party_account)
 				self.party_account = party_account
 
+<<<<<<< HEAD
 		if self.paid_from and not (self.paid_from_account_currency or self.paid_from_account_balance):
+=======
+		if self.paid_from and not self.paid_from_account_currency and not self.paid_from_account_balance:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			acc = get_account_details(self.paid_from, self.posting_date, self.cost_center)
 			self.paid_from_account_currency = acc.account_currency
 			self.paid_from_account_balance = acc.account_balance
 
+<<<<<<< HEAD
 		if self.paid_to and not (self.paid_to_account_currency or self.paid_to_account_balance):
+=======
+		if self.paid_to and not self.paid_to_account_currency and not self.paid_to_account_balance:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			acc = get_account_details(self.paid_to, self.posting_date, self.cost_center)
 			self.paid_to_account_currency = acc.account_currency
 			self.paid_to_account_balance = acc.account_balance
@@ -452,8 +558,14 @@ class PaymentEntry(AccountsController):
 	) -> None:
 		for d in self.get("references"):
 			if d.allocated_amount:
+<<<<<<< HEAD
 				if update_ref_details_only_for and (
 					(d.reference_doctype, d.reference_name) not in update_ref_details_only_for
+=======
+				if (
+					update_ref_details_only_for
+					and (d.reference_doctype, d.reference_name) not in update_ref_details_only_for
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				):
 					continue
 
@@ -482,7 +594,14 @@ class PaymentEntry(AccountsController):
 						continue
 
 					if field == "exchange_rate" or not d.get(field) or force:
+<<<<<<< HEAD
 						d.db_set(field, value)
+=======
+						if self.get("_action") in ("submit", "cancel"):
+							d.db_set(field, value)
+						else:
+							d.set(field, value)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_payment_type(self):
 		if self.payment_type not in ("Receive", "Pay", "Internal Transfer"):
@@ -797,7 +916,11 @@ class PaymentEntry(AccountsController):
 		self.in_words = money_in_words(amount, currency)
 
 	def set_tax_withholding(self):
+<<<<<<< HEAD
 		if not self.party_type == "Supplier":
+=======
+		if self.party_type != "Supplier":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		if not self.apply_tax_withholding_amount:
@@ -908,7 +1031,11 @@ class PaymentEntry(AccountsController):
 		self.base_received_amount = self.base_paid_amount
 		if (
 			self.paid_from_account_currency == self.paid_to_account_currency
+<<<<<<< HEAD
 			and not self.payment_type == "Internal Transfer"
+=======
+			and self.payment_type != "Internal Transfer"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		):
 			self.received_amount = self.paid_amount
 
@@ -956,7 +1083,14 @@ class PaymentEntry(AccountsController):
 
 	def calculate_base_allocated_amount_for_reference(self, d) -> float:
 		base_allocated_amount = 0
+<<<<<<< HEAD
 		if d.reference_doctype in frappe.get_hooks("advance_payment_doctypes"):
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		if d.reference_doctype in advance_payment_doctypes:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			# When referencing Sales/Purchase Order, use the source/target exchange rate depending on payment type.
 			# This is so there are no Exchange Gain/Loss generated for such doctypes
 
@@ -1162,9 +1296,17 @@ class PaymentEntry(AccountsController):
 		else:
 			remarks = [
 				_("Amount {0} {1} {2} {3}").format(
+<<<<<<< HEAD
 					_(self.party_account_currency),
 					self.paid_amount if self.payment_type == "Receive" else self.received_amount,
 					_("received from") if self.payment_type == "Receive" else _("to"),
+=======
+					_(self.paid_to_account_currency)
+					if self.payment_type == "Receive"
+					else _(self.paid_from_account_currency),
+					self.paid_amount if self.payment_type == "Receive" else self.received_amount,
+					_("received from") if self.payment_type == "Receive" else _("paid to"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					self.party,
 				)
 			]
@@ -1229,7 +1371,13 @@ class PaymentEntry(AccountsController):
 		if not self.party_account:
 			return
 
+<<<<<<< HEAD
 		advance_payment_doctypes = frappe.get_hooks("advance_payment_doctypes")
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.payment_type == "Receive":
 			against_account = self.paid_to
@@ -1568,8 +1716,16 @@ class PaymentEntry(AccountsController):
 
 	def update_advance_paid(self):
 		if self.payment_type in ("Receive", "Pay") and self.party:
+<<<<<<< HEAD
 			for d in self.get("references"):
 				if d.allocated_amount and d.reference_doctype in frappe.get_hooks("advance_payment_doctypes"):
+=======
+			advance_payment_doctypes = frappe.get_hooks(
+				"advance_payment_receivable_doctypes"
+			) + frappe.get_hooks("advance_payment_payable_doctypes")
+			for d in self.get("references"):
+				if d.allocated_amount and d.reference_doctype in advance_payment_doctypes:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frappe.get_doc(
 						d.reference_doctype, d.reference_name, for_update=True
 					).set_total_advance_paid()
@@ -2371,7 +2527,11 @@ def get_split_invoice_rows(invoice: dict, payment_term_template: str, exc_rates:
 		"Payment Schedule", filters={"parent": invoice.voucher_no}, fields=["*"], order_by="due_date"
 	)
 	for payment_term in payment_schedule:
+<<<<<<< HEAD
 		if not payment_term.outstanding > 0.1:
+=======
+		if payment_term.outstanding <= 0.1:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			continue
 
 		doc_details = exc_rates.get(payment_term.parent, None)
@@ -2768,14 +2928,22 @@ def get_payment_entry(
 	)
 
 	# bank or cash
+<<<<<<< HEAD
 	bank = get_bank_cash_account(doc, bank_account)
+=======
+	bank = get_bank_cash_account(doc, bank_account, ignore_permissions=ignore_permissions)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# if default bank or cash account is not set in company master and party has default company bank account, fetch it
 	if party_type in ["Customer", "Supplier"] and not bank:
 		party_bank_account = get_party_bank_account(party_type, doc.get(scrub(party_type)))
 		if party_bank_account:
 			account = frappe.db.get_value("Bank Account", party_bank_account, "account")
+<<<<<<< HEAD
 			bank = get_bank_cash_account(doc, account)
+=======
+			bank = get_bank_cash_account(doc, account, ignore_permissions=ignore_permissions)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	paid_amount, received_amount = set_paid_amount_and_received_amount(
 		dt, party_account_currency, bank, outstanding_amount, payment_type, bank_amount, doc
@@ -2796,7 +2964,11 @@ def get_payment_entry(
 	pe.party_type = party_type
 	pe.party = doc.get(scrub(party_type))
 	pe.contact_person = doc.get("contact_person")
+<<<<<<< HEAD
 	pe.contact_email = doc.get("contact_email")
+=======
+	complete_contact_details(pe)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pe.ensure_supplier_is_not_blocked()
 
 	pe.paid_from = party_account if payment_type == "Receive" else bank.account
@@ -3081,9 +3253,19 @@ def update_accounting_dimensions(pe, doc):
 		pe.set(dimension, doc.get(dimension))
 
 
+<<<<<<< HEAD
 def get_bank_cash_account(doc, bank_account):
 	bank = get_default_bank_cash_account(
 		doc.company, "Bank", mode_of_payment=doc.get("mode_of_payment"), account=bank_account
+=======
+def get_bank_cash_account(doc, bank_account, ignore_permissions=False):
+	bank = get_default_bank_cash_account(
+		doc.company,
+		"Bank",
+		mode_of_payment=doc.get("mode_of_payment"),
+		account=bank_account,
+		ignore_permissions=ignore_permissions,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if not bank:

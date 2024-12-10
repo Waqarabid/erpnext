@@ -42,6 +42,10 @@
   "column_break_28",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "sec_break2",
   "rate",
@@ -110,7 +114,13 @@
   "production_plan",
   "production_plan_item",
   "production_plan_sub_assembly_item",
+<<<<<<< HEAD
   "page_break"
+=======
+  "page_break",
+  "column_break_pjyo",
+  "job_card"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -780,7 +790,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "discount_and_margin_section",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -909,13 +923,37 @@
   {
    "fieldname": "column_break_fyqr",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "column_break_pjyo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "search_index": 1
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-02-05 11:23:24.859435",
+=======
+ "modified": "2024-06-02 06:20:10.508290",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order Item",
@@ -924,7 +962,11 @@
  "permissions": [],
  "quick_entry": 1,
  "search_fields": "item_name",
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

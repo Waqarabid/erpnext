@@ -62,9 +62,12 @@ class TaxRule(Document):
 		use_for_shopping_cart: DF.Check
 	# end: auto-generated types
 
+<<<<<<< HEAD
 	def __setup__(self):
 		self.flags.ignore_these_exceptions_in_test = [ConflictingTaxRule]
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_tax_template()
 		self.validate_from_to_dates("from_date", "to_date")

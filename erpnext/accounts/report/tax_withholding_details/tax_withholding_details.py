@@ -70,7 +70,11 @@ def get_result(filters, tds_docs, tds_accounts, tax_category_map, journal_entry_
 
 				rate = tax_rate_map.get(tax_withholding_category)
 			if net_total_map.get((voucher_type, name)):
+<<<<<<< HEAD
 				if voucher_type == "Journal Entry":
+=======
+				if voucher_type == "Journal Entry" and tax_amount and rate:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					# back calcalute total amount from rate and tax_amount
 					if rate:
 						total_amount = grand_total = base_total = tax_amount / (rate / 100)
@@ -351,9 +355,12 @@ def get_tds_docs_query(filters, bank_accounts, tds_accounts):
 	if filters.get("to_date"):
 		query = query.where(gle.posting_date <= filters.get("to_date"))
 
+<<<<<<< HEAD
 	if bank_accounts:
 		query = query.where(gle.against.notin(bank_accounts))
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if filters.get("party"):
 		party = [filters.get("party")]
 		jv_condition = gle.against.isin(party) | (
@@ -365,7 +372,18 @@ def get_tds_docs_query(filters, bank_accounts, tds_accounts):
 			(gle.voucher_type == "Journal Entry")
 			& ((gle.party_type == filters.get("party_type")) | (gle.party_type == ""))
 		)
+<<<<<<< HEAD
 	query = query.where((gle.account.isin(tds_accounts) & jv_condition) | gle.party.isin(party))
+=======
+
+	query.where((gle.account.isin(tds_accounts) & jv_condition) | gle.party.isin(party))
+	if bank_accounts:
+		query = query.where(
+			gle.against.notin(bank_accounts) & (gle.account.isin(tds_accounts) & jv_condition)
+			| gle.party.isin(party)
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return query
 
 

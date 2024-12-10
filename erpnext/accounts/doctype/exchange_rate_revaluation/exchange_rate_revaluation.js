@@ -57,13 +57,21 @@ frappe.ui.form.on("Exchange Rate Revaluation", {
 	get_entries: function (frm, account) {
 		frappe.call({
 			method: "get_accounts_data",
+<<<<<<< HEAD
 			doc: cur_frm.doc,
+=======
+			doc: frm.doc,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			account: account,
 			callback: function (r) {
 				frappe.model.clear_table(frm.doc, "accounts");
 				if (r.message) {
 					r.message.forEach((d) => {
+<<<<<<< HEAD
 						cur_frm.add_child("accounts", d);
+=======
+						frm.add_child("accounts", d);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					});
 					frm.events.get_total_gain_loss(frm);
 					refresh_field("accounts");

@@ -9,6 +9,7 @@ frappe.ui.form.on("Product Bundle", {
 				query: "erpnext.selling.doctype.product_bundle.product_bundle.get_new_item_code",
 			};
 		});
+<<<<<<< HEAD
 
 		frm.set_query("item_code", "items", () => {
 			return {
@@ -17,5 +18,7 @@ frappe.ui.form.on("Product Bundle", {
 				},
 			};
 		});
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 });

@@ -3,6 +3,10 @@
  "creation": "2015-12-23 21:31:52.699821",
  "doctype": "DocType",
  "editable_grid": 1,
+<<<<<<< HEAD
+=======
+ "engine": "InnoDB",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "field_order": [
   "payment_gateway",
   "payment_channel",
@@ -48,7 +52,11 @@
    "label": "Currency"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel !== \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == 'Email' || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "payment_request_message",
    "fieldtype": "Section Break"
   },
@@ -69,12 +77,20 @@
    "fieldname": "payment_channel",
    "fieldtype": "Select",
    "label": "Payment Channel",
+<<<<<<< HEAD
    "options": "\nEmail\nPhone"
+=======
+   "options": "\nEmail\nPhone\nOther"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-09-20 13:30:27.722852",
+=======
+ "modified": "2024-03-29 18:53:09.836254",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Gateway Account",
@@ -93,6 +109,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC"
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

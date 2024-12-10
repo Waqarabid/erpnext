@@ -22,7 +22,11 @@ def get_columns(filters):
 			"fieldtype": "Link",
 			"fieldname": "account",
 			"options": "Account",
+<<<<<<< HEAD
 			"width": 100,
+=======
+			"width": 200,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			"label": _("Currency"),
@@ -30,7 +34,11 @@ def get_columns(filters):
 			"fieldname": "currency",
 			"options": "Currency",
 			"hidden": 1,
+<<<<<<< HEAD
 			"width": 50,
+=======
+			"width": 100,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			"label": _("Balance"),

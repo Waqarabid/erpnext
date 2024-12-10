@@ -1,5 +1,6 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -8,6 +9,16 @@ from frappe.utils import add_days, nowdate
 
 
 class TestContract(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import add_days, nowdate
+
+
+class TestContract(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		frappe.db.sql("delete from `tabContract`")
 		self.contract_doc = get_contract()

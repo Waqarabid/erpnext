@@ -231,7 +231,11 @@ erpnext.accounts.JournalEntry = class JournalEntry extends frappe.ui.form.Contro
 	}
 
 	onload_post_render() {
+<<<<<<< HEAD
 		cur_frm.get_field("accounts").grid.set_multiple_add("account");
+=======
+		this.frm.get_field("accounts").grid.set_multiple_add("account");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	load_defaults() {
@@ -380,7 +384,11 @@ erpnext.accounts.JournalEntry = class JournalEntry extends frappe.ui.form.Contro
 				row.debit = -doc.difference;
 			}
 		}
+<<<<<<< HEAD
 		cur_frm.cscript.update_totals(doc);
+=======
+		this.frm.cscript.update_totals(doc);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		erpnext.accounts.dimensions.copy_dimension_from_first_row(this.frm, cdt, cdn, "accounts");
 	}
@@ -450,11 +458,19 @@ frappe.ui.form.on("Journal Entry Account", {
 	},
 
 	debit: function (frm, dt, dn) {
+<<<<<<< HEAD
 		cur_frm.cscript.update_totals(frm.doc);
 	},
 
 	credit: function (frm, dt, dn) {
 		cur_frm.cscript.update_totals(frm.doc);
+=======
+		frm.cscript.update_totals(frm.doc);
+	},
+
+	credit: function (frm, dt, dn) {
+		frm.cscript.update_totals(frm.doc);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	exchange_rate: function (frm, cdt, cdn) {
@@ -470,7 +486,11 @@ frappe.ui.form.on("Journal Entry Account", {
 });
 
 frappe.ui.form.on("Journal Entry Account", "accounts_remove", function (frm) {
+<<<<<<< HEAD
 	cur_frm.cscript.update_totals(frm.doc);
+=======
+	frm.cscript.update_totals(frm.doc);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });
 
 $.extend(erpnext.journal_entry, {
@@ -512,7 +532,11 @@ $.extend(erpnext.journal_entry, {
 			flt(flt(row.credit_in_account_currency) * row.exchange_rate, precision("credit", row))
 		);
 
+<<<<<<< HEAD
 		cur_frm.cscript.update_totals(frm.doc);
+=======
+		frm.cscript.update_totals(frm.doc);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	set_exchange_rate: function (frm, cdt, cdn) {
@@ -654,10 +678,17 @@ $.extend(erpnext.journal_entry, {
 		return { filters: filters };
 	},
 
+<<<<<<< HEAD
 	reverse_journal_entry: function () {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.journal_entry.journal_entry.make_reverse_journal_entry",
 			frm: cur_frm,
+=======
+	reverse_journal_entry: function (frm) {
+		frappe.model.open_mapped_doc({
+			method: "erpnext.accounts.doctype.journal_entry.journal_entry.make_reverse_journal_entry",
+			frm: frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	},
 });

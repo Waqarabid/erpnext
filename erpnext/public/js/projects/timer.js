@@ -110,7 +110,11 @@ erpnext.timesheet.control_timer = function (frm, dialog, row, timestamp = 0) {
 
 	// Stop the timer and update the time logged by the timer on click of 'Complete' button
 	$btn_complete.click(function () {
+<<<<<<< HEAD
 		var grid_row = cur_frm.fields_dict["time_logs"].grid.get_row(row.idx - 1);
+=======
+		var grid_row = frm.fields_dict["time_logs"].grid.get_row(row.idx - 1);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		var args = dialog.get_values();
 		grid_row.doc.completed = 1;
 		grid_row.doc.activity_type = args.activity_type;

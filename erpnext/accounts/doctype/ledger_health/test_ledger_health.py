@@ -3,14 +3,22 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import nowdate
 
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 from erpnext.accounts.utils import run_ledger_health_checks
 
 
+<<<<<<< HEAD
 class TestLedgerHealth(AccountsTestMixin, FrappeTestCase):
+=======
+class TestLedgerHealth(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_customer()

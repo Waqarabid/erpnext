@@ -4,7 +4,13 @@ from frappe.query_builder.custom import ConstantColumn
 
 
 def get_advance_doctypes() -> list:
+<<<<<<< HEAD
 	return frappe.get_hooks("advance_payment_doctypes")
+=======
+	return frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+		"advance_payment_payable_doctypes"
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_payments_with_so_po_reference() -> list:

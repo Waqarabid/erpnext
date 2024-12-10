@@ -1,6 +1,10 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.tests.utils import ReportFilters, ReportName, execute_script_report
 
@@ -50,7 +54,11 @@ OPTIONAL_FILTERS = {
 }
 
 
+<<<<<<< HEAD
 class TestManufacturingReports(unittest.TestCase):
+=======
+class TestManufacturingReports(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_execute_all_manufacturing_reports(self):
 		"""Test that all script report in manufacturing modules are executable with supported filters"""
 		for report, filter in REPORT_FILTER_TEST_CASES:

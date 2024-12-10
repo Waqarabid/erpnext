@@ -1,5 +1,9 @@
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import today
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
@@ -8,7 +12,11 @@ from erpnext.accounts.report.accounts_receivable_summary.accounts_receivable_sum
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 
 
+<<<<<<< HEAD
 class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
+=======
+class TestAccountsReceivable(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.maxDiff = None
 		self.create_company()
@@ -112,7 +120,11 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		self.assertEqual(len(rpt_output), 1)
 		self.assertDictEqual(rpt_output[0], expected_data)
 
+<<<<<<< HEAD
 	@change_settings("Selling Settings", {"cust_master_name": "Naming Series"})
+=======
+	@IntegrationTestCase.change_settings("Selling Settings", {"cust_master_name": "Naming Series"})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_02_various_filters_and_output(self):
 		filters = {
 			"company": self.company,

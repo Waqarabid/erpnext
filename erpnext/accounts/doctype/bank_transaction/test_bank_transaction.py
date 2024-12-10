@@ -6,7 +6,11 @@ import json
 import frappe
 from frappe import utils
 from frappe.model.docstatus import DocStatus
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import (
 	get_linked_payments,
@@ -18,6 +22,7 @@ from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.tests.utils import if_lending_app_installed
 
+<<<<<<< HEAD
 test_dependencies = ["Item", "Cost Center"]
 
 
@@ -31,6 +36,22 @@ class TestBankTransaction(FrappeTestCase):
 		]:
 			frappe.db.delete(dt)
 		clear_loan_transactions()
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Cost Center"]
+
+
+class UnitTestBankTransaction(UnitTestCase):
+	"""
+	Unit tests for BankTransaction.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBankTransaction(IntegrationTestCase):
+	def setUp(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		make_pos_profile()
 
 		# generate and use a uniq hash identifier for 'Bank Account' and it's linked GL 'Account' to avoid validation error
@@ -222,11 +243,14 @@ class TestBankTransaction(FrappeTestCase):
 		self.assertEqual(linked_payments[0]["name"], repayment_entry.name)
 
 
+<<<<<<< HEAD
 @if_lending_app_installed
 def clear_loan_transactions():
 	frappe.db.delete("Loan Repayment")
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def create_bank_account(
 	bank_name="Citi Bank", gl_account="_Test Bank - _TC", bank_account_name="Checking Account"
 ):

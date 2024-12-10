@@ -5,7 +5,11 @@
 import json
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, flt, getdate, nowdate
 from frappe.utils.data import today
 
@@ -28,9 +32,26 @@ from erpnext.stock.doctype.purchase_receipt.purchase_receipt import (
 )
 
 
+<<<<<<< HEAD
 class TestPurchaseOrder(FrappeTestCase):
 	def test_purchase_order_qty(self):
 		po = create_purchase_order(qty=1, do_not_save=True)
+=======
+class UnitTestPurchaseOrder(UnitTestCase):
+	"""
+	Unit tests for PurchaseOrder.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPurchaseOrder(IntegrationTestCase):
+	def test_purchase_order_qty(self):
+		po = create_purchase_order(qty=1, do_not_save=True)
+
+		# NonNegativeError with qty=-1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		po.append(
 			"items",
 			{
@@ -41,9 +62,21 @@ class TestPurchaseOrder(FrappeTestCase):
 		)
 		self.assertRaises(frappe.NonNegativeError, po.save)
 
+<<<<<<< HEAD
 		po.items[1].qty = 0
 		self.assertRaises(InvalidQtyError, po.save)
 
+=======
+		# InvalidQtyError with qty=0
+		po.items[1].qty = 0
+		self.assertRaises(InvalidQtyError, po.save)
+
+		# No error with qty=1
+		po.items[1].qty = 1
+		po.save()
+		self.assertEqual(po.items[1].qty, 1)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_make_purchase_receipt(self):
 		po = create_purchase_order(do_not_submit=True)
 		self.assertRaises(frappe.ValidationError, make_purchase_receipt, po.name)
@@ -727,7 +760,13 @@ class TestPurchaseOrder(FrappeTestCase):
 		pi.insert()
 		self.assertTrue(pi.get("payment_schedule"))
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_advance_payment_on_cancelation_of_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_advance_payment_on_cancelation_of_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_advance_payment_entry_unlink_against_purchase_order(self):
 		from erpnext.accounts.doctype.payment_entry.test_payment_entry import get_payment_entry
 
@@ -798,7 +837,13 @@ class TestPurchaseOrder(FrappeTestCase):
 		company_doc.book_advance_payments_in_separate_party_account = False
 		company_doc.save()
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"unlink_advance_payment_on_cancelation_of_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"unlink_advance_payment_on_cancelation_of_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_advance_paid_upon_payment_entry_cancellation(self):
 		from erpnext.accounts.doctype.payment_entry.test_payment_entry import get_payment_entry
 
@@ -1059,7 +1104,11 @@ class TestPurchaseOrder(FrappeTestCase):
 		self.assertEqual(po.items[0].qty, 30)
 		self.assertEqual(po.items[0].fg_item_qty, 30)
 
+<<<<<<< HEAD
 	@change_settings("Buying Settings", {"auto_create_subcontracting_order": 1})
+=======
+	@IntegrationTestCase.change_settings("Buying Settings", {"auto_create_subcontracting_order": 1})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_create_subcontracting_order(self):
 		from erpnext.controllers.tests.test_subcontracting_controller import (
 			make_bom_for_subcontracted_items,
@@ -1091,6 +1140,37 @@ class TestPurchaseOrder(FrappeTestCase):
 
 		self.assertTrue(frappe.db.get_value("Subcontracting Order", {"purchase_order": po.name}))
 
+<<<<<<< HEAD
+=======
+	def test_purchase_order_advance_payment_status(self):
+		from erpnext.accounts.doctype.payment_entry.test_payment_entry import get_payment_entry
+		from erpnext.accounts.doctype.payment_request.payment_request import make_payment_request
+
+		po = create_purchase_order()
+		self.assertEqual(frappe.db.get_value(po.doctype, po.name, "advance_payment_status"), "Not Initiated")
+
+		pr = make_payment_request(
+			dt=po.doctype, dn=po.name, submit_doc=True, return_doc=True, payment_request_type="Outward"
+		)
+
+		po.reload()
+		self.assertEqual(frappe.db.get_value(po.doctype, po.name, "advance_payment_status"), "Initiated")
+
+		pe = get_payment_entry(po.doctype, po.name).save().submit()
+
+		pr.reload()
+		self.assertEqual(pr.status, "Paid")
+		self.assertEqual(frappe.db.get_value(po.doctype, po.name, "advance_payment_status"), "Fully Paid")
+
+		pe.reload()
+		pe.cancel()
+		self.assertEqual(frappe.db.get_value(po.doctype, po.name, "advance_payment_status"), "Initiated")
+
+		pr.reload()
+		pr.cancel()
+		self.assertEqual(frappe.db.get_value(po.doctype, po.name, "advance_payment_status"), "Not Initiated")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_po_billed_amount_against_return_entry(self):
 		from erpnext.accounts.doctype.purchase_invoice.purchase_invoice import make_debit_note
 
@@ -1218,7 +1298,11 @@ def create_purchase_order(**args):
 				"item_code": args.item or args.item_code or "_Test Item",
 				"warehouse": args.warehouse or "_Test Warehouse - _TC",
 				"from_warehouse": args.from_warehouse,
+<<<<<<< HEAD
 				"qty": args.qty or 10,
+=======
+				"qty": args.qty if args.qty is not None else 10,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"rate": args.rate or 500,
 				"schedule_date": add_days(nowdate(), 1),
 				"include_exploded_items": args.get("include_exploded_items", 1),
@@ -1259,6 +1343,10 @@ def get_requested_qty(item_code="_Test Item", warehouse="_Test Warehouse - _TC")
 	return flt(frappe.db.get_value("Bin", {"item_code": item_code, "warehouse": warehouse}, "indented_qty"))
 
 
+<<<<<<< HEAD
 test_dependencies = ["BOM", "Item Price"]
 
 test_records = frappe.get_test_records("Purchase Order")
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["BOM", "Item Price", "Warehouse"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

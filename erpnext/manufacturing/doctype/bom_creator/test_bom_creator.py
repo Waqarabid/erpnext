@@ -4,7 +4,11 @@
 import random
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.manufacturing.doctype.bom_creator.bom_creator import (
 	add_item,
@@ -13,7 +17,20 @@ from erpnext.manufacturing.doctype.bom_creator.bom_creator import (
 from erpnext.stock.doctype.item.test_item import make_item
 
 
+<<<<<<< HEAD
 class TestBOMCreator(FrappeTestCase):
+=======
+class UnitTestBomCreator(UnitTestCase):
+	"""
+	Unit tests for BomCreator.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBOMCreator(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self) -> None:
 		create_items()
 

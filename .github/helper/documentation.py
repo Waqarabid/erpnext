@@ -1,7 +1,13 @@
 import sys
+<<<<<<< HEAD
 import requests
 from urllib.parse import urlparse
 
+=======
+from urllib.parse import urlparse
+
+import requests
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 WEBSITE_REPOS = [
 	"erpnext_com",
@@ -36,11 +42,15 @@ def is_documentation_link(word: str) -> bool:
 
 
 def contains_documentation_link(body: str) -> bool:
+<<<<<<< HEAD
 	return any(
 		is_documentation_link(word)
 		for line in body.splitlines()
 		for word in line.split()
 	)
+=======
+	return any(is_documentation_link(word) for line in body.splitlines() for word in line.split())
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def check_pull_request(number: str) -> "tuple[int, str]":
@@ -53,12 +63,16 @@ def check_pull_request(number: str) -> "tuple[int, str]":
 	head_sha = (payload.get("head") or {}).get("sha")
 	body = (payload.get("body") or "").lower()
 
+<<<<<<< HEAD
 	if (
 		not title.startswith("feat")
 		or not head_sha
 		or "no-docs" in body
 		or "backport" in body
 	):
+=======
+	if not title.startswith("feat") or not head_sha or "no-docs" in body or "backport" in body:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return 0, "Skipping documentation checks... 🏃"
 
 	if contains_documentation_link(body):

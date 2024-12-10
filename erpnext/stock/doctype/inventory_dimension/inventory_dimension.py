@@ -214,10 +214,20 @@ class InventoryDimension(Document):
 		dimension_fields = []
 		if self.apply_to_all_doctypes:
 			for doctype in get_inventory_documents():
+<<<<<<< HEAD
 				dimension_fields = self.get_dimension_fields(doctype[0])
 				self.add_transfer_field(doctype[0], dimension_fields)
 				custom_fields.setdefault(doctype[0], dimension_fields)
 		else:
+=======
+				if field_exists(doctype[0], self.source_fieldname):
+					continue
+
+				dimension_fields = self.get_dimension_fields(doctype[0])
+				self.add_transfer_field(doctype[0], dimension_fields)
+				custom_fields.setdefault(doctype[0], dimension_fields)
+		elif not field_exists(self.document_type, self.source_fieldname):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			dimension_fields = self.get_dimension_fields()
 
 			self.add_transfer_field(self.document_type, dimension_fields)
@@ -236,6 +246,7 @@ class InventoryDimension(Document):
 			dimension_field["fieldname"] = self.target_fieldname
 			custom_fields["Stock Ledger Entry"] = dimension_field
 
+<<<<<<< HEAD
 		filter_custom_fields = {}
 		if custom_fields:
 			for doctype, fields in custom_fields.items():
@@ -247,6 +258,10 @@ class InventoryDimension(Document):
 						filter_custom_fields.setdefault(doctype, []).append(field)
 
 		create_custom_fields(filter_custom_fields)
+=======
+		if custom_fields:
+			create_custom_fields(custom_fields)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def add_transfer_field(self, doctype, dimension_fields):
 		if doctype not in [

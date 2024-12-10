@@ -112,7 +112,11 @@ frappe.ui.form.on("Purchase Order", {
 						args: {
 							subcontract_order: frm.doc.name,
 							rm_details: po_details,
+<<<<<<< HEAD
 							order_doctype: cur_frm.doc.doctype,
+=======
+							order_doctype: frm.doc.doctype,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						},
 						callback: function (r) {
 							if (r && r.message) {
@@ -305,8 +309,13 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 		var allow_receipt = false;
 		var is_drop_ship = false;
 
+<<<<<<< HEAD
 		for (var i in cur_frm.doc.items) {
 			var item = cur_frm.doc.items[i];
+=======
+		for (var i in this.frm.doc.items) {
+			var item = this.frm.doc.items[i];
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if (item.delivered_by_supplier !== 1) {
 				allow_receipt = true;
 			} else {
@@ -385,13 +394,23 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 					if (flt(doc.per_received) < 100 && allow_receipt) {
 						this.frm.add_custom_button(
 							__("Purchase Receipt"),
+<<<<<<< HEAD
 							this.make_purchase_receipt,
+=======
+							() => {
+								me.make_purchase_receipt();
+							},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							__("Create")
 						);
 						if (doc.is_subcontracted) {
 							if (doc.is_old_subcontracting_flow) {
 								if (me.has_unsupplied_items()) {
+<<<<<<< HEAD
 									cur_frm.add_custom_button(
+=======
+									this.frm.add_custom_button(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 										__("Material to Supplier"),
 										function () {
 											me.make_stock_entry();
@@ -400,9 +419,17 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 									);
 								}
 							} else {
+<<<<<<< HEAD
 								cur_frm.add_custom_button(
 									__("Subcontracting Order"),
 									this.make_subcontracting_order,
+=======
+								this.frm.add_custom_button(
+									__("Subcontracting Order"),
+									() => {
+										me.make_subcontracting_order();
+									},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									__("Create")
 								);
 							}
@@ -412,7 +439,13 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 					if (flt(doc.per_billed) < 100)
 						this.frm.add_custom_button(
 							__("Purchase Invoice"),
+<<<<<<< HEAD
 							this.make_purchase_invoice,
+=======
+							() => {
+								me.make_purchase_invoice();
+							},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							__("Create")
 						);
 
@@ -454,10 +487,17 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 					}
 				}
 
+<<<<<<< HEAD
 				cur_frm.page.set_inner_btn_group_as_primary(__("Create"));
 			}
 		} else if (doc.docstatus === 0) {
 			cur_frm.cscript.add_from_mappers();
+=======
+				this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+			}
+		} else if (doc.docstatus === 0) {
+			this.frm.cscript.add_from_mappers();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	}
 
@@ -494,8 +534,13 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 		frappe.call({
 			method: "erpnext.controllers.subcontracting_controller.make_rm_stock_entry",
 			args: {
+<<<<<<< HEAD
 				subcontract_order: cur_frm.doc.name,
 				order_doctype: cur_frm.doc.doctype,
+=======
+				subcontract_order: this.frm.doc.name,
+				order_doctype: this.frm.doc.doctype,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 			callback: function (r) {
 				var doclist = frappe.model.sync(r.message);
@@ -514,7 +559,11 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 	make_purchase_receipt() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.buying.doctype.purchase_order.purchase_order.make_purchase_receipt",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			freeze_message: __("Creating Purchase Receipt ..."),
 		});
 	}
@@ -522,14 +571,22 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 	make_purchase_invoice() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.buying.doctype.purchase_order.purchase_order.make_purchase_invoice",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 
 	make_subcontracting_order() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.buying.doctype.purchase_order.purchase_order.make_subcontracting_order",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			freeze_message: __("Creating Subcontracting Order ..."),
 		});
 	}
@@ -688,7 +745,11 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 	}
 
 	unhold_purchase_order() {
+<<<<<<< HEAD
 		cur_frm.cscript.update_status("Resume", "Draft");
+=======
+		this.frm.cscript.update_status("Resume", "Draft");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	hold_purchase_order() {
@@ -728,6 +789,7 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 	}
 
 	unclose_purchase_order() {
+<<<<<<< HEAD
 		cur_frm.cscript.update_status("Re-open", "Submitted");
 	}
 
@@ -737,6 +799,17 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 
 	delivered_by_supplier() {
 		cur_frm.cscript.update_status("Deliver", "Delivered");
+=======
+		this.frm.cscript.update_status("Re-open", "Submitted");
+	}
+
+	close_purchase_order() {
+		this.frm.cscript.update_status("Close", "Closed");
+	}
+
+	delivered_by_supplier() {
+		this.frm.cscript.update_status("Deliver", "Delivered");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	items_on_form_rendered() {

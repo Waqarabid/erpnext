@@ -99,7 +99,11 @@ def get_subcontracting_boms_for_finished_goods(fg_items: str | list) -> dict:
 			else:
 				return subcontracting_boms[0]
 
+<<<<<<< HEAD
 	return {}
+=======
+	return frappe._dict({})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()

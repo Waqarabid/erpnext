@@ -206,7 +206,11 @@ def prepare_data(data, so_elapsed_time, filters):
 
 
 def prepare_chart_data(pending, completed):
+<<<<<<< HEAD
 	labels = [_("Amount to Bill"), _("Billed Amount")]
+=======
+	labels = ["Amount to Bill", "Billed Amount"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return {
 		"data": {"labels": labels, "datasets": [{"values": [pending, completed]}]},

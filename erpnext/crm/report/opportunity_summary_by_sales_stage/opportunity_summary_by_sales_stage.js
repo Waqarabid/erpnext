@@ -44,7 +44,11 @@ frappe.query_reports["Opportunity Summary by Sales Stage"] = {
 			fieldname: "opportunity_source",
 			label: __("Opportunity Source"),
 			fieldtype: "Link",
+<<<<<<< HEAD
 			options: "Lead Source",
+=======
+			options: "UTM Source",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "opportunity_type",

@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.data import (
 	add_days,
 	add_months,
@@ -18,10 +22,26 @@ from frappe.utils.data import (
 
 from erpnext.accounts.doctype.subscription.subscription import get_prorata_factor
 
+<<<<<<< HEAD
 test_dependencies = ("UOM", "Item Group", "Item")
 
 
 class TestSubscription(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ("UOM", "Item Group", "Item")
+
+
+class UnitTestSubscription(UnitTestCase):
+	"""
+	Unit tests for Subscription.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSubscription(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		make_plans()
 		create_parties()
@@ -45,7 +65,11 @@ class TestSubscription(FrappeTestCase):
 			get_date_str(subscription.current_invoice_end),
 		)
 		self.assertEqual(subscription.invoices, [])
+<<<<<<< HEAD
 		self.assertEqual(subscription.status, "Trialling")
+=======
+		self.assertEqual(subscription.status, "Trialing")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_create_subscription_without_trial_with_correct_period(self):
 		subscription = create_subscription()

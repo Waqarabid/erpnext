@@ -183,7 +183,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Job Worker Address Details",
    "read_only": 1
   },
@@ -231,7 +235,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address Details",
    "print_hide": 1,
    "read_only": 1
@@ -244,7 +252,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address Details",
    "read_only": 1
   },
@@ -294,7 +306,11 @@
    "fieldname": "total",
    "fieldtype": "Currency",
    "label": "Total",
+<<<<<<< HEAD
    "options": "Company:company:default_currency",
+=======
+   "options": "currency",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -353,7 +369,10 @@
    "fieldname": "total_additional_costs",
    "fieldtype": "Currency",
    "label": "Total Additional Costs",
+<<<<<<< HEAD
    "options": "Company:company:default_currency",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide_if_no_value": 1,
    "read_only": 1
   },
@@ -451,6 +470,7 @@
    "options": "Project"
   },
   {
+<<<<<<< HEAD
    "fieldname": "tab_other_info",
    "fieldtype": "Tab Break",
    "label": "Other Info"
@@ -460,12 +480,27 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+=======
+    "fieldname": "tab_other_info",
+    "fieldtype": "Tab Break",
+    "label": "Other Info"
+  },
+  {
+    "fieldname": "tab_connections",
+    "fieldtype": "Tab Break",
+    "label": "Connections",
+    "show_dashboard": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-12-06 15:21:49.924146",
+=======
+ "modified": "2024-03-27 13:10:46.060843",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Subcontracting",
  "name": "Subcontracting Order",
@@ -514,10 +549,18 @@
  ],
  "search_fields": "status, transaction_date, supplier",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "supplier_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

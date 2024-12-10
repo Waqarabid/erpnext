@@ -37,7 +37,11 @@ class LowerDeductionCertificate(Document):
 
 	def validate_dates(self):
 		if getdate(self.valid_upto) < getdate(self.valid_from):
+<<<<<<< HEAD
 			frappe.throw(_("Valid Upto date cannot be before Valid From date"))
+=======
+			frappe.throw(_("Valid Up To date cannot be before Valid From date"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		fiscal_year = get_fiscal_year(fiscal_year=self.fiscal_year, as_dict=True)
 
@@ -45,7 +49,11 @@ class LowerDeductionCertificate(Document):
 			frappe.throw(_("Valid From date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
 
 		if not (fiscal_year.year_start_date <= getdate(self.valid_upto) <= fiscal_year.year_end_date):
+<<<<<<< HEAD
 			frappe.throw(_("Valid Upto date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
+=======
+			frappe.throw(_("Valid Up To date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_supplier_against_tax_category(self):
 		duplicate_certificate = frappe.db.get_value(

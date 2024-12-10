@@ -157,11 +157,21 @@
   "more_information",
   "inter_company_invoice_reference",
   "customer_group",
+<<<<<<< HEAD
   "campaign",
   "is_discounted",
   "col_break23",
   "status",
   "source",
+=======
+  "is_discounted",
+  "col_break23",
+  "utm_source",
+  "utm_campaign",
+  "utm_medium",
+  "column_break_gpiw",
+  "status",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "more_info",
   "debit_to",
   "party_account_currency",
@@ -421,7 +431,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
@@ -476,7 +490,11 @@
   },
   {
    "fieldname": "shipping_address",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address",
    "print_hide": 1,
    "read_only": 1
@@ -490,7 +508,11 @@
   },
   {
    "fieldname": "company_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "hidden": 1,
    "label": "Company Address",
    "print_hide": 1,
@@ -1320,6 +1342,7 @@
    "print_hide": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "campaign",
    "fieldtype": "Link",
    "label": "Campaign",
@@ -1329,6 +1352,8 @@
    "print_hide": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "fieldname": "is_discounted",
    "fieldtype": "Check",
@@ -1353,6 +1378,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "source",
    "fieldtype": "Link",
    "label": "Source",
@@ -1362,6 +1388,8 @@
    "print_hide": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "collapsible": 1,
    "fieldname": "more_info",
    "fieldtype": "Section Break",
@@ -1561,6 +1589,38 @@
    "label": "Update Billed Amount in Delivery Note"
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "column_break_gpiw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utm_medium",
+   "fieldtype": "Link",
+   "label": "Medium",
+   "options": "UTM Medium",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "utm_campaign",
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "oldfieldname": "campaign",
+   "oldfieldtype": "Link",
+   "options": "UTM Campaign",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "utm_source",
+   "fieldtype": "Link",
+   "label": "Source",
+   "oldfieldname": "source",
+   "oldfieldtype": "Select",
+   "options": "UTM Source",
+   "print_hide": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "company_contact_person",
    "fieldtype": "Link",
    "label": "Company Contact Person",
@@ -1618,7 +1678,11 @@
  ],
  "search_fields": "posting_date, due_date, customer, base_grand_total, outstanding_amount",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "customer",

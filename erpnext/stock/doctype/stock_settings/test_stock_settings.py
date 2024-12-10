@@ -3,10 +3,26 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestStockSettings(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestStockSettings(UnitTestCase):
+	"""
+	Unit tests for StockSettings.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestStockSettings(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		super().setUp()
 		frappe.db.set_single_value("Stock Settings", "clean_description_html", 0)

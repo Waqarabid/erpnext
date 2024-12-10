@@ -379,7 +379,11 @@ def get_timeline_data(doctype: str, name: str) -> dict[int, int]:
 	)
 
 
+<<<<<<< HEAD
 def get_project_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified"):
+=======
+def get_project_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="creation"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	customers, suppliers = get_customers_suppliers("Project", frappe.session.user)
 
 	ignore_permissions = False

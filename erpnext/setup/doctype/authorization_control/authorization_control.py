@@ -56,7 +56,11 @@ class AuthorizationControl(TransactionBase):
 			if not has_common(appr_roles, frappe.get_roles()) and not has_common(
 				appr_users, [session["user"]]
 			):
+<<<<<<< HEAD
 				frappe.msgprint(_("Not authroized since {0} exceeds limits").format(_(based_on)))
+=======
+				frappe.msgprint(_("Not authorized since {0} exceeds limits").format(_(based_on)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(_("Can be approved by {0}").format(comma_or(appr_roles + appr_users)))
 
 	def validate_auth_rule(self, doctype_name, total, based_on, cond, company, master_name=""):
@@ -189,7 +193,14 @@ class AuthorizationControl(TransactionBase):
 
 		# Remove user specific rules from global authorization rules
 		for r in based_on:
+<<<<<<< HEAD
 			if r in final_based_on and r not in ["Itemwise Discount", "Item Group wise Discount"]:
+=======
+			if r in final_based_on and r not in [
+				"Itemwise Discount",
+				"Item Group wise Discount",
+			]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				final_based_on.remove(r)
 
 		# Check for authorization set on particular roles
@@ -216,7 +227,14 @@ class AuthorizationControl(TransactionBase):
 
 		# Remove role specific rules from global authorization rules
 		for r in based_on:
+<<<<<<< HEAD
 			if r in final_based_on and r not in ["Itemwise Discount", "Item Group wise Discount"]:
+=======
+			if r in final_based_on and r not in [
+				"Itemwise Discount",
+				"Item Group wise Discount",
+			]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				final_based_on.remove(r)
 
 		# Check for global authorization

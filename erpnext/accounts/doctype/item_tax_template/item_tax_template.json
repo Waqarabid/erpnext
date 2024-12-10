@@ -57,7 +57,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-07-09 18:11:23.105589",
+=======
+ "modified": "2024-03-27 13:09:55.573483",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Item Tax Template",
@@ -98,9 +102,17 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

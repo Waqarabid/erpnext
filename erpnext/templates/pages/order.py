@@ -6,6 +6,10 @@ from frappe import _
 
 from erpnext.accounts.doctype.payment_request.payment_request import (
 	ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST,
+<<<<<<< HEAD
+=======
+	get_amount,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 
 
@@ -50,11 +54,15 @@ def get_context(context):
 			)
 			context.available_loyalty_points = int(loyalty_program_details.get("loyalty_points"))
 
+<<<<<<< HEAD
 	context.show_pay_button = (
 		"payments" in frappe.get_installed_apps()
 		and frappe.db.get_single_value("Buying Settings", "show_pay_button")
 		and context.doc.doctype in ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST
 	)
+=======
+	context.show_pay_button, context.pay_amount = get_payment_details(context.doc)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	context.show_make_pi_button = False
 	if context.doc.get("supplier"):
 		# show Make Purchase Invoice button based on permission
@@ -67,3 +75,22 @@ def get_attachments(dt, dn):
 		fields=["name", "file_name", "file_url", "is_private"],
 		filters={"attached_to_name": dn, "attached_to_doctype": dt, "is_private": 0},
 	)
+<<<<<<< HEAD
+=======
+
+
+def get_payment_details(doc):
+	show_pay_button, amount = (
+		(
+			"payments" in frappe.get_installed_apps()
+			and frappe.db.get_single_value("Buying Settings", "show_pay_button")
+			and doc.doctype in ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST
+		),
+		0,
+	)
+	if not show_pay_button:
+		return show_pay_button, amount
+
+	amount = get_amount(doc)
+	return bool(amount), amount
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -129,7 +129,11 @@
  "icon": "fa fa-list",
  "in_create": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-03-06 08:56:36.393237",
+=======
+ "modified": "2024-03-27 13:05:56.710541",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Account Closing Balance",
@@ -158,7 +162,11 @@
    "role": "Auditor"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

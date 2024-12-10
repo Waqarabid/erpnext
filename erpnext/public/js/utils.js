@@ -20,7 +20,15 @@ $.extend(erpnext, {
 	},
 
 	toggle_naming_series: function () {
+<<<<<<< HEAD
 		if (cur_frm && cur_frm.fields_dict.naming_series) {
+=======
+		if (
+			cur_frm &&
+			cur_frm.fields_dict.naming_series &&
+			cur_frm.meta.naming_rule == 'By "Naming Series" field'
+		) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			cur_frm.toggle_display("naming_series", cur_frm.doc.__islocal ? true : false);
 		}
 	},
@@ -420,7 +428,11 @@ $.extend(erpnext.utils, {
 		});
 	},
 
+<<<<<<< HEAD
 	get_fiscal_year: function (date, with_dates = false, boolean = false) {
+=======
+	get_fiscal_year: function (date, with_dates = false, raise_on_missing = true) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (!frappe.boot.setup_complete) {
 			return;
 		}
@@ -429,6 +441,7 @@ $.extend(erpnext.utils, {
 		}
 
 		let fiscal_year = "";
+<<<<<<< HEAD
 		frappe.call({
 			method: "erpnext.accounts.utils.get_fiscal_year",
 			args: {
@@ -443,6 +456,32 @@ $.extend(erpnext.utils, {
 				}
 			},
 		});
+=======
+		if (
+			frappe.boot.current_fiscal_year &&
+			date >= frappe.boot.current_fiscal_year[1] &&
+			date <= frappe.boot.current_fiscal_year[2]
+		) {
+			if (with_dates) fiscal_year = frappe.boot.current_fiscal_year;
+			else fiscal_year = frappe.boot.current_fiscal_year[0];
+		} else {
+			frappe.call({
+				method: "erpnext.accounts.utils.get_fiscal_year",
+				type: "GET", // make it cacheable
+				args: {
+					date: date,
+					raise_on_missing: raise_on_missing,
+				},
+				async: false,
+				callback: function (r) {
+					if (r.message) {
+						if (with_dates) fiscal_year = r.message;
+						else fiscal_year = r.message[0];
+					}
+				},
+			});
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return fiscal_year;
 	},
 });
@@ -710,6 +749,10 @@ erpnext.utils.update_child_items = function (opts) {
 			fieldname: frm.doc.doctype == "Sales Order" ? "delivery_date" : "schedule_date",
 			in_list_view: 1,
 			label: frm.doc.doctype == "Sales Order" ? __("Delivery Date") : __("Reqd by date"),
+<<<<<<< HEAD
+=======
+			default: frm.doc.doctype == "Sales Order" ? frm.doc.delivery_date : frm.doc.schedule_date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 		});
 		fields.splice(3, 0, {
@@ -962,6 +1005,7 @@ erpnext.utils.map_current_doc = function (opts) {
 	}
 };
 
+<<<<<<< HEAD
 frappe.form.link_formatters["Item"] = function (value, doc) {
 	if (doc && value && doc.item_name && doc.item_name !== value && doc.item_code === value) {
 		return value + ": " + doc.item_name;
@@ -997,6 +1041,38 @@ frappe.form.link_formatters["Project"] = function (value, doc) {
 		return value;
 	}
 };
+=======
+frappe.form.link_formatters["Item"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "item_name");
+};
+
+frappe.form.link_formatters["Employee"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "employee_name");
+};
+
+frappe.form.link_formatters["Project"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "project_name");
+};
+
+/**
+ * Add a title to a link value based on the provided document and field information.
+ *
+ * @param {string} value - The value to add a link title to.
+ * @param {Object} doc - The document object.
+ * @param {Object} df - The field object.
+ * @param {string} title_field - The field name for the title.
+ * @returns {string} - The link value with the added title.
+ */
+function add_link_title(value, doc, df, title_field) {
+	if (doc && value && doc[title_field] && doc[title_field] !== value && doc[df.fieldname] === value) {
+		return value + ": " + doc[title_field];
+	} else if (!value && doc.doctype && doc[title_field]) {
+		return doc[title_field];
+	} else {
+		return value;
+	}
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 // add description on posting time
 $(document).on("app_ready", function () {

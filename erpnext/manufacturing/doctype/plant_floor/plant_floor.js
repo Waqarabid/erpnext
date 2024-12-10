@@ -40,6 +40,10 @@ frappe.ui.form.on("Plant Floor", {
 	refresh(frm) {
 		frm.trigger("prepare_stock_dashboard");
 		frm.trigger("prepare_workstation_dashboard");
+<<<<<<< HEAD
+=======
+		frm.trigger("update_realtime_status");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if (!frm.is_new()) {
 			frm.trigger("add_workstation");
@@ -58,6 +62,15 @@ frappe.ui.form.on("Plant Floor", {
 		});
 	},
 
+<<<<<<< HEAD
+=======
+	update_realtime_status(frm) {
+		frappe.realtime.on("update_workstation_status", (data) => {
+			frappe.visual_plant_floor.update_status(data);
+		});
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	prepare_stock_dashboard(frm) {
 		if (!frm.doc.warehouse) {
 			return;

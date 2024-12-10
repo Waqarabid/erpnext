@@ -114,7 +114,11 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-09-15 17:22:45.291628",
+=======
+ "modified": "2024-08-30 17:22:45.291628",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Period Closing Voucher",
@@ -151,7 +155,11 @@
   }
  ],
  "search_fields": "fiscal_year, period_start_date, period_end_date",
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "closing_account_head"

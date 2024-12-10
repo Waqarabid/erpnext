@@ -156,7 +156,11 @@ frappe.ui.form.on("Invoice Discounting", {
 					},
 				});
 			},
+<<<<<<< HEAD
 			primary_action_label: __("Get Invocies"),
+=======
+			primary_action_label: __("Get Invoices"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 		d.show();
 	},
@@ -189,7 +193,11 @@ frappe.ui.form.on("Invoice Discounting", {
 
 	show_general_ledger: (frm) => {
 		if (frm.doc.docstatus > 0) {
+<<<<<<< HEAD
 			cur_frm.add_custom_button(
+=======
+			frm.add_custom_button(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				__("Accounting Ledger"),
 				function () {
 					frappe.route_options = {

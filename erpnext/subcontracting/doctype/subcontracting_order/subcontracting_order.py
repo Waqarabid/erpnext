@@ -36,10 +36,17 @@ class SubcontractingOrder(SubcontractingController):
 		)
 
 		additional_costs: DF.Table[LandedCostTaxesandCharges]
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
 		amended_from: DF.Link | None
 		billing_address: DF.Link | None
 		billing_address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+		amended_from: DF.Link | None
+		billing_address: DF.Link | None
+		billing_address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		company: DF.Link
 		contact_display: DF.SmallText | None
 		contact_email: DF.SmallText | None
@@ -59,7 +66,11 @@ class SubcontractingOrder(SubcontractingController):
 		set_reserve_warehouse: DF.Link | None
 		set_warehouse: DF.Link | None
 		shipping_address: DF.Link | None
+<<<<<<< HEAD
 		shipping_address_display: DF.SmallText | None
+=======
+		shipping_address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		status: DF.Literal[
 			"Draft",
 			"Open",
@@ -244,7 +255,11 @@ class SubcontractingOrder(SubcontractingController):
 				bom = (
 					frappe.db.get_value(
 						"Subcontracting BOM",
+<<<<<<< HEAD
 						{"finished_good": item.item_code, "is_active": 1},
+=======
+						{"finished_good": item.name, "is_active": 1},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"finished_good_bom",
 					)
 					or item.default_bom
@@ -252,7 +267,11 @@ class SubcontractingOrder(SubcontractingController):
 
 				items.append(
 					{
+<<<<<<< HEAD
 						"item_code": item.item_code,
+=======
+						"item_code": item.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"item_name": item.item_name,
 						"schedule_date": self.schedule_date,
 						"description": item.description,

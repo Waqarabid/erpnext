@@ -40,12 +40,19 @@ class Opportunity(TransactionBase, CRMNote):
 			OpportunityLostReasonDetail,
 		)
 
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amended_from: DF.Link | None
 		annual_revenue: DF.Currency
 		base_opportunity_amount: DF.Currency
 		base_total: DF.Currency
+<<<<<<< HEAD
 		campaign: DF.Link | None
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		city: DF.Data | None
 		company: DF.Link
 		competitors: DF.TableMultiSelect[CompetitorDetail]
@@ -80,13 +87,23 @@ class Opportunity(TransactionBase, CRMNote):
 		phone_ext: DF.Data | None
 		probability: DF.Percent
 		sales_stage: DF.Link | None
+<<<<<<< HEAD
 		source: DF.Link | None
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		state: DF.Data | None
 		status: DF.Literal["Open", "Quotation", "Converted", "Lost", "Replied", "Closed"]
 		territory: DF.Link | None
 		title: DF.Data | None
 		total: DF.Currency
 		transaction_date: DF.Date
+<<<<<<< HEAD
+=======
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		website: DF.Data | None
 		whatsapp: DF.Data | None
 	# end: auto-generated types

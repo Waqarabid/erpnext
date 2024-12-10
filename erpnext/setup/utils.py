@@ -36,8 +36,11 @@ def before_tests():
 			}
 		)
 
+<<<<<<< HEAD
 	frappe.db.sql("delete from `tabItem Price`")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	_enable_all_roles_for_admin()
 
 	set_defaults_for_tests()

@@ -2,7 +2,11 @@
 # For license information, please see license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.stock.doctype.item.test_item import make_item
@@ -11,7 +15,11 @@ from erpnext.stock.report.item_shortage_report.item_shortage_report import (
 )
 
 
+<<<<<<< HEAD
 class TestItemShortageReport(FrappeTestCase):
+=======
+class TestItemShortageReport(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_item_shortage_report(self):
 		item = make_item().name
 		so = make_sales_order(item_code=item)

@@ -177,7 +177,10 @@ class Company(NestedSet):
 			["Default Income Account", "default_income_account"],
 			["Stock Received But Not Billed Account", "stock_received_but_not_billed"],
 			["Stock Adjustment Account", "stock_adjustment_account"],
+<<<<<<< HEAD
 			["Expense Included In Valuation Account", "expenses_included_in_valuation"],
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		for account in accounts:
@@ -274,7 +277,11 @@ class Company(NestedSet):
 		if frappe.flags.parent_company_changed:
 			from frappe.utils.nestedset import rebuild_tree
 
+<<<<<<< HEAD
 			rebuild_tree("Company", "parent_company")
+=======
+			rebuild_tree("Company")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		frappe.clear_cache()
 
@@ -296,9 +303,13 @@ class Company(NestedSet):
 						"parent_warehouse": "{} - {}".format(_("All Warehouses"), self.abbr)
 						if not wh_detail["is_group"]
 						else "",
+<<<<<<< HEAD
 						"warehouse_type": wh_detail["warehouse_type"]
 						if "warehouse_type" in wh_detail
 						else None,
+=======
+						"warehouse_type": wh_detail.get("warehouse_type"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					}
 				)
 				warehouse.flags.ignore_permissions = True
@@ -419,7 +430,11 @@ class Company(NestedSet):
 		frappe.local.flags.ignore_update_nsm = True
 		make_records(records)
 		frappe.local.flags.ignore_update_nsm = False
+<<<<<<< HEAD
 		rebuild_tree("Department", "parent_department")
+=======
+		rebuild_tree("Department")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_coa_input(self):
 		if self.create_chart_of_accounts_based_on == "Existing Company":
@@ -489,7 +504,10 @@ class Company(NestedSet):
 			"depreciation_expense_account": "Depreciation",
 			"capital_work_in_progress_account": "Capital Work in Progress",
 			"asset_received_but_not_billed": "Asset Received But Not Billed",
+<<<<<<< HEAD
 			"expenses_included_in_asset_valuation": "Expenses Included In Asset Valuation",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"default_expense_account": "Cost of Goods Sold",
 		}
 
@@ -499,7 +517,10 @@ class Company(NestedSet):
 					"stock_received_but_not_billed": "Stock Received But Not Billed",
 					"default_inventory_account": "Stock",
 					"stock_adjustment_account": "Stock Adjustment",
+<<<<<<< HEAD
 					"expenses_included_in_valuation": "Expenses Included In Valuation",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			)
 

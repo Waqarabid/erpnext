@@ -67,7 +67,10 @@ class AccountingDimensionFilter(Document):
 
 def get_dimension_filter_map():
 	if not frappe.flags.get("dimension_filter_map"):
+<<<<<<< HEAD
 		# nosemgrep
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		filters = frappe.db.sql(
 			"""
 			SELECT

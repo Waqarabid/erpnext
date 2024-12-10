@@ -5,9 +5,15 @@
 import frappe
 from frappe import _
 from frappe.utils import add_to_date, cint, flt, get_datetime, get_table_name, getdate
+<<<<<<< HEAD
 from frappe.utils.deprecations import deprecated
 from pypika import functions as fn
 
+=======
+from pypika import functions as fn
+
+from erpnext.deprecation_dumpster import deprecated
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.warehouse.warehouse import apply_warehouse_filter
 
 SLE_COUNT_LIMIT = 10_000
@@ -100,7 +106,11 @@ def get_stock_ledger_entries(filters):
 	return entries
 
 
+<<<<<<< HEAD
 @deprecated
+=======
+@deprecated(f"{__name__}.get_stock_ledger_entries_for_batch_no", "unknown", "v16", "No known instructions.")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_stock_ledger_entries_for_batch_no(filters):
 	if not filters.get("from_date"):
 		frappe.throw(_("'From Date' is required"))

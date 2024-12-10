@@ -20,7 +20,11 @@
           </div>
         {% else %}
           <span class="indicator-pill {{ " red" if doc.status=="Open" else "darkgrey" }}">
+<<<<<<< HEAD
             {{ _(doc.status) }}</span>
+=======
+            {{ doc.status }}</span>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         {% endif %}
       </div>
       {% if doc["_assign"] %}

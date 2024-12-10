@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "creation": "2019-06-05 11:43:38.897272",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -44,13 +48,24 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2019-06-05 12:19:59.994979",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:06:45.252082",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Communication",
  "name": "Communication Medium Timeslot",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

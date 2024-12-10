@@ -1,10 +1,17 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import today
 
 from erpnext.accounts.doctype.finance_book.test_finance_book import create_finance_book
@@ -13,7 +20,11 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sal
 from erpnext.accounts.utils import get_fiscal_year
 
 
+<<<<<<< HEAD
 class TestPeriodClosingVoucher(unittest.TestCase):
+=======
+class TestPeriodClosingVoucher(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_closing_entry(self):
 		frappe.db.sql("delete from `tabGL Entry` where company='Test PCV Company'")
 		frappe.db.sql("delete from `tabPeriod Closing Voucher` where company='Test PCV Company'")
@@ -383,5 +394,9 @@ def create_cost_center(cc_name):
 	return costcenter.name
 
 
+<<<<<<< HEAD
 test_dependencies = ["Customer", "Cost Center"]
 test_records = frappe.get_test_records("Period Closing Voucher")
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Customer", "Cost Center"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -3,10 +3,26 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestSupplierScorecardCriteria(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestSupplierScorecardCriteria(UnitTestCase):
+	"""
+	Unit tests for SupplierScorecardCriteria.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSupplierScorecardCriteria(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_variables_exist(self):
 		delete_test_scorecards()
 		for d in test_good_criteria:

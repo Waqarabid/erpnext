@@ -34,7 +34,11 @@ class Quotation(SellingController):
 		from erpnext.stock.doctype.packed_item.packed_item import PackedItem
 
 		additional_discount_percentage: DF.Float
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amended_from: DF.Link | None
 		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
 		auto_repeat: DF.Link | None
@@ -46,10 +50,16 @@ class Quotation(SellingController):
 		base_rounding_adjustment: DF.Currency
 		base_total: DF.Currency
 		base_total_taxes_and_charges: DF.Currency
+<<<<<<< HEAD
 		campaign: DF.Link | None
 		company: DF.Link
 		company_address: DF.Link | None
 		company_address_display: DF.SmallText | None
+=======
+		company: DF.Link
+		company_address: DF.Link | None
+		company_address_display: DF.TextEditor | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		company_contact_person: DF.Link | None
 		competitors: DF.TableMultiSelect[CompetitorDetail]
 		contact_display: DF.SmallText | None
@@ -71,7 +81,11 @@ class Quotation(SellingController):
 		in_words: DF.Data | None
 		incoterm: DF.Link | None
 		items: DF.Table[QuotationItem]
+<<<<<<< HEAD
 		language: DF.Data | None
+=======
+		language: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		letter_head: DF.Link | None
 		lost_reasons: DF.TableMultiSelect[QuotationLostReasonDetail]
 		named_place: DF.Data | None
@@ -95,10 +109,16 @@ class Quotation(SellingController):
 		scan_barcode: DF.Data | None
 		select_print_heading: DF.Link | None
 		selling_price_list: DF.Link
+<<<<<<< HEAD
 		shipping_address: DF.SmallText | None
 		shipping_address_name: DF.Link | None
 		shipping_rule: DF.Link | None
 		source: DF.Link | None
+=======
+		shipping_address: DF.TextEditor | None
+		shipping_address_name: DF.Link | None
+		shipping_rule: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		status: DF.Literal[
 			"Draft", "Open", "Replied", "Partially Ordered", "Ordered", "Lost", "Cancelled", "Expired"
 		]
@@ -115,6 +135,13 @@ class Quotation(SellingController):
 		total_qty: DF.Float
 		total_taxes_and_charges: DF.Currency
 		transaction_date: DF.Date
+<<<<<<< HEAD
+=======
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		valid_till: DF.Date | None
 	# end: auto-generated types
 

@@ -51,7 +51,11 @@ class BOMUpdateLog(Document):
 		table = DocType("BOM Update Log")
 		frappe.db.delete(
 			table,
+<<<<<<< HEAD
 			filters=((table.modified < (Now() - Interval(days=days))) & (table.update_type == "Update Cost")),
+=======
+			filters=((table.creation < (Now() - Interval(days=days))) & (table.update_type == "Update Cost")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 	def validate(self):

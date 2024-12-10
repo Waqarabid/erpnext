@@ -17,6 +17,10 @@ class PurchaseTaxesandCharges(Document):
 		account_currency: DF.Link | None
 		account_head: DF.Link
 		add_deduct_tax: DF.Literal["Add", "Deduct"]
+<<<<<<< HEAD
+=======
+		base_net_amount: DF.Currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		base_tax_amount: DF.Currency
 		base_tax_amount_after_discount_amount: DF.Currency
 		base_total: DF.Currency
@@ -35,11 +39,19 @@ class PurchaseTaxesandCharges(Document):
 		included_in_print_rate: DF.Check
 		is_tax_withholding_account: DF.Check
 		item_wise_tax_detail: DF.Code | None
+<<<<<<< HEAD
+=======
+		net_amount: DF.Currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
 		rate: DF.Float
 		row_id: DF.Data | None
+<<<<<<< HEAD
+=======
+		set_by_item_tax_template: DF.Check
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		tax_amount: DF.Currency
 		tax_amount_after_discount_amount: DF.Currency
 		total: DF.Currency

@@ -39,4 +39,8 @@ def build_tree():
 			}
 		).insert(ignore_permissions=True)
 
+<<<<<<< HEAD
 	rebuild_tree("Supplier Group", "parent_supplier_group")
+=======
+	rebuild_tree("Supplier Group")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

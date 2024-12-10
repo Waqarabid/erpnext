@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings, timeout
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase, timeout
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, add_months, add_to_date, cint, flt, now, today
 
 from erpnext.manufacturing.doctype.job_card.job_card import JobCardCancelError
@@ -31,10 +35,26 @@ from erpnext.stock.doctype.stock_entry import test_stock_entry
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 from erpnext.stock.utils import get_bin
 
+<<<<<<< HEAD
 test_dependencies = ["BOM"]
 
 
 class TestWorkOrder(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["BOM"]
+
+
+class UnitTestWorkOrder(UnitTestCase):
+	"""
+	Unit tests for WorkOrder.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestWorkOrder(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.warehouse = "_Test Warehouse 2 - _TC"
 		self.item = "_Test Item"
@@ -487,6 +507,10 @@ class TestWorkOrder(FrappeTestCase):
 						"from_time": row.from_time,
 						"to_time": row.to_time,
 						"time_in_mins": row.time_in_mins,
+<<<<<<< HEAD
+=======
+						"completed_qty": 0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					},
 				)
 
@@ -1141,7 +1165,13 @@ class TestWorkOrder(FrappeTestCase):
 
 		frappe.db.set_single_value("Manufacturing Settings", "backflush_raw_materials_based_on", "BOM")
 
+<<<<<<< HEAD
 	@change_settings("Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_batch_creation(self):
 		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
 
@@ -1162,7 +1192,13 @@ class TestWorkOrder(FrappeTestCase):
 		except frappe.MandatoryError:
 			self.fail("Batch generation causing failing in Work Order")
 
+<<<<<<< HEAD
 	@change_settings("Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_serial_no_creation(self):
 		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
 
@@ -1195,7 +1231,13 @@ class TestWorkOrder(FrappeTestCase):
 		except frappe.MandatoryError:
 			self.fail("Batch generation causing failing in Work Order")
 
+<<<<<<< HEAD
 	@change_settings("Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_serial_no_batch_creation(self):
 		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
 
@@ -1247,7 +1289,11 @@ class TestWorkOrder(FrappeTestCase):
 
 		return serial_nos
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Manufacturing Settings",
 		{"backflush_raw_materials_based_on": "Material Transferred for Manufacture"},
 	)
@@ -1277,7 +1323,11 @@ class TestWorkOrder(FrappeTestCase):
 		for index, row in enumerate(ste_manu.get("items"), start=1):
 			self.assertEqual(index, row.idx)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Manufacturing Settings",
 		{"backflush_raw_materials_based_on": "Material Transferred for Manufacture"},
 	)
@@ -2060,7 +2110,11 @@ class TestWorkOrder(FrappeTestCase):
 
 		frappe.db.set_single_value("Manufacturing Settings", "set_op_cost_and_scrape_from_sub_assemblies", 0)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Manufacturing Settings", {"material_consumption": 1, "get_rm_cost_from_consumption_entry": 1}
 	)
 	def test_get_rm_cost_from_consumption_entry(self):
@@ -2696,6 +2750,9 @@ def make_wo_order_test_record(**args):
 		if not args.do_not_submit:
 			wo_order.submit()
 	return wo_order
+<<<<<<< HEAD
 
 
 test_records = frappe.get_test_records("Work Order")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

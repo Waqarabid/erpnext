@@ -166,7 +166,11 @@ def set_total(node, value, complete_list, totals):
 	totals[node["account"]] += value
 
 	parent = node["parent_account"]
+<<<<<<< HEAD
 	if not parent == "":
+=======
+	if parent != "":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return set_total(
 			next(item for item in complete_list if item["account"] == parent), value, complete_list, totals
 		)

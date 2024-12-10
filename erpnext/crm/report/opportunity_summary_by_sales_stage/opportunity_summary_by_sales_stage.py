@@ -36,9 +36,15 @@ class OpportunitySummaryBySalesStage:
 			self.columns.append(
 				{
 					"label": _("Source"),
+<<<<<<< HEAD
 					"fieldname": "source",
 					"fieldtype": "Link",
 					"options": "Lead Source",
+=======
+					"fieldname": "utm_source",
+					"fieldtype": "Link",
+					"options": "UTM Source",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"width": 200,
 				}
 			)
@@ -69,7 +75,11 @@ class OpportunitySummaryBySalesStage:
 
 		based_on = {
 			"Opportunity Owner": "_assign",
+<<<<<<< HEAD
 			"Source": "source",
+=======
+			"Source": "utm_source",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Opportunity Type": "opportunity_type",
 		}[self.filters.get("based_on")]
 
@@ -128,7 +138,11 @@ class OpportunitySummaryBySalesStage:
 		for based_on, data in self.formatted_data.items():
 			row_based_on = {
 				"Opportunity Owner": "opportunity_owner",
+<<<<<<< HEAD
 				"Source": "source",
+=======
+				"Source": "utm_source",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"Opportunity Type": "opportunity_type",
 			}[self.filters.get("based_on")]
 
@@ -148,7 +162,11 @@ class OpportunitySummaryBySalesStage:
 
 			based_on = {
 				"Opportunity Owner": "_assign",
+<<<<<<< HEAD
 				"Source": "source",
+=======
+				"Source": "utm_source",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"Opportunity Type": "opportunity_type",
 			}[self.filters.get("based_on")]
 
@@ -188,7 +206,11 @@ class OpportunitySummaryBySalesStage:
 			filters.append({"opportunity_type": self.filters.get("opportunity_type")})
 
 		if self.filters.get("opportunity_source"):
+<<<<<<< HEAD
 			filters.append({"source": self.filters.get("opportunity_source")})
+=======
+			filters.append({"utm_source": self.filters.get("opportunity_source")})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.filters.get("status"):
 			filters.append({"status": ("in", self.filters.get("status"))})

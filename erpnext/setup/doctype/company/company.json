@@ -88,7 +88,10 @@
   "accumulated_depreciation_account",
   "depreciation_expense_account",
   "series_for_depreciation_entry",
+<<<<<<< HEAD
   "expenses_included_in_asset_valuation",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_40",
   "disposal_account",
   "depreciation_cost_center",
@@ -111,11 +114,18 @@
   "enable_provisional_accounting_for_non_stock_items",
   "default_inventory_account",
   "stock_adjustment_account",
+<<<<<<< HEAD
   "default_in_transit_warehouse",
   "column_break_32",
   "stock_received_but_not_billed",
   "default_provisional_account",
   "expenses_included_in_valuation",
+=======
+  "column_break_32",
+  "stock_received_but_not_billed",
+  "default_provisional_account",
+  "default_in_transit_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "manufacturing_section",
   "default_operating_cost_account",
   "dashboard_tab"
@@ -480,6 +490,7 @@
    "options": "Account"
   },
   {
+<<<<<<< HEAD
    "fieldname": "expenses_included_in_valuation",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
@@ -488,6 +499,8 @@
    "options": "Account"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "accumulated_depreciation_account",
    "fieldtype": "Link",
    "label": "Accumulated Depreciation Account",
@@ -507,12 +520,15 @@
    "label": "Series for Asset Depreciation Entry (Journal Entry)"
   },
   {
+<<<<<<< HEAD
    "fieldname": "expenses_included_in_asset_valuation",
    "fieldtype": "Link",
    "label": "Expenses Included In Asset Valuation",
    "options": "Account"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break_40",
    "fieldtype": "Column Break"
   },
@@ -911,8 +927,16 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

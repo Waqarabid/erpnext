@@ -24,10 +24,13 @@ def validate_return(doc):
 
 	if doc.return_against:
 		validate_return_against(doc)
+<<<<<<< HEAD
 
 		if doc.doctype in ("Sales Invoice", "Purchase Invoice") and not doc.update_stock:
 			return
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		validate_returned_items(doc)
 
 
@@ -156,7 +159,11 @@ def validate_returned_items(doc):
 			items_returned = True
 
 	if not items_returned:
+<<<<<<< HEAD
 		frappe.throw(_("Atleast one item should be entered with negative quantity in return document"))
+=======
+		frappe.throw(_("At least one item should be entered with negative quantity in return document"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def validate_quantity(doc, args, ref, valid_items, already_returned_items):

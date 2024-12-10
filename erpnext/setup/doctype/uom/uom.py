@@ -14,8 +14,16 @@ class UOM(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+<<<<<<< HEAD
 		enabled: DF.Check
 		must_be_whole_number: DF.Check
+=======
+		common_code: DF.Data | None
+		description: DF.SmallText | None
+		enabled: DF.Check
+		must_be_whole_number: DF.Check
+		symbol: DF.Data | None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		uom_name: DF.Data
 	# end: auto-generated types
 

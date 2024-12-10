@@ -1,7 +1,11 @@
 import datetime
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, add_months, nowdate
 
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
@@ -11,6 +15,7 @@ from erpnext.selling.report.payment_terms_status_for_sales_order.payment_terms_s
 )
 from erpnext.stock.doctype.item.test_item import create_item
 
+<<<<<<< HEAD
 test_dependencies = ["Sales Order", "Item", "Sales Invoice", "Payment Terms Template", "Customer"]
 
 
@@ -25,6 +30,21 @@ class TestPaymentTermsStatusForSalesOrder(FrappeTestCase):
 		frappe.db.delete("Sales Invoice", filters={"company": "_Test Company"})
 		frappe.db.delete("Sales Order", filters={"company": "_Test Company"})
 
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = [
+	"Sales Order",
+	"Item",
+	"Sales Invoice",
+	"Payment Terms Template",
+	"Customer",
+]
+
+
+class TestPaymentTermsStatusForSalesOrder(IntegrationTestCase):
+	def tearDown(self):
+		frappe.db.rollback()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def create_payment_terms_template(self):
 		# create template for 50-50 payments
 		template = None
@@ -146,6 +166,12 @@ class TestPaymentTermsStatusForSalesOrder(FrappeTestCase):
 			)
 			doc.insert()
 
+<<<<<<< HEAD
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", allow_multi_currency_invoices_against_single_party_account=1
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_02_alternate_currency(self):
 		transaction_date = "2021-06-15"
 		self.create_payment_terms_template()

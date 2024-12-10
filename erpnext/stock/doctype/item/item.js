@@ -550,6 +550,27 @@ $.extend(erpnext.item, {
 					fields.push({ fieldtype: "Section Break" });
 				}
 				fields.push({ fieldtype: "Column Break", label: name });
+<<<<<<< HEAD
+=======
+				fields.push({
+					fieldtype: "Data",
+					placeholder: "Search",
+					fieldname: `search_${frappe.scrub(name)}`,
+					onchange: function (e) {
+						let value = e.target.value;
+						let result = attr_dict[name].filter((attr_value) =>
+							attr_value.toString().toLowerCase().includes(value.toLowerCase())
+						);
+						attr_dict[name].forEach((attr_value) => {
+							if (result.includes(attr_value)) {
+								me.multiple_variant_dialog.set_df_property(attr_value, "hidden", 0);
+							} else {
+								me.multiple_variant_dialog.set_df_property(attr_value, "hidden", 1);
+							}
+						});
+					},
+				});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				attr_dict[name].forEach((value) => {
 					fields.push({
 						fieldtype: "Check",
@@ -643,6 +664,13 @@ $.extend(erpnext.item, {
 			me.multiple_variant_dialog.disable_primary_action();
 			me.multiple_variant_dialog.clear();
 			me.multiple_variant_dialog.show();
+<<<<<<< HEAD
+=======
+			me.multiple_variant_dialog.$wrapper
+				.find("div[data-fieldname^='search_']")
+				.find(".clearfix")
+				.hide();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		function get_selected_attributes() {

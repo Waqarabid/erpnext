@@ -1,9 +1,16 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
 
 
 class TestUtils(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestUtils(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_reset_default_field_value(self):
 		doc = frappe.get_doc(
 			{

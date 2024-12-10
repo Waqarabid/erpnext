@@ -1,10 +1,20 @@
 import functools
 import inspect
+<<<<<<< HEAD
 
 import frappe
 from frappe.utils.user import is_website_user
 
 __version__ = "15.39.6"
+=======
+from typing import TypeVar
+
+import frappe
+from frappe.model.document import Document
+from frappe.utils.user import is_website_user
+
+__version__ = "16.0.0-dev"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_default_company(user=None):
@@ -160,3 +170,37 @@ def check_app_permission():
 		return False
 
 	return True
+<<<<<<< HEAD
+=======
+
+
+T = TypeVar("T")
+
+
+def normalize_ctx_input(T: type) -> callable:
+	"""
+	Normalizes the first argument (ctx) of the decorated function by:
+	- Converting Document objects to dictionaries
+	- Parsing JSON strings
+	- Casting the result to the specified type T
+	"""
+
+	def decorator(func: callable):
+		# conserve annotations for frappe.utils.typing_validations
+		@functools.wraps(func, assigned=(a for a in functools.WRAPPER_ASSIGNMENTS if a != "__annotations__"))
+		def wrapper(ctx: T | Document | dict | str, *args, **kwargs):
+			if isinstance(ctx, Document):
+				ctx = T(**ctx.as_dict())
+			elif isinstance(ctx, dict):
+				ctx = T(**ctx)
+			else:
+				ctx = T(**frappe.parse_json(ctx))
+
+			return func(ctx, *args, **kwargs)
+
+		# set annotations from function
+		wrapper.__annotations__.update({k: v for k, v in func.__annotations__.items() if k != "ctx"})
+		return wrapper
+
+	return decorator
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

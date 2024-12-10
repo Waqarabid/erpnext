@@ -11,6 +11,10 @@ from pypika import Order
 
 from erpnext.accounts.report.sales_register.sales_register import get_mode_of_payments
 from erpnext.accounts.report.utils import get_query_columns, get_values_for_columns
+<<<<<<< HEAD
+=======
+from erpnext.controllers.taxes_and_totals import ItemWiseTaxDetail
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.selling.report.item_wise_sales_history.item_wise_sales_history import (
 	get_customer_details,
 )
@@ -596,6 +600,7 @@ def get_tax_accounts(
 				for item_code, tax_data in item_wise_tax_detail.items():
 					itemised_tax.setdefault(item_code, frappe._dict())
 
+<<<<<<< HEAD
 					if isinstance(tax_data, list):
 						tax_rate, tax_amount = tax_data
 					else:
@@ -604,6 +609,12 @@ def get_tax_accounts(
 
 					if charge_type == "Actual" and not tax_rate:
 						tax_rate = "NA"
+=======
+					tax_data = ItemWiseTaxDetail(**tax_data)
+
+					if charge_type == "Actual" and not tax_data.tax_rate:
+						tax_data.tax_rate = "NA"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 					item_net_amount = sum(
 						[flt(d.base_net_amount) for d in item_row_map.get(parent, {}).get(item_code, [])]
@@ -611,7 +622,13 @@ def get_tax_accounts(
 
 					for d in item_row_map.get(parent, {}).get(item_code, []):
 						item_tax_amount = (
+<<<<<<< HEAD
 							flt((tax_amount * d.base_net_amount) / item_net_amount) if item_net_amount else 0
+=======
+							flt((tax_data.tax_amount * d.base_net_amount) / item_net_amount)
+							if item_net_amount
+							else 0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						)
 						if item_tax_amount:
 							tax_value = flt(item_tax_amount, tax_amount_precision)
@@ -623,7 +640,11 @@ def get_tax_accounts(
 
 							itemised_tax.setdefault(d.name, {})[description] = frappe._dict(
 								{
+<<<<<<< HEAD
 									"tax_rate": tax_rate,
+=======
+									"tax_rate": tax_data.tax_rate,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									"tax_amount": tax_value,
 									"is_other_charges": 0 if tuple([account_head]) in tax_accounts else 1,
 								}

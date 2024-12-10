@@ -32,7 +32,11 @@ jobs:
 
     steps:
       - name: Clone
+<<<<<<< HEAD
         uses: actions/checkout@v2
+=======
+        uses: actions/checkout@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
       - name: Check for valid Python & Merge Conflicts
         run: |
@@ -43,12 +47,21 @@ jobs:
           fi
 
       - name: Setup Python
+<<<<<<< HEAD
         uses: "actions/setup-python@v4"
         with:
           python-version: '3.10'
 
       - name: Setup Node
         uses: actions/setup-node@v2
+=======
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         with:
           node-version: 18
           check-latest: true
@@ -57,7 +70,11 @@ jobs:
         run: echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
 
       - name: Cache pip
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/*requirements.txt', '**/pyproject.toml') }}
@@ -66,7 +83,11 @@ jobs:
             ${{ runner.os }}-
 
       - name: Cache node modules
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         env:
           cache-name: cache-node-modules
         with:
@@ -81,7 +102,11 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+<<<<<<< HEAD
       - uses: actions/cache@v2
+=======
+      - uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -134,9 +159,17 @@ jobs:
           }
 
           update_to_version 14
+<<<<<<< HEAD
 
           echo "Updating to latest version"
           git -C "apps/frappe" checkout -q -f "${GITHUB_BASE_REF:-${GITHUB_REF##*/}}"
+=======
+          update_to_version 15
+
+          echo "Updating to latest version"
+          git -C "apps/frappe" fetch --depth 1 upstream "${GITHUB_BASE_REF:-${GITHUB_REF##*/}}"
+          git -C "apps/frappe" checkout -q -f FETCH_HEAD
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
           git -C "apps/erpnext" checkout -q -f "$GITHUB_SHA"
 
           pgrep honcho | xargs kill

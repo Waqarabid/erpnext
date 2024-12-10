@@ -2,7 +2,11 @@
 # License: GNU General Public License v3. See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, timeout
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase, timeout
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.manufacturing.doctype.bom_update_log.test_bom_update_log import (
 	update_cost_in_all_boms_in_test,
@@ -11,10 +15,27 @@ from erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool import enqueu
 from erpnext.manufacturing.doctype.production_plan.test_production_plan import make_bom
 from erpnext.stock.doctype.item.test_item import create_item
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("BOM")
 
 
 class TestBOMUpdateTool(FrappeTestCase):
+=======
+
+class UnitTestBomUpdateTool(UnitTestCase):
+	"""
+	Unit tests for BomUpdateTool.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["BOM"]
+
+
+class TestBOMUpdateTool(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"Test major functions run via BOM Update Tool."
 
 	def tearDown(self):
@@ -24,7 +45,11 @@ class TestBOMUpdateTool(FrappeTestCase):
 	def test_replace_bom(self):
 		current_bom = "BOM-_Test Item Home Desktop Manufactured-001"
 
+<<<<<<< HEAD
 		bom_doc = frappe.copy_doc(test_records[0])
+=======
+		bom_doc = frappe.copy_doc(self.globalTestRecords["BOM"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		bom_doc.items[1].item_code = "_Test Item"
 		bom_doc.insert()
 

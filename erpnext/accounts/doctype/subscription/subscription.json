@@ -51,7 +51,11 @@
    "fieldtype": "Select",
    "label": "Status",
    "no_copy": 1,
+<<<<<<< HEAD
    "options": "\nTrialling\nActive\nPast Due Date\nCancelled\nUnpaid\nCompleted",
+=======
+   "options": "\nTrialing\nActive\nPast Due Date\nCancelled\nUnpaid\nCompleted",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -267,7 +271,11 @@
    "link_fieldname": "subscription"
   }
  ],
+<<<<<<< HEAD
  "modified": "2023-12-28 17:20:42.687789",
+=======
+ "modified": "2024-03-27 13:10:47.578120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Subscription",
@@ -311,7 +319,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

@@ -44,7 +44,11 @@ class ExchangeRateRevaluation(Document):
 		self.set_total_gain_loss()
 
 	def validate_rounding_loss_allowance(self):
+<<<<<<< HEAD
 		if not (self.rounding_loss_allowance >= 0 and self.rounding_loss_allowance < 1):
+=======
+		if self.rounding_loss_allowance < 0 or self.rounding_loss_allowance >= 1:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.throw(_("Rounding Loss Allowance should be between 0 and 1"))
 
 	def set_total_gain_loss(self):

@@ -396,7 +396,7 @@ class TestRepostItemValuation(IntegrationTestCase, StockTestMixin):
 		doc.from_date = today()
 		doc.to_date = today()
 		doc.submit()
-
+		doc.create_stock_closing_balance_entries()
 		doc.load_from_db()
 		self.assertEqual(doc.docstatus, 1)
 		self.assertEqual(doc.status, "Completed")

@@ -40,12 +40,19 @@ class Opportunity(TransactionBase, CRMNote):
 			OpportunityLostReasonDetail,
 		)
 
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		amended_from: DF.Link | None
 		annual_revenue: DF.Currency
 		base_opportunity_amount: DF.Currency
 		base_total: DF.Currency
+<<<<<<< HEAD
 		campaign: DF.Link | None
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		city: DF.Data | None
 		company: DF.Link
 		competitors: DF.TableMultiSelect[CompetitorDetail]
@@ -80,13 +87,23 @@ class Opportunity(TransactionBase, CRMNote):
 		phone_ext: DF.Data | None
 		probability: DF.Percent
 		sales_stage: DF.Link | None
+<<<<<<< HEAD
 		source: DF.Link | None
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		state: DF.Data | None
 		status: DF.Literal["Open", "Quotation", "Converted", "Lost", "Replied", "Closed"]
 		territory: DF.Link | None
 		title: DF.Data | None
 		total: DF.Currency
 		transaction_date: DF.Date
+<<<<<<< HEAD
+=======
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		website: DF.Data | None
 		whatsapp: DF.Data | None
 	# end: auto-generated types

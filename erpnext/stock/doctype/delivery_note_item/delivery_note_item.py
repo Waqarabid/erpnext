@@ -37,6 +37,10 @@ class DeliveryNoteItem(Document):
 		description: DF.TextEditor | None
 		discount_amount: DF.Currency
 		discount_percentage: DF.Float
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		dn_detail: DF.Data | None
 		expense_account: DF.Link | None
 		grant_commission: DF.Check

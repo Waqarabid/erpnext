@@ -232,7 +232,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "fieldname": "column_break_26",
@@ -278,7 +282,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-05-06 16:20:22.039078",
+=======
+ "modified": "2024-03-27 13:10:22.103686",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Promotional Scheme",
@@ -333,7 +341,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

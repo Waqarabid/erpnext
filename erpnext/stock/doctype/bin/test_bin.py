@@ -2,13 +2,30 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.utils import _create_bin
 
 
+<<<<<<< HEAD
 class TestBin(FrappeTestCase):
+=======
+class UnitTestBin(UnitTestCase):
+	"""
+	Unit tests for Bin.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBin(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_concurrent_inserts(self):
 		"""Ensure no duplicates are possible in case of concurrent inserts"""
 		item_code = "_TestConcurrentBin"

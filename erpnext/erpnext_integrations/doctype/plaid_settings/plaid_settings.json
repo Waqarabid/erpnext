@@ -70,7 +70,11 @@
  ],
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-03-02 17:35:27.544259",
+=======
+ "modified": "2024-03-27 13:10:13.672028",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "ERPNext Integrations",
  "name": "Plaid Settings",
@@ -87,7 +91,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

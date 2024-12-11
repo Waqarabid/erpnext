@@ -10,6 +10,10 @@ from frappe import _, bold, scrub
 from frappe.model.meta import get_field_precision
 from frappe.query_builder.functions import Sum
 from frappe.utils import (
+<<<<<<< HEAD
+=======
+	add_to_date,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	cint,
 	cstr,
 	flt,
@@ -1823,7 +1827,11 @@ def get_valuation_rate(
 		solutions += (
 			"<li>"
 			+ _("If not, you can Cancel / Submit this entry")
+<<<<<<< HEAD
 			+ " {} ".format(frappe.bold("after"))
+=======
+			+ " {} ".format(frappe.bold(_("after")))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			+ _("performing either one below:")
 			+ "</li>"
 		)

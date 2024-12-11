@@ -142,7 +142,11 @@ class SalesPipelineAnalytics:
 		conditions = []
 
 		if self.filters.get("opportunity_source"):
+<<<<<<< HEAD
 			conditions.append({"source": self.filters.get("opportunity_source")})
+=======
+			conditions.append({"utm_source": self.filters.get("opportunity_source")})
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if self.filters.get("opportunity_type"):
 			conditions.append({"opportunity_type": self.filters.get("opportunity_type")})

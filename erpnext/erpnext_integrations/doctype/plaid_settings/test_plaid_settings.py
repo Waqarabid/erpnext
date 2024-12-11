@@ -1,10 +1,17 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import json
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils.response import json_handler
 
 from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
@@ -16,7 +23,11 @@ from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
 )
 
 
+<<<<<<< HEAD
 class TestPlaidSettings(unittest.TestCase):
+=======
+class TestPlaidSettings(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		pass
 

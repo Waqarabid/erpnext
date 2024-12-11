@@ -2,13 +2,21 @@ import unittest
 from uuid import uuid4 as _uuid4
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def uuid4():
 	return str(_uuid4())
 
 
+<<<<<<< HEAD
 class TestTaxes(unittest.TestCase):
+=======
+class TestTaxes(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.company = frappe.get_doc(
 			{

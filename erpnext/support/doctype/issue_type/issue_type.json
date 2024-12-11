@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "Prompt",
@@ -17,11 +21,19 @@
    "label": "Description"
   }
  ],
+<<<<<<< HEAD
  "modified": "2019-06-26 16:56:39.863392",
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Issue Type",
  "name_case": "Title Case",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:09:53.242486",
+ "modified_by": "Administrator",
+ "module": "Support",
+ "name": "Issue Type",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "owner": "Administrator",
  "permissions": [
   {
@@ -50,7 +62,13 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

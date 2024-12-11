@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_statement import (
 	execute,
@@ -10,6 +14,7 @@ from erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_s
 from erpnext.tests.utils import if_lending_app_installed
 
 
+<<<<<<< HEAD
 class TestBankReconciliationStatement(FrappeTestCase):
 	def setUp(self):
 		for dt in [
@@ -20,6 +25,9 @@ class TestBankReconciliationStatement(FrappeTestCase):
 			frappe.db.delete(dt)
 		clear_loan_transactions()
 
+=======
+class TestBankReconciliationStatement(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	@if_lending_app_installed
 	def test_loan_entries_in_bank_reco_statement(self):
 		from lending.loan_management.doctype.loan.test_loan import create_loan_accounts
@@ -42,6 +50,7 @@ class TestBankReconciliationStatement(FrappeTestCase):
 		result = execute(filters)
 
 		self.assertEqual(result[1][0].payment_entry, repayment_entry.name)
+<<<<<<< HEAD
 
 
 @if_lending_app_installed
@@ -51,3 +60,5 @@ def clear_loan_transactions():
 		"Loan Repayment",
 	]:
 		frappe.db.delete(dt)
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

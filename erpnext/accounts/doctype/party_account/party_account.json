@@ -36,14 +36,22 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-06-06 14:15:42.053150",
+=======
+ "modified": "2024-03-27 13:10:08.489183",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Party Account",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": []
 }

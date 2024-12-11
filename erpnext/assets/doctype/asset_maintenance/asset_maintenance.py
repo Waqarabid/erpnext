@@ -38,7 +38,11 @@ class AssetMaintenance(Document):
 			if getdate(task.next_due_date) < getdate(nowdate()):
 				task.maintenance_status = "Overdue"
 			if not task.assign_to and self.docstatus == 0:
+<<<<<<< HEAD
 				throw(_("Row #{}: Please asign task to a member.").format(task.idx))
+=======
+				throw(_("Row #{}: Please assign task to a member.").format(task.idx))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def on_update(self):
 		for task in self.get("asset_maintenance_tasks"):

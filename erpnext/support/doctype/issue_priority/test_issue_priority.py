@@ -1,5 +1,6 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -7,6 +8,15 @@ import frappe
 
 
 class TestIssuePriority(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+
+
+class TestIssuePriority(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_priorities(self):
 		make_priorities()
 		priorities = frappe.get_list("Issue Priority")

@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
@@ -16,6 +20,10 @@
   "employee",
   "cell_number",
   "address",
+<<<<<<< HEAD
+=======
+  "user",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "license_details",
   "license_number",
   "column_break_8",
@@ -115,6 +123,7 @@
    "fieldtype": "Link",
    "label": "Address",
    "options": "Address"
+<<<<<<< HEAD
   }
  ],
  "icon": "fa fa-user",
@@ -123,6 +132,24 @@
  "module": "Setup",
  "name": "Driver",
  "name_case": "Title Case",
+=======
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "read_only_depends_on": "employee"
+  }
+ ],
+ "icon": "fa fa-user",
+ "links": [],
+ "modified": "2024-03-27 13:08:18.825438",
+ "modified_by": "Administrator",
+ "module": "Setup",
+ "name": "Driver",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "owner": "Administrator",
  "permissions": [
   {
@@ -178,8 +205,17 @@
  "quick_entry": 1,
  "search_fields": "full_name",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "title_field": "full_name",
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

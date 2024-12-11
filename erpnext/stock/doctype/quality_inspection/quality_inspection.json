@@ -245,7 +245,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-08-23 11:56:50.282878",
+=======
+ "modified": "2024-03-27 13:10:28.680815",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Quality Inspection",
@@ -269,7 +273,11 @@
  ],
  "search_fields": "item_code, report_date, reference_name",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "ASC",
  "states": []
 }

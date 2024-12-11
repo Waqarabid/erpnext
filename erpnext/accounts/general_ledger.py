@@ -8,6 +8,10 @@ import frappe
 from frappe import _
 from frappe.model.meta import get_field_precision
 from frappe.utils import cint, flt, formatdate, get_link_to_form, getdate, now
+<<<<<<< HEAD
+=======
+from frappe.utils.dashboard import cache_source
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 import erpnext
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
@@ -46,7 +50,11 @@ def make_gl_entries(
 						from_repost=from_repost,
 					)
 				save_entries(gl_map, adv_adj, update_outstanding, from_repost)
+<<<<<<< HEAD
 			# Post GL Map proccess there may no be any GL Entries
+=======
+			# Post GL Map process there may no be any GL Entries
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			elif gl_map:
 				frappe.throw(
 					_(
@@ -702,10 +710,17 @@ def check_freezing_date(posting_date, adv_adj=False):
 	Hence stop admin to bypass if accounts are freezed
 	"""
 	if not adv_adj:
+<<<<<<< HEAD
 		acc_frozen_upto = frappe.db.get_value("Accounts Settings", None, "acc_frozen_upto")
 		if acc_frozen_upto:
 			frozen_accounts_modifier = frappe.db.get_value(
 				"Accounts Settings", None, "frozen_accounts_modifier"
+=======
+		acc_frozen_upto = frappe.db.get_single_value("Accounts Settings", "acc_frozen_upto")
+		if acc_frozen_upto:
+			frozen_accounts_modifier = frappe.db.get_single_value(
+				"Accounts Settings", "frozen_accounts_modifier"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			)
 			if getdate(posting_date) <= getdate(acc_frozen_upto) and (
 				frozen_accounts_modifier not in frappe.get_roles() or frappe.session.user == "Administrator"

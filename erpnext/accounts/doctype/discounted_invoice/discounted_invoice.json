@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "creation": "2019-03-07 12:07:09.416101",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -61,14 +65,25 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2020-02-20 16:16:20.724620",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:06:51.610919",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Discounted Invoice",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

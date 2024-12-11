@@ -22,6 +22,10 @@ erpnext.accounts.dimensions = {
 				});
 				me.default_dimensions = r.message[1];
 				me.setup_filters(frm, doctype);
+<<<<<<< HEAD
+=======
+				me.update_dimension(frm, doctype);
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			},
 		});
 	},

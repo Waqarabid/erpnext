@@ -63,7 +63,11 @@ class RepostItemValuation(Document):
 		frappe.db.delete(
 			table,
 			filters=(
+<<<<<<< HEAD
 				(table.modified < (Now() - Interval(days=days)))
+=======
+				(table.creation < (Now() - Interval(days=days)))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				& (table.status.isin(["Completed", "Skipped"]))
 			),
 		)
@@ -132,12 +136,16 @@ class RepostItemValuation(Document):
 		return query[0][0] if query and query[0][0] else None
 
 	def validate_accounts_freeze(self):
+<<<<<<< HEAD
 		acc_settings = frappe.db.get_value(
 			"Accounts Settings",
 			"Accounts Settings",
 			["acc_frozen_upto", "frozen_accounts_modifier"],
 			as_dict=1,
 		)
+=======
+		acc_settings = frappe.get_cached_doc("Accounts Settings")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if not acc_settings.acc_frozen_upto:
 			return
 		if getdate(self.posting_date) <= getdate(acc_settings.acc_frozen_upto):

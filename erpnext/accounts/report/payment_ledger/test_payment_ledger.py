@@ -1,13 +1,21 @@
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.accounts.report.payment_ledger.payment_ledger import execute
 
 
+<<<<<<< HEAD
 class TestPaymentLedger(FrappeTestCase):
+=======
+class TestPaymentLedger(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.create_company()
 		self.cleanup()

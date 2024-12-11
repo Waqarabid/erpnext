@@ -49,14 +49,22 @@
  ],
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-06 16:48:57.355757",
+=======
+ "modified": "2024-03-27 13:10:41.396354",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Shipment Parcel",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

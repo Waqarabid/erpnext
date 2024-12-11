@@ -70,7 +70,11 @@ class BankAccount(Document):
 
 	def validate_company(self):
 		if self.is_company_account and not self.company:
+<<<<<<< HEAD
 			frappe.throw(_("Company is manadatory for company account"))
+=======
+			frappe.throw(_("Company is mandatory for company account"))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def validate_iban(self):
 		"""

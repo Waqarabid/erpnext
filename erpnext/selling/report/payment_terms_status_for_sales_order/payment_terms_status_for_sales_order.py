@@ -207,7 +207,11 @@ def get_so_with_invoices(filters):
 		)
 		.where(
 			(so.docstatus == 1)
+<<<<<<< HEAD
 			& (so.status.isin(["To Deliver and Bill", "To Bill"]))
+=======
+			& (so.status.isin(["To Deliver and Bill", "To Bill", "To Pay"]))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			& (so.company == conditions.company)
 			& (so.transaction_date[conditions.start_date : conditions.end_date])
 		)

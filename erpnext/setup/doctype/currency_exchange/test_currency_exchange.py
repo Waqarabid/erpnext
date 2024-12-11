@@ -1,16 +1,26 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import unittest
 from unittest import mock
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import cint, flt
 
 from erpnext.setup.utils import get_exchange_rate
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Currency Exchange")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 def save_new_records(test_records):
 	for record in test_records:
@@ -80,7 +90,11 @@ def patched_requests_get(*args, **kwargs):
 
 
 @mock.patch("requests.get", side_effect=patched_requests_get)
+<<<<<<< HEAD
 class TestCurrencyExchange(unittest.TestCase):
+=======
+class TestCurrencyExchange(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def clear_cache(self):
 		cache = frappe.cache()
 		for date in test_exchange_values.keys():
@@ -92,7 +106,11 @@ class TestCurrencyExchange(unittest.TestCase):
 		self.clear_cache()
 
 	def test_exchange_rate(self, mock_get):
+<<<<<<< HEAD
 		save_new_records(test_records)
+=======
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		frappe.db.set_single_value("Accounts Settings", "allow_stale", 1)
 
@@ -117,7 +135,11 @@ class TestCurrencyExchange(unittest.TestCase):
 		self.assertEqual(flt(exchange_rate, 3), 65.1)
 
 	def test_exchange_rate_via_exchangerate_host(self, mock_get):
+<<<<<<< HEAD
 		save_new_records(test_records)
+=======
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		# Update Currency Exchange Rate
 		settings = frappe.get_single("Currency Exchange Settings")

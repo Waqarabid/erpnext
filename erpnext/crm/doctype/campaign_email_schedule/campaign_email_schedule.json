@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "creation": "2019-06-30 15:56:20.306901",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -25,14 +29,25 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2019-07-12 11:46:43.184123",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:06:44.019192",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Campaign Email Schedule",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

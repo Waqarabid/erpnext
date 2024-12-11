@@ -370,13 +370,21 @@ frappe.ui.form.on("Payment Entry", {
 			"references"
 		);
 
+<<<<<<< HEAD
 		cur_frm.set_df_property(
+=======
+		frm.set_df_property(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"source_exchange_rate",
 			"description",
 			"1 " + frm.doc.paid_from_account_currency + " = [?] " + company_currency
 		);
 
+<<<<<<< HEAD
 		cur_frm.set_df_property(
+=======
+		frm.set_df_property(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"target_exchange_rate",
 			"description",
 			"1 " + frm.doc.paid_to_account_currency + " = [?] " + company_currency

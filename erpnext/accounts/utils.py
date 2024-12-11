@@ -10,7 +10,11 @@ import frappe.defaults
 from frappe import _, qb, throw
 from frappe.model.meta import get_field_precision
 from frappe.query_builder import AliasedQuery, Criterion, Table
+<<<<<<< HEAD
 from frappe.query_builder.functions import Count, Sum
+=======
+from frappe.query_builder.functions import Count, Round, Sum
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.query_builder.utils import DocType
 from frappe.utils import (
 	add_days,
@@ -53,6 +57,7 @@ GL_REPOSTING_CHUNK = 100
 
 @frappe.whitelist()
 def get_fiscal_year(
+<<<<<<< HEAD
 	date=None, fiscal_year=None, label="Date", verbose=1, company=None, as_dict=False, boolean=False
 ):
 	if isinstance(boolean, str):
@@ -65,6 +70,30 @@ def get_fiscal_year(
 		return fiscal_years
 	else:
 		return fiscal_years[0]
+=======
+	date=None,
+	fiscal_year=None,
+	label="Date",
+	verbose=1,
+	company=None,
+	as_dict=False,
+	boolean=None,
+	raise_on_missing=True,
+):
+	if isinstance(raise_on_missing, str):
+		raise_on_missing = loads(raise_on_missing)
+
+	# backwards compat
+	if isinstance(boolean, str):
+		boolean = loads(boolean)
+	if boolean is not None:
+		raise_on_missing = not boolean
+
+	fiscal_years = get_fiscal_years(
+		date, fiscal_year, label, verbose, company, as_dict=as_dict, raise_on_missing=raise_on_missing
+	)
+	return False if not fiscal_years else fiscal_years[0]
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def get_fiscal_years(
@@ -74,8 +103,53 @@ def get_fiscal_years(
 	verbose=1,
 	company=None,
 	as_dict=False,
+<<<<<<< HEAD
 	boolean=False,
 ):
+=======
+	boolean=None,
+	raise_on_missing=True,
+):
+	if transaction_date:
+		transaction_date = getdate(transaction_date)
+	# backwards compat
+	if boolean is not None:
+		raise_on_missing = not boolean
+
+	all_fiscal_years = _get_fiscal_years(company=company)
+
+	# No restricting selectors
+	if not transaction_date and not fiscal_year:
+		return all_fiscal_years
+
+	for fy in all_fiscal_years:
+		if (fiscal_year and fy.name == fiscal_year) or (
+			transaction_date
+			and getdate(fy.year_start_date) <= transaction_date
+			and getdate(fy.year_end_date) >= transaction_date
+		):
+			if as_dict:
+				return (fy,)
+			else:
+				return ((fy.name, fy.year_start_date, fy.year_end_date),)
+
+	# No match for restricting selectors
+	if raise_on_missing:
+		error_msg = _("""{0} {1} is not in any active Fiscal Year""").format(
+			label, formatdate(transaction_date)
+		)
+		if company:
+			error_msg = _("""{0} for {1}""").format(error_msg, frappe.bold(company))
+
+		if verbose == 1:
+			frappe.msgprint(error_msg)
+
+		raise FiscalYearError(error_msg)
+	return []
+
+
+def _get_fiscal_years(company=None):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	fiscal_years = frappe.cache().hget("fiscal_years", company) or []
 
 	if not fiscal_years:
@@ -86,9 +160,12 @@ def get_fiscal_years(
 			frappe.qb.from_(FY).select(FY.name, FY.year_start_date, FY.year_end_date).where(FY.disabled == 0)
 		)
 
+<<<<<<< HEAD
 		if fiscal_year:
 			query = query.where(FY.name == fiscal_year)
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if company:
 			FYC = DocType("Fiscal Year Company")
 			query = query.where(
@@ -105,6 +182,7 @@ def get_fiscal_years(
 		fiscal_years = query.run(as_dict=True)
 
 		frappe.cache().hset("fiscal_years", company, fiscal_years)
+<<<<<<< HEAD
 
 	if not transaction_date and not fiscal_year:
 		return fiscal_years
@@ -141,6 +219,9 @@ def get_fiscal_years(
 		frappe.msgprint(error_msg)
 
 	raise FiscalYearError(error_msg)
+=======
+	return fiscal_years
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 @frappe.whitelist()
@@ -582,6 +663,11 @@ def check_if_advance_entry_modified(args):
 		)
 
 	else:
+<<<<<<< HEAD
+=======
+		precision = frappe.get_precision("Payment Entry", "unallocated_amount")
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		payment_entry = frappe.qb.DocType("Payment Entry")
 		payment_ref = frappe.qb.DocType("Payment Entry Reference")
 
@@ -603,7 +689,14 @@ def check_if_advance_entry_modified(args):
 				.where(payment_ref.allocated_amount == args.get("unreconciled_amount"))
 			)
 		else:
+<<<<<<< HEAD
 			q = q.where(payment_entry.unallocated_amount == args.get("unreconciled_amount"))
+=======
+			q = q.where(
+				Round(payment_entry.unallocated_amount, precision)
+				== Round(args.get("unreconciled_amount"), precision)
+			)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	ret = q.run(as_dict=True)
 
@@ -627,7 +720,14 @@ def update_reference_in_journal_entry(d, journal_entry, do_not_save=False):
 
 	# Update Advance Paid in SO/PO since they might be getting unlinked
 	update_advance_paid = []
+<<<<<<< HEAD
 	if jv_detail.get("reference_type") in ["Sales Order", "Purchase Order"]:
+=======
+	advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+		"advance_payment_payable_doctypes"
+	)
+	if jv_detail.get("reference_type") in advance_payment_doctypes:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		update_advance_paid.append((jv_detail.reference_type, jv_detail.reference_name))
 
 	rev_dr_or_cr = (
@@ -714,7 +814,14 @@ def update_reference_in_payment_entry(
 		existing_row = payment_entry.get("references", {"name": d["voucher_detail_no"]})[0]
 
 		# Update Advance Paid in SO/PO since they are getting unlinked
+<<<<<<< HEAD
 		if existing_row.get("reference_doctype") in ["Sales Order", "Purchase Order"]:
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		if existing_row.get("reference_doctype") in advance_payment_doctypes:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			update_advance_paid.append((existing_row.reference_doctype, existing_row.reference_name))
 
 		if d.allocated_amount <= existing_row.allocated_amount:
@@ -750,6 +857,10 @@ def update_reference_in_payment_entry(
 			reference_exchange_details=reference_exchange_details,
 		)
 	payment_entry.set_amounts()
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	payment_entry.make_exchange_gain_loss_journal(
 		frappe._dict({"difference_posting_date": d.difference_posting_date}), dimensions_dict
 	)
@@ -1143,11 +1254,19 @@ def get_outstanding_invoices(
 			if (
 				min_outstanding
 				and max_outstanding
+<<<<<<< HEAD
 				and not (outstanding_amount >= min_outstanding and outstanding_amount <= max_outstanding)
 			):
 				continue
 
 			if not d.voucher_type == "Purchase Invoice" or d.voucher_no not in held_invoices:
+=======
+				and (outstanding_amount < min_outstanding or outstanding_amount > max_outstanding)
+			):
+				continue
+
+			if d.voucher_type != "Purchase Invoice" or d.voucher_no not in held_invoices:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				outstanding_invoices.append(
 					frappe._dict(
 						{
@@ -1190,12 +1309,25 @@ def get_companies():
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_children(doctype, parent, company, is_root=False):
 	from erpnext.accounts.report.financial_statements import sort_accounts
 
 	parent_fieldname = "parent_" + frappe.scrub(doctype)
 	fields = ["name as value", "is_group as expandable"]
 	filters = [["docstatus", "<", 2]]
+=======
+def get_children(doctype, parent, company, is_root=False, include_disabled=False):
+	if isinstance(include_disabled, str):
+		include_disabled = loads(include_disabled)
+	from erpnext.accounts.report.financial_statements import sort_accounts
+
+	parent_fieldname = "parent_" + doctype.lower().replace(" ", "_")
+	fields = ["name as value", "is_group as expandable"]
+	filters = [["docstatus", "<", 2]]
+	if frappe.db.has_column(doctype, "disabled") and not include_disabled:
+		filters.append(["disabled", "=", False])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	filters.append([f'ifnull(`{parent_fieldname}`,"")', "=", "" if is_root else parent])
 
@@ -1349,6 +1481,17 @@ def parse_naming_series_variable(doc, variable):
 			company = None
 		return get_fiscal_year(date=date, company=company)[0]
 
+<<<<<<< HEAD
+=======
+	elif variable == "ABBR":
+		if doc:
+			company = doc.get("company") or frappe.db.get_default("company")
+		else:
+			company = frappe.db.get_default("company")
+
+		return frappe.db.get_value("Company", company, "abbr") if company else ""
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 @frappe.whitelist()
 def get_coa(doctype, parent, is_root=None, chart=None):

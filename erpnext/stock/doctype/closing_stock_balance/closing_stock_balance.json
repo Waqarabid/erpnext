@@ -113,7 +113,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-05-18 11:46:04.448220",
+=======
+ "modified": "2024-03-27 13:06:44.967237",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Closing Stock Balance",
@@ -133,7 +137,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": []
 }

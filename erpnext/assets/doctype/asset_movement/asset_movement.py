@@ -88,7 +88,11 @@ class AssetMovement(Document):
 					frappe.throw(_("Source and Target Location cannot be same"))
 
 			if self.purpose == "Receipt":
+<<<<<<< HEAD
 				if not (d.source_location) and not (d.target_location or d.to_employee):
+=======
+				if not (d.source_location) and not d.target_location and not d.to_employee:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					frappe.throw(
 						_("Target Location or To Employee is required while receiving Asset {0}").format(
 							d.asset

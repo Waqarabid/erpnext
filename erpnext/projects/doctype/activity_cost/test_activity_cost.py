@@ -1,14 +1,25 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.projects.doctype.activity_cost.activity_cost import DuplicationError
 
 
+<<<<<<< HEAD
 class TestActivityCost(unittest.TestCase):
+=======
+class TestActivityCost(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_duplication(self):
 		frappe.db.sql("delete from `tabActivity Cost`")
 		activity_cost1 = frappe.new_doc("Activity Cost")

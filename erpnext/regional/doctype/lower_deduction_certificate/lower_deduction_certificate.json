@@ -64,7 +64,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto",
+=======
+   "label": "Valid Up To",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "reqd": 1
   },
   {

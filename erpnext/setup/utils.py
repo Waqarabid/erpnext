@@ -36,8 +36,11 @@ def before_tests():
 			}
 		)
 
+<<<<<<< HEAD
 	frappe.db.sql("delete from `tabItem Price`")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	_enable_all_roles_for_admin()
 
 	set_defaults_for_tests()

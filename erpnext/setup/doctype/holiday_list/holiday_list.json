@@ -141,7 +141,11 @@
  "icon": "fa fa-calendar",
  "idx": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-07-14 13:28:53.156421",
+=======
+ "modified": "2024-03-27 13:09:49.920245",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Holiday List",
@@ -160,7 +164,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": []
 }

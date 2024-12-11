@@ -274,7 +274,14 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

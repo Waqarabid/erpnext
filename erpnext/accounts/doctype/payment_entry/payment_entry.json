@@ -227,6 +227,10 @@
    "fieldname": "party_balance",
    "fieldtype": "Currency",
    "label": "Party Balance",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "print_hide": 1,
    "read_only": 1
   },
@@ -836,9 +840,17 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

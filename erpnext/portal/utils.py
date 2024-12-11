@@ -50,7 +50,11 @@ def create_customer_or_supplier():
 	party = frappe.new_doc(doctype)
 	fullname = frappe.utils.get_fullname(user)
 
+<<<<<<< HEAD
 	if not doctype == "Customer":
+=======
+	if doctype != "Customer":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		party.update(
 			{
 				"supplier_name": fullname,

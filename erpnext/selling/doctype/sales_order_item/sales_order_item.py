@@ -39,6 +39,10 @@ class SalesOrderItem(Document):
 		description: DF.TextEditor | None
 		discount_amount: DF.Currency
 		discount_percentage: DF.Percent
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		ensure_delivery_based_on_produced_serial_no: DF.Check
 		grant_commission: DF.Check
 		gross_profit: DF.Currency

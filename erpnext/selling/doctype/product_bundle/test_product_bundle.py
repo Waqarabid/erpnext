@@ -3,8 +3,11 @@
 
 import frappe
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Product Bundle")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 def make_product_bundle(parent, items, qty=None):
 	if frappe.db.exists("Product Bundle", parent):

@@ -357,7 +357,11 @@
  "idx": 70,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-09-15 12:07:24.789471",
+=======
+ "modified": "2024-03-27 13:10:04.971211",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Material Request",
@@ -376,7 +380,10 @@
    "read": 1,
    "report": 1,
    "role": "Purchase Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "share": 1,
    "submit": 1,
    "write": 1
@@ -427,7 +434,11 @@
  "quick_entry": 1,
  "search_fields": "status,transaction_date",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title"

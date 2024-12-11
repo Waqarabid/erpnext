@@ -67,7 +67,10 @@ class AccountingDimensionFilter(Document):
 
 def get_dimension_filter_map():
 	if not frappe.flags.get("dimension_filter_map"):
+<<<<<<< HEAD
 		# nosemgrep
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		filters = frappe.db.sql(
 			"""
 			SELECT

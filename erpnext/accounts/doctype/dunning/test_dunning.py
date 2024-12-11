@@ -1,7 +1,11 @@
 # Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, nowdate, today
 
 from erpnext import get_default_cost_center
@@ -16,10 +20,26 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import (
 	create_sales_invoice_against_cost_center,
 )
 
+<<<<<<< HEAD
 test_dependencies = ["Company", "Cost Center"]
 
 
 class TestDunning(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Company", "Cost Center"]
+
+
+class UnitTestDunning(UnitTestCase):
+	"""
+	Unit tests for Dunning.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestDunning(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

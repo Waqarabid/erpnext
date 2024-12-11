@@ -7,8 +7,12 @@
         <p>ERP made simple</p>
     </p>
 
+<<<<<<< HEAD
 [![CI](https://github.com/frappe/erpnext/actions/workflows/server-tests.yml/badge.svg?branch=develop)](https://github.com/frappe/erpnext/actions/workflows/server-tests.yml)
 [![UI](https://github.com/erpnext/erpnext_ui_tests/actions/workflows/ui-tests.yml/badge.svg?branch=develop&event=schedule)](https://github.com/erpnext/erpnext_ui_tests/actions/workflows/ui-tests.yml)
+=======
+[![CI](https://github.com/frappe/erpnext/actions/workflows/server-tests-mariadb.yml/badge.svg?event=schedule)](https://github.com/frappe/erpnext/actions/workflows/server-tests-mariadb.yml)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 [![Open Source Helpers](https://www.codetriage.com/frappe/erpnext/badges/users.svg)](https://www.codetriage.com/frappe/erpnext)
 [![codecov](https://codecov.io/gh/frappe/erpnext/branch/develop/graph/badge.svg?token=0TwvyUg3I5)](https://codecov.io/gh/frappe/erpnext)
 [![docker pulls](https://img.shields.io/docker/pulls/frappe/erpnext-worker.svg)](https://hub.docker.com/r/frappe/erpnext-worker)
@@ -73,8 +77,11 @@ New passwords will be created for the ERPNext "Administrator" user, the MariaDB 
 1. [Issue Guidelines](https://github.com/frappe/erpnext/wiki/Issue-Guidelines)
 1. [Report Security Vulnerabilities](https://erpnext.com/security)
 1. [Pull Request Requirements](https://github.com/frappe/erpnext/wiki/Contribution-Guidelines)
+<<<<<<< HEAD
 1. [Translations](https://translate.erpnext.com)
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 ## License
 

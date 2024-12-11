@@ -546,7 +546,11 @@
  "quick_entry": 1,
  "search_fields": "supplier_group",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "ASC",
  "states": [],
  "title_field": "supplier_name",

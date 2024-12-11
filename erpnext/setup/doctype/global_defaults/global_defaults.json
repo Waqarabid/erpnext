@@ -87,7 +87,11 @@
  "in_create": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-07-01 19:45:00.323953",
+=======
+ "modified": "2024-03-27 13:09:45.400219",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Global Defaults",
@@ -102,7 +106,11 @@
   }
  ],
  "read_only": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": []
 }

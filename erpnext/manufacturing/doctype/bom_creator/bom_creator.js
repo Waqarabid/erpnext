@@ -88,6 +88,16 @@ frappe.ui.form.on("BOM Creator", {
 					reqd: 1,
 					default: 1.0,
 				},
+<<<<<<< HEAD
+=======
+				{ fieldtype: "Section Break" },
+				{
+					label: __("Routing"),
+					fieldtype: "Link",
+					fieldname: "routing",
+					options: "Routing",
+				},
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			],
 			primary_action_label: __("Create"),
 			primary_action: (values) => {
@@ -121,6 +131,19 @@ frappe.ui.form.on("BOM Creator", {
 				query: "erpnext.controllers.queries.item_query",
 			};
 		});
+<<<<<<< HEAD
+=======
+
+		frm.set_query("workstation", (doc) => {
+			if (doc.workstation_type) {
+				return {
+					filters: {
+						workstation_type: doc.workstation_type,
+					},
+				};
+			}
+		});
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	},
 
 	refresh(frm) {

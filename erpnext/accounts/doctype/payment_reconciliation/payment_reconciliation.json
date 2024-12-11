@@ -41,6 +41,10 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+<<<<<<< HEAD
+=======
+   "ignore_user_permissions": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Company",
    "options": "Company",
    "reqd": 1
@@ -254,7 +258,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": []
 }

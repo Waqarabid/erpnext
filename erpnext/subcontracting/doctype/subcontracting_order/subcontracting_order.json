@@ -183,7 +183,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Job Worker Address Details",
    "read_only": 1
   },
@@ -231,7 +235,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Shipping Address Details",
    "print_hide": 1,
    "read_only": 1
@@ -244,7 +252,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Billing Address Details",
    "read_only": 1
   },
@@ -514,10 +526,18 @@
  ],
  "search_fields": "status, transaction_date, supplier",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "supplier_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

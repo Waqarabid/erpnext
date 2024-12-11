@@ -12,7 +12,13 @@
   "disabled",
   "column_break_9",
   "warehouse",
+<<<<<<< HEAD
   "campaign",
+=======
+  "utm_source",
+  "utm_campaign",
+  "utm_medium",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "company_address",
   "section_break_15",
   "applicable_for_users",
@@ -89,12 +95,15 @@
    "label": "Country"
   },
   {
+<<<<<<< HEAD
    "fieldname": "campaign",
    "fieldtype": "Link",
    "label": "Campaign",
    "options": "Campaign"
   },
   {
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "fieldname": "company_address",
    "fieldtype": "Link",
    "label": "Company Address",
@@ -375,6 +384,30 @@
    "fieldname": "disable_rounded_total",
    "fieldtype": "Check",
    "label": "Disable Rounded Total"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "utm_campaign",
+   "print_hide": 1,
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "options": "UTM Campaign"
+  },
+  {
+   "fieldname": "utm_source",
+   "print_hide": 1,
+   "fieldtype": "Link",
+   "label": "Source",
+   "options": "UTM Source"
+  },
+  {
+   "fieldname": "utm_medium",
+   "print_hide": 1,
+   "fieldtype": "Link",
+   "label": "Medium",
+   "options": "UTM Campaign"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "icon": "icon-cog",
@@ -402,7 +435,11 @@
    "link_fieldname": "pos_profile"
   }
  ],
+<<<<<<< HEAD
  "modified": "2022-08-10 12:57:06.241439",
+=======
+ "modified": "2024-06-28 10:51:48.543766",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "POS Profile",
@@ -428,7 +465,14 @@
    "role": "Accounts User"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

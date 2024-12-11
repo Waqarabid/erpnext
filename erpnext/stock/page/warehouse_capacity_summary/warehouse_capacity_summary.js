@@ -1,7 +1,11 @@
 frappe.pages["warehouse-capacity-summary"].on_page_load = function (wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
+<<<<<<< HEAD
 		title: "Warehouse Capacity Summary",
+=======
+		title: __("Warehouse Capacity Summary"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		single_column: true,
 	});
 	page.set_secondary_action("Refresh", () => page.capacity_dashboard.refresh(), "refresh");

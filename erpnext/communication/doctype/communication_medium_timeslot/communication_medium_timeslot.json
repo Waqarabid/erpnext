@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "creation": "2019-06-05 11:43:38.897272",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -44,13 +48,24 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2019-06-05 12:19:59.994979",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:06:45.252082",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Communication",
  "name": "Communication Medium Timeslot",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

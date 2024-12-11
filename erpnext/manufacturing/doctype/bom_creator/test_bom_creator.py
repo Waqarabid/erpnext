@@ -4,7 +4,11 @@
 import random
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.manufacturing.doctype.bom_creator.bom_creator import (
 	add_item,
@@ -13,7 +17,20 @@ from erpnext.manufacturing.doctype.bom_creator.bom_creator import (
 from erpnext.stock.doctype.item.test_item import make_item
 
 
+<<<<<<< HEAD
 class TestBOMCreator(FrappeTestCase):
+=======
+class UnitTestBomCreator(UnitTestCase):
+	"""
+	Unit tests for BomCreator.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBOMCreator(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self) -> None:
 		create_items()
 

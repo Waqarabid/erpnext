@@ -195,7 +195,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "fieldname": "section_break_24",
@@ -259,7 +263,11 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "ASC",
  "states": [],
  "title_field": "item_name",

@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "beta": 1,
  "creation": "2018-07-10 14:48:16.757030",
  "doctype": "DocType",
@@ -190,7 +194,12 @@
   }
  ],
  "issingle": 1,
+<<<<<<< HEAD
  "modified": "2019-08-07 15:26:00.653433",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:10:30.599062",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "ERPNext Integrations",
  "name": "QuickBooks Migrator",
@@ -208,6 +217,12 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC"
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 }

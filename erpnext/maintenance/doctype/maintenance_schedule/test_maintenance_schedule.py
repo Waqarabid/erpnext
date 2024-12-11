@@ -1,9 +1,16 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import format_date
 from frappe.utils.data import add_days, formatdate, today
 
@@ -14,10 +21,15 @@ from erpnext.maintenance.doctype.maintenance_schedule.maintenance_schedule impor
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_serialized_item
 
+<<<<<<< HEAD
 # test_records = frappe.get_test_records('Maintenance Schedule')
 
 
 class TestMaintenanceSchedule(unittest.TestCase):
+=======
+
+class TestMaintenanceSchedule(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_events_should_be_created_and_deleted(self):
 		ms = make_maintenance_schedule()
 		ms.generate_schedule()
@@ -100,7 +112,11 @@ class TestMaintenanceSchedule(unittest.TestCase):
 	def test_serial_no_filters(self):
 		# Without serial no. set in schedule -> returns None
 		item_code = "_Test Serial Item"
+<<<<<<< HEAD
 		make_serial_item_with_serial(item_code)
+=======
+		make_serial_item_with_serial(self, item_code)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		ms = make_maintenance_schedule(item_code=item_code)
 		ms.submit()
 
@@ -111,7 +127,11 @@ class TestMaintenanceSchedule(unittest.TestCase):
 		self.assertEqual(serial_nos, None)
 
 		# With serial no. set in schedule -> returns serial nos.
+<<<<<<< HEAD
 		make_serial_item_with_serial(item_code)
+=======
+		make_serial_item_with_serial(self, item_code)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		ms = make_maintenance_schedule(item_code=item_code, serial_no="TEST001, TEST002")
 		ms.submit()
 
@@ -127,7 +147,11 @@ class TestMaintenanceSchedule(unittest.TestCase):
 		# Checks whether serials are automatically updated when changing in items table.
 		# Also checks if other fields trigger generate schdeule if changed in items table.
 		item_code = "_Test Serial Item"
+<<<<<<< HEAD
 		make_serial_item_with_serial(item_code)
+=======
+		make_serial_item_with_serial(self, item_code)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		ms = make_maintenance_schedule(item_code=item_code, serial_no="TEST001, TEST002")
 		ms.save()
 
@@ -154,7 +178,11 @@ class TestMaintenanceSchedule(unittest.TestCase):
 		frappe.db.rollback()
 
 
+<<<<<<< HEAD
 def make_serial_item_with_serial(item_code):
+=======
+def make_serial_item_with_serial(self, item_code):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	serial_item_doc = create_item(item_code, is_stock_item=1)
 	if not serial_item_doc.has_serial_no or not serial_item_doc.serial_no_series:
 		serial_item_doc.has_serial_no = 1
@@ -162,7 +190,11 @@ def make_serial_item_with_serial(item_code):
 		serial_item_doc.save(ignore_permissions=True)
 	active_serials = frappe.db.get_all("Serial No", {"status": "Active", "item_code": item_code})
 	if len(active_serials) < 2:
+<<<<<<< HEAD
 		make_serialized_item(item_code=item_code)
+=======
+		make_serialized_item(self, item_code=item_code)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def get_events(ms):

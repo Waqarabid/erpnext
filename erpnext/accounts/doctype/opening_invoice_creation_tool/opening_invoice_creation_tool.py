@@ -172,7 +172,11 @@ class OpeningInvoiceCreationTool(Document):
 			income_expense_account_field = (
 				"income_account" if row.party_type == "Customer" else "expense_account"
 			)
+<<<<<<< HEAD
 			default_uom = frappe.db.get_single_value("Stock Settings", "stock_uom") or _("Nos")
+=======
+			default_uom = frappe.db.get_single_value("Stock Settings", "stock_uom") or "Nos"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			rate = flt(row.outstanding_amount) / flt(row.qty)
 
 			item_dict = frappe._dict(
@@ -270,7 +274,11 @@ def start_import(invoices):
 				errors, "<a href='/app/List/Error Log' class='variant-click'>Error Log</a>"
 			),
 			indicator="red",
+<<<<<<< HEAD
 			title=_("Error Occured"),
+=======
+			title=_("Error Occurred"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		)
 	return names
 

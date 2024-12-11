@@ -282,7 +282,11 @@
    "fieldname": "campaign",
    "fieldtype": "Link",
    "label": "Campaign",
+<<<<<<< HEAD
    "options": "Campaign"
+=======
+   "options": "UTM Campaign"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "depends_on": "eval:doc.applicable_for==\"Supplier\"",
@@ -345,7 +349,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "fieldname": "col_break1",
@@ -706,7 +714,11 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title"

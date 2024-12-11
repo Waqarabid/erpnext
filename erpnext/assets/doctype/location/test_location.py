@@ -1,15 +1,25 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import json
 import unittest
 
 import frappe
+<<<<<<< HEAD
 
 test_records = frappe.get_test_records("Location")
 
 
 class TestLocation(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestLocation(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def runTest(self):
 		locations = ["Basil Farm", "Division 1", "Field 1", "Block 1"]
 		area = 0

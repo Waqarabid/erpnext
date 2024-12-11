@@ -15,7 +15,10 @@ from frappe.model.mapper import get_mapped_doc
 from frappe.model.naming import set_name_by_naming_series, set_name_from_naming_options
 from frappe.model.utils.rename_doc import update_linked_doctypes
 from frappe.utils import cint, cstr, flt, get_formatted_email, today
+<<<<<<< HEAD
 from frappe.utils.deprecations import deprecated
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils.user import get_users_with_role
 
 from erpnext.accounts.party import get_dashboard_info, validate_party_accounts
@@ -125,6 +128,10 @@ class Customer(TransactionBase):
 				),
 				title=_("Note"),
 				indicator="yellow",
+<<<<<<< HEAD
+=======
+				alert=True,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			)
 
 			return new_customer_name
@@ -253,6 +260,11 @@ class Customer(TransactionBase):
 				self.db_set("customer_primary_contact", contact.name)
 				self.db_set("mobile_no", self.mobile_no)
 				self.db_set("email_id", self.email_id)
+<<<<<<< HEAD
+=======
+		elif self.customer_primary_contact:
+			frappe.set_value("Contact", self.customer_primary_contact, "is_primary_contact", 1)  # ensure
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def create_primary_address(self):
 		from frappe.contacts.doctype.address.address import get_address_display
@@ -263,6 +275,11 @@ class Customer(TransactionBase):
 
 			self.db_set("customer_primary_address", address.name)
 			self.db_set("primary_address", address_display)
+<<<<<<< HEAD
+=======
+		elif self.customer_primary_address:
+			frappe.set_value("Address", self.customer_primary_address, "is_primary_address", 1)  # ensure
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def update_lead_status(self):
 		"""If Customer created from Lead, update lead status to "Converted"
@@ -379,6 +396,7 @@ class Customer(TransactionBase):
 			)
 
 
+<<<<<<< HEAD
 @deprecated
 def create_contact(contact, party_type, party, email):
 	"""Create contact based on given contact name"""
@@ -397,6 +415,8 @@ def create_contact(contact, party_type, party, email):
 	return doc.insert()
 
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 @frappe.whitelist()
 def make_quotation(source_name, target_doc=None):
 	def set_missing_values(source, target):
@@ -583,6 +603,7 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def send_emails(args):
 	args = json.loads(args)
 	subject = _("Credit limit reached for customer {0}").format(args.get("customer"))
@@ -590,6 +611,16 @@ def send_emails(args):
 		args.get("customer"), args.get("customer_outstanding"), args.get("credit_limit")
 	)
 	frappe.sendmail(recipients=args.get("credit_controller_users_list"), subject=subject, message=message)
+=======
+def send_emails(customer, customer_outstanding, credit_limit, credit_controller_users_list):
+	if isinstance(credit_controller_users_list, str):
+		credit_controller_users_list = json.loads(credit_controller_users_list)
+	subject = _("Credit limit reached for customer {0}").format(customer)
+	message = _("Credit limit has been crossed for customer {0} ({1}/{2})").format(
+		customer, customer_outstanding, credit_limit
+	)
+	frappe.sendmail(recipients=credit_controller_users_list, subject=subject, message=message)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):

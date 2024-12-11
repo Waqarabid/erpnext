@@ -1,14 +1,25 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.projects.doctype.task.test_task import create_task
 
 
+<<<<<<< HEAD
 class TestProjectTemplate(unittest.TestCase):
+=======
+class TestProjectTemplate(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	pass
 
 

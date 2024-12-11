@@ -3,7 +3,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import flt, today
 
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
@@ -11,7 +15,11 @@ from erpnext.accounts.report.general_ledger.general_ledger import execute
 from erpnext.controllers.sales_and_purchase_return import make_return_doc
 
 
+<<<<<<< HEAD
 class TestGeneralLedger(FrappeTestCase):
+=======
+class TestGeneralLedger(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.company = "_Test Company"
 		self.clear_old_entries()

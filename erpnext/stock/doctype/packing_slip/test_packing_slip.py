@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.selling.doctype.product_bundle.test_product_bundle import make_product_bundle
 from erpnext.stock.doctype.delivery_note.delivery_note import make_packing_slip
@@ -11,7 +15,20 @@ from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delive
 from erpnext.stock.doctype.item.test_item import make_item
 
 
+<<<<<<< HEAD
 class TestPackingSlip(FrappeTestCase):
+=======
+class UnitTestPackingSlip(UnitTestCase):
+	"""
+	Unit tests for PackingSlip.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPackingSlip(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_packing_slip(self):
 		# Step - 1: Create a Product Bundle
 		items = create_items()

@@ -3,10 +3,26 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestTransactionDeletionRecord(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestTransactionDeletionRecord(UnitTestCase):
+	"""
+	Unit tests for TransactionDeletionRecord.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestTransactionDeletionRecord(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		create_company("Dunder Mifflin Paper Co")
 

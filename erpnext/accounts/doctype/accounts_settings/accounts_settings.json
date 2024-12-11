@@ -521,7 +521,11 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1

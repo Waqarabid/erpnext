@@ -30,12 +30,15 @@ frappe.listview_settings["Delivery Note"] = {
 			const docnames = doclist.get_checked_items(true);
 
 			if (selected_docs.length > 0) {
+<<<<<<< HEAD
 				for (let doc of selected_docs) {
 					if (!doc.docstatus) {
 						frappe.throw(__("Cannot create a Delivery Trip from Draft documents."));
 					}
 				}
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				frappe.new_doc("Delivery Trip").then(() => {
 					// Empty out the child table before inserting new ones
 					cur_frm.set_value("delivery_stops", []);

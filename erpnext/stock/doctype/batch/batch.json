@@ -208,7 +208,11 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 5,
+<<<<<<< HEAD
  "modified": "2023-11-09 12:17:28.339975",
+=======
+ "modified": "2024-03-27 13:06:38.677265",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Batch",
@@ -225,13 +229,20 @@
    "read": 1,
    "report": 1,
    "role": "Item Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "share": 1,
    "write": 1
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "batch_id",

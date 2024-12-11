@@ -391,7 +391,11 @@
  "icon": "fa fa-ticket",
  "idx": 7,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-11-24 13:13:10.276630",
+=======
+ "modified": "2024-03-27 13:09:52.921791",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Issue",
@@ -413,8 +417,14 @@
  "quick_entry": 1,
  "search_fields": "status,customer,subject,raised_by",
  "sender_field": "raised_by",
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "subject_field": "subject",
  "timeline_field": "customer",
  "title_field": "subject",

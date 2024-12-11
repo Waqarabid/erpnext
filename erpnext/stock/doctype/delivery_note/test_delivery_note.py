@@ -6,11 +6,19 @@ import json
 from collections import defaultdict
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, cstr, flt, getdate, nowdate, nowtime, today
 
 from erpnext.accounts.doctype.account.test_account import get_inventory_account
 from erpnext.accounts.utils import get_balance_on
+<<<<<<< HEAD
+=======
+from erpnext.controllers.accounts_controller import InvalidQtyError
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from erpnext.selling.doctype.product_bundle.test_product_bundle import make_product_bundle
 from erpnext.selling.doctype.sales_order.test_sales_order import (
 	automatically_fetch_payment_terms,
@@ -22,6 +30,10 @@ from erpnext.stock.doctype.delivery_note.delivery_note import (
 	make_delivery_trip,
 	make_sales_invoice,
 )
+<<<<<<< HEAD
+=======
+from erpnext.stock.doctype.delivery_trip.test_delivery_trip import create_driver
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import get_gl_entries
 from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
@@ -42,7 +54,30 @@ from erpnext.stock.doctype.warehouse.test_warehouse import get_warehouse
 from erpnext.stock.stock_ledger import get_previous_sle
 
 
+<<<<<<< HEAD
 class TestDeliveryNote(FrappeTestCase):
+=======
+class UnitTestDeliveryNote(UnitTestCase):
+	"""
+	Unit tests for DeliveryNote.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestDeliveryNote(IntegrationTestCase):
+	def test_delivery_note_qty(self):
+		dn = create_delivery_note(qty=0, do_not_save=True)
+		with self.assertRaises(InvalidQtyError):
+			dn.save()
+
+		# No error with qty=1
+		dn.items[0].qty = 1
+		dn.save()
+		self.assertEqual(dn.items[0].qty, 1)
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_over_billing_against_dn(self):
 		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", 1)
 
@@ -736,7 +771,11 @@ class TestDeliveryNote(FrappeTestCase):
 		self.assertEqual(flt(bin_details.ordered_qty), flt(packed_item.ordered_qty))
 
 	def test_return_for_serialized_items(self):
+<<<<<<< HEAD
 		se = make_serialized_item()
+=======
+		se = make_serialized_item(self)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		serial_no = [get_serial_nos_from_bundle(se.get("items")[0].serial_and_batch_bundle)[0]]
 
@@ -1045,6 +1084,24 @@ class TestDeliveryNote(FrappeTestCase):
 		dn = create_delivery_note()
 		dt = make_delivery_trip(dn.name)
 		self.assertEqual(dn.name, dt.delivery_stops[0].delivery_note)
+<<<<<<< HEAD
+=======
+		dt.delivery_stops[0].customer_address = "fake string"
+		dt.flags.ignore_mandatory = True
+		dt.save()
+		dn.reload()
+		self.assertEqual(dn.delivery_trip, dt.name)
+
+		dn = create_delivery_note(do_not_submit=True)
+		dt = make_delivery_trip(dn.name)
+		self.assertEqual(dn.name, dt.delivery_stops[0].delivery_note)
+		dt.driver = create_driver()
+		self.assertRaisesRegex(
+			frappe.exceptions.ValidationError,
+			r"^Delivery Notes should not be in draft state when submitting a Delivery Trip.*",
+			dt.submit,
+		)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def test_delivery_note_with_cost_center(self):
 		from erpnext.accounts.doctype.cost_center.test_cost_center import create_cost_center
@@ -2360,7 +2417,11 @@ def create_delivery_note(**args):
 		if dn.is_return:
 			type_of_transaction = "Inward"
 
+<<<<<<< HEAD
 		qty = args.get("qty") or 1
+=======
+		qty = args.qty if args.get("qty") is not None else 1
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		qty *= -1 if type_of_transaction == "Outward" else 1
 		batches = {}
 		if args.get("batch_no"):
@@ -2391,8 +2452,13 @@ def create_delivery_note(**args):
 		{
 			"item_code": args.item or args.item_code or "_Test Item",
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
+<<<<<<< HEAD
 			"qty": args.qty or 1,
 			"rate": args.rate if args.get("rate") is not None else 100,
+=======
+			"qty": args.get("qty", 1),
+			"rate": args.get("rate", 100),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"conversion_factor": 1.0,
 			"serial_and_batch_bundle": bundle_id,
 			"allow_zero_valuation_rate": args.allow_zero_valuation_rate or 1,
@@ -2415,4 +2481,8 @@ def create_delivery_note(**args):
 	return dn
 
 
+<<<<<<< HEAD
 test_dependencies = ["Product Bundle"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Product Bundle"]
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

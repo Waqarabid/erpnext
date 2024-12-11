@@ -1,6 +1,10 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.tests.utils import ReportFilters, ReportName, execute_script_report
 
@@ -50,7 +54,11 @@ OPTIONAL_FILTERS = {
 }
 
 
+<<<<<<< HEAD
 class TestManufacturingReports(unittest.TestCase):
+=======
+class TestManufacturingReports(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_execute_all_manufacturing_reports(self):
 		"""Test that all script report in manufacturing modules are executable with supported filters"""
 		for report, filter in REPORT_FILTER_TEST_CASES:

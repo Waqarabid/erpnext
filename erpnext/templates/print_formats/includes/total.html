@@ -7,7 +7,11 @@
 		</div>
 	{% else %}
 		<div class="col-xs-5 {%- if doc.align_labels_right %} text-right{%- endif -%}">
+<<<<<<< HEAD
 			<label>{{ _(df.label) }}</label></div>
+=======
+			<label>{{ _(df.label, context=df.parent) }}</label></div>
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		<div class="col-xs-7 text-right value">
 			{{ doc.get_formatted("total", doc) }}
 		</div>

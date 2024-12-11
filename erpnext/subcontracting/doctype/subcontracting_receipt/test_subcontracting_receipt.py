@@ -5,7 +5,11 @@
 import copy
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, cint, flt, nowtime, today
 
 import erpnext
@@ -40,7 +44,20 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 )
 
 
+<<<<<<< HEAD
 class TestSubcontractingReceipt(FrappeTestCase):
+=======
+class UnitTestSubcontractingReceipt(UnitTestCase):
+	"""
+	Unit tests for SubcontractingReceipt.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSubcontractingReceipt(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()
@@ -372,7 +389,11 @@ class TestSubcontractingReceipt(FrappeTestCase):
 		self.assertTrue(get_gl_entries("Subcontracting Receipt", scr.name))
 		frappe.db.set_single_value("Stock Settings", "use_serial_batch_fields", 1)
 
+<<<<<<< HEAD
 	@change_settings("Stock Settings", {"use_serial_batch_fields": 0})
+=======
+	@IntegrationTestCase.change_settings("Stock Settings", {"use_serial_batch_fields": 0})
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_subcontracting_receipt_with_zero_service_cost(self):
 		warehouse = "Stores - TCP1"
 		service_items = [
@@ -1073,7 +1094,11 @@ class TestSubcontractingReceipt(FrappeTestCase):
 		scr.cancel()
 		self.assertTrue(scr.docstatus == 2)
 
+<<<<<<< HEAD
 	@change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
+=======
+	@IntegrationTestCase.change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_auto_create_purchase_receipt(self):
 		from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 

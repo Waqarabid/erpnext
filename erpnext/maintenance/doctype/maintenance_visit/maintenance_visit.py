@@ -22,7 +22,11 @@ class MaintenanceVisit(TransactionBase):
 			MaintenanceVisitPurpose,
 		)
 
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		amended_from: DF.Link | None
 		company: DF.Link
 		completion_status: DF.Literal["", "Partially Completed", "Fully Completed"]

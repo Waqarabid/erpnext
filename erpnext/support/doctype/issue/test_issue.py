@@ -1,11 +1,18 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import unittest
 
 import frappe
 from frappe import _
 from frappe.core.doctype.user_permission.test_user_permission import create_user
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import flt, get_datetime
 
 from erpnext.support.doctype.service_level_agreement.test_service_level_agreement import (
@@ -13,7 +20,11 @@ from erpnext.support.doctype.service_level_agreement.test_service_level_agreemen
 )
 
 
+<<<<<<< HEAD
 class TestSetUp(unittest.TestCase):
+=======
+class TestSetUp(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		frappe.db.sql("delete from `tabService Level Agreement`")
 		frappe.db.sql("delete from `tabService Level Priority`")

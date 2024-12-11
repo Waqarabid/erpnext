@@ -2,6 +2,10 @@ import unittest
 
 import frappe
 from frappe.test_runner import make_test_objects
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
@@ -16,7 +20,11 @@ from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_pu
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 
 
+<<<<<<< HEAD
 class TestUtils(unittest.TestCase):
+=======
+class TestUtils(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

@@ -49,6 +49,12 @@
   "cost_center",
   "dimension_col_break",
   "project",
+<<<<<<< HEAD
+=======
+  "references_section",
+  "job_card",
+  "column_break_nfod",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "section_break_34",
   "purchase_order_item",
   "page_break"
@@ -381,6 +387,25 @@
    "no_copy": 1,
    "read_only": 1,
    "search_index": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "references_section",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_nfod",
+   "fieldtype": "Column Break"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "idx": 1,
@@ -396,8 +421,16 @@
  "permissions": [],
  "quick_entry": 1,
  "search_fields": "item_name",
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

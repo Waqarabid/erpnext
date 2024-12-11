@@ -104,7 +104,11 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-18 08:32:26.895076",
+=======
+ "modified": "2024-03-27 13:06:47.653110",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Currency Exchange Settings",
@@ -141,7 +145,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

@@ -7,7 +7,10 @@ import os
 from pathlib import Path
 
 import frappe
+<<<<<<< HEAD
 from frappe import _
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.desk.doctype.global_search_settings.global_search_settings import (
 	update_global_search_doctypes,
 )
@@ -18,6 +21,17 @@ from erpnext.accounts.doctype.account.account import RootNotEditable
 from erpnext.regional.address_template.setup import set_up_address_templates
 
 
+<<<<<<< HEAD
+=======
+def _(x, *args, **kwargs):
+	"""Redefine the translation function to return the string as is.
+
+	We want to create english records but still mark the strings as translatable.
+	The respective DocTypes have 'Translate Link Fields' enabled."""
+	return x
+
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 def read_lines(filename: str) -> list[str]:
 	"""Return a list of lines from a file in the data directory."""
 	return (Path(__file__).parent.parent / "data" / filename).read_text().splitlines()
@@ -68,50 +82,82 @@ def install(country=None):
 		# Stock Entry Type
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Material Issue",
+=======
+			"name": _("Material Issue"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Material Issue",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Material Receipt",
+=======
+			"name": _("Material Receipt"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Material Receipt",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Material Transfer",
+=======
+			"name": _("Material Transfer"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Material Transfer",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Manufacture",
+=======
+			"name": _("Manufacture"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Manufacture",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Repack",
+=======
+			"name": _("Repack"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Repack",
 			"is_standard": 1,
 		},
 		{"doctype": "Stock Entry Type", "name": "Disassemble", "purpose": "Disassemble", "is_standard": 1},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Send to Subcontractor",
+=======
+			"name": _("Send to Subcontractor"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Send to Subcontractor",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Material Transfer for Manufacture",
+=======
+			"name": _("Material Transfer for Manufacture"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Material Transfer for Manufacture",
 			"is_standard": 1,
 		},
 		{
 			"doctype": "Stock Entry Type",
+<<<<<<< HEAD
 			"name": "Material Consumption for Manufacture",
+=======
+			"name": _("Material Consumption for Manufacture"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"purpose": "Material Consumption for Manufacture",
 			"is_standard": 1,
 		},
@@ -275,9 +321,15 @@ def install(country=None):
 		{"doctype": "Opportunity Type", "name": _("Sales")},
 		{"doctype": "Opportunity Type", "name": _("Support")},
 		{"doctype": "Opportunity Type", "name": _("Maintenance")},
+<<<<<<< HEAD
 		{"doctype": "Project Type", "project_type": "Internal"},
 		{"doctype": "Project Type", "project_type": "External"},
 		{"doctype": "Project Type", "project_type": "Other"},
+=======
+		{"doctype": "Project Type", "project_type": _("Internal")},
+		{"doctype": "Project Type", "project_type": _("External")},
+		{"doctype": "Project Type", "project_type": _("Other")},
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		{"doctype": "Print Heading", "print_heading": _("Credit Note")},
 		{"doctype": "Print Heading", "print_heading": _("Debit Note")},
 		# Share Management
@@ -295,7 +347,11 @@ def install(country=None):
 		("Designation", "designation_name", "designation.txt"),
 		("Sales Stage", "stage_name", "sales_stage.txt"),
 		("Industry Type", "industry", "industry_type.txt"),
+<<<<<<< HEAD
 		("Lead Source", "source_name", "lead_source.txt"),
+=======
+		("UTM Source", "name", "marketing_source.txt"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		("Sales Partner Type", "sales_partner_type", "sales_partner_type.txt"),
 	):
 		records += [{"doctype": doctype, title_field: title} for title in read_lines(filename)]
@@ -359,6 +415,7 @@ def add_uom_data():
 		open(frappe.get_app_path("erpnext", "setup", "setup_wizard", "data", "uom_data.json")).read()
 	)
 	for d in uoms:
+<<<<<<< HEAD
 		if not frappe.db.exists("UOM", _(d.get("uom_name"))):
 			frappe.get_doc(
 				{
@@ -369,6 +426,12 @@ def add_uom_data():
 					"enabled": 1,
 				}
 			).db_insert()
+=======
+		if not frappe.db.exists("UOM", d.get("uom_name")):
+			doc = frappe.new_doc("UOM")
+			doc.update(d)
+			doc.save()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	# bootstrap uom conversion factors
 	uom_conversions = json.loads(
@@ -377,19 +440,34 @@ def add_uom_data():
 		).read()
 	)
 	for d in uom_conversions:
+<<<<<<< HEAD
 		if not frappe.db.exists("UOM Category", _(d.get("category"))):
 			frappe.get_doc({"doctype": "UOM Category", "category_name": _(d.get("category"))}).db_insert()
 
 		if not frappe.db.exists(
 			"UOM Conversion Factor",
 			{"from_uom": _(d.get("from_uom")), "to_uom": _(d.get("to_uom"))},
+=======
+		if not frappe.db.exists("UOM Category", d.get("category")):
+			frappe.get_doc({"doctype": "UOM Category", "category_name": d.get("category")}).db_insert()
+
+		if not frappe.db.exists(
+			"UOM Conversion Factor",
+			{"from_uom": d.get("from_uom"), "to_uom": d.get("to_uom")},
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		):
 			frappe.get_doc(
 				{
 					"doctype": "UOM Conversion Factor",
+<<<<<<< HEAD
 					"category": _(d.get("category")),
 					"from_uom": _(d.get("from_uom")),
 					"to_uom": _(d.get("to_uom")),
+=======
+					"category": d.get("category"),
+					"from_uom": d.get("from_uom"),
+					"to_uom": d.get("to_uom"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					"value": d.get("value"),
 				}
 			).db_insert()
@@ -501,7 +579,11 @@ def update_stock_settings():
 	stock_settings.item_naming_by = "Item Code"
 	stock_settings.valuation_method = "FIFO"
 	stock_settings.default_warehouse = frappe.db.get_value("Warehouse", {"warehouse_name": _("Stores")})
+<<<<<<< HEAD
 	stock_settings.stock_uom = _("Nos")
+=======
+	stock_settings.stock_uom = "Nos"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	stock_settings.auto_indent = 1
 	stock_settings.auto_insert_price_list_rate_if_missing = 1
 	stock_settings.set_qty_in_transactions_based_on_serial_no_input = 1

@@ -1,6 +1,10 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils.make_random import get_random
 
 from erpnext.tests.utils import ReportFilters, ReportName, execute_script_report
@@ -76,7 +80,11 @@ OPTIONAL_FILTERS = {
 }
 
 
+<<<<<<< HEAD
 class TestReports(unittest.TestCase):
+=======
+class TestReports(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_execute_all_stock_reports(self):
 		"""Test that all script report in stock modules are executable with supported filters"""
 		for report, filter in REPORT_FILTER_TEST_CASES:

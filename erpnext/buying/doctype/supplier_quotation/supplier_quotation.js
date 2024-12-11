@@ -22,9 +22,19 @@ erpnext.buying.SupplierQuotationController = class SupplierQuotationController e
 			this.frm.set_value("valid_till", frappe.datetime.add_months(this.frm.doc.transaction_date, 1));
 		}
 		if (this.frm.doc.docstatus === 1) {
+<<<<<<< HEAD
 			cur_frm.add_custom_button(__("Purchase Order"), this.make_purchase_order, __("Create"));
 			cur_frm.page.set_inner_btn_group_as_primary(__("Create"));
 			cur_frm.add_custom_button(__("Quotation"), this.make_quotation, __("Create"));
+=======
+			this.frm.add_custom_button(
+				__("Purchase Order"),
+				this.make_purchase_order.bind(this),
+				__("Create")
+			);
+			this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+			this.frm.add_custom_button(__("Quotation"), this.make_quotation.bind(this), __("Create"));
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		} else if (this.frm.doc.docstatus === 0) {
 			this.frm.add_custom_button(
 				__("Material Request"),
@@ -87,13 +97,21 @@ erpnext.buying.SupplierQuotationController = class SupplierQuotationController e
 	make_purchase_order() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.buying.doctype.supplier_quotation.supplier_quotation.make_purchase_order",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 	make_quotation() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.buying.doctype.supplier_quotation.supplier_quotation.make_quotation",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 };

@@ -3,7 +3,11 @@
 
 import frappe
 from frappe import _dict
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.selling.doctype.sales_order.sales_order import create_pick_list
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
@@ -21,10 +25,26 @@ from erpnext.stock.doctype.stock_reconciliation.stock_reconciliation import (
 	EmptyStockReconciliationItemsError,
 )
 
+<<<<<<< HEAD
 test_dependencies = ["Item", "Sales Invoice", "Stock Entry", "Batch"]
 
 
 class TestPickList(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Sales Invoice", "Stock Entry", "Batch"]
+
+
+class UnitTestPickList(UnitTestCase):
+	"""
+	Unit tests for PickList.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPickList(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_pick_list_picks_warehouse_for_each_item(self):
 		item_code = make_item().name
 		try:
@@ -781,7 +801,11 @@ class TestPickList(FrappeTestCase):
 		self.assertEqual(so.per_delivered, 100)
 
 	def test_picklist_with_partial_bundles(self):
+<<<<<<< HEAD
 		# from test_records.json
+=======
+		# from self.globalTestRecords
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		warehouse = "_Test Warehouse - _TC"
 
 		quantities = [5, 2]

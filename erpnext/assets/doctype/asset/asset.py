@@ -154,6 +154,10 @@ class Asset(AccountsController):
 	def on_submit(self):
 		self.validate_in_use_date()
 		self.make_asset_movement()
+<<<<<<< HEAD
+=======
+		self.reload()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if not self.booked_fixed_asset and self.validate_make_gl_entry():
 			self.make_gl_entries()
 		if self.calculate_depreciation and not self.split_from:
@@ -1071,7 +1075,11 @@ def make_asset_movement(assets, purpose=None):
 		assets = json.loads(assets)
 
 	if len(assets) == 0:
+<<<<<<< HEAD
 		frappe.throw(_("Atleast one asset has to be selected."))
+=======
+		frappe.throw(_("At least one asset has to be selected."))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	asset_movement = frappe.new_doc("Asset Movement")
 	asset_movement.quantity = len(assets)

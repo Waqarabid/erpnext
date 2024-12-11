@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, today
 
 from erpnext.buying.doctype.purchase_order.purchase_order import make_purchase_receipt
@@ -13,7 +17,11 @@ from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.material_request.material_request import make_purchase_order
 
 
+<<<<<<< HEAD
 class TestRequestedItemsToOrderAndReceive(FrappeTestCase):
+=======
+class TestRequestedItemsToOrderAndReceive(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self) -> None:
 		create_item("Test MR Report Item")
 		self.setup_material_request()  # to order and receive
@@ -47,9 +55,13 @@ class TestRequestedItemsToOrderAndReceive(FrappeTestCase):
 
 	def setup_material_request(self, order=False, receive=False, days=0):
 		po = None
+<<<<<<< HEAD
 		test_records = frappe.get_test_records("Material Request")
 
 		mr = frappe.copy_doc(test_records[0])
+=======
+		mr = frappe.copy_doc(self.globalTestRecords["Material Request"][0])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		mr.transaction_date = add_days(today(), days)
 		mr.schedule_date = add_days(mr.transaction_date, 1)
 		for row in mr.items:

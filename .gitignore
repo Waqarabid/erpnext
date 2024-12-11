@@ -2,7 +2,10 @@
 *.py~
 .DS_Store
 conf.py
+<<<<<<< HEAD
 locale
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 latest_updates.json
 .wnf-lang-status
 *.egg-info
@@ -15,5 +18,13 @@ __pycache__
 *~
 .idea/
 .vscode/
+<<<<<<< HEAD
 node_modules/
 .backportrc.json
+=======
+.helix/
+node_modules/
+.backportrc.json
+# Aider AI Chat
+.aider*
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

@@ -1,9 +1,17 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "allow_import": 1,
  "autoname": "field:label",
  "creation": "2013-06-25 11:48:03",
  "description": "Specify conditions to calculate shipping amount",
  "doctype": "DocType",
+<<<<<<< HEAD
+=======
+ "engine": "InnoDB",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "field_order": [
   "label",
   "disabled",
@@ -140,7 +148,12 @@
  ],
  "icon": "fa fa-truck",
  "idx": 1,
+<<<<<<< HEAD
  "modified": "2019-05-25 23:12:26.156405",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:10:41.653314",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Shipping Rule",
@@ -170,7 +183,10 @@
    "read": 1,
    "report": 1,
    "role": "Accounts Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "share": 1,
    "write": 1
   },
@@ -184,10 +200,19 @@
    "read": 1,
    "report": 1,
    "role": "Sales Master Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "share": 1,
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_order": "ASC"
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 }

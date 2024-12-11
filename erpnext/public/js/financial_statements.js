@@ -28,10 +28,13 @@ erpnext.financial_statements = {
 
 			return value;
 		} else if (frappe.query_report.get_filter_value("selected_view") == "Margin" && data) {
+<<<<<<< HEAD
 			if (column.fieldname == "account" && data.account_name == __("Income")) {
 				//Taking the total income from each column (for all the financial years) as the base (100%)
 				this.baseData = row;
 			}
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if (column.colIndex >= 2) {
 				const marginPercent = data[column.fieldname];
 
@@ -264,11 +267,18 @@ function get_filters() {
 	let fy_filters = filters.filter((x) => {
 		return ["from_fiscal_year", "to_fiscal_year"].includes(x.fieldname);
 	});
+<<<<<<< HEAD
 	let fiscal_year = erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), false, true);
 	if (fiscal_year) {
 		let fy = erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), false, false);
 		fy_filters.forEach((x) => {
 			x.default = fy;
+=======
+	let fiscal_year = erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), false, false);
+	if (fiscal_year) {
+		fy_filters.forEach((x) => {
+			x.default = fiscal_year;
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 

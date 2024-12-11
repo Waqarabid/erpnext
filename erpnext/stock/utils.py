@@ -368,7 +368,11 @@ def get_valuation_method(item_code):
 	"""get valuation method from item or default"""
 	val_method = frappe.db.get_value("Item", item_code, "valuation_method", cache=True)
 	if not val_method:
+<<<<<<< HEAD
 		val_method = frappe.db.get_value("Stock Settings", None, "valuation_method", cache=True) or "FIFO"
+=======
+		val_method = frappe.db.get_single_value("Stock Settings", "valuation_method", cache=True) or "FIFO"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	return val_method
 
 

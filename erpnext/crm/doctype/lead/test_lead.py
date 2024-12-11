@@ -1,19 +1,31 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import random_string, today
 
 from erpnext.crm.doctype.lead.lead import make_opportunity
 from erpnext.crm.utils import get_linked_prospect
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Lead")
 
 
 class TestLead(unittest.TestCase):
+=======
+
+class TestLead(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_make_customer(self):
 		from erpnext.crm.doctype.lead.lead import make_customer
 

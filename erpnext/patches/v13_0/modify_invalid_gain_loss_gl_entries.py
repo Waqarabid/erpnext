@@ -45,7 +45,11 @@ def execute():
 			message=json.dumps(purchase_invoices + sales_invoices, indent=2),
 		)
 
+<<<<<<< HEAD
 	acc_frozen_upto = frappe.db.get_value("Accounts Settings", None, "acc_frozen_upto")
+=======
+	acc_frozen_upto = frappe.db.get_single_value("Accounts Settings", "acc_frozen_upto")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	if acc_frozen_upto:
 		frappe.db.set_single_value("Accounts Settings", "acc_frozen_upto", None)
 

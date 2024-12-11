@@ -1,5 +1,9 @@
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import flt, nowdate
 
 from erpnext.accounts.utils import get_fiscal_year
@@ -9,7 +13,11 @@ from erpnext.selling.report.sales_person_target_variance_based_on_item_group.sal
 )
 
 
+<<<<<<< HEAD
 class TestSalesPersonTargetVarianceBasedOnItemGroup(FrappeTestCase):
+=======
+class TestSalesPersonTargetVarianceBasedOnItemGroup(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.fiscal_year = get_fiscal_year(nowdate())[0]
 

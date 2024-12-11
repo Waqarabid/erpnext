@@ -1,5 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -10,6 +11,16 @@ from frappe.utils import random_string
 
 
 class TestVehicle(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import random_string
+
+
+class TestVehicle(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_make_vehicle(self):
 		vehicle = frappe.get_doc(
 			{

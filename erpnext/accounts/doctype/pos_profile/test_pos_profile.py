@@ -1,19 +1,33 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.pos_profile.pos_profile import (
 	get_child_nodes,
 )
 from erpnext.stock.get_item_details import get_pos_profile
 
+<<<<<<< HEAD
 test_dependencies = ["Item"]
 
 
 class TestPOSProfile(unittest.TestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item"]
+
+
+class TestPOSProfile(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_pos_profile(self):
 		make_pos_profile()
 
@@ -50,7 +64,11 @@ def get_customers_list(pos_profile=None):
 			customer_groups.extend(
 				[d.get("name") for d in get_child_nodes("Customer Group", d.get("customer_group"))]
 			)
+<<<<<<< HEAD
 		cond = "customer_group in (%s)" % (", ".join(["%s"] * len(customer_groups)))
+=======
+		cond = "customer_group in ({})".format(", ".join(["%s"] * len(customer_groups)))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	return (
 		frappe.db.sql(
@@ -72,7 +90,11 @@ def get_items_list(pos_profile, company):
 		for d in pos_profile.get("item_groups"):
 			args_list.extend([d.name for d in get_child_nodes("Item Group", d.item_group)])
 		if args_list:
+<<<<<<< HEAD
 			cond = "and i.item_group in (%s)" % (", ".join(["%s"] * len(args_list)))
+=======
+			cond = "and i.item_group in ({})".format(", ".join(["%s"] * len(args_list)))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	return frappe.db.sql(
 		f"""

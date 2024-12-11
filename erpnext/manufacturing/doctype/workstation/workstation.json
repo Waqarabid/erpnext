@@ -9,11 +9,19 @@
  "engine": "InnoDB",
  "field_order": [
   "dashboard_tab",
+<<<<<<< HEAD
+=======
+  "section_break_mqqv",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "workstation_dashboard",
   "details_tab",
   "workstation_name",
   "workstation_type",
   "plant_floor",
+<<<<<<< HEAD
+=======
+  "disabled",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "column_break_3",
   "production_capacity",
   "warehouse",
@@ -234,13 +242,34 @@
    "fieldname": "workstation_dashboard",
    "fieldtype": "HTML",
    "label": "Workstation Dashboard"
+<<<<<<< HEAD
   }
  ],
+=======
+  },
+  {
+   "fieldname": "section_break_mqqv",
+   "fieldtype": "Section Break",
+   "hide_border": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  }
+ ],
+ "hide_toolbar": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "icon": "icon-wrench",
  "idx": 1,
  "image_field": "on_status_image",
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-06-20 14:17:13.806609",
+=======
+ "modified": "2024-09-26 13:41:12.279344",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Workstation",
@@ -261,8 +290,16 @@
  ],
  "quick_entry": 1,
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

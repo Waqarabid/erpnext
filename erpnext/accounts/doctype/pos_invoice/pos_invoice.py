@@ -45,7 +45,11 @@ class POSInvoice(SalesInvoice):
 
 		account_for_change_amount: DF.Link | None
 		additional_discount_percentage: DF.Float
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		advances: DF.Table[SalesInvoiceAdvance]
 		against_income_account: DF.SmallText | None
 		allocate_advances_automatically: DF.Check
@@ -64,13 +68,20 @@ class POSInvoice(SalesInvoice):
 		base_total: DF.Currency
 		base_total_taxes_and_charges: DF.Currency
 		base_write_off_amount: DF.Currency
+<<<<<<< HEAD
 		campaign: DF.Link | None
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		cash_bank_account: DF.Link | None
 		change_amount: DF.Currency
 		commission_rate: DF.Float
 		company: DF.Link
 		company_address: DF.Link | None
+<<<<<<< HEAD
 		company_address_display: DF.SmallText | None
+=======
+		company_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		company_contact_person: DF.Link | None
 		consolidated_invoice: DF.Link | None
 		contact_display: DF.SmallText | None
@@ -137,10 +148,16 @@ class POSInvoice(SalesInvoice):
 		selling_price_list: DF.Link
 		set_posting_time: DF.Check
 		set_warehouse: DF.Link | None
+<<<<<<< HEAD
 		shipping_address: DF.SmallText | None
 		shipping_address_name: DF.Link | None
 		shipping_rule: DF.Link | None
 		source: DF.Link | None
+=======
+		shipping_address: DF.TextEditor | None
+		shipping_address_name: DF.Link | None
+		shipping_rule: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		status: DF.Literal[
 			"",
 			"Draft",
@@ -175,6 +192,12 @@ class POSInvoice(SalesInvoice):
 		update_billed_amount_in_delivery_note: DF.Check
 		update_billed_amount_in_sales_order: DF.Check
 		update_stock: DF.Check
+<<<<<<< HEAD
+=======
+		utm_campaign: DF.Link | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		write_off_account: DF.Link | None
 		write_off_amount: DF.Currency
 		write_off_cost_center: DF.Link | None
@@ -236,6 +259,10 @@ class POSInvoice(SalesInvoice):
 			from erpnext.accounts.doctype.pricing_rule.utils import update_coupon_code_count
 
 			update_coupon_code_count(self.coupon_code, "used")
+<<<<<<< HEAD
+=======
+		self.clear_unallocated_mode_of_payments()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def before_cancel(self):
 		if (
@@ -274,6 +301,15 @@ class POSInvoice(SalesInvoice):
 
 		self.delink_serial_and_batch_bundle()
 
+<<<<<<< HEAD
+=======
+	def clear_unallocated_mode_of_payments(self):
+		self.set("payments", self.get("payments", {"amount": ["not in", [0, None, ""]]}))
+
+		sip = frappe.qb.DocType("Sales Invoice Payment")
+		frappe.qb.from_(sip).delete().where(sip.parent == self.name).where(sip.amount == 0).run()
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def delink_serial_and_batch_bundle(self):
 		for row in self.items:
 			if row.serial_and_batch_bundle:
@@ -380,7 +416,11 @@ class POSInvoice(SalesInvoice):
 			if d.get("qty") > 0:
 				frappe.throw(
 					_(
+<<<<<<< HEAD
 						"Row #{}: You cannot add postive quantities in a return invoice. Please remove item {} to complete the return."
+=======
+						"Row #{}: You cannot add positive quantities in a return invoice. Please remove item {} to complete the return."
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					).format(d.idx, frappe.bold(d.item_code)),
 					title=_("Invalid Item"),
 				)
@@ -529,7 +569,15 @@ class POSInvoice(SalesInvoice):
 
 	def set_pos_fields(self, for_validate=False):
 		"""Set retail related fields from POS Profiles"""
+<<<<<<< HEAD
 		from erpnext.stock.get_item_details import get_pos_profile, get_pos_profile_item_details
+=======
+		from erpnext.stock.get_item_details import (
+			ItemDetailsCtx,
+			get_pos_profile,
+			get_pos_profile_item_details_,
+		)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if not self.pos_profile:
 			pos_profile = get_pos_profile(self.company) or {}
@@ -598,8 +646,13 @@ class POSInvoice(SalesInvoice):
 			# set pos values in items
 			for item in self.get("items"):
 				if item.get("item_code"):
+<<<<<<< HEAD
 					profile_details = get_pos_profile_item_details(
 						profile.get("company"), frappe._dict(item.as_dict()), profile
+=======
+					profile_details = get_pos_profile_item_details_(
+						ItemDetailsCtx(item.as_dict()), profile.get("company"), profile
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					)
 					for fname, val in profile_details.items():
 						if (not for_validate) or (for_validate and not item.get(fname)):
@@ -641,7 +694,13 @@ class POSInvoice(SalesInvoice):
 		if profile:
 			return {
 				"print_format": print_format,
+<<<<<<< HEAD
 				"campaign": profile.get("campaign"),
+=======
+				"utm_source": profile.get("utm_source"),
+				"utm_campaign": profile.get("utm_campaign"),
+				"utm_medium": profile.get("utm_medium"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				"allow_print_before_pay": profile.get("allow_print_before_pay"),
 			}
 
@@ -797,7 +856,11 @@ def make_merge_log(invoices):
 		invoices = json.loads(invoices)
 
 	if len(invoices) == 0:
+<<<<<<< HEAD
 		frappe.throw(_("Atleast one invoice has to be selected."))
+=======
+		frappe.throw(_("At least one invoice has to be selected."))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	merge_log = frappe.new_doc("POS Invoice Merge Log")
 	merge_log.posting_date = getdate(nowdate())

@@ -77,7 +77,11 @@ class Subscription(Document):
 		purchase_tax_template: DF.Link | None
 		sales_tax_template: DF.Link | None
 		start_date: DF.Date | None
+<<<<<<< HEAD
 		status: DF.Literal["", "Trialling", "Active", "Past Due Date", "Cancelled", "Unpaid", "Completed"]
+=======
+		status: DF.Literal["", "Trialing", "Active", "Past Due Date", "Cancelled", "Unpaid", "Completed"]
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		submit_invoice: DF.Check
 		trial_period_end: DF.Date | None
 		trial_period_start: DF.Date | None
@@ -222,7 +226,11 @@ class Subscription(Document):
 		Sets the status of the `Subscription`
 		"""
 		if self.is_trialling():
+<<<<<<< HEAD
 			self.status = "Trialling"
+=======
+			self.status = "Trialing"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		elif self.status == "Active" and self.end_date and getdate(posting_date) > getdate(self.end_date):
 			self.status = "Completed"
 		elif self.is_past_grace_period():
@@ -691,7 +699,11 @@ class Subscription(Document):
 		to_generate_invoice = (
 			True
 			if self.status == "Active"
+<<<<<<< HEAD
 			and not self.generate_invoice_at == "Beginning of the current subscription period"
+=======
+			and self.generate_invoice_at != "Beginning of the current subscription period"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			else False
 		)
 		self.status = "Cancelled"
@@ -709,7 +721,11 @@ class Subscription(Document):
 		subscription and the `Subscription` will lose all the history of generated invoices
 		it has.
 		"""
+<<<<<<< HEAD
 		if not self.status == "Cancelled":
+=======
+		if self.status != "Cancelled":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			frappe.throw(_("You cannot restart a Subscription that is not cancelled."), InvoiceNotCancelled)
 
 		self.status = "Active"

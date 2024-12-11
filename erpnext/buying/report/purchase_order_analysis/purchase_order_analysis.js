@@ -53,7 +53,11 @@ frappe.query_reports["Purchase Order Analysis"] = {
 			fieldtype: "MultiSelectList",
 			width: "80",
 			get_data: function (txt) {
+<<<<<<< HEAD
 				let status = ["To Bill", "To Receive", "To Receive and Bill", "Completed"];
+=======
+				let status = ["To Pay", "To Bill", "To Receive", "To Receive and Bill", "Completed"];
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				let options = [];
 				for (let option of status) {
 					options.push({

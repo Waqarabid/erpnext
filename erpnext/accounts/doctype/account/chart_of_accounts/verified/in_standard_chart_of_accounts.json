@@ -36,6 +36,7 @@
                 }
             },
             "Fixed Assets": {
+<<<<<<< HEAD
                 "Capital Equipments": {
                     "account_type": "Fixed Asset"
                 },
@@ -46,6 +47,18 @@
                     "account_type": "Fixed Asset"
                 },
                 "Office Equipments": {
+=======
+                "Capital Equipment": {
+                    "account_type": "Fixed Asset"
+                },
+                "Electronic Equipment": {
+                    "account_type": "Fixed Asset"
+                },
+                "Furniture and Fixtures": {
+                    "account_type": "Fixed Asset"
+                },
+                "Office Equipment": {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
                     "account_type": "Fixed Asset"
                 },
                 "Plants and Machineries": {

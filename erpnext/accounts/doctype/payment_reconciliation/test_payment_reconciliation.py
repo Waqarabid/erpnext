@@ -4,7 +4,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, add_years, flt, getdate, nowdate, today
 
 from erpnext import get_default_cost_center
@@ -17,10 +21,26 @@ from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 from erpnext.stock.doctype.item.test_item import create_item
 
+<<<<<<< HEAD
 test_dependencies = ["Item"]
 
 
 class TestPaymentReconciliation(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item"]
+
+
+class UnitTestPaymentReconciliation(UnitTestCase):
+	"""
+	Unit tests for PaymentReconciliation.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPaymentReconciliation(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.create_company()
 		self.create_item()
@@ -1234,7 +1254,11 @@ class TestPaymentReconciliation(FrappeTestCase):
 		payment_vouchers = [x.get("reference_name") for x in pr.get("payments")]
 		self.assertCountEqual(payment_vouchers, [je2.name, pe2.name])
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		"Accounts Settings",
 		{
 			"allow_multi_currency_invoices_against_single_party_account": 1,

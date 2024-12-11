@@ -99,9 +99,18 @@ $.extend(erpnext.queries, {
 	},
 
 	dispatch_address_query: function (doc) {
+<<<<<<< HEAD
 		return {
 			query: "frappe.contacts.doctype.address.address.address_query",
 			filters: { link_doctype: "Company", link_name: doc.company || "" },
+=======
+		var filters = { link_doctype: "Company", link_name: doc.company || "" };
+		var is_drop_ship = doc.items.some((item) => item.delivered_by_supplier);
+		if (is_drop_ship) filters = {};
+		return {
+			query: "frappe.contacts.doctype.address.address.address_query",
+			filters: filters,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		};
 	},
 

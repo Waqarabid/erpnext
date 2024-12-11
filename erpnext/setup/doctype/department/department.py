@@ -2,6 +2,11 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
+=======
+import json
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import frappe
 from frappe.utils.nestedset import NestedSet, get_root_of
 
@@ -69,7 +74,13 @@ def get_abbreviated_name(name, company):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_children(doctype, parent=None, company=None, is_root=False):
+=======
+def get_children(doctype, parent=None, company=None, is_root=False, include_disabled=False):
+	if isinstance(include_disabled, str):
+		include_disabled = json.loads(include_disabled)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	fields = ["name as value", "is_group as expandable"]
 	filters = {}
 
@@ -81,6 +92,12 @@ def get_children(doctype, parent=None, company=None, is_root=False):
 	else:
 		filters["parent_department"] = parent
 
+<<<<<<< HEAD
+=======
+	if frappe.db.has_column(doctype, "disabled") and not include_disabled:
+		filters["disabled"] = False
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	return frappe.get_all("Department", fields=fields, filters=filters, order_by="name")
 
 

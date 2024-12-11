@@ -24,7 +24,10 @@ erpnext.setup.slides_settings = [
 				fieldtype: "Data",
 				reqd: 1,
 			},
+<<<<<<< HEAD
 			{ fieldtype: "Column Break" },
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			{
 				fieldname: "company_abbr",
 				label: __("Company Abbreviation"),

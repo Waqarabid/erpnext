@@ -38,9 +38,12 @@ class ItemAttribute(Document):
 		to_range: DF.Float
 	# end: auto-generated types
 
+<<<<<<< HEAD
 	def __setup__(self):
 		self.flags.ignore_these_exceptions_in_test = [InvalidItemAttributeValueError]
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def validate(self):
 		frappe.flags.attribute_values = None
 		self.validate_numeric()

@@ -5,5 +5,8 @@
 import frappe
 
 # test_ignore = ["Item"]
+<<<<<<< HEAD
 
 test_records = frappe.get_test_records("Price List")
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

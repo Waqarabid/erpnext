@@ -76,7 +76,11 @@ def get_help_article_list():
 			"Help Article",
 			fields="*",
 			filters={"category": category.name, "published": 1},
+<<<<<<< HEAD
 			order_by="modified desc",
+=======
+			order_by="creation desc",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			limit=5,
 		)
 		if help_articles:

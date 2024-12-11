@@ -84,7 +84,11 @@
  "idx": 1,
  "links": [],
  "max_attachments": 1,
+<<<<<<< HEAD
  "modified": "2024-01-30 14:39:26.328837",
+=======
+ "modified": "2024-08-16 19:41:19.591111",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Price List",
@@ -128,7 +132,14 @@
  ],
  "search_fields": "currency",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": []
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "translated_doctype": 1
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 }

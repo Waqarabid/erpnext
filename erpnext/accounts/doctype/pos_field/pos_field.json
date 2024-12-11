@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "creation": "2019-08-22 14:35:39.043242",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -64,14 +68,25 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2019-08-23 13:59:34.025523",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:10:14.648160",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "POS Field",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

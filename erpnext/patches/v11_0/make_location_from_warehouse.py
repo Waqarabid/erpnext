@@ -27,7 +27,11 @@ def execute():
 		except frappe.DuplicateEntryError:
 			continue
 
+<<<<<<< HEAD
 	rebuild_tree("Location", "parent_location")
+=======
+	rebuild_tree("Location")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def get_parent_warehouse_name(warehouse):

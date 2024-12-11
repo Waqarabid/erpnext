@@ -183,8 +183,16 @@
  "name": "Asset Capitalization Stock Item",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

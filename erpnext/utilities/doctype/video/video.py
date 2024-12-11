@@ -78,6 +78,7 @@ def get_frequency(value):
 
 def update_youtube_data():
 	# Called every 30 minutes via hooks
+<<<<<<< HEAD
 	enable_youtube_tracking, frequency = frappe.db.get_value(
 		"Video Settings", "Video Settings", ["enable_youtube_tracking", "frequency"]
 	)
@@ -86,6 +87,13 @@ def update_youtube_data():
 		return
 
 	frequency = get_frequency(frequency)
+=======
+	video_settings = frappe.get_cached_doc("Video Settings")
+	if not video_settings.enable_youtube_tracking:
+		return
+
+	frequency = get_frequency(video_settings.frequency)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	time = datetime.now()
 	timezone = pytz.timezone(get_system_timezone())
 	site_time = time.astimezone(timezone)

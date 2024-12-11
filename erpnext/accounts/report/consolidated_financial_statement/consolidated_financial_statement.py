@@ -266,6 +266,10 @@ def get_account_type_based_data(account_type, companies, fiscal_year, filters):
 	filters.end_date = fiscal_year.year_end_date
 
 	for company in companies:
+<<<<<<< HEAD
+=======
+		filters.company = company
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		amount = get_account_type_based_gl_data(company, filters)
 
 		if amount and account_type == "Depreciation":

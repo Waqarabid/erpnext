@@ -41,12 +41,21 @@ jobs:
     steps:
 
       - name: Clone
+<<<<<<< HEAD
         uses: actions/checkout@v2
 
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
+=======
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
       - name: Check for valid Python & Merge Conflicts
         run: |
@@ -57,7 +66,11 @@ jobs:
           fi
 
       - name: Setup Node
+<<<<<<< HEAD
         uses: actions/setup-node@v2
+=======
+        uses: actions/setup-node@v4
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
         with:
           node-version: 18
           check-latest: true
@@ -66,7 +79,11 @@ jobs:
         run: echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
 
       - name: Cache pip
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/*requirements.txt', '**/pyproject.toml') }}
@@ -75,7 +92,11 @@ jobs:
             ${{ runner.os }}-
 
       - name: Cache node modules
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
         env:
           cache-name: cache-node-modules
         with:
@@ -90,7 +111,11 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+<<<<<<< HEAD
       - uses: actions/cache@v2
+=======
+      - uses: actions/cache@v4
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}

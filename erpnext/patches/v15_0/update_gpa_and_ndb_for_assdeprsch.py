@@ -3,7 +3,10 @@ import frappe
 
 def execute():
 	# not using frappe.qb because https://github.com/frappe/frappe/issues/20292
+<<<<<<< HEAD
 	# nosemgrep
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	frappe.db.sql(
 		"""UPDATE `tabAsset Depreciation Schedule`
         JOIN `tabAsset`

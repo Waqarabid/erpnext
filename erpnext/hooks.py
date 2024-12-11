@@ -8,7 +8,11 @@ app_email = "info@erpnext.com"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/frappe/erpnext"
 app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
+<<<<<<< HEAD
 
+=======
+app_home = "/app/home"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 add_to_apps_screen = [
 	{
@@ -58,7 +62,10 @@ setup_wizard_test = "erpnext.setup.setup_wizard.test_setup_wizard.run_setup_wiza
 
 before_install = [
 	"erpnext.setup.install.check_setup_wizard_not_completed",
+<<<<<<< HEAD
 	"erpnext.setup.install.check_frappe_version",
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 ]
 after_install = "erpnext.setup.install.after_install"
 
@@ -274,11 +281,14 @@ standard_portal_menu_items = [
 	{"title": "Appointment Booking", "route": "/book_appointment"},
 ]
 
+<<<<<<< HEAD
 default_roles = [
 	{"role": "Customer", "doctype": "Contact", "email_field": "email_id"},
 	{"role": "Supplier", "doctype": "Contact", "email_field": "email_id"},
 ]
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 sounds = [
 	{"name": "incoming-call", "src": "/assets/erpnext/sounds/incoming-call.mp3", "volume": 0.2},
 	{"name": "call-disconnect", "src": "/assets/erpnext/sounds/call-disconnect.mp3", "volume": 0.2},
@@ -399,6 +409,10 @@ doc_events = {
 # function should expect the variable and doc as arguments
 naming_series_variables = {
 	"FY": "erpnext.accounts.utils.parse_naming_series_variable",
+<<<<<<< HEAD
+=======
+	"ABBR": "erpnext.accounts.utils.parse_naming_series_variable",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 }
 
 # On cancel event Payment Entry will be exempted and all linked submittable doctype will get cancelled.
@@ -500,7 +514,12 @@ payment_gateway_enabled = "erpnext.accounts.utils.create_payment_gateway_account
 
 communication_doctypes = ["Customer", "Supplier"]
 
+<<<<<<< HEAD
 advance_payment_doctypes = ["Sales Order", "Purchase Order"]
+=======
+advance_payment_receivable_doctypes = ["Sales Order"]
+advance_payment_payable_doctypes = ["Purchase Order"]
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 invoice_doctypes = ["Sales Invoice", "Purchase Invoice"]
 
@@ -560,6 +579,11 @@ accounting_dimension_doctypes = [
 	"Payment Reconciliation",
 	"Payment Reconciliation Allocation",
 	"Payment Request",
+<<<<<<< HEAD
+=======
+	"Asset Movement Item",
+	"Asset Depreciation Schedule",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 ]
 
 get_matching_queries = (

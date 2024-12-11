@@ -78,7 +78,11 @@ class PurchaseInvoice(BuyingController):
 		)
 
 		additional_discount_percentage: DF.Float
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		advance_tax: DF.Table[AdvanceTax]
 		advances: DF.Table[PurchaseInvoiceAdvance]
 		against_expense_account: DF.SmallText | None
@@ -103,7 +107,11 @@ class PurchaseInvoice(BuyingController):
 		bill_date: DF.Date | None
 		bill_no: DF.Data | None
 		billing_address: DF.Link | None
+<<<<<<< HEAD
 		billing_address_display: DF.SmallText | None
+=======
+		billing_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		buying_price_list: DF.Link | None
 		cash_bank_account: DF.Link | None
 		clearance_date: DF.Date | None
@@ -165,11 +173,19 @@ class PurchaseInvoice(BuyingController):
 		rounding_adjustment: DF.Currency
 		scan_barcode: DF.Data | None
 		select_print_heading: DF.Link | None
+<<<<<<< HEAD
+=======
+		sender: DF.Data | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		set_from_warehouse: DF.Link | None
 		set_posting_time: DF.Check
 		set_warehouse: DF.Link | None
 		shipping_address: DF.Link | None
+<<<<<<< HEAD
 		shipping_address_display: DF.SmallText | None
+=======
+		shipping_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		shipping_rule: DF.Link | None
 		status: DF.Literal[
 			"",
@@ -188,6 +204,10 @@ class PurchaseInvoice(BuyingController):
 		supplied_items: DF.Table[PurchaseReceiptItemSupplied]
 		supplier: DF.Link
 		supplier_address: DF.Link | None
+<<<<<<< HEAD
+=======
+		supplier_group: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		supplier_name: DF.Data | None
 		supplier_warehouse: DF.Link | None
 		tax_category: DF.Link | None
@@ -589,7 +609,11 @@ class PurchaseInvoice(BuyingController):
 
 	def validate_expense_account(self):
 		for item in self.get("items"):
+<<<<<<< HEAD
 			validate_account_head(item.idx, item.expense_account, self.company, "Expense")
+=======
+			validate_account_head(item.idx, item.expense_account, self.company, _("Expense"))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def set_against_expense_account(self, force=False):
 		against_accounts = []
@@ -604,7 +628,11 @@ class PurchaseInvoice(BuyingController):
 		frappe.db.set_value(self.doctype, self.name, "against_expense_account", self.against_expense_account)
 
 	def po_required(self):
+<<<<<<< HEAD
 		if frappe.db.get_value("Buying Settings", None, "po_required") == "Yes":
+=======
+		if frappe.db.get_single_value("Buying Settings", "po_required") == "Yes":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if frappe.get_value(
 				"Supplier", self.supplier, "allow_purchase_invoice_creation_without_purchase_order"
 			):
@@ -625,7 +653,11 @@ class PurchaseInvoice(BuyingController):
 
 	def pr_required(self):
 		stock_items = self.get_stock_items()
+<<<<<<< HEAD
 		if frappe.db.get_value("Buying Settings", None, "pr_required") == "Yes":
+=======
+		if frappe.db.get_single_value("Buying Settings", "pr_required") == "Yes":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if frappe.get_value(
 				"Supplier", self.supplier, "allow_purchase_invoice_creation_without_purchase_receipt"
 			):
@@ -1171,7 +1203,11 @@ class PurchaseInvoice(BuyingController):
 						(item.purchase_receipt, valuation_tax_accounts),
 					)
 
+<<<<<<< HEAD
 					stock_rbnb = (
+=======
+					(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						self.get_company_default("asset_received_but_not_billed")
 						if item.is_fixed_asset
 						else self.stock_received_but_not_billed
@@ -1181,7 +1217,11 @@ class PurchaseInvoice(BuyingController):
 						gl_entries.append(
 							self.get_gl_dict(
 								{
+<<<<<<< HEAD
 									"account": stock_rbnb,
+=======
+									"account": self.stock_received_but_not_billed,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 									"against": self.supplier,
 									"debit": flt(item.item_tax_amount, item.precision("item_tax_amount")),
 									"remarks": self.remarks or _("Accounting Entry for Stock"),
@@ -1205,7 +1245,11 @@ class PurchaseInvoice(BuyingController):
 		pr_items = frappe.get_all(
 			"Purchase Receipt Item",
 			filters={"parent": ("in", linked_purchase_receipts)},
+<<<<<<< HEAD
 			fields=["name", "provisional_expense_account", "qty", "base_rate"],
+=======
+			fields=["name", "provisional_expense_account", "qty", "base_rate", "rate"],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		)
 		default_provisional_account = self.get_company_default("default_provisional_account")
 		provisional_accounts = set(
@@ -1233,6 +1277,10 @@ class PurchaseInvoice(BuyingController):
 				"provisional_account": item.provisional_expense_account or default_provisional_account,
 				"qty": item.qty,
 				"base_rate": item.base_rate,
+<<<<<<< HEAD
+=======
+				"rate": item.rate,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				"has_provisional_entry": item.name in rows_with_provisional_entries,
 			}
 
@@ -1249,7 +1297,14 @@ class PurchaseInvoice(BuyingController):
 					self.posting_date,
 					pr_item.get("provisional_account"),
 					reverse=1,
+<<<<<<< HEAD
 					item_amount=(min(item.qty, pr_item.get("qty")) * pr_item.get("base_rate")),
+=======
+					item_amount=(
+						(min(item.qty, pr_item.get("qty")) * pr_item.get("rate"))
+						* purchase_receipt_doc.get("conversion_rate")
+					),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				)
 
 	def update_gross_purchase_amount_for_linked_assets(self, item):

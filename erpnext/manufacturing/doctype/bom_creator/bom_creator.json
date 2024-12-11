@@ -19,6 +19,11 @@
   "qty",
   "project",
   "uom",
+<<<<<<< HEAD
+=======
+  "section_break_xvld",
+  "routing",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "raw_materials_tab",
   "currency_detail",
   "rm_cost_as_per",
@@ -278,6 +283,20 @@
    "fieldtype": "Text",
    "label": "Error Log",
    "read_only": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "section_break_xvld",
+   "fieldtype": "Section Break",
+   "label": "Operations Routing"
+  },
+  {
+   "fieldname": "routing",
+   "fieldtype": "Link",
+   "label": "Routing",
+   "options": "Routing"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "hide_toolbar": 1,
@@ -289,7 +308,11 @@
    "link_fieldname": "bom_creator"
   }
  ],
+<<<<<<< HEAD
  "modified": "2024-09-21 09:05:52.945112",
+=======
+ "modified": "2024-11-25 16:41:03.047835",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "BOM Creator",
@@ -324,8 +347,16 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

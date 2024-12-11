@@ -10,7 +10,11 @@ URL_PREFIXES = ("http://", "https://")
 
 @frappe.whitelist()
 def import_genericode():
+<<<<<<< HEAD
 	doctype = "Code List"
+=======
+	doctype = frappe.form_dict.doctype
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	docname = frappe.form_dict.docname
 	content = frappe.local.uploaded_file
 

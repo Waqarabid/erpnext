@@ -187,12 +187,20 @@ erpnext.accounts.taxes = {
 			if(tax.charge_type == "Actual") {
 				// inclusive tax cannot be of type Actual
 				actual_type_error();
+<<<<<<< HEAD
 			} else if(tax.charge_type == "On Previous Row Amount" && this.frm &&
+=======
+			} else if (tax.charge_type == "On Previous Row Amount" && this.frm &&
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				!cint(this.frm.doc["taxes"][tax.row_id - 1].included_in_print_rate)
 			) {
 				// referred row should also be an inclusive tax
 				on_previous_row_error(tax.row_id);
+<<<<<<< HEAD
 			} else if(tax.charge_type == "On Previous Row Total" && this.frm) {
+=======
+			} else if (tax.charge_type == "On Previous Row Total" && this.frm) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				var taxes_not_included = $.map(this.frm.doc["taxes"].slice(0, tax.row_id),
 					function(t) { return cint(t.included_in_print_rate) ? null : t; });
 				if(taxes_not_included.length > 0) {

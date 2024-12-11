@@ -2,23 +2,37 @@ name: Generate Semantic Release
 on:
   push:
     branches:
+<<<<<<< HEAD
       - version-15
+=======
+      - version-13
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Entire Repository
+<<<<<<< HEAD
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
 
+=======
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 20
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
       - name: Setup dependencies
         run: |
           npm install @semantic-release/git @semantic-release/exec --no-save

@@ -1,14 +1,25 @@
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import get_recipients
 
 
+<<<<<<< HEAD
 class TestStockRepostingSettings(unittest.TestCase):
+=======
+class TestStockRepostingSettings(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_notify_reposting_error_to_role(self):
 		role = "Notify Reposting Role"
 

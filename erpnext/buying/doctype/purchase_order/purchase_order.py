@@ -55,7 +55,11 @@ class PurchaseOrder(BuyingController):
 		)
 
 		additional_discount_percentage: DF.Float
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		advance_paid: DF.Currency
 		advance_payment_status: DF.Literal["Not Initiated", "Initiated", "Partially Paid", "Fully Paid"]
 		amended_from: DF.Link | None
@@ -74,7 +78,11 @@ class PurchaseOrder(BuyingController):
 		base_total: DF.Currency
 		base_total_taxes_and_charges: DF.Currency
 		billing_address: DF.Link | None
+<<<<<<< HEAD
 		billing_address_display: DF.SmallText | None
+=======
+		billing_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		buying_price_list: DF.Link | None
 		company: DF.Link
 		contact_display: DF.SmallText | None
@@ -131,7 +139,11 @@ class PurchaseOrder(BuyingController):
 		set_reserve_warehouse: DF.Link | None
 		set_warehouse: DF.Link | None
 		shipping_address: DF.Link | None
+<<<<<<< HEAD
 		shipping_address_display: DF.SmallText | None
+=======
+		shipping_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		shipping_rule: DF.Link | None
 		status: DF.Literal[
 			"",
@@ -216,6 +228,13 @@ class PurchaseOrder(BuyingController):
 
 		self.validate_fg_item_for_subcontracting()
 		self.set_received_qty_for_drop_ship_items()
+<<<<<<< HEAD
+=======
+
+		if not self.advance_payment_status:
+			self.advance_payment_status = "Not Initiated"
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		validate_inter_company_party(
 			self.doctype, self.supplier, self.company, self.inter_company_order_reference
 		)
@@ -365,7 +384,11 @@ class PurchaseOrder(BuyingController):
 									item.idx, item.fg_item
 								)
 							)
+<<<<<<< HEAD
 						elif not frappe.get_value("Item", item.fg_item, "default_bom"):
+=======
+						elif not item.bom and not frappe.get_value("Item", item.fg_item, "default_bom"):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 							frappe.throw(
 								_("Row #{0}: Default BOM not found for FG Item {1}").format(
 									item.idx, item.fg_item
@@ -905,6 +928,17 @@ def get_mapped_subcontracting_order(source_name, target_doc=None):
 				for idx, item in enumerate(target_doc.items):
 					item.warehouse = source_doc.items[idx].warehouse
 
+<<<<<<< HEAD
+=======
+		for idx, item in enumerate(target_doc.items):
+			item.job_card = source_doc.items[idx].job_card
+			if not target_doc.supplier_warehouse:
+				# WIP warehouse is set as Supplier Warehouse in Job Card
+				target_doc.supplier_warehouse = frappe.get_cached_value(
+					"Job Card", item.job_card, "wip_warehouse"
+				)
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	if target_doc and isinstance(target_doc, str):
 		target_doc = json.loads(target_doc)
 		for key in ["service_items", "items", "supplied_items"]:

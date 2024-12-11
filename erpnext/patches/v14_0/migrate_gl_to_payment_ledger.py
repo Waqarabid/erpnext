@@ -189,4 +189,8 @@ def execute():
 						raise err
 				else:
 					break
+<<<<<<< HEAD
 			print(f"{processed} records have been sucessfully migrated")
+=======
+			print(f"{processed} records have been successfully migrated")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

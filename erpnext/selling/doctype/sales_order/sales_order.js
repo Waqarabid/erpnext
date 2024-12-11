@@ -796,6 +796,7 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 							status: ["!=", "Lost"],
 						},
 					});
+<<<<<<< HEAD
 
 					setTimeout(() => {
 						d.$parent.append(`
@@ -804,6 +805,8 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 							</span>
 					`);
 					}, 200);
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				},
 				__("Get Items From")
 			);
@@ -1068,6 +1071,11 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 		var delivery_dates = this.frm.doc.items.map((i) => i.delivery_date);
 		delivery_dates = [...new Set(delivery_dates)];
 
+<<<<<<< HEAD
+=======
+		var today = new Date();
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		var item_grid = this.frm.fields_dict["items"].grid;
 		if (!item_grid.get_selected().length && delivery_dates.length > 1) {
 			var dialog = new frappe.ui.Dialog({
@@ -1088,7 +1096,15 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 						<div class="list-item">
 							<div class="list-item__content list-item__content--flex-2">
 								<label>
+<<<<<<< HEAD
 								<input type="checkbox" data-date="${date}" checked="checked"/>
+=======
+								<input
+									type="checkbox"
+									data-date="${date}"
+									${frappe.datetime.get_day_diff(new Date(date), today) > 0 ? "" : 'checked="checked"'}
+								/>
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 								${frappe.datetime.str_to_user(date)}
 								</label>
 							</div>

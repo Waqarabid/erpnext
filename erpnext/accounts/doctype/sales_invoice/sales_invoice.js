@@ -61,9 +61,15 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 	refresh(doc, dt, dn) {
 		const me = this;
 		super.refresh();
+<<<<<<< HEAD
 		if (cur_frm.msgbox && cur_frm.msgbox.$wrapper.is(":visible")) {
 			// hide new msgbox
 			cur_frm.msgbox.hide();
+=======
+		if (this.frm.msgbox && this.frm.msgbox.$wrapper.is(":visible")) {
+			// hide new msgbox
+			this.frm.msgbox.hide();
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		}
 
 		this.frm.toggle_reqd("due_date", !this.frm.doc.is_return);
@@ -88,33 +94,60 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 		if (doc.docstatus == 1 && !doc.is_return) {
 			var is_delivered_by_supplier = false;
 
+<<<<<<< HEAD
 			is_delivered_by_supplier = cur_frm.doc.items.some(function (item) {
+=======
+			is_delivered_by_supplier = this.frm.doc.items.some(function (item) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				return item.is_delivered_by_supplier ? true : false;
 			});
 
 			if (doc.outstanding_amount >= 0 || Math.abs(flt(doc.outstanding_amount)) < flt(doc.grand_total)) {
+<<<<<<< HEAD
 				cur_frm.add_custom_button(__("Return / Credit Note"), this.make_sales_return, __("Create"));
 				cur_frm.page.set_inner_btn_group_as_primary(__("Create"));
+=======
+				this.frm.add_custom_button(
+					__("Return / Credit Note"),
+					this.make_sales_return.bind(this),
+					__("Create")
+				);
+				this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			}
 
 			if (cint(doc.update_stock) != 1) {
 				// show Make Delivery Note button only if Sales Invoice is not created from Delivery Note
 				var from_delivery_note = false;
+<<<<<<< HEAD
 				from_delivery_note = cur_frm.doc.items.some(function (item) {
+=======
+				from_delivery_note = this.frm.doc.items.some(function (item) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					return item.delivery_note ? true : false;
 				});
 
 				if (!from_delivery_note && !is_delivered_by_supplier) {
+<<<<<<< HEAD
 					cur_frm.add_custom_button(
 						__("Delivery"),
 						cur_frm.cscript["Make Delivery Note"],
+=======
+					this.frm.add_custom_button(
+						__("Delivery"),
+						this.frm.cscript["Make Delivery Note"],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						__("Create")
 					);
 				}
 			}
 
 			if (doc.outstanding_amount > 0) {
+<<<<<<< HEAD
 				cur_frm.add_custom_button(
+=======
+				this.frm.add_custom_button(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					__("Payment Request"),
 					function () {
 						me.make_payment_request();
@@ -122,10 +155,17 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 					__("Create")
 				);
 
+<<<<<<< HEAD
 				cur_frm.add_custom_button(
 					__("Invoice Discounting"),
 					function () {
 						cur_frm.events.create_invoice_discounting(cur_frm);
+=======
+				this.frm.add_custom_button(
+					__("Invoice Discounting"),
+					function () {
+						this.frm.events.create_invoice_discounting(this.frm);
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					},
 					__("Create")
 				);
@@ -146,10 +186,17 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 			}
 
 			if (doc.docstatus === 1) {
+<<<<<<< HEAD
 				cur_frm.add_custom_button(
 					__("Maintenance Schedule"),
 					function () {
 						cur_frm.cscript.make_maintenance_schedule();
+=======
+				this.frm.add_custom_button(
+					__("Maintenance Schedule"),
+					function () {
+						this.frm.cscript.make_maintenance_schedule();
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					},
 					__("Create")
 				);
@@ -157,7 +204,11 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 		}
 
 		// Show buttons only when pos view is active
+<<<<<<< HEAD
 		if (cint(doc.docstatus == 0) && cur_frm.page.current_view_name !== "pos" && !doc.is_return) {
+=======
+		if (cint(doc.docstatus == 0) && this.frm.page.current_view_name !== "pos" && !doc.is_return) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			this.frm.cscript.sales_order_btn();
 			this.frm.cscript.delivery_note_btn();
 			this.frm.cscript.quotation_btn();
@@ -188,7 +239,11 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 	make_maintenance_schedule() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_maintenance_schedule",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 
@@ -207,6 +262,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 
 	set_default_print_format() {
 		// set default print format to POS type or Credit Note
+<<<<<<< HEAD
 		if (cur_frm.doc.is_pos) {
 			if (cur_frm.pos_print_format) {
 				cur_frm.meta._default_print_format = cur_frm.meta.default_print_format;
@@ -229,6 +285,29 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 			) {
 				cur_frm.meta.default_print_format = null;
 				cur_frm.meta._default_print_format = null;
+=======
+		if (this.frm.doc.is_pos) {
+			if (this.frm.pos_print_format) {
+				this.frm.meta._default_print_format = this.frm.meta.default_print_format;
+				this.frm.meta.default_print_format = this.frm.pos_print_format;
+			}
+		} else if (this.frm.doc.is_return && !this.frm.meta.default_print_format) {
+			if (this.frm.return_print_format) {
+				this.frm.meta._default_print_format = this.frm.meta.default_print_format;
+				this.frm.meta.default_print_format = this.frm.return_print_format;
+			}
+		} else {
+			if (this.frm.meta._default_print_format) {
+				this.frm.meta.default_print_format = this.frm.meta._default_print_format;
+				this.frm.meta._default_print_format = null;
+			} else if (
+				[this.frm.pos_print_format, this.frm.return_print_format].includes(
+					this.frm.meta.default_print_format
+				)
+			) {
+				this.frm.meta.default_print_format = null;
+				this.frm.meta._default_print_format = null;
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			}
 		}
 	}
@@ -443,7 +522,11 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 	make_sales_return() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_sales_return",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 
@@ -571,6 +654,7 @@ cur_frm.cscript["Make Delivery Note"] = function () {
 	});
 };
 
+<<<<<<< HEAD
 cur_frm.fields_dict.cash_bank_account.get_query = function (doc) {
 	return {
 		filters: [
@@ -614,6 +698,8 @@ cur_frm.fields_dict["items"].grid.get_field("cost_center").get_query = function 
 	};
 };
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 cur_frm.cscript.income_account = function (doc, cdt, cdn) {
 	erpnext.utils.copy_value_in_all_rows(doc, cdt, cdn, "items", "income_account");
 };
@@ -626,6 +712,7 @@ cur_frm.cscript.cost_center = function (doc, cdt, cdn) {
 	erpnext.utils.copy_value_in_all_rows(doc, cdt, cdn, "items", "cost_center");
 };
 
+<<<<<<< HEAD
 cur_frm.set_query("debit_to", function (doc) {
 	return {
 		filters: {
@@ -648,6 +735,8 @@ cur_frm.set_query("asset", "items", function (doc, cdt, cdn) {
 	};
 });
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 frappe.ui.form.on("Sales Invoice", {
 	setup: function (frm) {
 		frm.add_fetch("customer", "tax_id", "tax_id");
@@ -657,61 +746,165 @@ frappe.ui.form.on("Sales Invoice", {
 		frm.set_df_property("packed_items", "cannot_add_rows", true);
 		frm.set_df_property("packed_items", "cannot_delete_rows", true);
 
+<<<<<<< HEAD
 		frm.set_query("account_for_change_amount", function () {
 			return {
 				filters: {
 					account_type: ["in", ["Cash", "Bank"]],
 					company: frm.doc.company,
+=======
+		frm.set_query("cash_bank_account", function (doc) {
+			return {
+				filters: [
+					["Account", "account_type", "in", ["Cash", "Bank"]],
+					["Account", "root_type", "=", "Asset"],
+					["Account", "is_group", "=", 0],
+					["Account", "company", "=", doc.company],
+				],
+			};
+		});
+
+		frm.set_query("write_off_account", function (doc) {
+			return {
+				filters: {
+					report_type: "Profit and Loss",
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("write_off_cost_center", function (doc) {
+			return {
+				filters: {
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("cost_center", "items", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					is_group: 0,
 				},
 			};
 		});
 
+<<<<<<< HEAD
 		frm.set_query("unrealized_profit_loss_account", function () {
 			return {
 				filters: {
 					company: frm.doc.company,
+=======
+		frm.set_query("debit_to", function (doc) {
+			return {
+				filters: {
+					account_type: "Receivable",
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("asset", "items", function (doc, cdt, cdn) {
+			const row = locals[cdt][cdn];
+			return {
+				filters: [
+					["Asset", "item_code", "=", row.item_code],
+					["Asset", "docstatus", "=", 1],
+					["Asset", "status", "in", ["Submitted", "Partially Depreciated", "Fully Depreciated"]],
+					["Asset", "company", "=", doc.company],
+				],
+			};
+		});
+
+		frm.set_query("account_for_change_amount", function (doc) {
+			return {
+				filters: {
+					account_type: ["in", ["Cash", "Bank"]],
+					company: doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("unrealized_profit_loss_account", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					is_group: 0,
 					root_type: "Liability",
 				},
 			};
 		});
 
+<<<<<<< HEAD
 		frm.set_query("adjustment_against", function () {
 			return {
 				filters: {
 					company: frm.doc.company,
 					customer: frm.doc.customer,
+=======
+		frm.set_query("adjustment_against", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+					customer: doc.customer,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					docstatus: 1,
 				},
 			};
 		});
 
+<<<<<<< HEAD
 		frm.set_query("additional_discount_account", function () {
 			return {
 				filters: {
 					company: frm.doc.company,
+=======
+		frm.set_query("additional_discount_account", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					is_group: 0,
 					report_type: "Profit and Loss",
 				},
 			};
 		});
 
+<<<<<<< HEAD
 		frm.set_query("income_account", "items", function () {
 			return {
 				query: "erpnext.controllers.queries.get_income_account",
 				filters: {
 					company: frm.doc.company,
+=======
+		frm.set_query("income_account", "items", function (doc) {
+			return {
+				query: "erpnext.controllers.queries.get_income_account",
+				filters: {
+					company: doc.company,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					disabled: 0,
 				},
 			};
 		});
 
+<<<<<<< HEAD
 		(frm.custom_make_buttons = {
+=======
+		frm.custom_make_buttons = {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"Delivery Note": "Delivery",
 			"Sales Invoice": "Return / Credit Note",
 			"Payment Request": "Payment Request",
 			"Payment Entry": "Payment",
+<<<<<<< HEAD
 		}),
 			(frm.fields_dict["timesheets"].grid.get_field("time_sheet").get_query = function (doc, cdt, cdn) {
 				return {
@@ -722,6 +915,18 @@ frappe.ui.form.on("Sales Invoice", {
 
 		// discount account
 		frm.fields_dict["items"].grid.get_field("discount_account").get_query = function (doc) {
+=======
+		};
+
+		frm.set_query("time_sheet", "timesheets", function (doc, cdt, cdn) {
+			return {
+				query: "erpnext.projects.doctype.timesheet.timesheet.get_timesheet",
+				filters: { project: doc.project },
+			};
+		});
+
+		frm.set_query("discount_account", "items", function (doc) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			return {
 				filters: {
 					report_type: "Profit and Loss",
@@ -729,9 +934,15 @@ frappe.ui.form.on("Sales Invoice", {
 					is_group: 0,
 				},
 			};
+<<<<<<< HEAD
 		};
 
 		frm.fields_dict["items"].grid.get_field("deferred_revenue_account").get_query = function (doc) {
+=======
+		});
+
+		frm.set_query("deferred_revenue_account", "items", function (doc) {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			return {
 				filters: {
 					root_type: "Liability",
@@ -739,7 +950,11 @@ frappe.ui.form.on("Sales Invoice", {
 					is_group: 0,
 				},
 			};
+<<<<<<< HEAD
 		};
+=======
+		});
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		frm.set_query("pos_profile", function (doc) {
 			if (!doc.company) {
@@ -754,25 +969,39 @@ frappe.ui.form.on("Sales Invoice", {
 			};
 		});
 
+<<<<<<< HEAD
 		// set get_query for loyalty redemption account
 		frm.fields_dict["loyalty_redemption_account"].get_query = function () {
+=======
+		frm.set_query("loyalty_redemption_account", function () {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			return {
 				filters: {
 					company: frm.doc.company,
 					is_group: 0,
 				},
 			};
+<<<<<<< HEAD
 		};
 
 		// set get_query for loyalty redemption cost center
 		frm.fields_dict["loyalty_redemption_cost_center"].get_query = function () {
+=======
+		});
+
+		frm.set_query("loyalty_redemption_cost_center", function () {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			return {
 				filters: {
 					company: frm.doc.company,
 					is_group: 0,
 				},
 			};
+<<<<<<< HEAD
 		};
+=======
+		});
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	},
 	// When multiple companies are set up. in case company name is changed set default company address
 	company: function (frm) {
@@ -830,7 +1059,13 @@ frappe.ui.form.on("Sales Invoice", {
 			"project",
 			"due_date",
 			"is_opening",
+<<<<<<< HEAD
 			"source",
+=======
+			"utm_source",
+			"utm_campaign",
+			"utm_medium",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"total_advance",
 			"get_advances",
 			"advances",

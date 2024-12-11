@@ -1,9 +1,16 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.accounting_dimension.test_accounting_dimension import (
 	create_dimension,
@@ -24,7 +31,11 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 
 
+<<<<<<< HEAD
 class TestPOSClosingEntry(unittest.TestCase):
+=======
+class TestPOSClosingEntry(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		# Make stock available for POS Sales
 		make_stock_entry(target="_Test Warehouse - _TC", qty=2, basic_rate=100)
@@ -218,11 +229,33 @@ class TestPOSClosingEntry(unittest.TestCase):
 		opening_entry = create_opening_entry(pos_profile, test_user.name)
 
 		pos_inv = create_pos_invoice(
+<<<<<<< HEAD
 			item_code=item_code, qty=5, rate=300, use_serial_batch_fields=1, batch_no=batch_no
 		)
 		pos_inv2 = create_pos_invoice(
 			item_code=item_code, qty=5, rate=300, use_serial_batch_fields=1, batch_no=batch_no
 		)
+=======
+			item_code=item_code,
+			qty=5,
+			rate=300,
+			use_serial_batch_fields=1,
+			batch_no=batch_no,
+			do_not_submit=True,
+		)
+		pos_inv.payments[0].amount = pos_inv.grand_total
+		pos_inv.submit()
+		pos_inv2 = create_pos_invoice(
+			item_code=item_code,
+			qty=5,
+			rate=300,
+			use_serial_batch_fields=1,
+			batch_no=batch_no,
+			do_not_submit=True,
+		)
+		pos_inv2.payments[0].amount = pos_inv2.grand_total
+		pos_inv2.submit()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		batch_qty = frappe.db.get_value("Batch", batch_no, "batch_qty")
 		self.assertEqual(batch_qty, 10)

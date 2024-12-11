@@ -107,7 +107,11 @@
    "link_fieldname": "dunning_type"
   }
  ],
+<<<<<<< HEAD
  "modified": "2021-11-13 00:25:35.659283",
+=======
+ "modified": "2024-03-27 13:08:19.584112",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Dunning Type",
@@ -151,7 +155,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

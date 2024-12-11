@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "creation": "2019-09-10 15:02:05.779434",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -33,14 +37,25 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2019-09-10 15:05:20.406855",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:06:36.777002",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Availability Of Slots",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

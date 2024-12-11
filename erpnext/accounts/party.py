@@ -279,9 +279,13 @@ def get_regional_address_details(party_details, doctype, company):
 	pass
 
 
+<<<<<<< HEAD
 def set_contact_details(party_details, party, party_type):
 	party_details.contact_person = get_default_contact(party_type, party.name)
 
+=======
+def complete_contact_details(party_details):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	if not party_details.contact_person:
 		party_details.update(
 			{
@@ -310,6 +314,14 @@ def set_contact_details(party_details, party, party_type):
 		party_details.update(contact_details)
 
 
+<<<<<<< HEAD
+=======
+def set_contact_details(party_details, party, party_type):
+	party_details.contact_person = get_default_contact(party_type, party.name)
+	complete_contact_details(party_details)
+
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 def set_other_values(party_details, party, party_type):
 	# copy
 	if party_type == "Customer":
@@ -566,9 +578,17 @@ def validate_party_accounts(doc):
 
 		# validate if account is mapped for same company
 		if account.account:
+<<<<<<< HEAD
 			validate_account_head(account.idx, account.account, account.company)
 		if account.advance_account:
 			validate_account_head(account.idx, account.advance_account, account.company)
+=======
+			validate_account_head(account.idx, account.account, account.company, _("Debtor/Creditor"))
+		if account.advance_account:
+			validate_account_head(
+				account.idx, account.advance_account, account.company, _("Debtor/Creditor Advance")
+			)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 @frappe.whitelist()

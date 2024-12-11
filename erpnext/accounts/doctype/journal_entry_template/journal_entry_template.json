@@ -86,7 +86,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-05-01 18:32:01.420488",
+=======
+ "modified": "2024-03-27 13:09:58.814734",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Journal Entry Template",
@@ -127,8 +131,14 @@
   }
  ],
  "search_fields": "voucher_type, company",
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "title_field": "template_title",
  "track_changes": 1
 }

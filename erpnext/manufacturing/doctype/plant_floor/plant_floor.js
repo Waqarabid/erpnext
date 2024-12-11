@@ -40,6 +40,10 @@ frappe.ui.form.on("Plant Floor", {
 	refresh(frm) {
 		frm.trigger("prepare_stock_dashboard");
 		frm.trigger("prepare_workstation_dashboard");
+<<<<<<< HEAD
+=======
+		frm.trigger("update_realtime_status");
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if (!frm.is_new()) {
 			frm.trigger("add_workstation");
@@ -58,6 +62,15 @@ frappe.ui.form.on("Plant Floor", {
 		});
 	},
 
+<<<<<<< HEAD
+=======
+	update_realtime_status(frm) {
+		frappe.realtime.on("update_workstation_status", (data) => {
+			frappe.visual_plant_floor.update_status(data);
+		});
+	},
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	prepare_stock_dashboard(frm) {
 		if (!frm.doc.warehouse) {
 			return;

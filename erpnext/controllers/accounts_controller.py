@@ -62,11 +62,19 @@ from erpnext.setup.utils import get_exchange_rate
 from erpnext.stock.doctype.item.item import get_uom_conv_factor
 from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
+=======
+	ItemDetailsCtx,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	_get_item_tax_template,
 	get_conversion_factor,
 	get_item_details,
 	get_item_tax_map,
+<<<<<<< HEAD
 	get_item_warehouse,
+=======
+	get_item_warehouse_,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 )
 from erpnext.utilities.regional import temporary_flag
 from erpnext.utilities.transaction_base import TransactionBase
@@ -148,6 +156,7 @@ class AccountsController(TransactionBase):
 	def ensure_supplier_is_not_blocked(self):
 		is_supplier_payment = self.doctype == "Payment Entry" and self.party_type == "Supplier"
 		is_buying_invoice = self.doctype in ["Purchase Invoice", "Purchase Order"]
+<<<<<<< HEAD
 		supplier = None
 		supplier_name = None
 
@@ -156,6 +165,18 @@ class AccountsController(TransactionBase):
 			supplier = frappe.get_doc("Supplier", supplier_name)
 
 		if supplier and supplier_name and supplier.on_hold:
+=======
+		supplier_name = self.supplier if is_buying_invoice else self.party if is_supplier_payment else None
+		supplier = None
+
+		if supplier_name:
+			supplier = frappe.get_doc(
+				"Supplier",
+				supplier_name,
+			)
+
+		if supplier and supplier.on_hold:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if (is_buying_invoice and supplier.hold_type in ["All", "Invoices"]) or (
 				is_supplier_payment and supplier.hold_type in ["All", "Payments"]
 			):
@@ -234,7 +255,11 @@ class AccountsController(TransactionBase):
 							frappe.bold(document_type),
 							get_link_to_form(self.doctype, self.get("return_against")),
 							frappe.bold(_("Update Outstanding for Self")),
+<<<<<<< HEAD
 							get_link_to_form("Payment Reconciliation", "Payment Reconciliation"),
+=======
+							get_link_to_form("Payment Reconciliation"),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						)
 					)
 
@@ -349,8 +374,14 @@ class AccountsController(TransactionBase):
 		adv = qb.DocType("Advance Payment Ledger Entry")
 		qb.from_(adv).delete().where(adv.voucher_type.eq(self.doctype) & adv.voucher_no.eq(self.name)).run()
 
+<<<<<<< HEAD
 		advance_payment_doctypes = frappe.get_hooks("advance_payment_doctypes")
 
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if self.doctype in advance_payment_doctypes:
 			qb.from_(adv).delete().where(
 				adv.against_voucher_type.eq(self.doctype) & adv.against_voucher_no.eq(self.name)
@@ -749,6 +780,7 @@ class AccountsController(TransactionBase):
 
 			for item in self.get("items"):
 				if item.get("item_code"):
+<<<<<<< HEAD
 					args = parent_dict.copy()
 					args.update(item.as_dict())
 
@@ -767,6 +799,30 @@ class AccountsController(TransactionBase):
 						args["is_subcontracted"] = self.is_subcontracted
 
 					ret = get_item_details(args, self, for_validate=for_validate, overwrite_warehouse=False)
+=======
+					ctx: ItemDetailsCtx = ItemDetailsCtx(parent_dict.copy())
+					ctx.update(item.as_dict())
+
+					ctx.update(
+						{
+							"doctype": self.doctype,
+							"name": self.name,
+							"child_doctype": item.doctype,
+							"child_docname": item.name,
+							"ignore_pricing_rule": (
+								self.ignore_pricing_rule if hasattr(self, "ignore_pricing_rule") else 0
+							),
+						}
+					)
+
+					if not ctx.transaction_date:
+						ctx.transaction_date = ctx.posting_date
+
+					if self.get("is_subcontracted"):
+						ctx.is_subcontracted = self.is_subcontracted
+
+					ret = get_item_details(ctx, self, for_validate=for_validate, overwrite_warehouse=False)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					for fieldname, value in ret.items():
 						if item.meta.get_field(fieldname) and value is not None:
 							if item.get(fieldname) is None or fieldname in force_item_fields:
@@ -804,6 +860,12 @@ class AccountsController(TransactionBase):
 								# reset pricing rule fields if pricing_rule_removed
 								item.set(fieldname, value)
 
+<<<<<<< HEAD
+=======
+							elif fieldname == "expense_account" and not item.get("expense_account"):
+								item.expense_account = value
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					if self.doctype in ["Purchase Invoice", "Sales Invoice"] and item.meta.get_field(
 						"is_fixed_asset"
 					):
@@ -950,6 +1012,10 @@ class AccountsController(TransactionBase):
 							"account_head": account_head,
 							"rate": 0,
 							"description": account_head,
+<<<<<<< HEAD
+=======
+							"set_by_item_tax_template": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						},
 					)
 
@@ -1124,6 +1190,7 @@ class AccountsController(TransactionBase):
 			)
 
 	def validate_qty_is_not_zero(self):
+<<<<<<< HEAD
 		if self.doctype == "Purchase Receipt":
 			return
 
@@ -1131,6 +1198,17 @@ class AccountsController(TransactionBase):
 			if not flt(item.qty):
 				frappe.throw(
 					msg=_("Row #{0}: Item quantity cannot be zero").format(item.idx),
+=======
+		for item in self.items:
+			if self.doctype == "Purchase Receipt" and item.rejected_qty:
+				continue
+
+			if not flt(item.qty):
+				frappe.throw(
+					msg=_("Row #{0}: Quantity for Item {1} cannot be zero.").format(
+						item.idx, frappe.bold(item.item_code)
+					),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					title=_("Invalid Quantity"),
 					exc=InvalidQtyError,
 				)
@@ -1692,8 +1770,16 @@ class AccountsController(TransactionBase):
 			and self.get("discount_amount")
 			and self.get("additional_discount_account")
 		):
+<<<<<<< HEAD
 			amount = item.amount
 			base_amount = item.base_amount
+=======
+			amount += item.distributed_discount_amount
+			base_amount += flt(
+				item.distributed_discount_amount * self.get("conversion_rate"),
+				item.precision("distributed_discount_amount"),
+			)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		return amount, base_amount
 
@@ -1713,6 +1799,7 @@ class AccountsController(TransactionBase):
 		return amount, base_amount
 
 	def make_discount_gl_entries(self, gl_entries):
+<<<<<<< HEAD
 		if self.doctype == "Purchase Invoice":
 			enable_discount_accounting = cint(
 				frappe.db.get_single_value("Buying Settings", "enable_discount_accounting")
@@ -1731,11 +1818,17 @@ class AccountsController(TransactionBase):
 			dr_or_cr = "debit"
 			rev_dr_cr = "credit"
 			supplier_or_customer = self.customer
+=======
+		enable_discount_accounting = cint(
+			frappe.db.get_single_value("Selling Settings", "enable_discount_accounting")
+		)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if enable_discount_accounting:
 			for item in self.get("items"):
 				if item.get("discount_amount") and item.get("discount_account"):
 					discount_amount = item.discount_amount * item.qty
+<<<<<<< HEAD
 					if self.doctype == "Purchase Invoice":
 						income_or_expense_account = (
 							item.expense_account
@@ -1748,18 +1841,34 @@ class AccountsController(TransactionBase):
 							if (not item.enable_deferred_revenue or self.is_return)
 							else item.deferred_revenue_account
 						)
+=======
+					income_account = (
+						item.income_account
+						if (not item.enable_deferred_revenue or self.is_return)
+						else item.deferred_revenue_account
+					)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 					account_currency = get_account_currency(item.discount_account)
 					gl_entries.append(
 						self.get_gl_dict(
 							{
 								"account": item.discount_account,
+<<<<<<< HEAD
 								"against": supplier_or_customer,
 								dr_or_cr: flt(
 									discount_amount * self.get("conversion_rate"),
 									item.precision("discount_amount"),
 								),
 								dr_or_cr + "_in_account_currency": flt(
+=======
+								"against": self.customer,
+								"debit": flt(
+									discount_amount * self.get("conversion_rate"),
+									item.precision("discount_amount"),
+								),
+								"debit_in_account_currency": flt(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
@@ -1770,6 +1879,7 @@ class AccountsController(TransactionBase):
 						)
 					)
 
+<<<<<<< HEAD
 					account_currency = get_account_currency(income_or_expense_account)
 					gl_entries.append(
 						self.get_gl_dict(
@@ -1781,6 +1891,19 @@ class AccountsController(TransactionBase):
 									item.precision("discount_amount"),
 								),
 								rev_dr_cr + "_in_account_currency": flt(
+=======
+					account_currency = get_account_currency(income_account)
+					gl_entries.append(
+						self.get_gl_dict(
+							{
+								"account": income_account,
+								"against": self.customer,
+								"credit": flt(
+									discount_amount * self.get("conversion_rate"),
+									item.precision("discount_amount"),
+								),
+								"credit_in_account_currency": flt(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
@@ -1800,8 +1923,13 @@ class AccountsController(TransactionBase):
 				self.get_gl_dict(
 					{
 						"account": self.additional_discount_account,
+<<<<<<< HEAD
 						"against": supplier_or_customer,
 						dr_or_cr: self.base_discount_amount,
+=======
+						"against": self.customer,
+						"debit": self.base_discount_amount,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						"cost_center": self.cost_center or erpnext.get_default_cost_center(self.company),
 					},
 					item=self,
@@ -2004,6 +2132,40 @@ class AccountsController(TransactionBase):
 
 			self.db_set("advance_paid", advance_paid)
 
+<<<<<<< HEAD
+=======
+		self.set_advance_payment_status()
+
+	def set_advance_payment_status(self):
+		new_status = None
+
+		paid_amount = frappe.get_value(
+			doctype="Payment Request",
+			filters={
+				"reference_doctype": self.doctype,
+				"reference_name": self.name,
+				"docstatus": 1,
+			},
+			fieldname="sum(grand_total - outstanding_amount)",
+		)
+
+		if not paid_amount:
+			if self.doctype in frappe.get_hooks("advance_payment_receivable_doctypes"):
+				new_status = "Not Requested" if paid_amount is None else "Requested"
+			elif self.doctype in frappe.get_hooks("advance_payment_payable_doctypes"):
+				new_status = "Not Initiated" if paid_amount is None else "Initiated"
+		else:
+			total_amount = self.get("rounded_total") or self.get("grand_total")
+			new_status = "Fully Paid" if paid_amount == total_amount else "Partially Paid"
+
+		if new_status == self.advance_payment_status:
+			return
+
+		self.db_set("advance_payment_status", new_status, update_modified=False)
+		self.set_status(update=True)
+		self.notify_update()
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	@property
 	def company_abbr(self):
 		if not hasattr(self, "_abbr"):
@@ -2180,8 +2342,13 @@ class AccountsController(TransactionBase):
 		date = self.get("due_date")
 		due_date = date or posting_date
 
+<<<<<<< HEAD
 		base_grand_total = self.get("base_rounded_total") or self.base_grand_total
 		grand_total = self.get("rounded_total") or self.grand_total
+=======
+		base_grand_total = flt(self.get("base_rounded_total") or self.base_grand_total)
+		grand_total = flt(self.get("rounded_total") or self.grand_total)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		automatically_fetch_payment_terms = 0
 
 		if self.doctype in ("Sales Invoice", "Purchase Invoice"):
@@ -2255,6 +2422,11 @@ class AccountsController(TransactionBase):
 			self.ignore_default_payment_terms_template = 1
 
 	def get_order_details(self):
+<<<<<<< HEAD
+=======
+		if not self.get("items"):
+			return None, None, None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if self.doctype == "Sales Invoice":
 			po_or_so = self.get("items")[0].get("sales_order")
 			po_or_so_doctype = "Sales Order"
@@ -2365,8 +2537,13 @@ class AccountsController(TransactionBase):
 				total += flt(d.payment_amount, d.precision("payment_amount"))
 				base_total += flt(d.base_payment_amount, d.precision("base_payment_amount"))
 
+<<<<<<< HEAD
 			base_grand_total = self.get("base_rounded_total") or self.base_grand_total
 			grand_total = self.get("rounded_total") or self.grand_total
+=======
+			base_grand_total = flt(self.get("base_rounded_total") or self.base_grand_total)
+			grand_total = flt(self.get("rounded_total") or self.grand_total)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 			if self.doctype in ("Sales Invoice", "Purchase Invoice"):
 				base_grand_total = base_grand_total - flt(self.base_write_off_amount)
@@ -2614,7 +2791,13 @@ class AccountsController(TransactionBase):
 		repost_ledger.submit()
 
 	def get_advance_payment_doctypes(self) -> list:
+<<<<<<< HEAD
 		return frappe.get_hooks("advance_payment_doctypes")
+=======
+		return frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def make_advance_payment_ledger_for_journal(self):
 		advance_payment_doctypes = self.get_advance_payment_doctypes()
@@ -2757,6 +2940,7 @@ def validate_taxes_and_charges(tax):
 		tax.rate = None
 
 
+<<<<<<< HEAD
 def validate_account_head(idx, account, company, context=""):
 	account_company = frappe.get_cached_value("Account", account, "company")
 	is_group = frappe.get_cached_value("Account", account, "is_group")
@@ -2765,13 +2949,29 @@ def validate_account_head(idx, account, company, context=""):
 		frappe.throw(
 			_("Row {0}: {3} Account {1} does not belong to Company {2}").format(
 				idx, frappe.bold(account), frappe.bold(company), context
+=======
+def validate_account_head(idx: int, account: str, company: str, context: str | None = None) -> None:
+	"""Throw a ValidationError if the account belongs to a different company or is a group account."""
+	if company != frappe.get_cached_value("Account", account, "company"):
+		frappe.throw(
+			_("Row {0}: The {3} Account {1} does not belong to the company {2}").format(
+				idx, frappe.bold(account), frappe.bold(company), context or ""
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			),
 			title=_("Invalid Account"),
 		)
 
+<<<<<<< HEAD
 	if is_group:
 		frappe.throw(
 			_("Row {0}: Account {1} is a Group Account").format(idx, frappe.bold(account)),
+=======
+	if frappe.get_cached_value("Account", account, "is_group"):
+		frappe.throw(
+			_(
+				"You selected the account group {1} as {2} Account in row {0}. Please select a single account."
+			).format(idx, frappe.bold(account), context or ""),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			title=_("Invalid Account"),
 		)
 
@@ -3196,6 +3396,7 @@ def get_supplier_block_status(party_name):
 
 
 def set_child_tax_template_and_map(item, child_item, parent_doc):
+<<<<<<< HEAD
 	args = {
 		"item_code": item.item_code,
 		"posting_date": parent_doc.transaction_date,
@@ -3208,6 +3409,23 @@ def set_child_tax_template_and_map(item, child_item, parent_doc):
 		child_item.item_tax_rate = get_item_tax_map(
 			parent_doc.get("company"), child_item.item_tax_template, as_json=True
 		)
+=======
+	ctx = ItemDetailsCtx(
+		{
+			"item_code": item.item_code,
+			"posting_date": parent_doc.transaction_date,
+			"tax_category": parent_doc.get("tax_category"),
+			"company": parent_doc.get("company"),
+		}
+	)
+
+	child_item.item_tax_template = _get_item_tax_template(ctx, item.taxes)
+	child_item.item_tax_rate = get_item_tax_map(
+		doc=parent_doc,
+		tax_template=child_item.item_tax_template,
+		as_json=True,
+	)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 
 def add_taxes_from_tax_template(child_item, parent_doc, db_insert=True):
@@ -3230,6 +3448,10 @@ def add_taxes_from_tax_template(child_item, parent_doc, db_insert=True):
 						"charge_type": "On Net Total",
 						"account_head": tax_type,
 						"rate": tax_rate,
+<<<<<<< HEAD
+=======
+						"set_by_item_tax_template": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					}
 				)
 				if parent_doc.doctype == "Purchase Order":
@@ -3253,7 +3475,11 @@ def set_order_defaults(parent_doctype, parent_doctype_name, child_doctype, child
 	child_item.update({date_fieldname: trans_item.get(date_fieldname) or p_doc.get(date_fieldname)})
 	child_item.stock_uom = item.stock_uom
 	child_item.uom = trans_item.get("uom") or item.stock_uom
+<<<<<<< HEAD
 	child_item.warehouse = get_item_warehouse(item, p_doc, overwrite_warehouse=True)
+=======
+	child_item.warehouse = get_item_warehouse_(p_doc, item, overwrite_warehouse=True)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	conversion_factor = flt(get_conversion_factor(item.item_code, child_item.uom).get("conversion_factor"))
 	child_item.conversion_factor = flt(trans_item.get("conversion_factor")) or conversion_factor
 
@@ -3262,7 +3488,11 @@ def set_order_defaults(parent_doctype, parent_doctype_name, child_doctype, child
 		child_item.base_rate = 1
 		child_item.base_amount = 1
 	if child_doctype == "Sales Order Item":
+<<<<<<< HEAD
 		child_item.warehouse = get_item_warehouse(item, p_doc, overwrite_warehouse=True)
+=======
+		child_item.warehouse = get_item_warehouse_(p_doc, item, overwrite_warehouse=True)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if not child_item.warehouse:
 			frappe.throw(
 				_(
@@ -3406,7 +3636,11 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 	def validate_quantity(child_item, new_data):
 		if not flt(new_data.get("qty")):
 			frappe.throw(
+<<<<<<< HEAD
 				_("Row # {0}: Quantity for Item {1} cannot be zero").format(
+=======
+				_("Row #{0}: Quantity for Item {1} cannot be zero.").format(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					new_data.get("idx"), frappe.bold(new_data.get("item_code"))
 				),
 				title=_("Invalid Qty"),

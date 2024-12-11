@@ -122,7 +122,11 @@ def get_help_messages():
 			doctype="Timesheet",
 			title=_("Add Timesheets"),
 			description=_(
+<<<<<<< HEAD
 				"Timesheets help keep track of time, cost and billing for activites done by your team"
+=======
+				"Timesheets help keep track of time, cost and billing for activities done by your team"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			),
 			action=_("Create Timesheet"),
 			route="List/Timesheet",

@@ -335,12 +335,24 @@ class SubcontractingController(StockController):
 
 			# Will be deprecated in v16
 			if row.serial_no and not consumed_bundles.serial_nos:
+<<<<<<< HEAD
+=======
+				from erpnext.deprecation_dumpster import deprecation_warning
+
+				deprecation_warning("unknown", "v16", "No instructions.")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				self.available_materials[key]["serial_no"] = list(
 					set(self.available_materials[key]["serial_no"]) - set(get_serial_nos(row.serial_no))
 				)
 
 			# Will be deprecated in v16
 			if row.batch_no and not consumed_bundles.batch_nos:
+<<<<<<< HEAD
+=======
+				from erpnext.deprecation_dumpster import deprecation_warning
+
+				deprecation_warning("unknown", "v16", "No instructions.")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				self.available_materials[key]["batch_no"][row.batch_no] -= row.consumed_qty
 
 	def get_available_materials(self):

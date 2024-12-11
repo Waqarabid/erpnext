@@ -207,7 +207,11 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	make_sales_return() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.pos_invoice.pos_invoice.make_sales_return",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 	}
 };
@@ -307,7 +311,11 @@ frappe.ui.form.on("POS Invoice", {
 									});
 								} else if (frappe.dom.freeze_count != 0) {
 									frappe.dom.unfreeze();
+<<<<<<< HEAD
 									cur_frm.reload_doc();
+=======
+									frm.reload_doc();
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 									cur_pos.payment.events.submit_invoice();
 
 									frappe.show_alert({

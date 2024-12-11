@@ -8,7 +8,11 @@ import frappe
 from frappe import _, throw
 from frappe.desk.form.assign_to import clear, close_all_assignments
 from frappe.model.mapper import get_mapped_doc
+<<<<<<< HEAD
 from frappe.utils import add_days, cstr, date_diff, flt, get_link_to_form, getdate, today
+=======
+from frappe.utils import add_days, add_to_date, cstr, date_diff, flt, get_link_to_form, getdate, today
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils.data import format_date
 from frappe.utils.nestedset import NestedSet
 
@@ -41,8 +45,13 @@ class Task(NestedSet):
 		depends_on_tasks: DF.Code | None
 		description: DF.TextEditor | None
 		duration: DF.Int
+<<<<<<< HEAD
 		exp_end_date: DF.Date | None
 		exp_start_date: DF.Date | None
+=======
+		exp_end_date: DF.Datetime | None
+		exp_start_date: DF.Datetime | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		expected_time: DF.Float
 		is_group: DF.Check
 		is_milestone: DF.Check
@@ -83,6 +92,10 @@ class Task(NestedSet):
 		self.update_depends_on()
 		self.validate_dependencies_for_template_task()
 		self.validate_completed_on()
+<<<<<<< HEAD
+=======
+		self.set_default_end_date_if_missing()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def validate_dates(self):
 		self.validate_from_to_dates("exp_start_date", "exp_end_date")
@@ -90,6 +103,13 @@ class Task(NestedSet):
 		self.validate_parent_expected_end_date()
 		self.validate_parent_project_dates()
 
+<<<<<<< HEAD
+=======
+	def set_default_end_date_if_missing(self):
+		if self.exp_start_date and self.expected_time:
+			self.exp_end_date = add_to_date(self.exp_start_date, hours=self.expected_time)
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def validate_parent_expected_end_date(self):
 		if not self.parent_task or not self.exp_end_date:
 			return
@@ -199,8 +219,11 @@ class Task(NestedSet):
 			self.name,
 			as_dict=1,
 		)[0]
+<<<<<<< HEAD
 		if self.status == "Open":
 			self.status = "Working"
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		self.total_costing_amount = tl.total_costing_amount
 		self.total_billing_amount = tl.total_billing_amount
 		self.actual_time = tl.time
@@ -250,7 +273,11 @@ class Task(NestedSet):
 				if (
 					task.exp_start_date
 					and task.exp_end_date
+<<<<<<< HEAD
 					and task.exp_start_date < getdate(end_date)
+=======
+					and task.exp_start_date < end_date
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					and task.status == "Open"
 				):
 					task_duration = date_diff(task.exp_end_date, task.exp_start_date)
@@ -288,7 +315,11 @@ class Task(NestedSet):
 		if self.status not in ("Cancelled", "Completed") and self.exp_end_date:
 			from datetime import datetime
 
+<<<<<<< HEAD
 			if self.exp_end_date < datetime.now().date():
+=======
+			if self.exp_end_date < datetime.now():
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				self.db_set("status", "Overdue", update_modified=False)
 				self.update_project()
 

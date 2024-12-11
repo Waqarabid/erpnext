@@ -45,14 +45,24 @@
  ],
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-07-06 13:28:47.303873",
+=======
+ "modified": "2024-03-27 13:10:39.401960",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Service Day",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "track_changes": 1
 }

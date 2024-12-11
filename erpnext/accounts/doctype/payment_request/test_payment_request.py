@@ -3,9 +3,16 @@
 
 import re
 import unittest
+<<<<<<< HEAD
 
 import frappe
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from unittest.mock import patch
+
+import frappe
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.payment_entry.test_payment_entry import create_payment_terms_template
@@ -16,10 +23,22 @@ from erpnext.buying.doctype.purchase_order.test_purchase_order import create_pur
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.setup.utils import get_exchange_rate
 
+<<<<<<< HEAD
 test_dependencies = ["Currency Exchange", "Journal Entry", "Contact", "Address"]
 
 
 payment_gateway = {"doctype": "Payment Gateway", "gateway": "_Test Gateway"}
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Currency Exchange", "Journal Entry", "Contact", "Address"]
+
+PAYMENT_URL = "https://example.com/payment"
+
+payment_gateways = [
+	{"doctype": "Payment Gateway", "gateway": "_Test Gateway"},
+	{"doctype": "Payment Gateway", "gateway": "_Test Gateway Phone"},
+	{"doctype": "Payment Gateway", "gateway": "_Test Gateway Other"},
+]
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 payment_method = [
 	{
@@ -35,6 +54,7 @@ payment_method = [
 		"payment_account": "_Test Bank USD - _TC",
 		"currency": "USD",
 	},
+<<<<<<< HEAD
 ]
 
 
@@ -42,6 +62,39 @@ class TestPaymentRequest(FrappeTestCase):
 	def setUp(self):
 		if not frappe.db.get_value("Payment Gateway", payment_gateway["gateway"], "name"):
 			frappe.get_doc(payment_gateway).insert(ignore_permissions=True)
+=======
+	{
+		"doctype": "Payment Gateway Account",
+		"payment_gateway": "_Test Gateway Other",
+		"payment_account": "_Test Bank USD - _TC",
+		"payment_channel": "Other",
+		"currency": "USD",
+	},
+	{
+		"doctype": "Payment Gateway Account",
+		"payment_gateway": "_Test Gateway Phone",
+		"payment_account": "_Test Bank USD - _TC",
+		"payment_channel": "Phone",
+		"currency": "USD",
+	},
+]
+
+
+class UnitTestPaymentRequest(UnitTestCase):
+	"""
+	Unit tests for PaymentRequest.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPaymentRequest(IntegrationTestCase):
+	def setUp(self):
+		for payment_gateway in payment_gateways:
+			if not frappe.db.get_value("Payment Gateway", payment_gateway["gateway"], "name"):
+				frappe.get_doc(payment_gateway).insert(ignore_permissions=True)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		for method in payment_method:
 			if not frappe.db.get_value(
@@ -51,6 +104,31 @@ class TestPaymentRequest(FrappeTestCase):
 			):
 				frappe.get_doc(method).insert(ignore_permissions=True)
 
+<<<<<<< HEAD
+=======
+		send_email = patch(
+			"erpnext.accounts.doctype.payment_request.payment_request.PaymentRequest.send_email",
+			return_value=None,
+		)
+		self.send_email = send_email.start()
+		self.addCleanup(send_email.stop)
+		get_payment_url = patch(
+			# this also shadows one (1) call to _get_payment_gateway_controller
+			"erpnext.accounts.doctype.payment_request.payment_request.PaymentRequest.get_payment_url",
+			return_value=PAYMENT_URL,
+		)
+		self.get_payment_url = get_payment_url.start()
+		self.addCleanup(get_payment_url.stop)
+		_get_payment_gateway_controller = patch(
+			"erpnext.accounts.doctype.payment_request.payment_request._get_payment_gateway_controller",
+		)
+		self._get_payment_gateway_controller = _get_payment_gateway_controller.start()
+		self.addCleanup(_get_payment_gateway_controller.stop)
+
+	def tearDown(self):
+		frappe.db.rollback()
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_payment_request_linkings(self):
 		so_inr = make_sales_order(currency="INR", do_not_save=True)
 		so_inr.disable_rounded_total = 1
@@ -81,9 +159,108 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pr.reference_name, si_usd.name)
 		self.assertEqual(pr.currency, "USD")
 
+<<<<<<< HEAD
 	def test_payment_entry_against_purchase_invoice(self):
 		si_usd = make_purchase_invoice(
 			customer="_Test Supplier USD",
+=======
+	def test_payment_channels(self):
+		so = make_sales_order(currency="USD")
+
+		pr = make_payment_request(
+			dt="Sales Order",
+			dn=so.name,
+			payment_gateway_account="_Test Gateway Other - USD",
+			submit_doc=True,
+			return_doc=True,
+		)
+		self.assertEqual(pr.payment_channel, "Other")
+		self.assertEqual(pr.mute_email, True)
+
+		self.assertEqual(pr.payment_url, PAYMENT_URL)
+		self.assertEqual(self.send_email.call_count, 0)
+		self.assertEqual(self._get_payment_gateway_controller.call_count, 1)
+		pr.cancel()
+
+		pr = make_payment_request(
+			dt="Sales Order",
+			dn=so.name,
+			payment_gateway_account="_Test Gateway - USD",  # email channel
+			submit_doc=False,
+			return_doc=True,
+		)
+		pr.flags.mute_email = True  # but temporarily prohibit sending
+		pr.submit()
+		pr.reload()
+		self.assertEqual(pr.payment_channel, "Email")
+		self.assertEqual(pr.mute_email, False)
+
+		self.assertEqual(pr.payment_url, PAYMENT_URL)
+		self.assertEqual(self.send_email.call_count, 0)  # hence: no increment
+		self.assertEqual(self._get_payment_gateway_controller.call_count, 2)
+		pr.cancel()
+
+		pr = make_payment_request(
+			dt="Sales Order",
+			dn=so.name,
+			payment_gateway_account="_Test Gateway Phone - USD",
+			submit_doc=True,
+			return_doc=True,
+		)
+		pr.reload()
+
+		self.assertEqual(pr.payment_channel, "Phone")
+		self.assertEqual(pr.mute_email, True)
+
+		self.assertIsNone(pr.payment_url)
+		self.assertEqual(self.send_email.call_count, 0)  # no increment on phone channel
+		self.assertEqual(self._get_payment_gateway_controller.call_count, 3)
+		pr.cancel()
+
+		pr = make_payment_request(
+			dt="Sales Order",
+			dn=so.name,
+			payment_gateway_account="_Test Gateway - USD",  # email channel
+			submit_doc=True,
+			return_doc=True,
+		)
+		pr.reload()
+
+		self.assertEqual(pr.payment_channel, "Email")
+		self.assertEqual(pr.mute_email, False)
+
+		self.assertEqual(pr.payment_url, PAYMENT_URL)
+		self.assertEqual(self.send_email.call_count, 1)  # increment on normal email channel
+		self.assertEqual(self._get_payment_gateway_controller.call_count, 4)
+		pr.cancel()
+
+		so = make_sales_order(currency="USD", do_not_save=True)
+		# no-op; for optical consistency with how a webshop SO would look like
+		so.order_type = "Shopping Cart"
+		so.save()
+		pr = make_payment_request(
+			dt="Sales Order",
+			dn=so.name,
+			payment_gateway_account="_Test Gateway - USD",  # email channel
+			make_sales_invoice=True,
+			mute_email=True,
+			submit_doc=True,
+			return_doc=True,
+		)
+		pr.reload()
+
+		self.assertEqual(pr.payment_channel, "Email")
+		self.assertEqual(pr.mute_email, True)
+
+		self.assertEqual(pr.payment_url, PAYMENT_URL)
+		self.assertEqual(self.send_email.call_count, 1)  # no increment on shopping cart
+		self.assertEqual(self._get_payment_gateway_controller.call_count, 5)
+		pr.cancel()
+
+	def test_payment_entry_against_purchase_invoice(self):
+		si_usd = make_purchase_invoice(
+			supplier="_Test Supplier USD",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			debit_to="_Test Payable USD - _TC",
 			currency="USD",
 			conversion_rate=50,
@@ -108,7 +285,11 @@ class TestPaymentRequest(FrappeTestCase):
 
 	def test_multiple_payment_entry_against_purchase_invoice(self):
 		purchase_invoice = make_purchase_invoice(
+<<<<<<< HEAD
 			customer="_Test Supplier USD",
+=======
+			supplier="_Test Supplier USD",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			debit_to="_Test Payable USD - _TC",
 			currency="USD",
 			conversion_rate=50,
@@ -286,6 +467,11 @@ class TestPaymentRequest(FrappeTestCase):
 	def test_multiple_payment_if_partially_paid_for_same_currency(self):
 		so = make_sales_order(currency="INR", qty=1, rate=1000)
 
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Not Requested")
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		pr = make_payment_request(
 			dt="Sales Order",
 			dn=so.name,
@@ -297,8 +483,15 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pr.grand_total, 1000)
 		self.assertEqual(pr.outstanding_amount, pr.grand_total)
 		self.assertEqual(pr.party_account_currency, pr.currency)  # INR
+<<<<<<< HEAD
 
 		so.load_from_db()
+=======
+		self.assertEqual(pr.status, "Requested")
+
+		so.load_from_db()
+		self.assertEqual(so.advance_payment_status, "Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		# to make partial payment
 		pe = pr.create_payment_entry(submit=False)
@@ -309,6 +502,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pe.references[0].payment_request, pr.name)
 
 		so.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Partially Paid")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pr.load_from_db()
 		self.assertEqual(pr.status, "Partially Paid")
@@ -324,6 +521,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pe.references[0].payment_request, pr.name)
 
 		so.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Fully Paid")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pr.load_from_db()
 		self.assertEqual(pr.status, "Paid")
@@ -342,7 +543,13 @@ class TestPaymentRequest(FrappeTestCase):
 			return_doc=1,
 		)
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1}
+	)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_multiple_payment_if_partially_paid_for_multi_currency(self):
 		pi = make_purchase_invoice(currency="USD", conversion_rate=50, qty=1, rate=100, do_not_save=1)
 		pi.credit_to = "Creditors - _TC"
@@ -408,6 +615,11 @@ class TestPaymentRequest(FrappeTestCase):
 		po.save()
 		po.submit()
 
+<<<<<<< HEAD
+=======
+		self.assertEqual(po.advance_payment_status, "Not Initiated")
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		pr = make_payment_request(
 			dt="Purchase Order",
 			dn=po.name,
@@ -422,6 +634,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pr.status, "Initiated")
 
 		po.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(po.advance_payment_status, "Initiated")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pe = pr.create_payment_entry()
 
@@ -437,13 +653,23 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pe.references[1].payment_request, pr.name)
 
 		po.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(po.advance_payment_status, "Fully Paid")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pr.load_from_db()
 		self.assertEqual(pr.status, "Paid")
 		self.assertEqual(pr.outstanding_amount, 0)
 		self.assertEqual(pr.grand_total, 20000)
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1}
+	)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_single_payment_with_payment_term_for_multi_currency(self):
 		create_payment_terms_template()
 
@@ -467,6 +693,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pr.outstanding_amount, 10000)
 		self.assertEqual(pr.currency, "USD")
 		self.assertEqual(pr.party_account_currency, "INR")
+<<<<<<< HEAD
+=======
+		self.assertEqual(pr.status, "Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pe = pr.create_payment_entry()
 		self.assertEqual(len(pe.references), 2)
@@ -488,6 +718,10 @@ class TestPaymentRequest(FrappeTestCase):
 
 	def test_payment_cancel_process(self):
 		so = make_sales_order(currency="INR", qty=1, rate=1000)
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Not Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pr = make_payment_request(
 			dt="Sales Order",
@@ -497,10 +731,18 @@ class TestPaymentRequest(FrappeTestCase):
 			return_doc=1,
 		)
 
+<<<<<<< HEAD
+=======
+		self.assertEqual(pr.status, "Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		self.assertEqual(pr.grand_total, 1000)
 		self.assertEqual(pr.outstanding_amount, pr.grand_total)
 
 		so.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pe = pr.create_payment_entry(submit=False)
 		pe.paid_amount = 800
@@ -510,6 +752,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pe.references[0].payment_request, pr.name)
 
 		so.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Partially Paid")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pr.load_from_db()
 		self.assertEqual(pr.status, "Partially Paid")
@@ -525,6 +771,10 @@ class TestPaymentRequest(FrappeTestCase):
 		self.assertEqual(pr.grand_total, 1000)
 
 		so.load_from_db()
+<<<<<<< HEAD
+=======
+		self.assertEqual(so.advance_payment_status, "Requested")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def test_partial_paid_invoice_with_payment_request(self):
 		si = create_sales_invoice(currency="INR", qty=1, rate=5000)

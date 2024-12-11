@@ -1,18 +1,30 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import unittest
 
 import frappe
 import frappe.utils
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 import erpnext
 from erpnext.setup.doctype.employee.employee import InactiveEmployeeStatusError
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Employee")
 
 
 class TestEmployee(unittest.TestCase):
+=======
+
+class TestEmployee(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_employee_status_left(self):
 		employee1 = make_employee("test_employee_1@company.com")
 		employee2 = make_employee("test_employee_2@company.com")

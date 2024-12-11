@@ -5,7 +5,11 @@ import copy
 from collections import defaultdict
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import cint
 
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
@@ -25,7 +29,11 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 )
 
 
+<<<<<<< HEAD
 class TestSubcontractingController(FrappeTestCase):
+=======
+class TestSubcontractingController(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()

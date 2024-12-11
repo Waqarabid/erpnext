@@ -7,6 +7,10 @@ frappe.listview_settings["Sales Order"] = {
 		"per_delivered",
 		"per_billed",
 		"status",
+<<<<<<< HEAD
+=======
+		"advance_payment_status",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		"order_type",
 		"name",
 		"skip_delivery_note",
@@ -20,6 +24,11 @@ frappe.listview_settings["Sales Order"] = {
 			return [__("On Hold"), "orange", "status,=,On Hold"];
 		} else if (doc.status === "Completed") {
 			return [__("Completed"), "green", "status,=,Completed"];
+<<<<<<< HEAD
+=======
+		} else if (doc.advance_payment_status === "Requested") {
+			return [__("To Pay"), "gray", "advance_payment_status,=,Requested"];
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		} else if (!doc.skip_delivery_note && flt(doc.per_delivered) < 100) {
 			if (frappe.datetime.get_diff(doc.delivery_date) < 0) {
 				// not delivered & overdue
@@ -65,7 +74,42 @@ frappe.listview_settings["Sales Order"] = {
 		});
 
 		listview.page.add_action_item(__("Delivery Note"), () => {
+<<<<<<< HEAD
 			erpnext.bulk_transaction_processing.create(listview, "Sales Order", "Delivery Note");
+=======
+			frappe.call({
+				method: "erpnext.selling.doctype.sales_order.sales_order.is_enable_cutoff_date_on_bulk_delivery_note_creation",
+				callback: (r) => {
+					if (r.message) {
+						var dialog = new frappe.ui.Dialog({
+							title: __("Select Items up to Delivery Date"),
+							fields: [
+								{
+									fieldtype: "Date",
+									fieldname: "delivery_date",
+									default: frappe.datetime.add_days(frappe.datetime.nowdate(), 1),
+								},
+							],
+						});
+						dialog.set_primary_action(__("Select"), function (values) {
+							var until_delivery_date = values.delivery_date;
+							erpnext.bulk_transaction_processing.create(
+								listview,
+								"Sales Order",
+								"Delivery Note",
+								{
+									until_delivery_date,
+								}
+							);
+							dialog.hide();
+						});
+						dialog.show();
+					} else {
+						erpnext.bulk_transaction_processing.create(listview, "Sales Order", "Delivery Note");
+					}
+				},
+			});
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		});
 
 		listview.page.add_action_item(__("Advance Payment"), () => {

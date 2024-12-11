@@ -40,6 +40,10 @@
   "column_break_19",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "base_rate_with_margin",
   "section_break_1",
   "rate",
@@ -277,7 +281,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "fieldname": "discount_and_margin",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -912,6 +920,15 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+  },
+  {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "allow_on_submit": 1,
    "fieldname": "company_total_stock",
    "fieldtype": "Float",
@@ -933,14 +950,25 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-11-21 17:37:37.441498",
+=======
+ "modified": "2024-11-21 16:37:37.441498",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note Item",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

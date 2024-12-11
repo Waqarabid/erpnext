@@ -519,6 +519,7 @@ erpnext.buying.RequestforQuotationController = class RequestforQuotationControll
 						callback: load_suppliers,
 					});
 				} else if (args.supplier_group) {
+<<<<<<< HEAD
 					return frappe.call({
 						method: "frappe.client.get_list",
 						args: {
@@ -529,6 +530,17 @@ erpnext.buying.RequestforQuotationController = class RequestforQuotationControll
 						},
 						callback: load_suppliers,
 					});
+=======
+					frappe.db
+						.get_list("Supplier", {
+							filters: { supplier_group: args.supplier_group },
+							limit: 100,
+							order_by: "name",
+						})
+						.then((r) => {
+							load_suppliers({ message: r });
+						});
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				}
 			},
 		});

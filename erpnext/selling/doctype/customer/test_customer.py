@@ -5,8 +5,12 @@
 import json
 
 import frappe
+<<<<<<< HEAD
 from frappe.test_runner import make_test_records
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import flt
 
 from erpnext.accounts.party import get_due_date
@@ -18,6 +22,7 @@ from erpnext.selling.doctype.customer.customer import (
 )
 from erpnext.tests.utils import create_test_contact_and_address
 
+<<<<<<< HEAD
 test_ignore = ["Price List"]
 test_dependencies = ["Payment Term", "Payment Terms Template"]
 test_records = frappe.get_test_records("Customer")
@@ -28,6 +33,22 @@ class TestCustomer(FrappeTestCase):
 		if not frappe.get_value("Item", "_Test Item"):
 			make_test_records("Item")
 
+=======
+IGNORE_TEST_RECORD_DEPENDENCIES = ["Price List"]
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Payment Term", "Payment Terms Template"]
+
+
+class UnitTestCustomer(UnitTestCase):
+	"""
+	Unit tests for Customer.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestCustomer(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def tearDown(self):
 		set_credit_limit("_Test Customer", "_Test Company", 0)
 
@@ -197,8 +218,11 @@ class TestCustomer(FrappeTestCase):
 		frappe.db.rollback()
 
 	def test_freezed_customer(self):
+<<<<<<< HEAD
 		make_test_records("Item")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		frappe.db.set_value("Customer", "_Test Customer", "is_frozen", 1)
 
 		from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
@@ -222,8 +246,11 @@ class TestCustomer(FrappeTestCase):
 		frappe.delete_doc("Customer", customer.name)
 
 	def test_disabled_customer(self):
+<<<<<<< HEAD
 		make_test_records("Item")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		frappe.db.set_value("Customer", "_Test Customer", "disabled", 1)
 
 		from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
@@ -418,9 +445,15 @@ def create_internal_customer(customer_name=None, represents_company=None, allowe
 	if not allowed_to_interact_with:
 		allowed_to_interact_with = represents_company
 
+<<<<<<< HEAD
 	exisiting_representative = frappe.db.get_value("Customer", {"represents_company": represents_company})
 	if exisiting_representative:
 		return exisiting_representative
+=======
+	existing_representative = frappe.db.get_value("Customer", {"represents_company": represents_company})
+	if existing_representative:
+		return existing_representative
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	if not frappe.db.exists("Customer", customer_name):
 		customer = frappe.get_doc(

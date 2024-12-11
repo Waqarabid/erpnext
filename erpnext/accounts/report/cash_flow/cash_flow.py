@@ -263,7 +263,10 @@ def get_report_summary(summary_data, currency):
 
 def get_chart_data(columns, data, currency):
 	labels = [d.get("label") for d in columns[2:]]
+<<<<<<< HEAD
 	print(data)
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	datasets = [
 		{
 			"name": section.get("section").replace("'", ""),

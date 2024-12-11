@@ -1,15 +1,26 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.promotional_scheme.promotional_scheme import TransactionExists
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
 
+<<<<<<< HEAD
 class TestPromotionalScheme(unittest.TestCase):
+=======
+class TestPromotionalScheme(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		if frappe.db.exists("Promotional Scheme", "_Test Scheme"):
 			frappe.delete_doc("Promotional Scheme", "_Test Scheme")

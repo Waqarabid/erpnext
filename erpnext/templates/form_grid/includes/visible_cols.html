@@ -3,7 +3,11 @@
 	if((df.fieldname !== "description" && df.fieldname !== "item_name") && val) { %}
 		<div class="row">
 			<div class="col-xs-4 ellipsis">
+<<<<<<< HEAD
 				<strong title="{%= __(df.label) %}">{%= __(df.label) %}:</strong>
+=======
+				<strong title="{%= __(df.label, null, df.parent) %}">{%= __(df.label, null, df.parent) %}:</strong>
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			</div>
 			<div class="col-xs-8">
 				{%= doc.get_formatted(df.fieldname) %}

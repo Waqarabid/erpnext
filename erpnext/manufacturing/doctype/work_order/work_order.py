@@ -143,6 +143,27 @@ class WorkOrder(Document):
 		self.set_onload("material_consumption", ms.material_consumption)
 		self.set_onload("backflush_raw_materials_based_on", ms.backflush_raw_materials_based_on)
 		self.set_onload("overproduction_percentage", ms.overproduction_percentage_for_work_order)
+<<<<<<< HEAD
+=======
+		self.set_onload("show_create_job_card_button", self.show_create_job_card_button())
+
+	def show_create_job_card_button(self):
+		operation_details = frappe._dict(
+			frappe.get_all(
+				"Job Card",
+				fields=["operation", "for_quantity"],
+				filters={"docstatus": ("<", 2), "work_order": self.name},
+				as_list=1,
+			)
+		)
+
+		for d in self.operations:
+			job_card_qty = self.qty - flt(operation_details.get(d.operation))
+			if job_card_qty > 0:
+				return True
+
+		return False
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def validate(self):
 		self.validate_production_item()
@@ -445,15 +466,31 @@ class WorkOrder(Document):
 		self.update_status()
 		production_plan.run_method("update_produced_pending_qty", produced_qty, self.production_plan_item)
 
+<<<<<<< HEAD
+=======
+	def validate_warehouse(self):
+		if self.track_semi_finished_goods:
+			return
+
+		if not self.wip_warehouse and not self.skip_transfer:
+			frappe.throw(_("Work-in-Progress Warehouse is required before Submit"))
+		if not self.fg_warehouse:
+			frappe.throw(_("Target Warehouse is required before Submit"))
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def before_submit(self):
 		self.create_serial_no_batch_no()
 
 	def on_submit(self):
+<<<<<<< HEAD
 		if not self.wip_warehouse and not self.skip_transfer:
 			frappe.throw(_("Work-in-Progress Warehouse is required before Submit"))
 		if not self.fg_warehouse:
 			frappe.throw(_("For Warehouse is required before Submit"))
 
+=======
+		self.validate_warehouse()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if self.production_plan and frappe.db.exists(
 			"Production Plan Item Reference", {"parent": self.production_plan}
 		):
@@ -689,6 +726,12 @@ class WorkOrder(Document):
 			)
 
 	def update_planned_qty(self):
+<<<<<<< HEAD
+=======
+		if self.track_semi_finished_goods:
+			return
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		from erpnext.manufacturing.doctype.production_plan.production_plan import (
 			get_reserved_qty_for_sub_assembly,
 		)
@@ -833,13 +876,30 @@ class WorkOrder(Document):
 					"description",
 					"workstation",
 					"idx",
+<<<<<<< HEAD
+=======
+					"finished_good",
+					"is_subcontracted",
+					"wip_warehouse",
+					"source_warehouse",
+					"fg_warehouse",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 					"workstation_type",
 					"base_hour_rate as hour_rate",
 					"time_in_mins",
 					"parent as bom",
+<<<<<<< HEAD
 					"batch_size",
 					"sequence_id",
 					"fixed_time",
+=======
+					"bom_no",
+					"batch_size",
+					"sequence_id",
+					"fixed_time",
+					"skip_material_transfer",
+					"backflush_from_wip_warehouse",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				],
 				order_by="idx",
 			)
@@ -849,6 +909,12 @@ class WorkOrder(Document):
 					d.time_in_mins = flt(d.time_in_mins) * flt(qty)
 				d.status = "Pending"
 
+<<<<<<< HEAD
+=======
+				if self.track_semi_finished_goods and not d.sequence_id:
+					d.sequence_id = d.idx
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			return data
 
 		self.set("operations", [])
@@ -967,7 +1033,11 @@ class WorkOrder(Document):
 			validate_end_of_life(self.production_item)
 
 	def validate_qty(self):
+<<<<<<< HEAD
 		if not self.qty > 0:
+=======
+		if self.qty <= 0:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			frappe.throw(_("Quantity to Manufacture must be greater than 0."))
 
 		if (
@@ -1005,7 +1075,11 @@ class WorkOrder(Document):
 
 			max_qty = qty_dict.get("planned_qty", 0) + allowance_qty - qty_dict.get("ordered_qty", 0)
 
+<<<<<<< HEAD
 			if not max_qty > 0:
+=======
+			if max_qty <= 0:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				frappe.throw(
 					_("Cannot produce more item for {0}").format(self.production_item), OverProductionError
 				)
@@ -1016,7 +1090,11 @@ class WorkOrder(Document):
 				)
 
 	def validate_transfer_against(self):
+<<<<<<< HEAD
 		if not self.docstatus == 1:
+=======
+		if self.docstatus != 1:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			# let user configure operations until they're ready to submit
 			return
 		if not self.operations:
@@ -1029,7 +1107,11 @@ class WorkOrder(Document):
 
 	def validate_operation_time(self):
 		for d in self.operations:
+<<<<<<< HEAD
 			if not d.time_in_mins > 0:
+=======
+			if d.time_in_mins <= 0:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				frappe.throw(_("Operation Time must be greater than 0 for Operation {0}").format(d.operation))
 
 	def update_required_items(self):
@@ -1106,6 +1188,10 @@ class WorkOrder(Document):
 							"required_qty": item.qty,
 							"source_warehouse": item.source_warehouse or item.default_warehouse,
 							"include_item_in_manufacturing": item.include_item_in_manufacturing,
+<<<<<<< HEAD
+=======
+							"operation_row_id": item.operation_row_id,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 						},
 					)
 
@@ -1306,6 +1392,10 @@ def make_work_order(bom_no, item, qty=0, project=None, variant_items=None, use_m
 	item_details = get_item_details(item, project)
 
 	wo_doc = frappe.new_doc("Work Order")
+<<<<<<< HEAD
+=======
+	wo_doc.track_semi_finished_goods = frappe.db.get_value("BOM", bom_no, "track_semi_finished_goods")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	wo_doc.production_item = item
 	wo_doc.update(item_details)
 	wo_doc.bom_no = bom_no
@@ -1493,6 +1583,11 @@ def make_job_card(work_order, operations):
 	work_order = frappe.get_doc("Work Order", work_order)
 	for row in operations:
 		row = frappe._dict(row)
+<<<<<<< HEAD
+=======
+		row.update(get_operation_details(row.name, work_order))
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		validate_operation_data(row)
 		qty = row.get("qty")
 		while qty > 0:
@@ -1501,6 +1596,24 @@ def make_job_card(work_order, operations):
 				create_job_card(work_order, row, auto_create=True)
 
 
+<<<<<<< HEAD
+=======
+def get_operation_details(name, work_order):
+	for row in work_order.operations:
+		if row.name == name:
+			return {
+				"workstation": row.workstation,
+				"workstation_type": row.workstation_type,
+				"source_warehouse": row.source_warehouse,
+				"fg_warehouse": row.fg_warehouse,
+				"wip_warehouse": row.wip_warehouse,
+				"finished_good": row.finished_good,
+				"bom_no": row.get("bom_no"),
+				"is_subcontracted": row.get("is_subcontracted"),
+			}
+
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 @frappe.whitelist()
 def close_work_order(work_order, status):
 	if not frappe.has_permission("Work Order", "write"):
@@ -1585,7 +1698,11 @@ def validate_operation_data(row):
 
 	if flt(row.get("qty")) > flt(row.get("pending_qty")):
 		frappe.throw(
+<<<<<<< HEAD
 			_("For operation {0}: Quantity ({1}) can not be greter than pending quantity({2})").format(
+=======
+			_("For operation {0}: Quantity ({1}) can not be greater than pending quantity({2})").format(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				frappe.bold(row.get("operation")),
 				frappe.bold(row.get("qty")),
 				frappe.bold(row.get("pending_qty")),
@@ -1601,6 +1718,10 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 			"workstation_type": row.get("workstation_type"),
 			"operation": row.get("operation"),
 			"workstation": row.get("workstation"),
+<<<<<<< HEAD
+=======
+			"operation_row_id": cint(row.idx),
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			"posting_date": nowdate(),
 			"for_quantity": row.job_card_qty or work_order.get("qty", 0),
 			"operation_id": row.get("name"),
@@ -1608,6 +1729,7 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 			"project": work_order.project,
 			"company": work_order.company,
 			"sequence_id": row.get("sequence_id"),
+<<<<<<< HEAD
 			"wip_warehouse": work_order.wip_warehouse,
 			"hour_rate": row.get("hour_rate"),
 			"serial_no": row.get("serial_no"),
@@ -1615,6 +1737,25 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 	)
 
 	if work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer:
+=======
+			"hour_rate": row.get("hour_rate"),
+			"serial_no": row.get("serial_no"),
+			"time_required": row.get("time_in_mins"),
+			"source_warehouse": row.get("source_warehouse"),
+			"target_warehouse": row.get("fg_warehouse"),
+			"wip_warehouse": work_order.wip_warehouse or row.get("wip_warehouse"),
+			"skip_material_transfer": row.get("skip_material_transfer"),
+			"backflush_from_wip_warehouse": row.get("backflush_from_wip_warehouse"),
+			"finished_good": row.get("finished_good"),
+			"semi_fg_bom": row.get("bom_no"),
+			"is_subcontracted": row.get("is_subcontracted"),
+		}
+	)
+
+	if work_order.track_semi_finished_goods or (
+		work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer
+	):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		doc.get_required_items()
 
 	if auto_create:

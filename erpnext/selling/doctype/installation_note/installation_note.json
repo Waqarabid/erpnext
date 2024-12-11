@@ -24,6 +24,10 @@
   "inst_time",
   "status",
   "company",
+<<<<<<< HEAD
+=======
+  "project",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "amended_from",
   "remarks",
   "item_details",
@@ -93,7 +97,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "hidden": 1,
    "label": "Address",
    "read_only": 1
@@ -225,13 +233,26 @@
    "oldfieldtype": "Table",
    "options": "Installation Note Item",
    "reqd": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "icon": "fa fa-wrench",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-06-03 16:31:08.386961",
+=======
+ "modified": "2024-03-27 13:09:51.216007",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Installation Note",
@@ -259,7 +280,11 @@
    "role": "Sales User"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "customer",

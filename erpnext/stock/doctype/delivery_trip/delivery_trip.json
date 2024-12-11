@@ -188,7 +188,11 @@
  ],
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-10-01 07:06:06.314503",
+=======
+ "modified": "2024-03-27 13:06:50.643296",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Trip",
@@ -256,8 +260,16 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "title_field": "driver_name"
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "driver_name"
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

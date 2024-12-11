@@ -5,6 +5,10 @@
  "creation": "2013-05-21 16:16:39",
  "doctype": "DocType",
  "document_type": "Document",
+<<<<<<< HEAD
+=======
+ "email_append_to": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "engine": "InnoDB",
  "field_order": [
   "title",
@@ -192,6 +196,10 @@
   "is_internal_supplier",
   "represents_company",
   "supplier_group",
+<<<<<<< HEAD
+=======
+  "sender",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "column_break_147",
   "inter_company_invoice_reference",
   "is_old_subcontracting_flow",
@@ -444,7 +452,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Address",
    "read_only": 1
   },
@@ -490,7 +502,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Shipping Address",
    "print_hide": 1,
    "read_only": 1
@@ -1366,7 +1382,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Billing Address",
    "read_only": 1
   },
@@ -1627,6 +1647,15 @@
    "fieldname": "update_outstanding_for_self",
    "fieldtype": "Check",
    "label": "Update Outstanding for Self"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "sender",
+   "fieldtype": "Data",
+   "label": "Sender",
+   "options": "Email"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "icon": "fa fa-file-text",
@@ -1689,11 +1718,21 @@
   }
  ],
  "search_fields": "posting_date, supplier, bill_no, base_grand_total, outstanding_amount",
+<<<<<<< HEAD
  "show_name_in_global_search": 1,
  "sort_field": "modified",
+=======
+ "sender_field": "sender",
+ "show_name_in_global_search": 1,
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

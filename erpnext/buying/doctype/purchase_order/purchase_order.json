@@ -134,6 +134,10 @@
   "more_info_tab",
   "tracking_section",
   "status",
+<<<<<<< HEAD
+=======
+  "advance_payment_status",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "column_break_75",
   "per_billed",
   "per_received",
@@ -354,7 +358,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Supplier Address Details",
    "read_only": 1
   },
@@ -393,7 +401,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Shipping Address Details",
    "print_hide": 1,
    "read_only": 1
@@ -1097,7 +1109,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Billing Address Details",
    "read_only": 1
   },
@@ -1269,13 +1285,32 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "advance_payment_status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "in_standard_filter": 1,
+   "label": "Advance Payment Status",
+   "no_copy": 1,
+   "oldfieldname": "status",
+   "oldfieldtype": "Select",
+   "options": "Not Initiated\nInitiated\nPartially Paid\nFully Paid",
+   "print_hide": 1
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-20 16:03:31.611808",
+=======
+ "modified": "2024-03-27 13:10:24.518785",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",
@@ -1324,10 +1359,18 @@
  ],
  "search_fields": "status, transaction_date, supplier, grand_total",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "supplier_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

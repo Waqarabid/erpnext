@@ -39,6 +39,10 @@
   "subcontracting_order",
   "subcontracting_order_item",
   "subcontracting_receipt_item",
+<<<<<<< HEAD
+=======
+  "job_card",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "column_break_40",
   "rejected_warehouse",
   "bom",
@@ -580,6 +584,17 @@
    "fieldname": "add_serial_batch_for_rejected_qty",
    "fieldtype": "Button",
    "label": "Add Serial / Batch No (Rejected Qty)"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "read_only": 1,
+   "search_index": 1
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   }
  ],
  "idx": 1,
@@ -596,4 +611,8 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

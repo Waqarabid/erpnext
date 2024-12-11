@@ -61,7 +61,10 @@ frappe.ui.form.on("Delivery Trip", {
 							customer: null,
 						},
 						get_query_filters: {
+<<<<<<< HEAD
 							docstatus: 1,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 							company: frm.doc.company,
 							status: ["Not In", ["Completed", "Cancelled"]],
 						},

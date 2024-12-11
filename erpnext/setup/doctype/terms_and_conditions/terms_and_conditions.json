@@ -77,7 +77,11 @@
  "icon": "icon-legal",
  "idx": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-01-30 12:47:52.325531",
+=======
+ "modified": "2024-03-27 13:10:53.065872",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Terms and Conditions",
@@ -134,7 +138,11 @@
  ],
  "quick_entry": 1,
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "ASC",
  "states": []
 }

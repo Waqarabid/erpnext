@@ -154,7 +154,11 @@
   {
    "fieldname": "raw_materials_consumption_section",
    "fieldtype": "Section Break",
+<<<<<<< HEAD
    "label": "Raw Materials Consumption "
+=======
+   "label": "Raw Materials Consumption"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "fieldname": "column_break_16",
@@ -263,7 +267,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

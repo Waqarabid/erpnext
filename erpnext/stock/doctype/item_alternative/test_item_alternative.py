@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import flt
 
 from erpnext.controllers.subcontracting_controller import make_rm_stock_entry
@@ -26,7 +30,20 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 )
 
 
+<<<<<<< HEAD
 class TestItemAlternative(FrappeTestCase):
+=======
+class UnitTestItemAlternative(UnitTestCase):
+	"""
+	Unit tests for ItemAlternative.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestItemAlternative(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		super().setUp()
 		make_items()

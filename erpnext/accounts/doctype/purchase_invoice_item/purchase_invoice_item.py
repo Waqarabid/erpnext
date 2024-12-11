@@ -34,6 +34,10 @@ class PurchaseInvoiceItem(Document):
 		description: DF.TextEditor | None
 		discount_amount: DF.Currency
 		discount_percentage: DF.Percent
+<<<<<<< HEAD
+=======
+		distributed_discount_amount: DF.Currency
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		enable_deferred_expense: DF.Check
 		expense_account: DF.Link | None
 		from_warehouse: DF.Link | None

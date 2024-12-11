@@ -13,7 +13,10 @@ frappe.ui.form.on("Task", {
 				}),
 		};
 	},
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	onload: function (frm) {
 		frm.set_query("task", "depends_on", function () {
 			let filters = {

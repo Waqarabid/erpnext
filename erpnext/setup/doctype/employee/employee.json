@@ -441,13 +441,21 @@
   {
    "fieldname": "prefered_contact_email",
    "fieldtype": "Select",
+<<<<<<< HEAD
    "label": "Prefered Contact Email",
+=======
+   "label": "Preferred Contact Email",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "options": "\nCompany Email\nPersonal Email\nUser ID"
   },
   {
    "fieldname": "prefered_email",
    "fieldtype": "Data",
+<<<<<<< HEAD
    "label": "Prefered Email",
+=======
+   "label": "Preferred Email",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "options": "Email",
    "read_only": 1
   },
@@ -524,7 +532,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   },
   {
    "fieldname": "place_of_issue",
@@ -824,7 +836,11 @@
  "image_field": "image",
  "is_tree": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-01-03 17:36:20.984421",
+=======
+ "modified": "2024-03-27 13:09:36.900706",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee",
@@ -868,7 +884,11 @@
  ],
  "search_fields": "employee_name",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "employee_name"

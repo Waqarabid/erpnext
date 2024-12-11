@@ -3,8 +3,11 @@
 
 import frappe
 
+<<<<<<< HEAD
 # test_records = frappe.get_test_records('Designation')
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 def create_designation(**args):
 	args = frappe._dict(args)

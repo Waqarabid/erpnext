@@ -64,6 +64,11 @@
    "label": "Is Group"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "parent_account.company",
+   "fetch_if_empty": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "fieldname": "company",
    "fieldtype": "Link",
    "in_standard_filter": 1,
@@ -106,6 +111,10 @@
    "fieldname": "parent_account",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
+<<<<<<< HEAD
+=======
+   "in_preview": 1,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Parent Account",
    "oldfieldname": "parent_account",
    "oldfieldtype": "Link",
@@ -248,8 +257,17 @@
  ],
  "search_fields": "account_number",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "show_preview_popup": 1,
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

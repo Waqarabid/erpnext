@@ -368,6 +368,14 @@ def make_default_records():
 			"variable_label": "Total Ordered",
 			"path": "get_ordered_qty",
 		},
+<<<<<<< HEAD
+=======
+		{
+			"param_name": "total_invoiced",
+			"variable_label": "Total Invoiced",
+			"path": "get_invoiced_qty",
+		},
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	]
 	install_standing_docs = [
 		{

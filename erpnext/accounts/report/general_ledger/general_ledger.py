@@ -488,7 +488,14 @@ def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map, tot
 
 	for gle in gl_entries:
 		group_by_value = gle.get(group_by)
+<<<<<<< HEAD
 		gle.voucher_type = gle.voucher_type
+=======
+		gle.voucher_subtype = _(gle.voucher_subtype)
+		gle.against_voucher_type = _(gle.against_voucher_type)
+		gle.remarks = _(gle.remarks)
+		gle.party_type = _(gle.party_type)
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if gle.posting_date < from_date or (cstr(gle.is_opening) == "Yes" and not show_opening_entries):
 			if not group_by_voucher_consolidated:

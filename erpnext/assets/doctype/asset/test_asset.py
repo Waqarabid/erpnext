@@ -1,9 +1,16 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import (
 	add_days,
 	add_months,
@@ -15,6 +22,10 @@ from frappe.utils import (
 	is_last_day_of_the_month,
 	nowdate,
 )
+<<<<<<< HEAD
+=======
+from frappe.utils.data import add_to_date
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
@@ -41,9 +52,16 @@ from erpnext.stock.doctype.purchase_receipt.purchase_receipt import (
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
 
 
+<<<<<<< HEAD
 class AssetSetup(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+class AssetSetup(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		set_depreciation_settings_in_company()
 		create_asset_data()
 		enable_cwip_accounting("Computers")
@@ -219,6 +237,34 @@ class TestAsset(AssetSetup):
 		)
 		self.assertEqual(accumulated_depr_amount, 18000.0)
 
+<<<<<<< HEAD
+=======
+		asset_depreciation = frappe.db.get_value(
+			"Asset Depreciation Schedule", {"asset": asset.name, "docstatus": 1}, "name"
+		)
+		last_booked_depreciation_date = frappe.db.get_value(
+			"Depreciation Schedule",
+			{
+				"parent": asset_depreciation,
+				"docstatus": 1,
+				"journal_entry": ["!=", ""],
+			},
+			"schedule_date",
+			order_by="schedule_date desc",
+		)
+
+		before_purchase_date = add_to_date(asset.purchase_date, days=-1)
+		future_date = add_to_date(nowdate(), days=1)
+		if last_booked_depreciation_date:
+			before_last_booked_depreciation_date = add_to_date(last_booked_depreciation_date, days=-1)
+
+		self.assertRaises(frappe.ValidationError, scrap_asset, asset.name, scrap_date=before_purchase_date)
+		self.assertRaises(frappe.ValidationError, scrap_asset, asset.name, scrap_date=future_date)
+		self.assertRaises(
+			frappe.ValidationError, scrap_asset, asset.name, scrap_date=before_last_booked_depreciation_date
+		)
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		scrap_asset(asset.name)
 		asset.load_from_db()
 		first_asset_depr_schedule.load_from_db()
@@ -1737,12 +1783,20 @@ def create_asset(**args):
 	return asset
 
 
+<<<<<<< HEAD
 def create_asset_category():
+=======
+def create_asset_category(enable_cwip=1):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	asset_category = frappe.new_doc("Asset Category")
 	asset_category.asset_category_name = "Computers"
 	asset_category.total_number_of_depreciations = 3
 	asset_category.frequency_of_depreciation = 3
+<<<<<<< HEAD
 	asset_category.enable_cwip_accounting = 1
+=======
+	asset_category.enable_cwip_accounting = enable_cwip
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	asset_category.append(
 		"accounts",
 		{

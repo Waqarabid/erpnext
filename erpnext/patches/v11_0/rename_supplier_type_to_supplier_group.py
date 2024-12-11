@@ -39,4 +39,8 @@ def build_tree():
 			}
 		).insert(ignore_permissions=True)
 
+<<<<<<< HEAD
 	rebuild_tree("Supplier Group", "parent_supplier_group")
+=======
+	rebuild_tree("Supplier Group")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

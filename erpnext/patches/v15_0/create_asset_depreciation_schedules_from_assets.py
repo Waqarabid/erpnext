@@ -4,7 +4,10 @@ import frappe
 def execute():
 	frappe.reload_doc("assets", "doctype", "Asset Depreciation Schedule")
 	frappe.reload_doc("assets", "doctype", "Asset Finance Book")
+<<<<<<< HEAD
 	frappe.reload_doc("assets", "doctype", "Asset")
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	assets = get_details_of_draft_or_submitted_depreciable_assets()
 

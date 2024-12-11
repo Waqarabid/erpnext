@@ -2,10 +2,26 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 
 class TestSubcontractingBOM(FrappeTestCase):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestSubcontractingBom(UnitTestCase):
+	"""
+	Unit tests for SubcontractingBom.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSubcontractingBOM(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	pass
 
 

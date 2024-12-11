@@ -57,7 +57,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-07-09 18:11:23.105589",
+=======
+ "modified": "2024-03-27 13:09:55.573483",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Item Tax Template",
@@ -98,9 +102,17 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

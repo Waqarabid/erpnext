@@ -40,6 +40,10 @@ from erpnext.stock.doctype.stock_reconciliation.stock_reconciliation import (
 	OpeningEntryAccountError,
 )
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
+=======
+	ItemDetailsCtx,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	get_barcode_data,
 	get_bin_details,
 	get_conversion_factor,
@@ -95,7 +99,11 @@ class StockEntry(StockController):
 
 		add_to_transit: DF.Check
 		additional_costs: DF.Table[LandedCostTaxesandCharges]
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		amended_from: DF.Link | None
 		apply_putaway_rule: DF.Check
 		asset_repair: DF.Link | None
@@ -139,14 +147,22 @@ class StockEntry(StockController):
 		scan_barcode: DF.Data | None
 		select_print_heading: DF.Link | None
 		set_posting_time: DF.Check
+<<<<<<< HEAD
 		source_address_display: DF.SmallText | None
+=======
+		source_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		source_warehouse_address: DF.Link | None
 		stock_entry_type: DF.Link
 		subcontracting_order: DF.Link | None
 		supplier: DF.Link | None
 		supplier_address: DF.Link | None
 		supplier_name: DF.Data | None
+<<<<<<< HEAD
 		target_address_display: DF.SmallText | None
+=======
+		target_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		target_warehouse_address: DF.Link | None
 		to_warehouse: DF.Link | None
 		total_additional_costs: DF.Currency
@@ -213,7 +229,14 @@ class StockEntry(StockController):
 
 		if self.purpose in ("Manufacture", "Repack"):
 			self.mark_finished_and_scrap_items()
+<<<<<<< HEAD
 			self.validate_finished_goods()
+=======
+			if not self.job_card:
+				self.validate_finished_goods()
+			else:
+				self.validate_job_card_fg_item()
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		self.validate_with_material_request()
 		self.validate_batch()
@@ -234,7 +257,11 @@ class StockEntry(StockController):
 		self.validate_putaway_capacity()
 		self.validate_component_quantities()
 
+<<<<<<< HEAD
 		if not self.get("purpose") == "Manufacture":
+=======
+		if self.get("purpose") != "Manufacture":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			# ignore scrap item wh difference and empty source/target wh
 			# in Manufacture Entry
 			self.reset_default_field_value("from_warehouse", "items", "s_warehouse")
@@ -306,10 +333,31 @@ class StockEntry(StockController):
 			self.from_bom = 1
 			self.bom_no = data.bom_no
 
+<<<<<<< HEAD
 	def validate_job_card_item(self):
 		if not self.job_card:
 			return
 
+=======
+	def validate_job_card_fg_item(self):
+		if not self.job_card:
+			return
+
+		job_card = frappe.db.get_value(
+			"Job Card", self.job_card, ["finished_good", "manufactured_qty"], as_dict=1
+		)
+
+		for row in self.items:
+			if row.is_finished_item and row.item_code != job_card.finished_good:
+				frappe.throw(
+					_("Row #{0}: Finished Good must be {1}").format(row.idx, job_card.fininshed_good)
+				)
+
+	def validate_job_card_item(self):
+		if not self.job_card or self.purpose == "Manufacture":
+			return
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		if cint(frappe.db.get_single_value("Manufacturing Settings", "job_card_excess_transfer")):
 			return
 
@@ -345,6 +393,7 @@ class StockEntry(StockController):
 		if self.purpose not in valid_purposes:
 			frappe.throw(_("Purpose must be one of {0}").format(comma_or(valid_purposes)))
 
+<<<<<<< HEAD
 		if self.job_card and self.purpose not in ["Material Transfer for Manufacture", "Repack"]:
 			frappe.throw(
 				_(
@@ -352,6 +401,8 @@ class StockEntry(StockController):
 				).format(self.job_card)
 			)
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def delete_linked_stock_entry(self):
 		if self.purpose == "Send to Warehouse":
 			for d in frappe.get_all(
@@ -365,9 +416,14 @@ class StockEntry(StockController):
 				frappe.delete_doc("Stock Entry", d.name)
 
 	def set_transfer_qty(self):
+<<<<<<< HEAD
 		for item in self.get("items"):
 			if not flt(item.qty):
 				frappe.throw(_("Row {0}: Qty is mandatory").format(item.idx), title=_("Zero quantity"))
+=======
+		self.validate_qty_is_not_zero()
+		for item in self.get("items"):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if not flt(item.conversion_factor):
 				frappe.throw(_("Row {0}: UOM Conversion Factor is mandatory").format(item.idx))
 			item.transfer_qty = flt(
@@ -498,6 +554,7 @@ class StockEntry(StockController):
 								item_code.append(item.item_code)
 
 	def validate_fg_completed_qty(self):
+<<<<<<< HEAD
 		item_wise_qty = {}
 		if self.purpose == "Manufacture" and self.work_order:
 			for d in self.items:
@@ -523,6 +580,39 @@ class StockEntry(StockController):
 					_(
 						"The finished product {0} quantity {1} and For Quantity {2} cannot be different"
 					).format(frappe.bold(item_code), frappe.bold(total), frappe.bold(self.fg_completed_qty))
+=======
+		if self.purpose != "Manufacture":
+			return
+
+		fg_qty = defaultdict(float)
+		for d in self.items:
+			if d.is_finished_item:
+				fg_qty[d.item_code] += flt(d.qty)
+
+		if not fg_qty:
+			return
+
+		precision = frappe.get_precision("Stock Entry Detail", "qty")
+		fg_item = next(iter(fg_qty.keys()))
+		fg_item_qty = flt(fg_qty[fg_item], precision)
+		fg_completed_qty = flt(self.fg_completed_qty, precision)
+
+		for d in self.items:
+			if not fg_qty.get(d.item_code):
+				continue
+
+			if (fg_completed_qty - fg_item_qty) > 0:
+				self.process_loss_qty = fg_completed_qty - fg_item_qty
+
+			if not self.process_loss_qty:
+				continue
+
+			if fg_completed_qty != (flt(fg_item_qty) + flt(self.process_loss_qty, precision)):
+				frappe.throw(
+					_(
+						"Since there is a process loss of {0} units for the finished good {1}, you should reduce the quantity by {0} units for the finished good {1} in the Items Table."
+					).format(frappe.bold(self.process_loss_qty), frappe.bold(d.item_code))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				)
 
 	def validate_difference_account(self):
@@ -612,7 +702,11 @@ class StockEntry(StockController):
 				frappe.throw(_("Source and target warehouse cannot be same for row {0}").format(d.idx))
 
 			if not (d.s_warehouse or d.t_warehouse):
+<<<<<<< HEAD
 				frappe.throw(_("Atleast one warehouse is mandatory"))
+=======
+				frappe.throw(_("At least one warehouse is mandatory"))
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 	def validate_work_order(self):
 		if self.purpose in (
@@ -624,8 +718,15 @@ class StockEntry(StockController):
 			# check if work order is entered
 
 			if (
+<<<<<<< HEAD
 				self.purpose == "Manufacture" or self.purpose == "Material Consumption for Manufacture"
 			) and self.work_order:
+=======
+				(self.purpose == "Manufacture" or self.purpose == "Material Consumption for Manufacture")
+				and self.work_order
+				and frappe.get_cached_value("Work Order", self.work_order, "track_semi_finished_goods") != 1
+			):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				if not self.fg_completed_qty:
 					frappe.throw(_("For Quantity (Manufactured Qty) is mandatory"))
 				self.check_if_operations_completed()
@@ -1596,8 +1697,19 @@ class StockEntry(StockController):
 
 		if self.job_card:
 			job_doc = frappe.get_doc("Job Card", self.job_card)
+<<<<<<< HEAD
 			job_doc.set_transferred_qty(update_status=True)
 			job_doc.set_transferred_qty_in_job_card_item(self)
+=======
+			if self.purpose != "Manufacture":
+				job_doc.set_transferred_qty(update_status=True)
+				job_doc.set_transferred_qty_in_job_card_item(self)
+			else:
+				job_doc.set_manufactured_qty()
+
+		if self.job_card and frappe.get_cached_value("Job Card", self.job_card, "finished_good"):
+			return
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		if self.work_order:
 			pro_doc = frappe.get_doc("Work Order", self.work_order)
@@ -1613,7 +1725,11 @@ class StockEntry(StockController):
 				pro_doc.set_actual_dates()
 
 	@frappe.whitelist()
+<<<<<<< HEAD
 	def get_item_details(self, args=None, for_update=False):
+=======
+	def get_item_details(self, args: ItemDetailsCtx = None, for_update=False):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		item = frappe.db.sql(
 			"""select i.name, i.stock_uom, i.description, i.image, i.item_name, i.item_group,
 				i.has_batch_no, i.sample_quantity, i.has_serial_no, i.allow_alternative_item,

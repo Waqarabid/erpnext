@@ -192,7 +192,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-08-28 22:17:54.740924",
+=======
+ "modified": "2024-03-27 13:10:39.518860",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Service Level Agreement",
@@ -216,7 +220,11 @@
    "role": "Desk User"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

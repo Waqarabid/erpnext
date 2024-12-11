@@ -35,7 +35,11 @@ class DeliveryNote(SellingController):
 		from erpnext.stock.doctype.packed_item.packed_item import PackedItem
 
 		additional_discount_percentage: DF.Float
+<<<<<<< HEAD
 		address_display: DF.SmallText | None
+=======
+		address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		amended_from: DF.Link | None
 		amount_eligible_for_commission: DF.Currency
 		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
@@ -48,11 +52,18 @@ class DeliveryNote(SellingController):
 		base_rounding_adjustment: DF.Currency
 		base_total: DF.Currency
 		base_total_taxes_and_charges: DF.Currency
+<<<<<<< HEAD
 		campaign: DF.Link | None
 		commission_rate: DF.Float
 		company: DF.Link
 		company_address: DF.Link | None
 		company_address_display: DF.SmallText | None
+=======
+		commission_rate: DF.Float
+		company: DF.Link
+		company_address: DF.Link | None
+		company_address_display: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		company_contact_person: DF.Link | None
 		contact_display: DF.SmallText | None
 		contact_email: DF.Data | None
@@ -65,9 +76,16 @@ class DeliveryNote(SellingController):
 		customer_address: DF.Link | None
 		customer_group: DF.Link | None
 		customer_name: DF.Data | None
+<<<<<<< HEAD
 		disable_rounded_total: DF.Check
 		discount_amount: DF.Currency
 		dispatch_address: DF.SmallText | None
+=======
+		delivery_trip: DF.Link | None
+		disable_rounded_total: DF.Check
+		discount_amount: DF.Currency
+		dispatch_address: DF.TextEditor | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		dispatch_address_name: DF.Link | None
 		driver: DF.Link | None
 		driver_name: DF.Data | None
@@ -84,7 +102,11 @@ class DeliveryNote(SellingController):
 		is_return: DF.Check
 		issue_credit_note: DF.Check
 		items: DF.Table[DeliveryNoteItem]
+<<<<<<< HEAD
 		language: DF.Data | None
+=======
+		language: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		letter_head: DF.Link | None
 		lr_date: DF.Date | None
 		lr_no: DF.Data | None
@@ -118,10 +140,16 @@ class DeliveryNote(SellingController):
 		set_posting_time: DF.Check
 		set_target_warehouse: DF.Link | None
 		set_warehouse: DF.Link | None
+<<<<<<< HEAD
 		shipping_address: DF.SmallText | None
 		shipping_address_name: DF.Link | None
 		shipping_rule: DF.Link | None
 		source: DF.Link | None
+=======
+		shipping_address: DF.TextEditor | None
+		shipping_address_name: DF.Link | None
+		shipping_rule: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		status: DF.Literal["", "Draft", "To Bill", "Completed", "Return Issued", "Cancelled", "Closed"]
 		tax_category: DF.Link | None
 		tax_id: DF.Data | None
@@ -138,6 +166,13 @@ class DeliveryNote(SellingController):
 		total_taxes_and_charges: DF.Currency
 		transporter: DF.Link | None
 		transporter_name: DF.Data | None
+<<<<<<< HEAD
+=======
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		vehicle_no: DF.Data | None
 	# end: auto-generated types
 
@@ -860,6 +895,7 @@ def update_billed_amount_based_on_so(so_detail, update_modified=True):
 
 	updated_dn = []
 	for dnd in dn_details:
+<<<<<<< HEAD
 		billed_amt_agianst_dn = 0
 
 		# If delivered against Sales Invoice
@@ -869,10 +905,22 @@ def update_billed_amount_based_on_so(so_detail, update_modified=True):
 		else:
 			# Get billed amount directly against Delivery Note
 			billed_amt_agianst_dn = frappe.db.sql(
+=======
+		billed_amt_against_dn = 0
+
+		# If delivered against Sales Invoice
+		if dnd.si_detail:
+			billed_amt_against_dn = flt(dnd.amount)
+			billed_against_so -= billed_amt_against_dn
+		else:
+			# Get billed amount directly against Delivery Note
+			billed_amt_against_dn = frappe.db.sql(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				"""select sum(amount) from `tabSales Invoice Item`
 				where dn_detail=%s and docstatus=1""",
 				dnd.name,
 			)
+<<<<<<< HEAD
 			billed_amt_agianst_dn = billed_amt_agianst_dn and billed_amt_agianst_dn[0][0] or 0
 
 		# Distribute billed amount directly against SO between DNs based on FIFO
@@ -883,13 +931,29 @@ def update_billed_amount_based_on_so(so_detail, update_modified=True):
 				billed_against_so -= pending_to_bill
 			else:
 				billed_amt_agianst_dn += billed_against_so
+=======
+			billed_amt_against_dn = billed_amt_against_dn and billed_amt_against_dn[0][0] or 0
+
+		# Distribute billed amount directly against SO between DNs based on FIFO
+		if billed_against_so and billed_amt_against_dn < dnd.amount:
+			pending_to_bill = flt(dnd.amount) - billed_amt_against_dn
+			if pending_to_bill <= billed_against_so:
+				billed_amt_against_dn += pending_to_bill
+				billed_against_so -= pending_to_bill
+			else:
+				billed_amt_against_dn += billed_against_so
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 				billed_against_so = 0
 
 		frappe.db.set_value(
 			"Delivery Note Item",
 			dnd.name,
 			"billed_amt",
+<<<<<<< HEAD
 			billed_amt_agianst_dn,
+=======
+			billed_amt_against_dn,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			update_modified=update_modified,
 		)
 
@@ -1054,6 +1118,7 @@ def make_sales_invoice(source_name, target_doc=None, args=None):
 
 @frappe.whitelist()
 def make_delivery_trip(source_name, target_doc=None, kwargs=None):
+<<<<<<< HEAD
 	def update_stop_details(source_doc, target_doc, source_parent):
 		target_doc.customer = source_parent.customer
 		target_doc.address = source_parent.shipping_address_name
@@ -1067,10 +1132,15 @@ def make_delivery_trip(source_name, target_doc=None, kwargs=None):
 
 	delivery_notes = []
 
+=======
+	if not target_doc:
+		target_doc = frappe.new_doc("Delivery Trip")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	doclist = get_mapped_doc(
 		"Delivery Note",
 		source_name,
 		{
+<<<<<<< HEAD
 			"Delivery Note": {"doctype": "Delivery Trip", "validation": {"docstatus": ["=", 1]}},
 			"Delivery Note Item": {
 				"doctype": "Delivery Stop",
@@ -1080,6 +1150,21 @@ def make_delivery_trip(source_name, target_doc=None, kwargs=None):
 			},
 		},
 		target_doc,
+=======
+			"Delivery Note": {
+				"doctype": "Delivery Stop",
+				"on_parent": target_doc,
+				"field_map": {
+					"name": "delivery_note",
+					"shipping_address_name": "address",
+					"shipping_address": "customer_address",
+					"contact_person": "contact",
+					"contact_display": "customer_contact",
+				},
+			},
+		},
+		ignore_child_tables=True,
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	)
 
 	return doclist

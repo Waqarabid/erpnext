@@ -166,6 +166,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+<<<<<<< HEAD
    "label": "Masters",
    "link_count": 7,
    "onboard": 0,
@@ -244,6 +245,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "label": "Sales Pipeline",
    "link_count": 7,
    "onboard": 0,
@@ -417,9 +420,94 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+<<<<<<< HEAD
   }
  ],
  "modified": "2023-09-14 12:11:03.968048",
+=======
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Masters",
+   "link_count": 7,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Territory",
+   "link_count": 0,
+   "link_to": "Territory",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Group",
+   "link_count": 0,
+   "link_to": "Customer Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Contact",
+   "link_count": 0,
+   "link_to": "Contact",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Prospect",
+   "link_count": 0,
+   "link_to": "Prospect",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Person",
+   "link_count": 0,
+   "link_to": "Sales Person",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Stage",
+   "link_count": 0,
+   "link_to": "Sales Stage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Lead Source",
+   "link_count": 0,
+   "link_to": "UTM Source",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-09-12 04:43:41.406488",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "CRM",

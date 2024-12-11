@@ -1,14 +1,24 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # MIT License. See license.txt
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 import unittest
 
 import frappe
 from frappe.desk import notifications
+<<<<<<< HEAD
 
 
 class TestNotifications(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestNotifications(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_get_notifications_for_targets(self):
 		"""
 		Test notification config entries for targets as percentages

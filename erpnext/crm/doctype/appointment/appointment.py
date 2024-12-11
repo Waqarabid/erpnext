@@ -55,7 +55,11 @@ class Appointment(Document):
 			"Appointment", filters={"scheduled_time": self.scheduled_time}
 		)
 		number_of_agents = frappe.db.get_single_value("Appointment Booking Settings", "number_of_agents")
+<<<<<<< HEAD
 		if not number_of_agents == 0:
+=======
+		if number_of_agents != 0:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			if number_of_appointments_in_same_slot >= number_of_agents:
 				frappe.throw(_("Time slot is not available"))
 		# Link lead
@@ -76,7 +80,11 @@ class Appointment(Document):
 			self.create_calendar_event()
 		else:
 			# Set status to unverified
+<<<<<<< HEAD
 			self.status = "Unverified"
+=======
+			self.db_set("status", "Unverified")
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			# Send email to confirm
 			self.send_confirmation_email()
 
@@ -110,7 +118,11 @@ class Appointment(Document):
 		cal_event.save(ignore_permissions=True)
 
 	def set_verified(self, email):
+<<<<<<< HEAD
 		if not email == self.customer_email:
+=======
+		if email != self.customer_email:
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 			frappe.throw(_("Email verification failed."))
 		# Create new lead
 		self.create_lead_and_link()

@@ -1,9 +1,16 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, flt, nowdate
 
 from erpnext.accounts.doctype.account.test_account import create_account
@@ -12,7 +19,11 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sal
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import get_gl_entries
 
 
+<<<<<<< HEAD
 class TestInvoiceDiscounting(unittest.TestCase):
+=======
+class TestInvoiceDiscounting(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def setUp(self):
 		self.ar_credit = create_account(
 			account_name="_Test Accounts Receivable Credit",

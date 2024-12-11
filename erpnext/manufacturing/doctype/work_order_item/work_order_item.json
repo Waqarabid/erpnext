@@ -8,6 +8,10 @@
   "operation",
   "item_code",
   "source_warehouse",
+<<<<<<< HEAD
+=======
+  "operation_row_id",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
   "column_break_3",
   "item_name",
   "description",
@@ -141,6 +145,15 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "operation_row_id",
+   "fieldtype": "Int",
+   "label": "Operation Row Id",
+   "read_only": 1
+  },
+  {
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
    "fetch_from": "item_code.stock_uom",
    "fieldname": "stock_uom",
    "fieldtype": "Link",
@@ -158,8 +171,16 @@
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)

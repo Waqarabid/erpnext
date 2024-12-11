@@ -4,7 +4,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 from frappe.utils import add_days, flt, nowdate
 
 from erpnext.accounts.doctype.account.test_account import create_account
@@ -25,10 +29,26 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import (
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.setup.doctype.employee.test_employee import make_employee
 
+<<<<<<< HEAD
 test_dependencies = ["Item"]
 
 
 class TestPaymentEntry(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Currency Exchange"]
+
+
+class UnitTestPaymentEntry(UnitTestCase):
+	"""
+	Unit tests for PaymentEntry.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPaymentEntry(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def tearDown(self):
 		frappe.db.rollback()
 
@@ -383,7 +403,11 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(si.payment_schedule[0].outstanding, 0)
 		self.assertEqual(si.payment_schedule[0].discounted_amount, 50)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		"Accounts Settings",
 		{
 			"allow_multi_currency_invoices_against_single_party_account": 1,
@@ -597,12 +621,18 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(flt(pe.references[0].exchange_gain_loss, 2), -94.74)
 
 	def test_payment_entry_retrieves_last_exchange_rate(self):
+<<<<<<< HEAD
 		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import (
 			save_new_records,
 			test_records,
 		)
 
 		save_new_records(test_records)
+=======
+		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import save_new_records
+
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 
 		pe = frappe.new_doc("Payment Entry")
 		pe.payment_type = "Pay"
@@ -937,12 +967,18 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(flt(expected_party_account_balance, 2), flt(party_account_balance, 2))
 
 	def test_gl_of_multi_currency_payment_transaction(self):
+<<<<<<< HEAD
 		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import (
 			save_new_records,
 			test_records,
 		)
 
 		save_new_records(test_records)
+=======
+		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import save_new_records
+
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		paid_from = create_account(
 			parent_account="Current Liabilities - _TC",
 			account_name="_Test Cash USD",
@@ -1117,7 +1153,11 @@ class TestPaymentEntry(FrappeTestCase):
 		}
 		self.assertDictEqual(ref_details, expected_response)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,
@@ -1212,7 +1252,11 @@ class TestPaymentEntry(FrappeTestCase):
 		si3.cancel()
 		si3.delete()
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,
@@ -1276,6 +1320,46 @@ class TestPaymentEntry(FrappeTestCase):
 		so.reload()
 		self.assertEqual(so.advance_paid, so.rounded_total)
 
+<<<<<<< HEAD
+=======
+	def test_outstanding_invoices_api(self):
+		"""
+		Test if `get_outstanding_reference_documents` fetches invoices in the right order.
+		"""
+		customer = create_customer("Max Mustermann", "INR")
+		create_payment_terms_template()
+
+		# SI has an earlier due date and SI2 has a later due date
+		si = create_sales_invoice(qty=1, rate=100, customer=customer, posting_date=add_days(nowdate(), -4))
+		si2 = create_sales_invoice(do_not_save=1, qty=1, rate=100, customer=customer)
+		si2.payment_terms_template = "Test Receivable Template"
+		si2.submit()
+
+		args = {
+			"posting_date": nowdate(),
+			"company": "_Test Company",
+			"party_type": "Customer",
+			"payment_type": "Pay",
+			"party": customer,
+			"party_account": "Debtors - _TC",
+		}
+		args.update(
+			{
+				"get_outstanding_invoices": True,
+				"from_posting_date": add_days(nowdate(), -4),
+				"to_posting_date": add_days(nowdate(), 2),
+			}
+		)
+		references = get_outstanding_reference_documents(args)
+
+		self.assertEqual(len(references), 3)
+		self.assertEqual(references[0].voucher_no, si.name)
+		self.assertEqual(references[1].voucher_no, si2.name)
+		self.assertEqual(references[2].voucher_no, si2.name)
+		self.assertEqual(references[1].payment_term, "Basic Amount Receivable")
+		self.assertEqual(references[2].payment_term, "Tax Receivable")
+
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_receive_payment_from_payable_party_type(self):
 		"""
 		Checks GL entries generated while receiving payments from a Payable Party Type.
@@ -1557,6 +1641,7 @@ class TestPaymentEntry(FrappeTestCase):
 			for field in ["account", "debit", "credit"]:
 				self.assertEqual(self.expected_gle[row][field], gl_entries[row][field])
 
+<<<<<<< HEAD
 	def test_outstanding_invoices_api(self):
 		"""
 		Test if `get_outstanding_reference_documents` fetches invoices in the right order.
@@ -1594,6 +1679,8 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(references[1].payment_term, "Basic Amount Receivable")
 		self.assertEqual(references[2].payment_term, "Tax Receivable")
 
+=======
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_reverse_payment_reconciliation(self):
 		customer = create_customer(frappe.generate_hash(length=10), "INR")
 		pe = create_payment_entry(
@@ -1818,7 +1905,11 @@ class TestPaymentEntry(FrappeTestCase):
 		# 'Is Opening' should always be 'No' for normal advance payments
 		self.assertEqual(gl_with_opening_set, [])
 
+<<<<<<< HEAD
 	@change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+=======
+	@IntegrationTestCase.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_delete_linked_exchange_gain_loss_journal(self):
 		from erpnext.accounts.doctype.account.test_account import create_account
 		from erpnext.accounts.doctype.opening_invoice_creation_tool.test_opening_invoice_creation_tool import (

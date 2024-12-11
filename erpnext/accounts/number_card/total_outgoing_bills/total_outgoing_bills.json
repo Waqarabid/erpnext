@@ -5,13 +5,21 @@
  "doctype": "Number Card",
  "document_type": "Sales Invoice",
  "dynamic_filters_json": "[[\"Sales Invoice\",\"company\",\"=\",\"frappe.defaults.get_user_default(\\\"Company\\\")\"]]",
+<<<<<<< HEAD
  "filters_json": "[[\"Sales Invoice\",\"docstatus\",\"=\",\"1\",false],[\"Sales Invoice\",\"posting_date\",\"Timespan\",\"this year\",false]]",
+=======
+ "filters_json": "[[\"Sales Invoice\",\"docstatus\",\"=\",\"1\"],[\"Sales Invoice\",\"posting_date\",\"Timespan\",\"this year\"]]",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "function": "Sum",
  "idx": 0,
  "is_public": 1,
  "is_standard": 1,
  "label": "Total Outgoing Bills",
+<<<<<<< HEAD
  "modified": "2020-07-22 13:07:19.633101",
+=======
+ "modified": "2024-12-05 12:00:00.000000",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Total Outgoing Bills",

@@ -139,7 +139,11 @@
  "idx": 1,
  "is_tree": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-06-02 13:40:34.435822",
+=======
+ "modified": "2024-08-16 19:21:41.880111",
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Customer Group",
@@ -210,7 +214,14 @@
  ],
  "search_fields": "parent_customer_group",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "translated_doctype": 1
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 }

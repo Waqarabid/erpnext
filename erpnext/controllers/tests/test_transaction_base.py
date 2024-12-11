@@ -1,9 +1,16 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
 
 
 class TestUtils(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestUtils(IntegrationTestCase):
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 	def test_reset_default_field_value(self):
 		doc = frappe.get_doc(
 			{

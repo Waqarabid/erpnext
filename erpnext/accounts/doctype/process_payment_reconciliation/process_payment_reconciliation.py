@@ -476,9 +476,13 @@ def reconcile(doc: None | str = None) -> None:
 						frappe.db.set_value("Process Payment Reconciliation Log", log, "reconciled", True)
 						frappe.db.set_value("Process Payment Reconciliation", doc, "status", "Completed")
 					else:
+<<<<<<< HEAD
 						if not (
 							frappe.db.get_value("Process Payment Reconciliation", doc, "status") == "Paused"
 						):
+=======
+						if frappe.db.get_value("Process Payment Reconciliation", doc, "status") != "Paused":
+>>>>>>> ee9a2952d6 (fix: switched asset terminology from cost to value)
 							# trigger next batch in job
 							# generate reconcile job name
 							allocation = get_next_allocation(log)

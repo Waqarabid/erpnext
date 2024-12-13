@@ -20,7 +20,13 @@
   "sales_person",
   "reference",
   "serial_no",
+<<<<<<< HEAD
   "sales_order"
+=======
+  "sales_order",
+  "column_break_ugqr",
+  "serial_and_batch_bundle"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -121,7 +127,12 @@
    "fieldtype": "Small Text",
    "label": "Serial No",
    "oldfieldname": "serial_no",
+<<<<<<< HEAD
    "oldfieldtype": "Small Text"
+=======
+   "oldfieldtype": "Small Text",
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "sales_order",
@@ -144,11 +155,27 @@
   {
    "fieldname": "column_break_10",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "column_break_ugqr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-04-15 16:09:47.311994",
  "modified_by": "Administrator",
  "module": "Maintenance",
@@ -157,4 +184,16 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC"
+=======
+ "modified": "2024-03-27 13:10:03.992727",
+ "modified_by": "Administrator",
+ "module": "Maintenance",
+ "name": "Maintenance Schedule Item",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

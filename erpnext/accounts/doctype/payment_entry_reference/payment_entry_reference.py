@@ -6,6 +6,38 @@ from frappe.model.document import Document
 
 
 class PaymentEntryReference(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		account_type: DF.Data | None
+		allocated_amount: DF.Float
+		bill_no: DF.Data | None
+		due_date: DF.Date | None
+		exchange_gain_loss: DF.Currency
+		exchange_rate: DF.Float
+		outstanding_amount: DF.Float
+		parent: DF.Data
+		parentfield: DF.Data
+		parenttype: DF.Data
+		payment_request: DF.Link | None
+		payment_request_outstanding: DF.Float
+		payment_term: DF.Link | None
+		payment_term_outstanding: DF.Float
+		payment_type: DF.Data | None
+		reference_doctype: DF.Link
+		reference_name: DF.DynamicLink
+		total_amount: DF.Float
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@property
 	def payment_request_outstanding(self):
 		if not self.payment_request:

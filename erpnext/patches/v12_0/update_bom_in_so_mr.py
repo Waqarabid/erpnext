@@ -6,7 +6,11 @@ def execute():
 	frappe.reload_doc("selling", "doctype", "sales_order_item")
 
 	for doctype in ["Sales Order", "Material Request"]:
+<<<<<<< HEAD
 		condition = " and child_doc.stock_qty > child_doc.produced_qty and doc.per_delivered < 100"
+=======
+		condition = " and child_doc.stock_qty > child_doc.produced_qty and ROUND(doc.per_delivered, 2) < 100"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if doctype == "Material Request":
 			condition = " and doc.per_ordered < 100 and doc.material_request_type = 'Manufacture'"
 

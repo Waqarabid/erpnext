@@ -221,6 +221,10 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "Now",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "posting_time",
    "fieldtype": "Time",
    "label": "Posting Time",
@@ -235,7 +239,11 @@
    "link_fieldname": "pos_closing_entry"
   }
  ],
+<<<<<<< HEAD
  "modified": "2022-08-01 11:37:14.991228",
+=======
+ "modified": "2024-03-27 13:10:14.073467",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "POS Closing Entry",
@@ -284,7 +292,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

@@ -22,6 +22,10 @@ erpnext.accounts.dimensions = {
 				});
 				me.default_dimensions = r.message[1];
 				me.setup_filters(frm, doctype);
+<<<<<<< HEAD
+=======
+				me.update_dimension(frm, doctype);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		});
 	},

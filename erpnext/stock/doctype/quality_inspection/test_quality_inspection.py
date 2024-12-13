@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import nowdate
 
 from erpnext.controllers.stock_controller import (
@@ -15,10 +19,24 @@ from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delive
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 
+<<<<<<< HEAD
 # test_records = frappe.get_test_records('Quality Inspection')
 
 
 class TestQualityInspection(FrappeTestCase):
+=======
+
+class UnitTestQualityInspection(UnitTestCase):
+	"""
+	Unit tests for QualityInspection.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestQualityInspection(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		super().setUp()
 		create_item("_Test Item with QA")
@@ -138,9 +156,19 @@ class TestQualityInspection(FrappeTestCase):
 
 	def test_make_quality_inspections_from_linked_document(self):
 		dn = create_delivery_note(item_code="_Test Item with QA", do_not_submit=True)
+<<<<<<< HEAD
 		for item in dn.items:
 			item.sample_size = item.qty
 		quality_inspections = make_quality_inspections(dn.doctype, dn.name, dn.items)
+=======
+		if dn.doctype in ["Purchase Receipt", "Purchase Invoice", "Subcontracting Receipt"]:
+			inspection_type = "Incoming"
+		else:
+			inspection_type = "Outgoing"
+		for item in dn.items:
+			item.sample_size = item.qty
+		quality_inspections = make_quality_inspections(dn.doctype, dn.name, dn.items, inspection_type)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertEqual(len(dn.items), len(quality_inspections))
 
 		# cleanup
@@ -165,13 +193,21 @@ class TestQualityInspection(FrappeTestCase):
 			reference_type="Stock Entry", reference_name=se.name, readings=readings, status="Rejected"
 		)
 
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "action_if_quality_inspection_is_rejected", "Stop")
+=======
+		frappe.db.set_single_value("Stock Settings", "action_if_quality_inspection_is_rejected", "Stop")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		se.reload()
 		self.assertRaises(
 			QualityInspectionRejectedError, se.submit
 		)  # when blocked in Stock settings, block rejected QI
 
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "action_if_quality_inspection_is_rejected", "Warn")
+=======
+		frappe.db.set_single_value("Stock Settings", "action_if_quality_inspection_is_rejected", "Warn")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		se.reload()
 		se.submit()  # when allowed in Stock settings, allow rejected QI
 
@@ -180,7 +216,11 @@ class TestQualityInspection(FrappeTestCase):
 		qa.cancel()
 		se.reload()
 		se.cancel()
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "action_if_quality_inspection_is_rejected", "Stop")
+=======
+		frappe.db.set_single_value("Stock Settings", "action_if_quality_inspection_is_rejected", "Stop")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_qi_status(self):
 		make_stock_entry(
@@ -214,6 +254,43 @@ class TestQualityInspection(FrappeTestCase):
 		qa.save()
 		self.assertEqual(qa.status, "Accepted")
 
+<<<<<<< HEAD
+=======
+	@IntegrationTestCase.change_settings("System Settings", {"number_format": "#.###,##"})
+	def test_diff_number_format(self):
+		self.assertEqual(frappe.db.get_default("number_format"), "#.###,##")  # sanity check
+
+		# Test QI based on acceptance values (Non formula)
+		dn = create_delivery_note(item_code="_Test Item with QA", do_not_submit=True)
+		readings = [
+			{
+				"specification": "Iron Content",  # numeric reading
+				"min_value": 60,
+				"max_value": 100,
+				"reading_1": "70,000",
+			},
+			{
+				"specification": "Iron Content",  # numeric reading
+				"min_value": 60,
+				"max_value": 100,
+				"reading_1": "1.100,00",
+			},
+		]
+
+		qa = create_quality_inspection(
+			reference_type="Delivery Note", reference_name=dn.name, readings=readings, do_not_save=True
+		)
+
+		qa.save()
+
+		# status must be auto set as per formula
+		self.assertEqual(qa.readings[0].status, "Accepted")
+		self.assertEqual(qa.readings[1].status, "Rejected")
+
+		qa.delete()
+		dn.delete()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_delete_quality_inspection_linked_with_stock_entry(self):
 		item_code = create_item("_Test Cicuular Dependecy Item with QA").name
 

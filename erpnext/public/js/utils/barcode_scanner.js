@@ -85,7 +85,11 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 	}
 
 	update_table(data) {
+<<<<<<< HEAD
 		return new Promise((resolve) => {
+=======
+		return new Promise((resolve, reject) => {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			let cur_grid = this.frm.fields_dict[this.items_table_name].grid;
 			frappe.flags.trigger_from_barcode_scanner = true;
 
@@ -154,7 +158,11 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 	set_item(row, item_code, barcode, batch_no, serial_no) {
 		return new Promise((resolve) => {
 			const increment = async (value = 1) => {
+<<<<<<< HEAD
 				const item_data = { item_code: item_code };
+=======
+				const item_data = { item_code: item_code, use_serial_batch_fields: 1.0 };
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.flags.trigger_from_barcode_scanner = true;
 				item_data[this.qty_field] = Number(row[this.qty_field] || 0) + Number(value);
 				await frappe.model.set_value(row.doctype, row.name, item_data);

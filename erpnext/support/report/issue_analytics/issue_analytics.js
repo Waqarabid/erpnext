@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Issue Analytics"] = {
 	filters: [
@@ -93,11 +96,19 @@ frappe.query_reports["Issue Analytics"] = {
 			events: {
 				onCheckRow: function (data) {
 					if (data && data.length) {
+<<<<<<< HEAD
 						row_name = data[2].content;
 						row_values = data.slice(3).map(function (column) {
 							return column.content;
 						});
 						entry = {
+=======
+						let row_name = data[2].content;
+						let row_values = data.slice(3).map(function (column) {
+							return column.content;
+						});
+						let entry = {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							name: row_name,
 							values: row_values,
 						};

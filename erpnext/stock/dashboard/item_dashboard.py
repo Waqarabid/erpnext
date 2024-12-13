@@ -2,6 +2,13 @@ import frappe
 from frappe.model.db_query import DatabaseQuery
 from frappe.utils import cint, flt
 
+<<<<<<< HEAD
+=======
+from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+	get_sre_reserved_qty_for_items_and_warehouses as get_reserved_stock_details,
+)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.whitelist()
 def get_data(
@@ -57,12 +64,23 @@ def get_data(
 		limit_page_length=21,
 	)
 
+<<<<<<< HEAD
+=======
+	item_code_list = [item_code] if item_code else [i.item_code for i in items]
+	warehouse_list = [warehouse] if warehouse else [i.warehouse for i in items]
+
+	sre_reserved_stock_details = get_reserved_stock_details(item_code_list, warehouse_list)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
 
 	for item in items:
 		item.update(
 			{
 				"item_name": frappe.get_cached_value("Item", item.item_code, "item_name"),
+<<<<<<< HEAD
+=======
+				"stock_uom": frappe.get_cached_value("Item", item.item_code, "stock_uom"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"disable_quick_entry": frappe.get_cached_value("Item", item.item_code, "has_batch_no")
 				or frappe.get_cached_value("Item", item.item_code, "has_serial_no"),
 				"projected_qty": flt(item.projected_qty, precision),
@@ -70,6 +88,13 @@ def get_data(
 				"reserved_qty_for_production": flt(item.reserved_qty_for_production, precision),
 				"reserved_qty_for_sub_contract": flt(item.reserved_qty_for_sub_contract, precision),
 				"actual_qty": flt(item.actual_qty, precision),
+<<<<<<< HEAD
 			}
 		)
+=======
+				"reserved_stock": flt(sre_reserved_stock_details.get((item.item_code, item.warehouse))),
+			}
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return items

@@ -109,8 +109,12 @@
                     }
                 }, 
                 "INVENTARIOS": {
+<<<<<<< HEAD
                     "account_type": "Stock", 
                     "is_group": 1
+=======
+                    "account_type": "Stock"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                 }
             }, 
             "ACTIVO LARGO PLAZO": {
@@ -398,10 +402,25 @@
                         "INGRESOS POR SERVICIOS 1": {}
                     }, 
                     "VENTAS": {
+<<<<<<< HEAD
                         "VENTAS EXPORTACION": {}, 
                         "VENTAS INMUEBLES": {}, 
                         "VENTAS NACIONALES": {}, 
                         "VENTAS NACIONALES AL DETAL": {}
+=======
+                        "VENTAS EXPORTACION": {
+                            "account_type": "Income Account"
+                        }, 
+                        "VENTAS INMUEBLES": {
+                            "account_type": "Income Account"
+                        }, 
+                        "VENTAS NACIONALES": {
+                            "account_type": "Income Account"
+                        }, 
+                        "VENTAS NACIONALES AL DETAL": {
+                            "account_type": "Income Account"
+                        }
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                     }
                 }
             }, 

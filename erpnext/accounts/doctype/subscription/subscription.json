@@ -19,12 +19,22 @@
   "trial_period_end",
   "follow_calendar_months",
   "generate_new_invoices_past_due_date",
+<<<<<<< HEAD
+=======
+  "submit_invoice",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_11",
   "current_invoice_start",
   "current_invoice_end",
   "days_until_due",
+<<<<<<< HEAD
   "cancel_at_period_end",
   "generate_invoice_at_period_start",
+=======
+  "generate_invoice_at",
+  "number_of_days",
+  "cancel_at_period_end",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "sb_4",
   "plans",
   "sb_1",
@@ -35,12 +45,17 @@
   "cb_2",
   "additional_discount_percentage",
   "additional_discount_amount",
+<<<<<<< HEAD
   "sb_3",
   "submit_invoice",
   "invoices",
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break"
+=======
+  "accounting_dimensions_section",
+  "cost_center"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -53,7 +68,11 @@
    "fieldtype": "Select",
    "label": "Status",
    "no_copy": 1,
+<<<<<<< HEAD
    "options": "\nTrialling\nActive\nPast Due Date\nCancelled\nUnpaid\nCompleted",
+=======
+   "options": "\nTrialing\nActive\nPast Due Date\nCancelled\nUnpaid\nCompleted",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -89,12 +108,20 @@
    "fieldname": "current_invoice_start",
    "fieldtype": "Date",
    "label": "Current Invoice Start Date",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
    "fieldname": "current_invoice_end",
    "fieldtype": "Date",
    "label": "Current Invoice End Date",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -111,12 +138,15 @@
    "label": "Cancel At End Of Period"
   },
   {
+<<<<<<< HEAD
    "default": "0",
    "fieldname": "generate_invoice_at_period_start",
    "fieldtype": "Check",
    "label": "Generate Invoice At Beginning Of Period"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "allow_on_submit": 1,
    "fieldname": "sb_4",
    "fieldtype": "Section Break",
@@ -154,12 +184,17 @@
   {
    "fieldname": "additional_discount_percentage",
    "fieldtype": "Percent",
+<<<<<<< HEAD
    "label": "Additional DIscount Percentage"
+=======
+   "label": "Additional Discount Percentage"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "collapsible": 1,
    "fieldname": "additional_discount_amount",
    "fieldtype": "Currency",
+<<<<<<< HEAD
    "label": "Additional DIscount Amount"
   },
   {
@@ -174,6 +209,9 @@
    "fieldtype": "Table",
    "label": "Invoices",
    "options": "Subscription Invoice"
+=======
+   "label": "Additional Discount Amount"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "collapsible": 1,
@@ -182,10 +220,13 @@
    "label": "Accounting Dimensions"
   },
   {
+<<<<<<< HEAD
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "party_type",
    "fieldtype": "Link",
    "label": "Party Type",
@@ -259,6 +300,7 @@
    "default": "1",
    "fieldname": "submit_invoice",
    "fieldtype": "Check",
+<<<<<<< HEAD
    "label": "Submit Invoice Automatically"
   }
  ],
@@ -268,6 +310,44 @@
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Subscription",
+=======
+   "label": "Submit Generated Invoices"
+  },
+  {
+   "default": "End of the current subscription period",
+   "fieldname": "generate_invoice_at",
+   "fieldtype": "Select",
+   "label": "Generate Invoice At",
+   "options": "End of the current subscription period\nBeginning of the current subscription period\nDays before the current subscription period",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.generate_invoice_at === \"Days before the current subscription period\"",
+   "fieldname": "number_of_days",
+   "fieldtype": "Int",
+   "label": "Number of Days",
+   "mandatory_depends_on": "eval:doc.generate_invoice_at === \"Days before the current subscription period\""
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "group": "Buying",
+   "link_doctype": "Purchase Invoice",
+   "link_fieldname": "subscription"
+  },
+  {
+   "group": "Selling",
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "subscription"
+  }
+ ],
+ "modified": "2024-03-27 13:10:47.578120",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Subscription",
+ "naming_rule": "Expression (old style)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -307,7 +387,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

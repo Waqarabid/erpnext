@@ -15,6 +15,26 @@ from erpnext.accounts.general_ledger import make_gl_entries
 
 
 class ProcessDeferredAccounting(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		amended_from: DF.Link | None
+		company: DF.Link
+		end_date: DF.Date
+		posting_date: DF.Date
+		start_date: DF.Date
+		type: DF.Literal["", "Income", "Expense"]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if self.end_date < self.start_date:
 			frappe.throw(_("End date cannot be before start date"))

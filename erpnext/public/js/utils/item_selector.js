@@ -102,14 +102,23 @@ erpnext.ItemSelector = class ItemSelector {
 		}
 
 		var me = this;
+<<<<<<< HEAD
 		frappe.link_search("Item", args, function (r) {
 			$.each(r.values, function (i, d) {
+=======
+		frappe.link_search("Item", args, function (results) {
+			$.each(results, function (i, d) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (!d.image) {
 					d.abbr = frappe.get_abbr(d.item_name);
 					d.color = frappe.get_palette(d.item_name);
 				}
 			});
+<<<<<<< HEAD
 			me.dialog.results.html(frappe.render_template("item_selector", { data: r.values }));
+=======
+			me.dialog.results.html(frappe.render_template("item_selector", { data: results }));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 };

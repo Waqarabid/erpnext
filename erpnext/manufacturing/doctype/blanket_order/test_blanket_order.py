@@ -1,7 +1,11 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_months, today
 
 from erpnext import get_company_currency
@@ -10,7 +14,20 @@ from erpnext.stock.doctype.item.test_item import make_item
 from .blanket_order import make_order
 
 
+<<<<<<< HEAD
 class TestBlanketOrder(FrappeTestCase):
+=======
+class UnitTestBlanketOrder(UnitTestCase):
+	"""
+	Unit tests for BlanketOrder.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBlanketOrder(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		frappe.flags.args = frappe._dict()
 

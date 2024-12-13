@@ -17,7 +17,11 @@
 					<td>{{ taxes.item }}</td>
 					<td class="text-right">
 						{% if doc.get('is_return') %}
+<<<<<<< HEAD
 							{{ frappe.utils.fmt_money(taxes.taxable_amount|abs, None, doc.currency) }}
+=======
+							{{ frappe.utils.fmt_money(taxes.taxable_amount |abs, None, doc.currency) }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						{% else %}
 							{{ frappe.utils.fmt_money(taxes.taxable_amount, None, doc.currency) }}
 						{% endif %}

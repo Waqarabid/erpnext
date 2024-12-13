@@ -42,7 +42,12 @@ erpnext.PointOfSale.ItemDetails = class {
 				<div class="item-image"></div>
 			</div>
 			<div class="discount-section"></div>
+<<<<<<< HEAD
 			<div class="form-container"></div>`
+=======
+			<div class="form-container"></div>
+			<div class="serial-batch-container"></div>`
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		);
 
 		this.$item_name = this.$component.find(".item-name");
@@ -51,6 +56,10 @@ erpnext.PointOfSale.ItemDetails = class {
 		this.$item_image = this.$component.find(".item-image");
 		this.$form_container = this.$component.find(".form-container");
 		this.$dicount_section = this.$component.find(".discount-section");
+<<<<<<< HEAD
+=======
+		this.$serial_batch_container = this.$component.find(".serial-batch-container");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	compare_with_current_item(item) {
@@ -99,6 +108,7 @@ erpnext.PointOfSale.ItemDetails = class {
 
 		const serialized = item_row.has_serial_no;
 		const batched = item_row.has_batch_no;
+<<<<<<< HEAD
 		const no_serial_selected = !item_row.serial_no;
 		const no_batch_selected = !item_row.batch_no;
 
@@ -107,6 +117,12 @@ erpnext.PointOfSale.ItemDetails = class {
 			(batched && no_batch_selected) ||
 			(serialized && batched && (no_batch_selected || no_serial_selected))
 		) {
+=======
+		const no_bundle_selected =
+			!item_row.serial_and_batch_bundle && !item_row.serial_no && !item_row.batch_no;
+
+		if ((serialized && no_bundle_selected) || (batched && no_bundle_selected)) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.show_alert({
 				message: __("Item is removed since no serial / batch no selected."),
 				indicator: "orange",
@@ -211,11 +227,16 @@ erpnext.PointOfSale.ItemDetails = class {
 	}
 
 	make_auto_serial_selection_btn(item) {
+<<<<<<< HEAD
 		if (item.has_serial_no) {
 			if (!item.has_batch_no) {
 				this.$form_container.append(`<div class="grid-filler no-select"></div>`);
 			}
 			const label = __("Auto Fetch Serial Numbers");
+=======
+		if (item.has_serial_no || item.has_batch_no) {
+			const label = item.has_serial_no ? __("Select Serial No") : __("Select Batch No");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.$form_container.append(
 				`<div class="btn btn-sm btn-secondary auto-fetch-btn">${label}</div>`
 			);
@@ -400,6 +421,7 @@ erpnext.PointOfSale.ItemDetails = class {
 
 	bind_auto_serial_fetch_event() {
 		this.$form_container.on("click", ".auto-fetch-btn", () => {
+<<<<<<< HEAD
 			this.batch_no_control && this.batch_no_control.set_value("");
 			let qty = this.qty_control.get_value();
 			let conversion_factor = this.conversion_factor_control.get_value();
@@ -435,6 +457,20 @@ erpnext.PointOfSale.ItemDetails = class {
 				}
 				numbers = auto_fetched_serial_numbers.join(`\n`);
 				this.serial_no_control.set_value(numbers);
+=======
+			let frm = this.events.get_frm();
+			let item_row = this.item_row;
+			item_row.type_of_transaction = "Outward";
+
+			new erpnext.SerialBatchPackageSelector(frm, item_row, (r) => {
+				if (r) {
+					frappe.model.set_value(item_row.doctype, item_row.name, {
+						serial_and_batch_bundle: r.name,
+						qty: Math.abs(r.total_qty),
+						use_serial_batch_fields: 0,
+					});
+				}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		});
 	}

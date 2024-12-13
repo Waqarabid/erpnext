@@ -9,6 +9,24 @@ from frappe.utils import cint, flt
 
 
 class Routing(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.manufacturing.doctype.bom_operation.bom_operation import BOMOperation
+
+		disabled: DF.Check
+		operations: DF.Table[BOMOperation]
+		routing_name: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.calculate_operating_cost()
 		self.set_routing_id()
@@ -38,3 +56,27 @@ class Routing(Document):
 				)
 
 			sequence_id = row.sequence_id
+<<<<<<< HEAD
+=======
+
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_operations(doctype, txt, searchfield, start, page_len, filters):
+	query_filters = {}
+
+	if txt:
+		query_filters = {"operation": ["like", f"%{txt}%"]}
+
+	if filters.get("routing"):
+		query_filters["parent"] = filters.get("routing")
+
+	return frappe.get_all(
+		"BOM Operation",
+		fields=["operation"],
+		filters=query_filters,
+		start=start,
+		page_length=page_len,
+		as_list=1,
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -10,13 +10,21 @@ import frappe
 from frappe import _
 from frappe.core.doctype.version.version import get_diff
 from frappe.model.mapper import get_mapped_doc
+<<<<<<< HEAD
 from frappe.utils import cint, cstr, flt, today
+=======
+from frappe.utils import cint, cstr, flt, parse_json, today
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.website.website_generator import WebsiteGenerator
 
 import erpnext
 from erpnext.setup.utils import get_exchange_rate
 from erpnext.stock.doctype.item.item import get_item_details
+<<<<<<< HEAD
 from erpnext.stock.get_item_details import get_conversion_factor, get_price_list_rate
+=======
+from erpnext.stock.get_item_details import ItemDetailsCtx, get_conversion_factor, get_price_list_rate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
@@ -100,6 +108,77 @@ class BOMTree:
 
 
 class BOM(WebsiteGenerator):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.manufacturing.doctype.bom_explosion_item.bom_explosion_item import BOMExplosionItem
+		from erpnext.manufacturing.doctype.bom_item.bom_item import BOMItem
+		from erpnext.manufacturing.doctype.bom_operation.bom_operation import BOMOperation
+		from erpnext.manufacturing.doctype.bom_scrap_item.bom_scrap_item import BOMScrapItem
+
+		allow_alternative_item: DF.Check
+		amended_from: DF.Link | None
+		base_operating_cost: DF.Currency
+		base_raw_material_cost: DF.Currency
+		base_scrap_material_cost: DF.Currency
+		base_total_cost: DF.Currency
+		bom_creator: DF.Link | None
+		bom_creator_item: DF.Data | None
+		buying_price_list: DF.Link | None
+		company: DF.Link
+		conversion_rate: DF.Float
+		currency: DF.Link
+		default_source_warehouse: DF.Link | None
+		default_target_warehouse: DF.Link | None
+		description: DF.SmallText | None
+		exploded_items: DF.Table[BOMExplosionItem]
+		fg_based_operating_cost: DF.Check
+		has_variants: DF.Check
+		image: DF.AttachImage | None
+		inspection_required: DF.Check
+		is_active: DF.Check
+		is_default: DF.Check
+		item: DF.Link
+		item_name: DF.Data | None
+		items: DF.Table[BOMItem]
+		track_semi_finished_goods: DF.Check
+		operating_cost: DF.Currency
+		operating_cost_per_bom_quantity: DF.Currency
+		operations: DF.Table[BOMOperation]
+		plc_conversion_rate: DF.Float
+		price_list_currency: DF.Link | None
+		process_loss_percentage: DF.Percent
+		process_loss_qty: DF.Float
+		project: DF.Link | None
+		quality_inspection_template: DF.Link | None
+		quantity: DF.Float
+		raw_material_cost: DF.Currency
+		rm_cost_as_per: DF.Literal["Valuation Rate", "Last Purchase Rate", "Price List"]
+		route: DF.SmallText | None
+		routing: DF.Link | None
+		scrap_items: DF.Table[BOMScrapItem]
+		scrap_material_cost: DF.Currency
+		set_rate_of_sub_assembly_item_based_on_bom: DF.Check
+		show_in_website: DF.Check
+		show_items: DF.Check
+		show_operations: DF.Check
+		thumbnail: DF.Data | None
+		total_cost: DF.Currency
+		transfer_material_against: DF.Literal["", "Work Order", "Job Card"]
+		uom: DF.Link | None
+		web_long_description: DF.TextEditor | None
+		website_image: DF.AttachImage | None
+		with_operations: DF.Check
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	website = frappe._dict(
 		# page_title_field = "item_name",
 		condition_field="show_in_website",
@@ -108,8 +187,15 @@ class BOM(WebsiteGenerator):
 
 	def autoname(self):
 		# ignore amended documents while calculating current index
+<<<<<<< HEAD
 		existing_boms = frappe.get_all(
 			"BOM", filters={"item": self.item, "amended_from": ["is", "not set"]}, pluck="name"
+=======
+
+		search_key = f"{self.doctype}-{self.item}%"
+		existing_boms = frappe.get_all(
+			"BOM", filters={"name": ("like", search_key), "amended_from": ["is", "not set"]}, pluck="name"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		if existing_boms:
@@ -178,6 +264,10 @@ class BOM(WebsiteGenerator):
 		self.clear_inspection()
 		self.validate_main_item()
 		self.validate_currency()
+<<<<<<< HEAD
+=======
+		self.set_materials_based_on_operation_bom()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.set_conversion_rate()
 		self.set_plc_conversion_rate()
 		self.validate_uom_is_interger()
@@ -193,6 +283,7 @@ class BOM(WebsiteGenerator):
 		self.update_cost(update_parent=False, from_child_bom=True, update_hour_rate=False, save=False)
 		self.set_process_loss_qty()
 		self.validate_scrap_items()
+<<<<<<< HEAD
 		self.set_default_uom()
 
 	def set_default_uom(self):
@@ -211,6 +302,8 @@ class BOM(WebsiteGenerator):
 		for row in self.get("items"):
 			if row.stock_uom != item_wise_uom.get(row.item_code):
 				row.stock_uom = item_wise_uom.get(row.item_code)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_context(self, context):
 		context.parents = [{"name": "boms", "title": _("All BOMs")}]
@@ -221,6 +314,10 @@ class BOM(WebsiteGenerator):
 
 	def on_submit(self):
 		self.manage_default_bom()
+<<<<<<< HEAD
+=======
+		self.update_bom_creator_status()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def on_cancel(self):
 		self.db_set("is_active", 0)
@@ -229,6 +326,26 @@ class BOM(WebsiteGenerator):
 		# check if used in any other bom
 		self.validate_bom_links()
 		self.manage_default_bom()
+<<<<<<< HEAD
+=======
+		self.update_bom_creator_status()
+
+	def update_bom_creator_status(self):
+		if not self.bom_creator:
+			return
+
+		if self.bom_creator_item:
+			frappe.db.set_value(
+				"BOM Creator Item",
+				self.bom_creator_item,
+				"bom_created",
+				1 if self.docstatus == 1 else 0,
+				update_modified=False,
+			)
+
+		doc = frappe.get_doc("BOM Creator", self.bom_creator)
+		doc.set_status(save=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def on_update_after_submit(self):
 		self.validate_bom_links()
@@ -477,6 +594,12 @@ class BOM(WebsiteGenerator):
 		if not self.with_operations:
 			self.set("operations", [])
 
+<<<<<<< HEAD
+=======
+		if not self.with_operations and self.track_semi_finished_goods:
+			self.track_semi_finished_goods = 0
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def clear_inspection(self):
 		if not self.inspection_required:
 			self.quality_inspection_template = None
@@ -578,6 +701,52 @@ class BOM(WebsiteGenerator):
 		if self.name in {d.bom_no for d in self.items}:
 			_throw_error(self.name)
 
+<<<<<<< HEAD
+=======
+	def set_materials_based_on_operation_bom(self):
+		if not self.track_semi_finished_goods:
+			return
+
+		for row in self.get("operations"):
+			if row.bom_no and row.finished_good:
+				self.add_materials_from_bom(row.finished_good, row.bom_no, row.idx, qty=row.finished_good_qty)
+
+	@frappe.whitelist()
+	def add_raw_materials(self, operation_row_id, items):
+		if isinstance(items, str):
+			items = parse_json(items)
+
+		for row in items:
+			row = parse_json(row)
+
+			row.update(get_item_details(row.get("item_code")))
+			row.operation_row_id = operation_row_id
+			row.idx = None
+			row.name = None
+			self.append("items", row)
+
+		self.save()
+
+	@frappe.whitelist()
+	def add_materials_from_bom(self, finished_good, bom_no, operation_row_id, qty=None):
+		if not frappe.db.exists("BOM", {"item": finished_good, "name": bom_no, "docstatus": 1}):
+			frappe.throw(_("BOM {0} not found for the item {1}").format(bom_no, finished_good))
+
+		if not qty:
+			qty = 1
+
+		for row in self.items:
+			if row.operation_row_id == operation_row_id:
+				return
+
+		bom_items = get_bom_items(bom_no, self.company, qty=qty, fetch_exploded=0)
+		for row in bom_items:
+			row.uom = row.stock_uom
+			row.operation_row_id = operation_row_id
+			row.idx = None
+			self.append("items", row)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def traverse_tree(self, bom_list=None):
 		def _get_children(bom_no):
 			children = frappe.cache().hget("bom_children", bom_no)
@@ -670,10 +839,15 @@ class BOM(WebsiteGenerator):
 
 	def calculate_rm_cost(self, save=False):
 		"""Fetch RM rate as per today's valuation rate and calculate totals"""
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		total_rm_cost = 0
 		base_total_rm_cost = 0
 
 		for d in self.get("items"):
+<<<<<<< HEAD
 			if not d.is_stock_item and self.rm_cost_as_per == "Valuation Rate":
 				continue
 
@@ -690,6 +864,22 @@ class BOM(WebsiteGenerator):
 					"sourced_by_supplier": d.sourced_by_supplier,
 				}
 			)
+=======
+			old_rate = d.rate
+			if not self.bom_creator and d.is_stock_item:
+				d.rate = self.get_rm_rate(
+					{
+						"company": self.company,
+						"item_code": d.item_code,
+						"bom_no": d.bom_no,
+						"qty": d.qty,
+						"uom": d.uom,
+						"stock_uom": d.stock_uom,
+						"conversion_factor": d.conversion_factor,
+						"sourced_by_supplier": d.sourced_by_supplier,
+					}
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			d.base_rate = flt(d.rate) * flt(self.conversion_rate)
 			d.amount = flt(d.rate, d.precision("rate")) * flt(d.qty, d.precision("qty"))
@@ -770,7 +960,11 @@ class BOM(WebsiteGenerator):
 		self.cur_exploded_items = {}
 		for d in self.get("items"):
 			if d.bom_no:
+<<<<<<< HEAD
 				self.get_child_exploded_items(d.bom_no, d.stock_qty)
+=======
+				self.get_child_exploded_items(d.bom_no, d.stock_qty, d.operation)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			elif d.item_code:
 				self.add_to_cur_exploded_items(
 					frappe._dict(
@@ -799,7 +993,11 @@ class BOM(WebsiteGenerator):
 		else:
 			self.cur_exploded_items[args.item_code] = args
 
+<<<<<<< HEAD
 	def get_child_exploded_items(self, bom_no, stock_qty):
+=======
+	def get_child_exploded_items(self, bom_no, stock_qty, operation=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"""Add all items from Flat BOM of child BOM"""
 		# Did not use qty_consumed_per_unit in the query, as it leads to rounding loss
 		child_fb_items = frappe.db.sql(
@@ -833,7 +1031,11 @@ class BOM(WebsiteGenerator):
 						"item_code": d["item_code"],
 						"item_name": d["item_name"],
 						"source_warehouse": d["source_warehouse"],
+<<<<<<< HEAD
 						"operation": d["operation"],
+=======
+						"operation": d["operation"] or operation,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"description": d["description"],
 						"stock_uom": d["stock_uom"],
 						"stock_qty": d["qty_consumed_per_unit"] * stock_qty,
@@ -899,6 +1101,16 @@ class BOM(WebsiteGenerator):
 				if not d.batch_size or d.batch_size <= 0:
 					d.batch_size = 1
 
+<<<<<<< HEAD
+=======
+				if not d.workstation and not d.workstation_type:
+					frappe.throw(
+						_(
+							"Row {0}: Workstation or Workstation Type is mandatory for an operation {1}"
+						).format(d.idx, d.operation)
+					)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def get_tree_representation(self) -> BOMTree:
 		"""Get a complete tree representation preserving order of child items."""
 		return BOMTree(self.name)
@@ -929,7 +1141,11 @@ def get_bom_item_rate(args, bom_doc):
 	elif bom_doc.rm_cost_as_per == "Price List":
 		if not bom_doc.buying_price_list:
 			frappe.throw(_("Please select Price List"))
+<<<<<<< HEAD
 		bom_args = frappe._dict(
+=======
+		ctx = ItemDetailsCtx(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				"doctype": "BOM",
 				"price_list": bom_doc.buying_price_list,
@@ -947,7 +1163,11 @@ def get_bom_item_rate(args, bom_doc):
 			}
 		)
 		item_doc = frappe.get_cached_doc("Item", args.get("item_code"))
+<<<<<<< HEAD
 		price_list_data = get_price_list_rate(bom_args, item_doc)
+=======
+		price_list_data = get_price_list_rate(ctx, item_doc)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		rate = price_list_data.price_list_rate
 
 	return flt(rate)
@@ -980,7 +1200,16 @@ def get_valuation_rate(data):
 			.as_("valuation_rate")
 		)
 		.where((bin_table.item_code == item_code) & (wh_table.company == company))
+<<<<<<< HEAD
 	).run(as_dict=True)[0]
+=======
+	)
+
+	if data.get("set_rate_based_on_warehouse") and data.get("warehouse"):
+		item_valuation = item_valuation.where(bin_table.warehouse == data.get("warehouse"))
+
+	item_valuation = item_valuation.run(as_dict=True)[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	valuation_rate = item_valuation.get("valuation_rate")
 
@@ -1020,6 +1249,14 @@ def get_bom_items_as_dict(
 ):
 	item_dict = {}
 
+<<<<<<< HEAD
+=======
+	group_by_cond = "group by item_code, stock_uom"
+	if frappe.get_cached_value("BOM", bom, "track_semi_finished_goods"):
+		fetch_exploded = 0
+		group_by_cond = "group by item_code, operation_row_id, stock_uom"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	# Did not use qty_consumed_per_unit in the query, as it leads to rounding loss
 	query = """select
 				bom_item.item_code,
@@ -1048,7 +1285,11 @@ def get_bom_items_as_dict(
 				and bom.name = %(bom)s
 				and item.is_stock_item in (1, {is_stock_item})
 				{where_conditions}
+<<<<<<< HEAD
 				group by item_code, stock_uom
+=======
+				{group_by_cond}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				order by idx"""
 
 	is_stock_item = 0 if include_non_stock_items else 1
@@ -1058,6 +1299,10 @@ def get_bom_items_as_dict(
 			where_conditions="",
 			is_stock_item=is_stock_item,
 			qty_field="stock_qty",
+<<<<<<< HEAD
+=======
+			group_by_cond=group_by_cond,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			select_columns=""", bom_item.source_warehouse, bom_item.operation,
 				bom_item.include_item_in_manufacturing, bom_item.description, bom_item.rate, bom_item.sourced_by_supplier,
 				(Select idx from `tabBOM Item` where item_code = bom_item.item_code and parent = %(parent)s limit 1) as idx""",
@@ -1073,6 +1318,10 @@ def get_bom_items_as_dict(
 			select_columns=", item.description",
 			is_stock_item=is_stock_item,
 			qty_field="stock_qty",
+<<<<<<< HEAD
+=======
+			group_by_cond=group_by_cond,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		items = frappe.db.sql(query, {"qty": qty, "bom": bom, "company": company}, as_dict=True)
@@ -1084,15 +1333,31 @@ def get_bom_items_as_dict(
 			qty_field="stock_qty" if fetch_qty_in_stock_uom else "qty",
 			select_columns=""", bom_item.uom, bom_item.conversion_factor, bom_item.source_warehouse,
 				bom_item.operation, bom_item.include_item_in_manufacturing, bom_item.sourced_by_supplier,
+<<<<<<< HEAD
 				bom_item.description, bom_item.base_rate as rate """,
+=======
+				bom_item.description, bom_item.base_rate as rate, bom_item.operation_row_id """,
+			group_by_cond=group_by_cond,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		items = frappe.db.sql(query, {"qty": qty, "bom": bom, "company": company}, as_dict=True)
 
 	for item in items:
+<<<<<<< HEAD
 		if item.item_code in item_dict:
 			item_dict[item.item_code]["qty"] += flt(item.qty)
 		else:
 			item_dict[item.item_code] = item
+=======
+		key = item.item_code
+		if item.operation_row_id:
+			key = (item.item_code, item.operation_row_id)
+
+		if key in item_dict:
+			item_dict[key]["qty"] += flt(item.qty)
+		else:
+			item_dict[key] = item
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	for item, item_details in item_dict.items():
 		for d in [
@@ -1185,12 +1450,27 @@ def get_children(parent=None, is_root=False, **filters):
 def add_additional_cost(stock_entry, work_order):
 	# Add non stock items cost in the additional cost
 	stock_entry.additional_costs = []
+<<<<<<< HEAD
 	default_expense_account = frappe.get_cached_value(
 		"Company", work_order.company, "default_expense_account"
 	)
 
 	add_non_stock_items_cost(stock_entry, work_order, default_expense_account)
 	add_operations_cost(stock_entry, work_order, default_expense_account)
+=======
+	company_account = frappe.db.get_value(
+		"Company",
+		work_order.company,
+		["default_expense_account", "default_operating_cost_account"],
+		as_dict=1,
+	)
+
+	expecnse_account = (
+		company_account.default_operating_cost_account or company_account.default_expense_account
+	)
+	add_non_stock_items_cost(stock_entry, work_order, expecnse_account)
+	add_operations_cost(stock_entry, work_order, expecnse_account)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def add_non_stock_items_cost(stock_entry, work_order, expense_account):
@@ -1322,7 +1602,16 @@ def item_query(doctype, txt, searchfield, start, page_len, filters):
 
 	searchfields = searchfields + [
 		field
+<<<<<<< HEAD
 		for field in [searchfield or "name", "item_code", "item_group", "item_name"]
+=======
+		for field in [
+			searchfield or "name",
+			"item_code",
+			"item_group",
+			"item_name",
+		]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if field not in searchfields
 	]
 

@@ -29,6 +29,7 @@ frappe.ui.form.on("Subscription", {
 	},
 
 	refresh: function (frm) {
+<<<<<<< HEAD
 		if (!frm.is_new()) {
 			if (frm.doc.status !== "Cancelled") {
 				frm.add_custom_button(__("Cancel Subscription"), () =>
@@ -48,10 +49,39 @@ frappe.ui.form.on("Subscription", {
 					frm.events.renew_this_subscription(frm)
 				);
 			}
+=======
+		if (frm.is_new()) return;
+
+		if (frm.doc.status !== "Cancelled") {
+			frm.add_custom_button(
+				__("Fetch Subscription Updates"),
+				() => frm.trigger("get_subscription_updates"),
+				__("Actions")
+			);
+
+			frm.add_custom_button(
+				__("Force-Fetch Subscription Updates"),
+				() => frm.trigger("force_fetch_subscription_updates"),
+				__("Actions")
+			);
+
+			frm.add_custom_button(
+				__("Cancel Subscription"),
+				() => frm.trigger("cancel_this_subscription"),
+				__("Actions")
+			);
+		} else if (frm.doc.status === "Cancelled") {
+			frm.add_custom_button(
+				__("Restart Subscription"),
+				() => frm.trigger("renew_this_subscription"),
+				__("Actions")
+			);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	},
 
 	cancel_this_subscription: function (frm) {
+<<<<<<< HEAD
 		const doc = frm.doc;
 		frappe.confirm(
 			__("This action will stop future billing. Are you sure you want to cancel this subscription?"),
@@ -64,12 +94,22 @@ frappe.ui.form.on("Subscription", {
 							frm.reload_doc();
 						}
 					},
+=======
+		frappe.confirm(
+			__("This action will stop future billing. Are you sure you want to cancel this subscription?"),
+			() => {
+				frm.call("cancel_subscription").then((r) => {
+					if (!r.exec) {
+						frm.reload_doc();
+					}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				});
 			}
 		);
 	},
 
 	renew_this_subscription: function (frm) {
+<<<<<<< HEAD
 		const doc = frm.doc;
 		frappe.confirm(
 			__(
@@ -100,6 +140,22 @@ frappe.ui.form.on("Subscription", {
 					frm.reload_doc();
 				}
 			},
+=======
+		frappe.confirm(__("Are you sure you want to restart this subscription?"), () => {
+			frm.call("restart_subscription").then((r) => {
+				if (!r.exec) {
+					frm.reload_doc();
+				}
+			});
+		});
+	},
+
+	get_subscription_updates: function (frm) {
+		frm.call("process").then((r) => {
+			if (!r.exec) {
+				frm.reload_doc();
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	},
 	force_fetch_subscription_updates: function (frm) {

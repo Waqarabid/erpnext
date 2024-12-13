@@ -15,8 +15,13 @@ def repost(only_actual=False, allow_negative_stock=False, allow_zero_rate=False,
 	frappe.db.auto_commit_on_many_writes = 1
 
 	if allow_negative_stock:
+<<<<<<< HEAD
 		existing_allow_negative_stock = frappe.db.get_value("Stock Settings", None, "allow_negative_stock")
 		frappe.db.set_value("Stock Settings", None, "allow_negative_stock", 1)
+=======
+		existing_allow_negative_stock = frappe.db.get_single_value("Stock Settings", "allow_negative_stock")
+		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	item_warehouses = frappe.db.sql(
 		"""
@@ -35,7 +40,11 @@ def repost(only_actual=False, allow_negative_stock=False, allow_zero_rate=False,
 			frappe.db.rollback()
 
 	if allow_negative_stock:
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "allow_negative_stock", existing_allow_negative_stock)
+=======
+		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", existing_allow_negative_stock)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.db.auto_commit_on_many_writes = 0
 
 
@@ -89,10 +98,20 @@ def get_balance_qty_from_sle(item_code, warehouse):
 
 
 def get_reserved_qty(item_code, warehouse):
+<<<<<<< HEAD
 	reserved_qty = frappe.db.sql(
 		"""
 		select
 			sum(dnpi_qty * ((so_item_qty - so_item_delivered_qty) / so_item_qty))
+=======
+	dont_reserve_on_return = frappe.get_cached_value(
+		"Selling Settings", "Selling Settings", "dont_reserve_sales_order_qty_on_sales_return"
+	)
+	reserved_qty = frappe.db.sql(
+		f"""
+		select
+			sum(dnpi_qty * ((so_item_qty - so_item_delivered_qty - if(dont_reserve_qty_on_return, so_item_returned_qty, 0)) / so_item_qty))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		from
 			(
 				(select
@@ -107,6 +126,15 @@ def get_reserved_qty(item_code, warehouse):
 						where name = dnpi.parent_detail_docname
 						and delivered_by_supplier = 0
 					) as so_item_delivered_qty,
+<<<<<<< HEAD
+=======
+					(
+						select returned_qty from `tabSales Order Item`
+						where name = dnpi.parent_detail_docname
+						and delivered_by_supplier = 0
+					) as so_item_returned_qty,
+					{dont_reserve_on_return} as dont_reserve_qty_on_return,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					parent, name
 				from
 				(
@@ -120,7 +148,13 @@ def get_reserved_qty(item_code, warehouse):
 				) dnpi)
 			union
 				(select stock_qty as dnpi_qty, qty as so_item_qty,
+<<<<<<< HEAD
 					delivered_qty as so_item_delivered_qty, parent, name
+=======
+					delivered_qty as so_item_delivered_qty,
+					returned_qty as so_item_returned_qty,
+					{dont_reserve_on_return}, parent, name
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				from `tabSales Order Item` so_item
 				where item_code = %s and warehouse = %s
 				and (so_item.delivered_by_supplier is null or so_item.delivered_by_supplier = 0)
@@ -279,6 +313,7 @@ def set_stock_balance_as_per_serial_no(
 				"posting_time": posting_time,
 			}
 		)
+<<<<<<< HEAD
 
 
 def reset_serial_no_status_and_warehouse(serial_nos=None):
@@ -295,3 +330,5 @@ def reset_serial_no_status_and_warehouse(serial_nos=None):
 				sr.save()
 			except Exception:
 				pass
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

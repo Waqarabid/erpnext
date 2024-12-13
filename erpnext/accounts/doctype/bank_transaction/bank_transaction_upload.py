@@ -74,7 +74,11 @@ def get_header_mapping(columns, bank_account):
 
 
 def get_bank_mapping(bank_account):
+<<<<<<< HEAD
 	bank_name = frappe.db.get_value("Bank Account", bank_account, "bank")
+=======
+	bank_name = frappe.get_cached_value("Bank Account", bank_account, "bank")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	bank = frappe.get_doc("Bank", bank_name)
 
 	mapping = {row.file_field: row.bank_transaction_field for row in bank.bank_transaction_mapping}

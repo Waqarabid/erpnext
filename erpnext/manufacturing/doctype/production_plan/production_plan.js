@@ -87,6 +87,7 @@ frappe.ui.form.on("Production Plan", {
 		if (frm.doc.docstatus === 1) {
 			frm.trigger("show_progress");
 
+<<<<<<< HEAD
 			if (frm.doc.status !== "Completed") {
 				frm.add_custom_button(
 					__("Production Plan Summary"),
@@ -98,6 +99,19 @@ frappe.ui.form.on("Production Plan", {
 					__("View")
 				);
 
+=======
+			frm.add_custom_button(
+				__("Production Plan Summary"),
+				() => {
+					frappe.set_route("query-report", "Production Plan Summary", {
+						production_plan: frm.doc.name,
+					});
+				},
+				__("View")
+			);
+
+			if (frm.doc.status !== "Completed") {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (frm.doc.status === "Closed") {
 					frm.add_custom_button(
 						__("Re-open"),
@@ -277,7 +291,11 @@ frappe.ui.form.on("Production Plan", {
 		frm.clear_table("prod_plan_references");
 
 		frappe.call({
+<<<<<<< HEAD
 			method: "get_items",
+=======
+			method: "combine_so_items",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			freeze: true,
 			doc: frm.doc,
 			callback: function () {
@@ -400,13 +418,28 @@ frappe.ui.form.on("Production Plan", {
 	},
 
 	download_materials_required(frm) {
+<<<<<<< HEAD
+=======
+		const warehouses_data = [];
+
+		if (frm.doc.for_warehouse) {
+			warehouses_data.push({ warehouse: frm.doc.for_warehouse });
+		}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const fields = [
 			{
 				fieldname: "warehouses",
 				fieldtype: "Table MultiSelect",
 				label: __("Warehouses"),
+<<<<<<< HEAD
 				default: frm.doc.from_warehouse,
 				options: "Production Plan Material Request Warehouse",
+=======
+				default: warehouses_data,
+				options: "Production Plan Material Request Warehouse",
+				reqd: 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				get_query: function () {
 					return {
 						filters: {

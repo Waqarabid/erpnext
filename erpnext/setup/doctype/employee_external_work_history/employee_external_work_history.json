@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
  "allow_copy": 0,
  "allow_import": 0,
  "allow_rename": 0,
@@ -178,13 +179,89 @@
  "istable": 1,
  "max_attachments": 0,
  "modified": "2016-07-11 03:28:00.088980",
+=======
+ "actions": [],
+ "creation": "2013-02-22 01:27:45",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company_name",
+  "designation",
+  "salary",
+  "address",
+  "contact",
+  "total_experience"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company",
+   "oldfieldname": "company_name",
+   "oldfieldtype": "Data"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation",
+   "oldfieldname": "designation",
+   "oldfieldtype": "Data"
+  },
+  {
+   "fieldname": "salary",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Salary",
+   "oldfieldname": "salary",
+   "oldfieldtype": "Currency",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Address",
+   "oldfieldname": "address",
+   "oldfieldtype": "Small Text"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Contact",
+   "oldfieldname": "contact",
+   "oldfieldtype": "Data"
+  },
+  {
+   "fieldname": "total_experience",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Total Experience",
+   "oldfieldname": "total_experience",
+   "oldfieldtype": "Data"
+  }
+ ],
+ "idx": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-03-27 13:09:38.624280",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee External Work History",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "quick_entry": 0,
  "read_only": 0,
  "read_only_onload": 0,
  "track_seen": 0
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

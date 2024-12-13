@@ -4,9 +4,16 @@
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
 from frappe.utils import cint, flt, get_table_name, getdate
 from pypika import functions as fn
 
+=======
+from frappe.utils import add_to_date, cint, flt, get_datetime, get_table_name, getdate
+from pypika import functions as fn
+
+from erpnext.deprecation_dumpster import deprecated
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.warehouse.warehouse import apply_warehouse_filter
 
 SLE_COUNT_LIMIT = 10_000
@@ -92,13 +99,30 @@ def get_columns(filters):
 	return columns
 
 
+<<<<<<< HEAD
 # get all details
 def get_stock_ledger_entries(filters):
+=======
+def get_stock_ledger_entries(filters):
+	entries = get_stock_ledger_entries_for_batch_no(filters)
+
+	entries += get_stock_ledger_entries_for_batch_bundle(filters)
+	return entries
+
+
+@deprecated(f"{__name__}.get_stock_ledger_entries_for_batch_no", "unknown", "v16", "No known instructions.")
+def get_stock_ledger_entries_for_batch_no(filters):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not filters.get("from_date"):
 		frappe.throw(_("'From Date' is required"))
 	if not filters.get("to_date"):
 		frappe.throw(_("'To Date' is required"))
 
+<<<<<<< HEAD
+=======
+	posting_datetime = get_datetime(add_to_date(filters["to_date"], days=1))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	sle = frappe.qb.DocType("Stock Ledger Entry")
 	query = (
 		frappe.qb.from_(sle)
@@ -112,8 +136,13 @@ def get_stock_ledger_entries(filters):
 		.where(
 			(sle.docstatus < 2)
 			& (sle.is_cancelled == 0)
+<<<<<<< HEAD
 			& (fn.IfNull(sle.batch_no, "") != "")
 			& (sle.posting_date <= filters["to_date"])
+=======
+			& (sle.batch_no != "")
+			& (sle.posting_datetime < posting_datetime)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		.groupby(sle.voucher_no, sle.batch_no, sle.item_code, sle.warehouse)
 		.orderby(sle.item_code, sle.warehouse)
@@ -134,6 +163,7 @@ def get_stock_ledger_entries(filters):
 		if filters.get(field):
 			query = query.where(sle[field] == filters.get(field))
 
+<<<<<<< HEAD
 	return query
 
 
@@ -168,6 +198,82 @@ def get_item_warehouse_batch_map(filters, float_precision):
 					)
 
 			qty_dict.bal_qty = flt(qty_dict.bal_qty, float_precision) + flt(d.actual_qty, float_precision)
+=======
+	return query.run(as_dict=True) or []
+
+
+def get_stock_ledger_entries_for_batch_bundle(filters):
+	sle = frappe.qb.DocType("Stock Ledger Entry")
+	batch_package = frappe.qb.DocType("Serial and Batch Entry")
+
+	query = (
+		frappe.qb.from_(sle)
+		.inner_join(batch_package)
+		.on(batch_package.parent == sle.serial_and_batch_bundle)
+		.select(
+			sle.item_code,
+			sle.warehouse,
+			batch_package.batch_no,
+			sle.posting_date,
+			fn.Sum(batch_package.qty).as_("actual_qty"),
+		)
+		.where(
+			(sle.docstatus < 2)
+			& (sle.is_cancelled == 0)
+			& (sle.has_batch_no == 1)
+			& (sle.posting_date <= filters["to_date"])
+		)
+		.groupby(sle.voucher_no, batch_package.batch_no, batch_package.warehouse)
+		.orderby(sle.item_code, sle.warehouse)
+	)
+
+	query = apply_warehouse_filter(query, sle, filters)
+	if filters.warehouse_type and not filters.warehouse:
+		warehouses = frappe.get_all(
+			"Warehouse",
+			filters={"warehouse_type": filters.warehouse_type, "is_group": 0},
+			pluck="name",
+		)
+
+		if warehouses:
+			query = query.where(sle.warehouse.isin(warehouses))
+
+	for field in ["item_code", "batch_no", "company"]:
+		if filters.get(field):
+			if field == "batch_no":
+				query = query.where(batch_package[field] == filters.get(field))
+			else:
+				query = query.where(sle[field] == filters.get(field))
+
+	return query.run(as_dict=True) or []
+
+
+def get_item_warehouse_batch_map(filters, float_precision):
+	sle = get_stock_ledger_entries(filters)
+	iwb_map = {}
+
+	from_date = getdate(filters["from_date"])
+	to_date = getdate(filters["to_date"])
+
+	for d in sle:
+		iwb_map.setdefault(d.item_code, {}).setdefault(d.warehouse, {}).setdefault(
+			d.batch_no, frappe._dict({"opening_qty": 0.0, "in_qty": 0.0, "out_qty": 0.0, "bal_qty": 0.0})
+		)
+		qty_dict = iwb_map[d.item_code][d.warehouse][d.batch_no]
+		if d.posting_date < from_date:
+			qty_dict.opening_qty = flt(qty_dict.opening_qty, float_precision) + flt(
+				d.actual_qty, float_precision
+			)
+		elif d.posting_date >= from_date and d.posting_date <= to_date:
+			if flt(d.actual_qty) > 0:
+				qty_dict.in_qty = flt(qty_dict.in_qty, float_precision) + flt(d.actual_qty, float_precision)
+			else:
+				qty_dict.out_qty = flt(qty_dict.out_qty, float_precision) + abs(
+					flt(d.actual_qty, float_precision)
+				)
+
+		qty_dict.bal_qty = flt(qty_dict.bal_qty, float_precision) + flt(d.actual_qty, float_precision)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return iwb_map
 

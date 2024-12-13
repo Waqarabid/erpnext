@@ -19,6 +19,10 @@ frappe.ui.form.on("Sales Person", {
 				"blue"
 			);
 		}
+<<<<<<< HEAD
+=======
+		frm.trigger("set_root_readonly");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	setup: function (frm) {
@@ -38,6 +42,7 @@ frappe.ui.form.on("Sales Person", {
 					.then(() => frm.add_child("sales_team", { sales_person: frm.doc.name })),
 		};
 	},
+<<<<<<< HEAD
 });
 
 cur_frm.cscript.refresh = function (doc, cdt, cdn) {
@@ -54,6 +59,19 @@ cur_frm.cscript.set_root_readonly = function (doc) {
 	}
 };
 
+=======
+	set_root_readonly: function (frm) {
+		// read-only for root
+		if (!frm.doc.parent_sales_person && !frm.doc.__islocal) {
+			frm.set_read_only();
+			frm.set_intro(__("This is a root sales person and cannot be edited."));
+		} else {
+			frm.set_intro(null);
+		}
+	},
+});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 //get query select sales person
 cur_frm.fields_dict["parent_sales_person"].get_query = function (doc, cdt, cdn) {
 	return {

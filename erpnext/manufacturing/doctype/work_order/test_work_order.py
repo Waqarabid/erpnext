@@ -1,10 +1,16 @@
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
+<<<<<<< HEAD
 import copy
 
 import frappe
 from frappe.tests.utils import FrappeTestCase, change_settings, timeout
+=======
+
+import frappe
+from frappe.tests import IntegrationTestCase, UnitTestCase, timeout
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, add_months, add_to_date, cint, flt, now, today
 
 from erpnext.manufacturing.doctype.job_card.job_card import JobCardCancelError
@@ -22,15 +28,39 @@ from erpnext.manufacturing.doctype.work_order.work_order import (
 )
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.stock.doctype.item.test_item import create_item, make_item
+<<<<<<< HEAD
+=======
+from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+	get_batch_from_bundle,
+	get_serial_nos_from_bundle,
+	make_serial_batch_bundle,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 from erpnext.stock.doctype.stock_entry import test_stock_entry
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 from erpnext.stock.utils import get_bin
 
+<<<<<<< HEAD
 test_dependencies = ["BOM"]
 
 
 class TestWorkOrder(FrappeTestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["BOM"]
+
+
+class UnitTestWorkOrder(UnitTestCase):
+	"""
+	Unit tests for WorkOrder.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestWorkOrder(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.warehouse = "_Test Warehouse 2 - _TC"
 		self.item = "_Test Item"
@@ -476,6 +506,20 @@ class TestWorkOrder(FrappeTestCase):
 
 		for _i, job_card in enumerate(job_cards):
 			doc = frappe.get_doc("Job Card", job_card)
+<<<<<<< HEAD
+=======
+			for row in doc.scheduled_time_logs:
+				doc.append(
+					"time_logs",
+					{
+						"from_time": row.from_time,
+						"to_time": row.to_time,
+						"time_in_mins": row.time_in_mins,
+						"completed_qty": 0,
+					},
+				)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			doc.time_logs[0].completed_qty = 1
 			doc.submit()
 
@@ -492,10 +536,15 @@ class TestWorkOrder(FrappeTestCase):
 			stock_entry.cancel()
 
 	def test_capcity_planning(self):
+<<<<<<< HEAD
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
 			{"disable_capacity_planning": 0, "capacity_planning_for_days": 1},
+=======
+		frappe.db.set_single_value(
+			"Manufacturing Settings", {"disable_capacity_planning": 0, "capacity_planning_for_days": 1}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		data = frappe.get_cached_value(
@@ -518,7 +567,11 @@ class TestWorkOrder(FrappeTestCase):
 
 			self.assertRaises(CapacityError, work_order1.submit)
 
+<<<<<<< HEAD
 			frappe.db.set_value("Manufacturing Settings", None, {"capacity_planning_for_days": 30})
+=======
+			frappe.db.set_single_value("Manufacturing Settings", {"capacity_planning_for_days": 30})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			work_order1.reload()
 			work_order1.submit()
@@ -528,7 +581,11 @@ class TestWorkOrder(FrappeTestCase):
 			work_order.cancel()
 
 	def test_work_order_with_non_transfer_item(self):
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "backflush_raw_materials_based_on", "BOM")
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "backflush_raw_materials_based_on", "BOM")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		items = {"Finished Good Transfer Item": 1, "_Test FG Item": 1, "_Test FG Item 1": 0}
 		for item, allow_transfer in items.items():
@@ -606,7 +663,11 @@ class TestWorkOrder(FrappeTestCase):
 		fg_item = "Test Batch Size Item For BOM 3"
 		rm1 = "Test Batch Size Item RM 1 For BOM 3"
 
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "make_serial_no_batch_from_work_order", 0)
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order", 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for item in ["Test Batch Size Item For BOM 3", "Test Batch Size Item RM 1 For BOM 3"]:
 			item_args = {"include_item_in_manufacturing": 1, "is_stock_item": 1}
 
@@ -640,7 +701,11 @@ class TestWorkOrder(FrappeTestCase):
 		work_order = make_wo_order_test_record(
 			item=fg_item, skip_transfer=True, planned_start_date=now(), qty=1
 		)
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "make_serial_no_batch_from_work_order", 1)
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		ste1 = frappe.get_doc(make_stock_entry(work_order.name, "Manufacture", 1))
 		for row in ste1.get("items"):
 			if row.is_finished_item:
@@ -662,8 +727,16 @@ class TestWorkOrder(FrappeTestCase):
 			if row.is_finished_item:
 				self.assertEqual(row.item_code, fg_item)
 				self.assertEqual(row.qty, 10)
+<<<<<<< HEAD
 				self.assertTrue(row.batch_no in batches)
 				batches.remove(row.batch_no)
+=======
+
+				bundle_id = frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+				for bundle_row in bundle_id.get("entries"):
+					self.assertTrue(bundle_row.batch_no in batches)
+					batches.remove(bundle_row.batch_no)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		ste1.submit()
 
@@ -672,6 +745,7 @@ class TestWorkOrder(FrappeTestCase):
 		for row in ste1.get("items"):
 			if row.is_finished_item:
 				self.assertEqual(row.item_code, fg_item)
+<<<<<<< HEAD
 				self.assertEqual(row.qty, 10)
 				remaining_batches.append(row.batch_no)
 
@@ -681,6 +755,21 @@ class TestWorkOrder(FrappeTestCase):
 
 	def test_partial_material_consumption(self):
 		frappe.db.set_value("Manufacturing Settings", None, "material_consumption", 1)
+=======
+				self.assertEqual(row.qty, 20)
+
+				bundle_id = frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+				for bundle_row in bundle_id.get("entries"):
+					self.assertTrue(bundle_row.batch_no in batches)
+					remaining_batches.append(bundle_row.batch_no)
+
+		self.assertEqual(sorted(remaining_batches), sorted(batches))
+
+		frappe.db.set_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order", 0)
+
+	def test_partial_material_consumption(self):
+		frappe.db.set_single_value("Manufacturing Settings", "material_consumption", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		wo_order = make_wo_order_test_record(planned_start_date=now(), qty=4)
 
 		ste_cancel_list = []
@@ -714,6 +803,7 @@ class TestWorkOrder(FrappeTestCase):
 		for ste_doc in ste_cancel_list:
 			ste_doc.cancel()
 
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "material_consumption", 0)
 
 	def test_extra_material_transfer(self):
@@ -721,6 +811,14 @@ class TestWorkOrder(FrappeTestCase):
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "material_consumption", 0)
+
+	def test_extra_material_transfer(self):
+		frappe.db.set_single_value("Manufacturing Settings", "material_consumption", 0)
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -765,7 +863,11 @@ class TestWorkOrder(FrappeTestCase):
 		for ste_doc in ste_cancel_list:
 			ste_doc.cancel()
 
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "backflush_raw_materials_based_on", "BOM")
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "backflush_raw_materials_based_on", "BOM")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_make_stock_entry_for_customer_provided_item(self):
 		finished_item = "Test Item for Make Stock Entry 1"
@@ -890,11 +992,17 @@ class TestWorkOrder(FrappeTestCase):
 			"Test RM Item 2 for Scrap Item Test",
 		]
 
+<<<<<<< HEAD
 		from_time = add_days(now(), -1)
 		job_cards = frappe.get_all(
 			"Job Card Time Log",
 			fields=["distinct parent as name", "docstatus"],
 			filters={"from_time": (">", from_time)},
+=======
+		job_cards = frappe.get_all(
+			"Job Card Time Log",
+			fields=["distinct parent as name", "docstatus"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			order_by="creation asc",
 		)
 
@@ -951,7 +1059,11 @@ class TestWorkOrder(FrappeTestCase):
 			item=item, company=company, planned_start_date=add_days(now(), 60), qty=20, skip_transfer=1
 		)
 		job_card = frappe.db.get_value("Job Card", {"work_order": wo_order.name}, "name")
+<<<<<<< HEAD
 		update_job_card(job_card, 10)
+=======
+		update_job_card(job_card, 10, 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		stock_entry = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 10))
 		for row in stock_entry.items:
@@ -969,12 +1081,15 @@ class TestWorkOrder(FrappeTestCase):
 
 		make_job_card(wo_order.name, operations)
 		job_card = frappe.db.get_value("Job Card", {"work_order": wo_order.name, "docstatus": 0}, "name")
+<<<<<<< HEAD
 		update_job_card(job_card, 10)
 
 		stock_entry = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 10))
 		for row in stock_entry.items:
 			if row.is_scrap_item:
 				self.assertEqual(row.qty, 2)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_close_work_order(self):
 		items = [
@@ -1078,9 +1193,14 @@ class TestWorkOrder(FrappeTestCase):
 	def test_partial_manufacture_entries(self):
 		cancel_stock_entry = []
 
+<<<<<<< HEAD
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -1130,9 +1250,17 @@ class TestWorkOrder(FrappeTestCase):
 			doc = frappe.get_doc("Stock Entry", ste)
 			doc.cancel()
 
+<<<<<<< HEAD
 		frappe.db.set_value("Manufacturing Settings", None, "backflush_raw_materials_based_on", "BOM")
 
 	@change_settings("Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1})
+=======
+		frappe.db.set_single_value("Manufacturing Settings", "backflush_raw_materials_based_on", "BOM")
+
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_batch_creation(self):
 		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
 
@@ -1153,7 +1281,13 @@ class TestWorkOrder(FrappeTestCase):
 		except frappe.MandatoryError:
 			self.fail("Batch generation causing failing in Work Order")
 
+<<<<<<< HEAD
 	@change_settings("Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1})
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_auto_serial_no_creation(self):
 		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
 
@@ -1171,21 +1305,90 @@ class TestWorkOrder(FrappeTestCase):
 
 		try:
 			wo_order = make_wo_order_test_record(item=fg_item, qty=2, skip_transfer=True)
+<<<<<<< HEAD
 			serial_nos = wo_order.serial_no
+=======
+			serial_nos = self.get_serial_nos_for_fg(wo_order.name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			stock_entry = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 10))
 			stock_entry.set_work_order_details()
 			stock_entry.set_serial_no_batch_for_finished_good()
 			for row in stock_entry.items:
 				if row.item_code == fg_item:
+<<<<<<< HEAD
 					self.assertTrue(row.serial_no)
 					self.assertEqual(
 						sorted(get_serial_nos(row.serial_no)), sorted(get_serial_nos(serial_nos))
+=======
+					self.assertTrue(row.serial_and_batch_bundle)
+					self.assertEqual(
+						sorted(get_serial_nos_from_bundle(row.serial_and_batch_bundle)), sorted(serial_nos)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					)
 
 		except frappe.MandatoryError:
 			self.fail("Batch generation causing failing in Work Order")
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"make_serial_no_batch_from_work_order": 1}
+	)
+	def test_auto_serial_no_batch_creation(self):
+		from erpnext.manufacturing.doctype.bom.test_bom import create_nested_bom
+
+		fg_item = frappe.generate_hash(length=20)
+		child_item = frappe.generate_hash(length=20)
+
+		bom_tree = {fg_item: {child_item: {}}}
+
+		create_nested_bom(bom_tree, prefix="")
+
+		item = frappe.get_doc("Item", fg_item)
+		item.update(
+			{
+				"has_serial_no": 1,
+				"has_batch_no": 1,
+				"serial_no_series": f"SN-TEST-{item.name}.#####",
+				"create_new_batch": 1,
+				"batch_number_series": f"BATCH-TEST-{item.name}.#####",
+			}
+		)
+		item.save()
+
+		try:
+			wo_order = make_wo_order_test_record(item=fg_item, batch_size=5, qty=10, skip_transfer=True)
+			serial_nos = self.get_serial_nos_for_fg(wo_order.name)
+
+			stock_entry = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 10))
+			stock_entry.set_work_order_details()
+			stock_entry.set_serial_no_batch_for_finished_good()
+			for row in stock_entry.items:
+				if row.item_code == fg_item:
+					self.assertTrue(row.serial_and_batch_bundle)
+					self.assertEqual(
+						sorted(get_serial_nos_from_bundle(row.serial_and_batch_bundle)), sorted(serial_nos)
+					)
+
+					sn_doc = frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+					for row in sn_doc.entries:
+						self.assertTrue(row.serial_no)
+						self.assertTrue(row.batch_no)
+
+		except frappe.MandatoryError:
+			self.fail("Batch generation causing failing in Work Order")
+
+	def get_serial_nos_for_fg(self, work_order):
+		serial_nos = []
+		for row in frappe.get_all("Serial No", filters={"work_order": work_order}):
+			serial_nos.append(row.name)
+
+		return serial_nos
+
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Manufacturing Settings",
 		{"backflush_raw_materials_based_on": "Material Transferred for Manufacture"},
 	)
@@ -1215,7 +1418,11 @@ class TestWorkOrder(FrappeTestCase):
 		for index, row in enumerate(ste_manu.get("items"), start=1):
 			self.assertEqual(index, row.idx)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Manufacturing Settings",
 		{"backflush_raw_materials_based_on": "Material Transferred for Manufacture"},
 	)
@@ -1266,9 +1473,14 @@ class TestWorkOrder(FrappeTestCase):
 		self.assertEqual(work_order.required_items[1].transferred_qty, 2)
 
 	def test_backflushed_batch_raw_materials_based_on_transferred(self):
+<<<<<<< HEAD
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -1277,6 +1489,7 @@ class TestWorkOrder(FrappeTestCase):
 		fg_item = "Test FG Item with Batch Raw Materials"
 
 		ste_doc = test_stock_entry.make_stock_entry(
+<<<<<<< HEAD
 			item_code=batch_item, target="Stores - _TC", qty=2, basic_rate=100, do_not_save=True
 		)
 
@@ -1293,19 +1506,29 @@ class TestWorkOrder(FrappeTestCase):
 				"stock_uom": "Nos",
 				"conversion_factor": 1,
 			},
+=======
+			item_code=batch_item, target="Stores - _TC", qty=4, basic_rate=100, do_not_save=True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		# Inward raw materials in Stores warehouse
 		ste_doc.insert()
 		ste_doc.submit()
+<<<<<<< HEAD
 
 		batch_list = sorted([row.batch_no for row in ste_doc.items])
+=======
+		ste_doc.load_from_db()
+
+		batch_no = get_batch_from_bundle(ste_doc.items[0].serial_and_batch_bundle)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
 		transferred_ste_doc = frappe.get_doc(
 			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
 		)
 
+<<<<<<< HEAD
 		transferred_ste_doc.items[0].qty = 2
 		transferred_ste_doc.items[0].batch_no = batch_list[0]
 
@@ -1339,6 +1562,57 @@ class TestWorkOrder(FrappeTestCase):
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		transferred_ste_doc.items[0].qty = 4
+		transferred_ste_doc.items[0].serial_and_batch_bundle = make_serial_batch_bundle(
+			frappe._dict(
+				{
+					"item_code": batch_item,
+					"warehouse": "Stores - _TC",
+					"company": transferred_ste_doc.company,
+					"qty": 4,
+					"voucher_type": "Stock Entry",
+					"batches": frappe._dict({batch_no: 4}),
+					"posting_date": transferred_ste_doc.posting_date,
+					"posting_time": transferred_ste_doc.posting_time,
+					"type_of_transaction": "Outward",
+					"do_not_submit": True,
+				}
+			)
+		).name
+
+		transferred_ste_doc.submit()
+		transferred_ste_doc.load_from_db()
+
+		# First Manufacture stock entry
+		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+		manufacture_ste_doc1.submit()
+		manufacture_ste_doc1.load_from_db()
+
+		# Batch no should be same as transferred Batch no
+		self.assertEqual(
+			get_batch_from_bundle(manufacture_ste_doc1.items[0].serial_and_batch_bundle), batch_no
+		)
+		self.assertEqual(manufacture_ste_doc1.items[0].qty, 1)
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 2))
+		manufacture_ste_doc2.submit()
+		manufacture_ste_doc2.load_from_db()
+
+		self.assertTrue(manufacture_ste_doc2.items[0].serial_and_batch_bundle)
+		bundle_doc = frappe.get_doc(
+			"Serial and Batch Bundle", manufacture_ste_doc2.items[0].serial_and_batch_bundle
+		)
+
+		for d in bundle_doc.entries:
+			self.assertEqual(d.batch_no, batch_no)
+			self.assertEqual(abs(d.qty), 2)
+
+	def test_backflushed_serial_no_raw_materials_based_on_transferred(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -1352,8 +1626,14 @@ class TestWorkOrder(FrappeTestCase):
 
 		# Inward raw materials in Stores warehouse
 		ste_doc.submit()
+<<<<<<< HEAD
 
 		serial_nos_list = sorted(get_serial_nos(ste_doc.items[0].serial_no))
+=======
+		ste_doc.reload()
+
+		serial_nos_list = sorted(get_serial_nos_from_bundle(ste_doc.items[0].serial_and_batch_bundle))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
 		transferred_ste_doc = frappe.get_doc(
@@ -1365,6 +1645,7 @@ class TestWorkOrder(FrappeTestCase):
 
 		# First Manufacture stock entry
 		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+<<<<<<< HEAD
 
 		# Serial nos should be same as transferred Serial nos
 		self.assertEqual(get_serial_nos(manufacture_ste_doc1.items[0].serial_no), serial_nos_list[0:1])
@@ -1383,6 +1664,28 @@ class TestWorkOrder(FrappeTestCase):
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		manufacture_ste_doc1.submit()
+		manufacture_ste_doc1.reload()
+
+		# Serial nos should be same as transferred Serial nos
+		self.assertEqual(
+			sorted(get_serial_nos_from_bundle(manufacture_ste_doc1.items[0].serial_and_batch_bundle)),
+			serial_nos_list[0:1],
+		)
+		self.assertEqual(manufacture_ste_doc1.items[0].qty, 1)
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 3))
+
+		# Serial nos should be same as transferred Serial nos
+		self.assertEqual(get_serial_nos(manufacture_ste_doc2.items[0].serial_no), serial_nos_list[1:4])
+		self.assertEqual(manufacture_ste_doc2.items[0].qty, 3)
+
+	def test_backflushed_serial_no_batch_raw_materials_based_on_transferred(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -1391,6 +1694,7 @@ class TestWorkOrder(FrappeTestCase):
 		fg_item = "Test FG Item with Serial & Batch No Raw Materials"
 
 		ste_doc = test_stock_entry.make_stock_entry(
+<<<<<<< HEAD
 			item_code=sn_batch_item, target="Stores - _TC", qty=2, basic_rate=100, do_not_save=True
 		)
 
@@ -1407,20 +1711,35 @@ class TestWorkOrder(FrappeTestCase):
 				"stock_uom": "Nos",
 				"conversion_factor": 1,
 			},
+=======
+			item_code=sn_batch_item, target="Stores - _TC", qty=4, basic_rate=100, do_not_save=True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		# Inward raw materials in Stores warehouse
 		ste_doc.insert()
 		ste_doc.submit()
+<<<<<<< HEAD
 
 		batch_dict = {row.batch_no: get_serial_nos(row.serial_no) for row in ste_doc.items}
 		batches = list(batch_dict.keys())
+=======
+		ste_doc.load_from_db()
+
+		serial_nos = []
+		for row in ste_doc.items:
+			bundle_doc = frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+
+			for d in bundle_doc.entries:
+				serial_nos.append(d.serial_no)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
 		transferred_ste_doc = frappe.get_doc(
 			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
 		)
 
+<<<<<<< HEAD
 		transferred_ste_doc.items[0].qty = 2
 		transferred_ste_doc.items[0].batch_no = batches[0]
 		transferred_ste_doc.items[0].serial_no = "\n".join(batch_dict.get(batches[0]))
@@ -1466,6 +1785,256 @@ class TestWorkOrder(FrappeTestCase):
 		frappe.db.set_value(
 			"Manufacturing Settings",
 			None,
+=======
+		transferred_ste_doc.items[0].qty = 4
+		transferred_ste_doc.items[0].serial_and_batch_bundle = make_serial_batch_bundle(
+			frappe._dict(
+				{
+					"item_code": transferred_ste_doc.get("items")[0].item_code,
+					"warehouse": transferred_ste_doc.get("items")[0].s_warehouse,
+					"company": transferred_ste_doc.company,
+					"qty": 4,
+					"type_of_transaction": "Outward",
+					"voucher_type": "Stock Entry",
+					"serial_nos": serial_nos,
+					"posting_date": transferred_ste_doc.posting_date,
+					"posting_time": transferred_ste_doc.posting_time,
+					"do_not_submit": True,
+				}
+			)
+		).name
+
+		transferred_ste_doc.submit()
+		transferred_ste_doc.load_from_db()
+
+		# First Manufacture stock entry
+		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+		manufacture_ste_doc1.submit()
+		manufacture_ste_doc1.load_from_db()
+
+		# Batch no & Serial Nos should be same as transferred Batch no & Serial Nos
+		bundle = manufacture_ste_doc1.items[0].serial_and_batch_bundle
+		self.assertTrue(bundle)
+
+		bundle_doc = frappe.get_doc("Serial and Batch Bundle", bundle)
+		for d in bundle_doc.entries:
+			self.assertTrue(d.serial_no)
+			self.assertTrue(d.batch_no)
+			batch_no = frappe.get_cached_value("Serial No", d.serial_no, "batch_no")
+			self.assertEqual(d.batch_no, batch_no)
+			serial_nos.remove(d.serial_no)
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 3))
+		manufacture_ste_doc2.submit()
+		manufacture_ste_doc2.load_from_db()
+
+		bundle = manufacture_ste_doc2.items[0].serial_and_batch_bundle
+		self.assertTrue(bundle)
+
+		bundle_doc = frappe.get_doc("Serial and Batch Bundle", bundle)
+		for d in bundle_doc.entries:
+			self.assertTrue(d.serial_no)
+			self.assertTrue(d.batch_no)
+			serial_nos.remove(d.serial_no)
+
+		self.assertFalse(serial_nos)
+
+	def test_backflushed_batch_raw_materials_based_on_transferred_autosabb(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		batch_item = "Test Batch MCC Keyboard"
+		fg_item = "Test FG Item with Batch Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=batch_item, target="Stores - _TC", qty=8, basic_rate=100, do_not_save=True
+		)
+
+		# Inward raw materials in Stores warehouse
+		ste_doc.submit()
+		ste_doc.reload()
+
+		batch_no = get_batch_from_bundle(ste_doc.items[0].serial_and_batch_bundle)
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		# action taken upon Start button:
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.submit()
+		transferred_ste_doc.reload()
+
+		self.assertTrue(transferred_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			get_batch_from_bundle(transferred_ste_doc.items[0].serial_and_batch_bundle), batch_no
+		)
+		self.assertEqual(transferred_ste_doc.items[0].qty, 4.0)
+
+		# Make additional consumption and link to WO
+		test_stock_entry.make_stock_entry(
+			item_code="Test Batch Battery Consumable",
+			target="Stores - _TC",
+			qty=8,
+			basic_rate=2.33,
+		)
+		consume_use_doc = test_stock_entry.make_stock_entry(
+			item_code="Test Batch Battery Consumable",  # consumable not linked to BOM
+			source="Stores - _TC",
+			qty=4,
+			purpose="Material Consumption for Manufacture",
+			do_not_save=True,
+		)
+		consume_use_doc.work_order = wo_doc.name
+		consume_use_doc.fg_completed_qty = 4
+		consume_use_doc.submit()
+		consume_use_doc.reload()
+
+		manufacture_ste_doc = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 4))
+		mfr_items = [i.as_dict() for i in manufacture_ste_doc.items]
+		manufacture_ste_doc.submit()
+		manufacture_ste_doc.reload()
+
+		self.assertTrue(len(mfr_items), 2)
+		self.assertTrue(manufacture_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			get_batch_from_bundle(manufacture_ste_doc.items[0].serial_and_batch_bundle), batch_no
+		)
+		self.assertEqual(manufacture_ste_doc.items[0].qty, 4.0)
+
+	def test_backflushed_serial_no_raw_materials_based_on_transferred_autosabb(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		sn_item = "Test Serial No BTT Headphone"
+		fg_item = "Test FG Item with Serial No Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=sn_item, target="Stores - _TC", qty=4, basic_rate=100, do_not_save=True
+		)
+
+		# Inward raw materials in Stores warehouse
+		ste_doc.submit()
+		ste_doc.reload()
+
+		serial_nos_list = sorted(get_serial_nos_from_bundle(ste_doc.items[0].serial_and_batch_bundle))
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.submit()
+		transferred_ste_doc.reload()
+
+		self.assertTrue(transferred_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			sorted(get_serial_nos_from_bundle(transferred_ste_doc.items[0].serial_and_batch_bundle)),
+			serial_nos_list,
+		)
+		self.assertEqual(transferred_ste_doc.items[0].qty, 4.0)
+
+		# Make additional consumption and link to WO
+		test_stock_entry.make_stock_entry(
+			item_code="Test Serial Battery Consumable",
+			target="Stores - _TC",
+			qty=8,
+			basic_rate=3.33,
+		)
+		consume_use_doc = test_stock_entry.make_stock_entry(
+			item_code="Test Serial Battery Consumable",  # consumable not linked to BOM
+			source="Stores - _TC",
+			qty=4,
+			purpose="Material Consumption for Manufacture",
+			do_not_save=True,
+		)
+		consume_use_doc.work_order = wo_doc.name
+		consume_use_doc.fg_completed_qty = 4
+		consume_use_doc.submit()
+		consume_use_doc.reload()
+
+		manufacture_ste_doc = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 4))
+		mfr_items = [i.as_dict() for i in manufacture_ste_doc.items]
+		manufacture_ste_doc.submit()
+		manufacture_ste_doc.reload()
+
+		self.assertTrue(len(mfr_items), 2)
+		self.assertTrue(manufacture_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			sorted(get_serial_nos_from_bundle(manufacture_ste_doc.items[0].serial_and_batch_bundle)),
+			serial_nos_list,
+		)
+		self.assertEqual(manufacture_ste_doc.items[0].qty, 4.0)
+
+	def test_backflushed_serial_no_batch_raw_materials_based_on_transferred_autosabb(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		sn_batch_item = "Test Batch Serial No WebCam"
+		fg_item = "Test FG Item with Serial & Batch No Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=sn_batch_item, target="Stores - _TC", qty=4, basic_rate=100, do_not_save=True
+		)
+
+		ste_doc.submit()
+		ste_doc.reload()
+
+		serial_nos_list = sorted(get_serial_nos_from_bundle(ste_doc.items[0].serial_and_batch_bundle))
+		batch_no = get_batch_from_bundle(ste_doc.items[0].serial_and_batch_bundle)
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.submit()
+		transferred_ste_doc.reload()
+
+		self.assertTrue(transferred_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			sorted(get_serial_nos_from_bundle(transferred_ste_doc.items[0].serial_and_batch_bundle)),
+			serial_nos_list,
+		)
+		self.assertEqual(
+			get_batch_from_bundle(transferred_ste_doc.items[0].serial_and_batch_bundle), batch_no
+		)
+		self.assertEqual(transferred_ste_doc.items[0].qty, 4.0)
+
+		manufacture_ste_doc = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 4))
+		manufacture_ste_doc.submit()
+		manufacture_ste_doc.reload()
+
+		self.assertTrue(manufacture_ste_doc.items[0].serial_and_batch_bundle)
+		self.assertEqual(
+			sorted(get_serial_nos_from_bundle(manufacture_ste_doc.items[0].serial_and_batch_bundle)),
+			serial_nos_list,
+		)
+		self.assertEqual(
+			get_batch_from_bundle(manufacture_ste_doc.items[0].serial_and_batch_bundle), batch_no
+		)
+		self.assertEqual(manufacture_ste_doc.items[0].qty, 4.0)
+
+		bundle = manufacture_ste_doc.items[0].serial_and_batch_bundle
+		bundle_doc = frappe.get_doc("Serial and Batch Bundle", bundle)
+		qty = sum(e.qty for e in bundle_doc.entries)
+		self.assertEqual(qty, -4.0)
+
+	###
+	def test_non_consumed_material_return_against_work_order(self):
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"backflush_raw_materials_based_on",
 			"Material Transferred for Manufacture",
 		)
@@ -1495,6 +2064,7 @@ class TestWorkOrder(FrappeTestCase):
 		for row in ste_doc.items:
 			row.qty += 2
 			row.transfer_qty += 2
+<<<<<<< HEAD
 			nste_doc = test_stock_entry.make_stock_entry(
 				item_code=row.item_code, target="Stores - _TC", qty=row.qty, basic_rate=100
 			)
@@ -1502,6 +2072,12 @@ class TestWorkOrder(FrappeTestCase):
 			row.batch_no = nste_doc.items[0].batch_no
 			row.serial_no = nste_doc.items[0].serial_no
 
+=======
+			test_stock_entry.make_stock_entry(
+				item_code=row.item_code, target="Stores - _TC", qty=row.qty, basic_rate=100
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		ste_doc.save()
 		ste_doc.submit()
 		ste_doc.load_from_db()
@@ -1513,9 +2089,15 @@ class TestWorkOrder(FrappeTestCase):
 				row.qty -= 2
 				row.transfer_qty -= 2
 
+<<<<<<< HEAD
 				if row.serial_no:
 					serial_nos = get_serial_nos(row.serial_no)
 					row.serial_no = "\n".join(serial_nos[0:5])
+=======
+			if row.serial_no:
+				serial_nos = get_serial_nos(row.serial_no)
+				row.serial_no = "\n".join(serial_nos[:5])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		ste_doc.save()
 		ste_doc.submit()
@@ -1649,9 +2231,38 @@ class TestWorkOrder(FrappeTestCase):
 		)
 		job_card = frappe.db.get_value("Job Card", {"work_order": wo_order.name}, "name")
 		job_card_doc = frappe.get_doc("Job Card", job_card)
+<<<<<<< HEAD
 
 		# Make another Job Card for the same Work Order
 		job_card2 = frappe.copy_doc(job_card_doc)
+=======
+		for row in job_card_doc.scheduled_time_logs:
+			job_card_doc.append(
+				"time_logs",
+				{
+					"from_time": row.from_time,
+					"to_time": row.to_time,
+					"time_in_mins": row.time_in_mins,
+					"completed_qty": 20,
+				},
+			)
+
+		job_card_doc.save()
+
+		# Make another Job Card for the same Work Order
+		job_card2 = frappe.copy_doc(job_card_doc)
+		job_card2.append(
+			"time_logs",
+			{
+				"from_time": row.from_time,
+				"to_time": row.to_time,
+				"time_in_mins": row.time_in_mins,
+			},
+		)
+
+		job_card2.time_logs[0].completed_qty = 20
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertRaises(frappe.ValidationError, job_card2.save)
 
 		frappe.db.set_single_value("Manufacturing Settings", "overproduction_percentage_for_work_order", 100)
@@ -1660,6 +2271,7 @@ class TestWorkOrder(FrappeTestCase):
 		job_card2.time_logs = []
 		job_card2.save()
 
+<<<<<<< HEAD
 	def test_make_serial_no_batch_from_work_order_for_serial_no(self):
 		item_code = "Test Serial No Item For Work Order"
 		warehouse = "_Test Warehouse - _TC"
@@ -1714,6 +2326,82 @@ class TestWorkOrder(FrappeTestCase):
 				self.assertEqual(sorted(get_serial_nos(row.serial_no)), sorted(get_serial_nos(serial_nos)))
 
 		frappe.db.set_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order", 0)
+=======
+	def test_operating_cost_account(self):
+		operating_cost_account = "Test Operating Cost Account - _TC"
+		company = "_Test Company"
+		if not frappe.db.exists("Account", operating_cost_account):
+			frappe.get_doc(
+				{
+					"doctype": "Account",
+					"account_name": "Test Operating Cost Account",
+					"account_type": "Expense Account",
+					"company": company,
+					"parent_account": "Expenses - _TC",
+					"root_type": "Expense",
+				}
+			).insert()
+
+		frappe.db.set_value("Company", company, "default_operating_cost_account", operating_cost_account)
+
+		for item in ["TEST RM OP COST Item 1", "TEST FG OP COST Item"]:
+			if not frappe.db.exists("Item", item):
+				make_item(item_code=item, properties={"is_stock_item": 1})
+
+		fg_item = "TEST FG OP COST Item"
+		bom_doc = make_bom(
+			item=fg_item,
+			raw_materials=["TEST RM OP COST Item 1"],
+			rate=150,
+			with_operations=1,
+			do_not_save=True,
+		)
+
+		workstation = "Test Workstation For Capacity Planning 1"
+		if not frappe.db.exists("Workstation", workstation):
+			make_workstation(workstation=workstation, production_capacity=1)
+
+		operation = "Test Operation For Capacity Planning 1"
+		if not frappe.db.exists("Operation", operation):
+			make_operation(operation=operation, workstation=workstation)
+
+		bom_doc.append(
+			"operations",
+			{"operation": operation, "time_in_mins": 60, "hour_rate": 100, "workstation": workstation},
+		)
+
+		bom_doc.save()
+		bom_doc.submit()
+
+		wo = make_wo_order_test_record(
+			production_item=fg_item,
+			bom_no=bom_doc.name,
+			qty=1,
+			skip_transfer=1,
+		)
+
+		job_cards = frappe.get_all("Job Card", filters={"work_order": wo.name})
+		for job_card in job_cards:
+			job_card_doc = frappe.get_doc("Job Card", job_card.name)
+			job_card_doc.time_logs = []
+			job_card_doc.append(
+				"time_logs",
+				{
+					"from_time": now(),
+					"to_time": add_to_date(now(), minutes=60),
+					"time_in_mins": 60,
+					"completed_qty": 1,
+				},
+			)
+
+			job_card_doc.submit()
+
+		se_doc = frappe.get_doc(make_stock_entry(wo.name, "Manufacture", 1))
+		se_doc.save()
+
+		for row in se_doc.additional_costs:
+			self.assertEqual(row.expense_account, operating_cost_account)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_op_cost_and_scrap_based_on_sub_assemblies(self):
 		# Make Sub Assembly BOM 1
@@ -1761,6 +2449,55 @@ class TestWorkOrder(FrappeTestCase):
 
 		frappe.db.set_single_value("Manufacturing Settings", "set_op_cost_and_scrape_from_sub_assemblies", 0)
 
+<<<<<<< HEAD
+=======
+	@IntegrationTestCase.change_settings(
+		"Manufacturing Settings", {"material_consumption": 1, "get_rm_cost_from_consumption_entry": 1}
+	)
+	def test_get_rm_cost_from_consumption_entry(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import (
+			make_stock_entry as make_stock_entry_test_record,
+		)
+
+		rm = make_item(properties={"is_stock_item": 1}).name
+		fg = make_item(properties={"is_stock_item": 1}).name
+
+		make_stock_entry_test_record(
+			purpose="Material Receipt",
+			item_code=rm,
+			target="Stores - _TC",
+			qty=10,
+			basic_rate=100,
+		)
+		make_stock_entry_test_record(
+			purpose="Material Receipt",
+			item_code=rm,
+			target="Stores - _TC",
+			qty=10,
+			basic_rate=200,
+		)
+
+		bom = make_bom(item=fg, raw_materials=[rm], rate=150).name
+		wo = make_wo_order_test_record(
+			production_item=fg,
+			bom_no=bom,
+			qty=10,
+		)
+
+		mte = frappe.get_doc(make_stock_entry(wo.name, "Material Transfer for Manufacture", 10))
+		mte.items[0].s_warehouse = "Stores - _TC"
+		mte.insert().submit()
+
+		mce = frappe.get_doc(make_stock_entry(wo.name, "Material Consumption for Manufacture", 10))
+		mce.insert().submit()
+
+		me = frappe.get_doc(make_stock_entry(wo.name, "Manufacture", 10))
+		me.insert().submit()
+
+		valuation_rate = sum([item.valuation_rate * item.transfer_qty for item in mce.items]) / 10
+		self.assertEqual(me.items[0].valuation_rate, valuation_rate)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_capcity_planning_for_workstation(self):
 		frappe.db.set_single_value(
 			"Manufacturing Settings",
@@ -1836,6 +2573,174 @@ class TestWorkOrder(FrappeTestCase):
 			"Manufacturing Settings", {"disable_capacity_planning": 1, "mins_between_operations": 0}
 		)
 
+<<<<<<< HEAD
+=======
+	def test_partial_material_consumption_with_batch(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import (
+			make_stock_entry as make_stock_entry_test_record,
+		)
+
+		frappe.db.set_single_value("Manufacturing Settings", "material_consumption", 1)
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		fg_item = make_item(
+			"Test FG Item For Partial Material Consumption",
+			{"is_stock_item": 1},
+		).name
+
+		rm_item = make_item(
+			"Test RM Item For Partial Material Consumption",
+			{
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"create_new_batch": 1,
+				"batch_number_series": "TST-BATCH-PMCC-.####",
+			},
+		).name
+
+		make_bom(
+			item=fg_item,
+			source_warehouse="Stores - _TC",
+			raw_materials=[rm_item],
+		)
+
+		make_stock_entry_test_record(
+			purpose="Material Receipt",
+			item_code=rm_item,
+			target="Stores - _TC",
+			qty=10,
+			basic_rate=100,
+		)
+
+		wo_order = make_wo_order_test_record(item=fg_item, qty=10)
+
+		stock_entry = frappe.get_doc(make_stock_entry(wo_order.name, "Material Transfer for Manufacture", 10))
+		stock_entry.submit()
+		stock_entry.reload()
+
+		batch_no = get_batch_from_bundle(stock_entry.items[0].serial_and_batch_bundle)
+
+		stock_entry = frappe.get_doc(
+			make_stock_entry(wo_order.name, "Material Consumption for Manufacture", 10)
+		)
+
+		self.assertEqual(stock_entry.items[0].batch_no, batch_no)
+		self.assertEqual(stock_entry.items[0].use_serial_batch_fields, 1)
+
+		frappe.db.set_single_value("Manufacturing Settings", "material_consumption", 0)
+		frappe.db.set_single_value(
+			"Manufacturing Settings",
+			"backflush_raw_materials_based_on",
+			"BOM",
+		)
+
+	def test_disassemby_order(self):
+		fg_item = "Test Disassembly Item"
+		source_warehouse = "Stores - _TC"
+		raw_materials = ["Test Disassembly RM Item 1", "Test Disassembly RM Item 2"]
+
+		make_item(fg_item, {"is_stock_item": 1})
+		for item in raw_materials:
+			make_item(item, {"is_stock_item": 1})
+			test_stock_entry.make_stock_entry(
+				item_code=item,
+				target=source_warehouse,
+				qty=1,
+				basic_rate=100,
+			)
+
+		make_bom(item=fg_item, source_warehouse=source_warehouse, raw_materials=raw_materials)
+
+		wo = make_wo_order_test_record(
+			item=fg_item,
+			qty=1,
+			source_warehouse=source_warehouse,
+			skip_transfer=1,
+		)
+
+		stock_entry = frappe.get_doc(make_stock_entry(wo.name, "Manufacture", 1))
+		for row in stock_entry.items:
+			if row.item_code in raw_materials:
+				row.s_warehouse = source_warehouse
+
+		stock_entry.submit()
+
+		wo.reload()
+		self.assertEqual(wo.status, "Completed")
+
+		stock_entry = frappe.get_doc(make_stock_entry(wo.name, "Disassemble", 1))
+		stock_entry.save()
+
+		self.assertEqual(stock_entry.purpose, "Disassemble")
+
+		for row in stock_entry.items:
+			if row.item_code == fg_item:
+				self.assertTrue(row.s_warehouse)
+				self.assertFalse(row.t_warehouse)
+			else:
+				self.assertFalse(row.s_warehouse)
+				self.assertTrue(row.t_warehouse)
+
+		stock_entry.submit()
+
+	def test_components_qty_for_bom_based_manufacture_entry(self):
+		frappe.db.set_single_value("Manufacturing Settings", "backflush_raw_materials_based_on", "BOM")
+		frappe.db.set_single_value("Manufacturing Settings", "validate_components_quantities_per_bom", 1)
+
+		fg_item = "Test FG Item For Component Validation"
+		source_warehouse = "Stores - _TC"
+		raw_materials = ["Test Component Validation RM Item 1", "Test Component Validation RM Item 2"]
+
+		make_item(fg_item, {"is_stock_item": 1})
+		for item in raw_materials:
+			make_item(item, {"is_stock_item": 1})
+			test_stock_entry.make_stock_entry(
+				item_code=item,
+				target=source_warehouse,
+				qty=10,
+				basic_rate=100,
+			)
+
+		make_bom(item=fg_item, source_warehouse=source_warehouse, raw_materials=raw_materials)
+
+		wo = make_wo_order_test_record(
+			item=fg_item,
+			qty=10,
+			source_warehouse=source_warehouse,
+		)
+
+		transfer_entry = frappe.get_doc(make_stock_entry(wo.name, "Material Transfer for Manufacture", 10))
+		transfer_entry.save()
+		for row in transfer_entry.items:
+			row.qty = 5
+
+		self.assertRaises(frappe.ValidationError, transfer_entry.save)
+
+		transfer_entry.reload()
+		for row in transfer_entry.items:
+			self.assertEqual(row.qty, 10)
+
+		transfer_entry.submit()
+
+		manufacture_entry = frappe.get_doc(make_stock_entry(wo.name, "Manufacture", 10))
+		manufacture_entry.save()
+		for row in manufacture_entry.items:
+			if not row.s_warehouse:
+				continue
+
+			row.qty = 5
+
+		self.assertRaises(frappe.ValidationError, manufacture_entry.save)
+		manufacture_entry.reload()
+		manufacture_entry.submit()
+
+		frappe.db.set_single_value("Manufacturing Settings", "validate_components_quantities_per_bom", 0)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def make_operation(**kwargs):
 	kwargs = frappe._dict(kwargs)
@@ -2016,6 +2921,32 @@ def prepare_data_for_backflush_based_on_materials_transferred():
 
 	make_bom(item=item.name, source_warehouse="Stores - _TC", raw_materials=[batch_item_doc.name])
 
+<<<<<<< HEAD
+=======
+	# Make additional items not attached to a BOM
+	make_item(
+		"Test Batch Battery Consumable",
+		{
+			"is_stock_item": 1,
+			"has_batch_no": 1,
+			"create_new_batch": 1,
+			"batch_number_series": "TBMK.#####",
+			"valuation_rate": 2.33,
+			"stock_uom": "Nos",
+		},
+	)
+	make_item(
+		"Test Serial Battery Consumable",
+		{
+			"is_stock_item": 1,
+			"has_serial_no": 1,
+			"serial_no_series": "TSBH.#####",
+			"valuation_rate": 3.33,
+			"stock_uom": "Nos",
+		},
+	)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	sn_item_doc = make_item(
 		"Test Serial No BTT Headphone",
 		{
@@ -2060,7 +2991,11 @@ def prepare_data_for_backflush_based_on_materials_transferred():
 	make_bom(item=item.name, source_warehouse="Stores - _TC", raw_materials=[sn_batch_item_doc.name])
 
 
+<<<<<<< HEAD
 def update_job_card(job_card, jc_qty=None):
+=======
+def update_job_card(job_card, jc_qty=None, days=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	employee = frappe.db.get_value("Employee", {"status": "Active"}, "name")
 	job_card_doc = frappe.get_doc("Job Card", job_card)
 	job_card_doc.set(
@@ -2074,6 +3009,7 @@ def update_job_card(job_card, jc_qty=None):
 	if jc_qty:
 		job_card_doc.for_quantity = jc_qty
 
+<<<<<<< HEAD
 	job_card_doc.append(
 		"time_logs",
 		{
@@ -2083,6 +3019,34 @@ def update_job_card(job_card, jc_qty=None):
 			"completed_qty": job_card_doc.for_quantity,
 		},
 	)
+=======
+	for row in job_card_doc.scheduled_time_logs:
+		job_card_doc.append(
+			"time_logs",
+			{
+				"from_time": row.from_time,
+				"to_time": row.to_time,
+				"employee": employee,
+				"time_in_mins": 60,
+				"completed_qty": 0.0,
+			},
+		)
+
+	if not job_card_doc.time_logs and days:
+		planned_start_time = add_days(now(), days=days)
+		job_card_doc.append(
+			"time_logs",
+			{
+				"from_time": planned_start_time,
+				"to_time": add_to_date(planned_start_time, minutes=60),
+				"employee": employee,
+				"time_in_mins": 60,
+				"completed_qty": 0.0,
+			},
+		)
+
+	job_card_doc.time_logs[0].completed_qty = job_card_doc.for_quantity
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	job_card_doc.submit()
 
@@ -2133,8 +3097,15 @@ def make_wo_order_test_record(**args):
 	wo_order.planned_start_date = args.planned_start_date or now()
 	wo_order.transfer_material_against = args.transfer_material_against or "Work Order"
 	wo_order.from_wip_warehouse = args.from_wip_warehouse or 0
+<<<<<<< HEAD
 
 	if args.source_warehouse:
+=======
+	wo_order.batch_size = args.batch_size or 0
+
+	if args.source_warehouse:
+		wo_order.source_warehouse = args.source_warehouse
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for item in wo_order.get("required_items"):
 			item.source_warehouse = args.source_warehouse
 
@@ -2144,6 +3115,9 @@ def make_wo_order_test_record(**args):
 		if not args.do_not_submit:
 			wo_order.submit()
 	return wo_order
+<<<<<<< HEAD
 
 
 test_records = frappe.get_test_records("Work Order")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

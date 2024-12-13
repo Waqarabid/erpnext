@@ -8,11 +8,19 @@
 
     {% if success==True %}
         <div class="alert alert-success">
+<<<<<<< HEAD
             Your email has been verified and your appointment has been scheduled
         </div>
     {% else %}
         <div class="alert alert-danger">
             Verification failed please check the link
+=======
+            {{ _("Your email has been verified and your appointment has been scheduled") }}
+        </div>
+    {% else %}
+        <div class="alert alert-danger">
+            {{ _("Verification failed please check the link") }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         </div>
     {% endif %}
 {% endblock%}

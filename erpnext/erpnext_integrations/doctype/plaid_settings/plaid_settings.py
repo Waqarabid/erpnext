@@ -14,6 +14,25 @@ from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_connector import 
 
 
 class PlaidSettings(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		automatic_sync: DF.Check
+		enable_european_access: DF.Check
+		enabled: DF.Check
+		plaid_client_id: DF.Data | None
+		plaid_env: DF.Literal["sandbox", "development", "production"]
+		plaid_secret: DF.Password | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@staticmethod
 	@frappe.whitelist()
 	def get_link_token():
@@ -80,7 +99,11 @@ def add_bank_accounts(response, bank, company):
 		frappe.throw(
 			_(
 				"Please setup and enable a group account with the Account Type - {0} for the company {1}"
+<<<<<<< HEAD
 			).format(frappe.bold("Bank"), company)
+=======
+			).format(frappe.bold(_("Bank")), company)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 	for account in response["accounts"]:
@@ -179,7 +202,10 @@ def add_account_subtype(account_subtype):
 		frappe.throw(frappe.get_traceback())
 
 
+<<<<<<< HEAD
 @frappe.whitelist()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def sync_transactions(bank, bank_account):
 	"""Sync transactions based on the last integration date as the start date, after sync is completed
 	add the transaction date of the oldest transaction as the last integration date."""

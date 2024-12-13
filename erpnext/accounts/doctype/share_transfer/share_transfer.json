@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "autoname": "ACC-SHT-.YYYY.-.#####",
  "creation": "2017-12-25 17:18:03.143726",
  "doctype": "DocType",
@@ -124,6 +128,10 @@
    "fieldname": "rate",
    "fieldtype": "Currency",
    "label": "Rate",
+<<<<<<< HEAD
+=======
+   "options": "Company:company:default_currency",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "reqd": 1
   },
   {
@@ -189,7 +197,12 @@
   }
  ],
  "is_submittable": 1,
+<<<<<<< HEAD
  "modified": "2019-12-20 14:48:01.990600",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:10:40.003178",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Share Transfer",
@@ -237,7 +250,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

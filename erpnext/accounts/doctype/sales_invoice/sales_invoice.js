@@ -1,11 +1,26 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
+<<<<<<< HEAD
 {% include 'erpnext/selling/sales_common.js' %};
 frappe.provide("erpnext.accounts");
 
 
 erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends erpnext.selling.SellingController {
+=======
+frappe.provide("erpnext.accounts");
+
+cur_frm.cscript.tax_table = "Sales Taxes and Charges";
+
+erpnext.accounts.taxes.setup_tax_validations("Sales Invoice");
+erpnext.accounts.payment_triggers.setup("Sales Invoice");
+erpnext.accounts.pos.setup("Sales Invoice");
+erpnext.accounts.taxes.setup_tax_filters("Sales Taxes and Charges");
+erpnext.sales_common.setup_selling_controller();
+erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
+	erpnext.selling.SellingController
+) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	setup(doc) {
 		this.setup_posting_date_time_check();
 		super.setup(doc);
@@ -18,19 +33,46 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		var me = this;
 		super.onload();
 
+<<<<<<< HEAD
 		this.frm.ignore_doctypes_on_cancel_all = ['POS Invoice', 'Timesheet', 'POS Invoice Merge Log',
 							  'POS Closing Entry', 'Journal Entry', 'Payment Entry', "Repost Payment Ledger", "Repost Accounting Ledger", "Unreconcile Payment", "Unreconcile Payment Entries", "Bank Transaction"];
 
 		if(!this.frm.doc.__islocal && !this.frm.doc.customer && this.frm.doc.debit_to) {
+=======
+		this.frm.ignore_doctypes_on_cancel_all = [
+			"POS Invoice",
+			"Timesheet",
+			"POS Invoice Merge Log",
+			"POS Closing Entry",
+			"Journal Entry",
+			"Payment Entry",
+			"Repost Payment Ledger",
+			"Repost Accounting Ledger",
+			"Unreconcile Payment",
+			"Unreconcile Payment Entries",
+			"Serial and Batch Bundle",
+			"Bank Transaction",
+		];
+
+		if (!this.frm.doc.__islocal && !this.frm.doc.customer && this.frm.doc.debit_to) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			// show debit_to in print format
 			this.frm.set_df_property("debit_to", "print_hide", 0);
 		}
 
+<<<<<<< HEAD
 		erpnext.queries.setup_queries(this.frm, "Warehouse", function() {
 			return erpnext.queries.warehouse(me.frm.doc);
 		});
 
 		if(this.frm.doc.__islocal && this.frm.doc.is_pos) {
+=======
+		erpnext.queries.setup_queries(this.frm, "Warehouse", function () {
+			return erpnext.queries.warehouse(me.frm.doc);
+		});
+
+		if (this.frm.doc.__islocal && this.frm.doc.is_pos) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			//Load pos profile data on the invoice if the default value of Is POS is 1
 
 			me.frm.script_manager.trigger("is_pos");
@@ -42,9 +84,15 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 	refresh(doc, dt, dn) {
 		const me = this;
 		super.refresh();
+<<<<<<< HEAD
 		if(cur_frm.msgbox && cur_frm.msgbox.$wrapper.is(":visible")) {
 			// hide new msgbox
 			cur_frm.msgbox.hide();
+=======
+		if (this.frm.msgbox && this.frm.msgbox.$wrapper.is(":visible")) {
+			// hide new msgbox
+			this.frm.msgbox.hide();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		this.frm.toggle_reqd("due_date", !this.frm.doc.is_return);
@@ -54,6 +102,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		}
 
 		this.show_general_ledger();
+<<<<<<< HEAD
 
 		if(doc.update_stock) this.show_stock_ledger();
 
@@ -107,10 +156,86 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 					cur_frm.add_custom_button(__('Dunning'), function() {
 						cur_frm.events.create_dunning(cur_frm);
 					}, __('Create'));
+=======
+		erpnext.accounts.ledger_preview.show_accounting_ledger_preview(this.frm);
+
+		if (doc.update_stock) {
+			this.show_stock_ledger();
+			erpnext.accounts.ledger_preview.show_stock_ledger_preview(this.frm);
+		}
+
+		if (doc.docstatus == 1 && doc.outstanding_amount != 0) {
+			this.frm.add_custom_button(__("Payment"), () => this.make_payment_entry(), __("Create"));
+			this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+		}
+
+		if (doc.docstatus == 1 && !doc.is_return) {
+			var is_delivered_by_supplier = false;
+
+			is_delivered_by_supplier = this.frm.doc.items.some(function (item) {
+				return item.is_delivered_by_supplier ? true : false;
+			});
+
+			if (doc.outstanding_amount >= 0 || Math.abs(flt(doc.outstanding_amount)) < flt(doc.grand_total)) {
+				this.frm.add_custom_button(
+					__("Return / Credit Note"),
+					this.make_sales_return.bind(this),
+					__("Create")
+				);
+				this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+			}
+
+			if (cint(doc.update_stock) != 1) {
+				// show Make Delivery Note button only if Sales Invoice is not created from Delivery Note
+				var from_delivery_note = false;
+				from_delivery_note = this.frm.doc.items.some(function (item) {
+					return item.delivery_note ? true : false;
+				});
+
+				if (!from_delivery_note && !is_delivered_by_supplier) {
+					this.frm.add_custom_button(
+						__("Delivery"),
+						this.frm.cscript["Make Delivery Note"],
+						__("Create")
+					);
+				}
+			}
+
+			if (doc.outstanding_amount > 0) {
+				this.frm.add_custom_button(
+					__("Payment Request"),
+					function () {
+						me.make_payment_request();
+					},
+					__("Create")
+				);
+
+				this.frm.add_custom_button(
+					__("Invoice Discounting"),
+					function () {
+						this.frm.events.create_invoice_discounting(this.frm);
+					},
+					__("Create")
+				);
+
+				const payment_is_overdue = doc.payment_schedule
+					.map((row) => Date.parse(row.due_date) < Date.now())
+					.reduce((prev, current) => prev || current, false);
+
+				if (payment_is_overdue) {
+					this.frm.add_custom_button(
+						__("Dunning"),
+						() => {
+							this.frm.events.create_dunning(this.frm);
+						},
+						__("Create")
+					);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			}
 
 			if (doc.docstatus === 1) {
+<<<<<<< HEAD
 				cur_frm.add_custom_button(__('Maintenance Schedule'), function () {
 					cur_frm.cscript.make_maintenance_schedule();
 				}, __('Create'));
@@ -120,11 +245,24 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 				cur_frm.add_custom_button(__('Subscription'), function() {
 					erpnext.utils.make_subscription(doc.doctype, doc.name)
 				}, __('Create'))
+=======
+				this.frm.add_custom_button(
+					__("Maintenance Schedule"),
+					function () {
+						this.frm.cscript.make_maintenance_schedule();
+					},
+					__("Create")
+				);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 
 		// Show buttons only when pos view is active
+<<<<<<< HEAD
 		if (cint(doc.docstatus==0) && cur_frm.page.current_view_name!=="pos" && !doc.is_return) {
+=======
+		if (cint(doc.docstatus == 0) && this.frm.page.current_view_name !== "pos" && !doc.is_return) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.frm.cscript.sales_order_btn();
 			this.frm.cscript.delivery_note_btn();
 			this.frm.cscript.quotation_btn();
@@ -134,12 +272,27 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		if (doc.docstatus == 1 && !doc.inter_company_invoice_reference) {
 			let internal = me.frm.doc.is_internal_customer;
 			if (internal) {
+<<<<<<< HEAD
 				let button_label = (me.frm.doc.company === me.frm.doc.represents_company) ? "Internal Purchase Invoice" :
 					"Inter Company Purchase Invoice";
 
 				me.frm.add_custom_button(button_label, function() {
 					me.make_inter_company_invoice();
 				}, __('Create'));
+=======
+				let button_label =
+					me.frm.doc.company === me.frm.doc.represents_company
+						? "Internal Purchase Invoice"
+						: "Inter Company Purchase Invoice";
+
+				me.frm.add_custom_button(
+					button_label,
+					function () {
+						me.make_inter_company_invoice();
+					},
+					__("Create")
+				);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 
@@ -149,24 +302,40 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 	make_maintenance_schedule() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_maintenance_schedule",
+<<<<<<< HEAD
 			frm: cur_frm
 		})
+=======
+			frm: this.frm,
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	on_submit(doc, dt, dn) {
 		var me = this;
 
+<<<<<<< HEAD
 		if (frappe.get_route()[0] != 'Form') {
 			return
 		}
 
 		doc.items.forEach((row) => {
 			if(row.delivery_note) frappe.model.clear_doc("Delivery Note", row.delivery_note)
+=======
+		super.on_submit();
+		if (frappe.get_route()[0] != "Form") {
+			return;
+		}
+
+		doc.items.forEach((row) => {
+			if (row.delivery_note) frappe.model.clear_doc("Delivery Note", row.delivery_note);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 
 	set_default_print_format() {
 		// set default print format to POS type or Credit Note
+<<<<<<< HEAD
 		if(cur_frm.doc.is_pos) {
 			if(cur_frm.pos_print_format) {
 				cur_frm.meta._default_print_format = cur_frm.meta.default_print_format;
@@ -184,14 +353,43 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 			} else if([cur_frm.pos_print_format, cur_frm.return_print_format].includes(cur_frm.meta.default_print_format)) {
 				cur_frm.meta.default_print_format = null;
 				cur_frm.meta._default_print_format = null;
+=======
+		if (this.frm.doc.is_pos) {
+			if (this.frm.pos_print_format) {
+				this.frm.meta._default_print_format = this.frm.meta.default_print_format;
+				this.frm.meta.default_print_format = this.frm.pos_print_format;
+			}
+		} else if (this.frm.doc.is_return && !this.frm.meta.default_print_format) {
+			if (this.frm.return_print_format) {
+				this.frm.meta._default_print_format = this.frm.meta.default_print_format;
+				this.frm.meta.default_print_format = this.frm.return_print_format;
+			}
+		} else {
+			if (this.frm.meta._default_print_format) {
+				this.frm.meta.default_print_format = this.frm.meta._default_print_format;
+				this.frm.meta._default_print_format = null;
+			} else if (
+				[this.frm.pos_print_format, this.frm.return_print_format].includes(
+					this.frm.meta.default_print_format
+				)
+			) {
+				this.frm.meta.default_print_format = null;
+				this.frm.meta._default_print_format = null;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 	}
 
 	sales_order_btn() {
 		var me = this;
+<<<<<<< HEAD
 		this.$sales_order_btn = this.frm.add_custom_button(__('Sales Order'),
 			function() {
+=======
+		this.$sales_order_btn = this.frm.add_custom_button(
+			__("Sales Order"),
+			function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				erpnext.utils.map_current_doc({
 					method: "erpnext.selling.doctype.sales_order.sales_order.make_sales_invoice",
 					source_doctype: "Sales Order",
@@ -203,20 +401,36 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 						docstatus: 1,
 						status: ["not in", ["Closed", "On Hold"]],
 						per_billed: ["<", 99.99],
+<<<<<<< HEAD
 						company: me.frm.doc.company
 					}
 				})
 			}, __("Get Items From"));
+=======
+						company: me.frm.doc.company,
+					},
+				});
+			},
+			__("Get Items From")
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	quotation_btn() {
 		var me = this;
+<<<<<<< HEAD
 		this.$quotation_btn = this.frm.add_custom_button(__('Quotation'),
 			function() {
+=======
+		this.$quotation_btn = this.frm.add_custom_button(
+			__("Quotation"),
+			function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				erpnext.utils.map_current_doc({
 					method: "erpnext.selling.doctype.quotation.quotation.make_sales_invoice",
 					source_doctype: "Quotation",
 					target: me.frm,
+<<<<<<< HEAD
 					setters: [{
 						fieldtype: 'Link',
 						label: __('Customer'),
@@ -231,18 +445,45 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 					}
 				})
 			}, __("Get Items From"));
+=======
+					setters: [
+						{
+							fieldtype: "Link",
+							label: __("Customer"),
+							options: "Customer",
+							fieldname: "party_name",
+							default: me.frm.doc.customer,
+						},
+					],
+					get_query_filters: {
+						docstatus: 1,
+						status: ["!=", "Lost"],
+						company: me.frm.doc.company,
+					},
+				});
+			},
+			__("Get Items From")
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	delivery_note_btn() {
 		var me = this;
+<<<<<<< HEAD
 		this.$delivery_note_btn = this.frm.add_custom_button(__('Delivery Note'),
 			function() {
+=======
+		this.$delivery_note_btn = this.frm.add_custom_button(
+			__("Delivery Note"),
+			function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				erpnext.utils.map_current_doc({
 					method: "erpnext.stock.doctype.delivery_note.delivery_note.make_sales_invoice",
 					source_doctype: "Delivery Note",
 					target: me.frm,
 					date_field: "posting_date",
 					setters: {
+<<<<<<< HEAD
 						customer: me.frm.doc.customer || undefined
 					},
 					get_query: function() {
@@ -259,12 +500,33 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 					}
 				});
 			}, __("Get Items From"));
+=======
+						customer: me.frm.doc.customer || undefined,
+					},
+					get_query: function () {
+						var filters = {
+							docstatus: 1,
+							company: me.frm.doc.company,
+							is_return: 0,
+						};
+						if (me.frm.doc.customer) filters["customer"] = me.frm.doc.customer;
+						return {
+							query: "erpnext.controllers.queries.get_delivery_notes_to_be_billed",
+							filters: filters,
+						};
+					},
+				});
+			},
+			__("Get Items From")
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	tc_name() {
 		this.get_terms();
 	}
 	customer() {
+<<<<<<< HEAD
 		if (this.frm.doc.is_pos){
 			var pos_profile = this.frm.doc.pos_profile;
 		}
@@ -275,6 +537,20 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 
 		erpnext.utils.get_party_details(this.frm,
 			"erpnext.accounts.party.get_party_details", {
+=======
+		if (this.frm.doc.is_pos) {
+			var pos_profile = this.frm.doc.pos_profile;
+		}
+		var me = this;
+		if (this.frm.updating_party_details) return;
+
+		if (this.frm.doc.__onload && this.frm.doc.__onload.load_after_mapping) return;
+
+		erpnext.utils.get_party_details(
+			this.frm,
+			"erpnext.accounts.party.get_party_details",
+			{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				posting_date: this.frm.doc.posting_date,
 				party: this.frm.doc.customer,
 				party_type: "Customer",
@@ -287,6 +563,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 			},
 			function () {
 				me.apply_pricing_rule();
+<<<<<<< HEAD
 			});
 
 		if(this.frm.doc.customer) {
@@ -300,6 +577,22 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 						select_loyalty_program(me.frm, r.message);
 					}
 				}
+=======
+			}
+		);
+
+		if (this.frm.doc.customer) {
+			frappe.call({
+				method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.get_loyalty_programs",
+				args: {
+					customer: this.frm.doc.customer,
+				},
+				callback: function (r) {
+					if (r.message && r.message.length > 1) {
+						select_loyalty_program(me.frm, r.message);
+					}
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	}
@@ -308,13 +601,21 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		let me = this;
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_inter_company_purchase_invoice",
+<<<<<<< HEAD
 			frm: me.frm
+=======
+			frm: me.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 
 	debit_to() {
 		var me = this;
+<<<<<<< HEAD
 		if(this.frm.doc.debit_to) {
+=======
+		if (this.frm.doc.debit_to) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			me.frm.call({
 				method: "frappe.client.get_value",
 				args: {
@@ -322,12 +623,21 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 					fieldname: "account_currency",
 					filters: { name: me.frm.doc.debit_to },
 				},
+<<<<<<< HEAD
 				callback: function(r, rt) {
 					if(r.message) {
 						me.frm.set_value("party_account_currency", r.message.account_currency);
 						me.set_dynamic_labels();
 					}
 				}
+=======
+				callback: function (r, rt) {
+					if (r.message) {
+						me.frm.set_value("party_account_currency", r.message.account_currency);
+						me.set_dynamic_labels();
+					}
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	}
@@ -341,8 +651,17 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		if (cint(this.frm.doc.write_off_outstanding_amount_automatically)) {
 			frappe.model.round_floats_in(this.frm.doc, ["grand_total", "paid_amount"]);
 			// this will make outstanding amount 0
+<<<<<<< HEAD
 			this.frm.set_value("write_off_amount",
 				flt(this.frm.doc.grand_total - this.frm.doc.paid_amount - this.frm.doc.total_advance, precision("write_off_amount"))
+=======
+			this.frm.set_value(
+				"write_off_amount",
+				flt(
+					this.frm.doc.grand_total - this.frm.doc.paid_amount - this.frm.doc.total_advance,
+					precision("write_off_amount")
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			);
 		}
 
@@ -357,12 +676,24 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 
 	items_add(doc, cdt, cdn) {
 		var row = frappe.get_doc(cdt, cdn);
+<<<<<<< HEAD
 		this.frm.script_manager.copy_from_first_row("items", row, ["income_account", "discount_account", "cost_center"]);
+=======
+		this.frm.script_manager.copy_from_first_row("items", row, [
+			"income_account",
+			"discount_account",
+			"cost_center",
+		]);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	set_dynamic_labels() {
 		super.set_dynamic_labels();
+<<<<<<< HEAD
 		this.frm.events.hide_fields(this.frm)
+=======
+		this.frm.events.hide_fields(this.frm);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	items_on_form_rendered() {
@@ -376,12 +707,18 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 	make_sales_return() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_sales_return",
+<<<<<<< HEAD
 			frm: cur_frm
 		})
+=======
+			frm: this.frm,
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	asset(frm, cdt, cdn) {
 		var row = locals[cdt][cdn];
+<<<<<<< HEAD
 		if(row.asset) {
 			frappe.call({
 				method: erpnext.assets.doctype.asset.depreciation.get_disposal_account_and_cost_center,
@@ -397,18 +734,45 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 	}
 
 	is_pos(frm){
+=======
+		if (row.asset) {
+			frappe.call({
+				method: erpnext.assets.doctype.asset.depreciation.get_disposal_account_and_cost_center,
+				args: {
+					company: frm.doc.company,
+				},
+				callback: function (r, rt) {
+					frappe.model.set_value(cdt, cdn, "income_account", r.message[0]);
+					frappe.model.set_value(cdt, cdn, "cost_center", r.message[1]);
+				},
+			});
+		}
+	}
+
+	is_pos(frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.set_pos_data();
 	}
 
 	pos_profile() {
+<<<<<<< HEAD
 		this.frm.doc.taxes = []
+=======
+		this.frm.doc.taxes = [];
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.set_pos_data();
 	}
 
 	set_pos_data() {
+<<<<<<< HEAD
 		if(this.frm.doc.is_pos) {
 			this.frm.set_value("allocate_advances_automatically", 0);
 			if(!this.frm.doc.company) {
+=======
+		if (this.frm.doc.is_pos) {
+			this.frm.set_value("allocate_advances_automatically", 0);
+			if (!this.frm.doc.company) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				this.frm.set_value("is_pos", 0);
 				frappe.msgprint(__("Please specify Company to proceed"));
 			} else {
@@ -426,7 +790,11 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 								me.frm.pos_print_format = r.message.print_format;
 							}
 							me.frm.trigger("update_stock");
+<<<<<<< HEAD
 							if(me.frm.doc.taxes_and_charges) {
+=======
+							if (me.frm.doc.taxes_and_charges) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 								me.frm.script_manager.trigger("taxes_and_charges");
 							}
 
@@ -434,6 +802,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 							me.set_dynamic_labels();
 							me.calculate_taxes_and_totals();
 						}
+<<<<<<< HEAD
 					}
 				});
 			}
@@ -449,6 +818,22 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		if(this.frm.doc.paid_amount > this.frm.doc.grand_total){
 			this.calculate_write_off_amount();
 		}else {
+=======
+					},
+				});
+			}
+		} else this.frm.trigger("refresh");
+	}
+
+	amount() {
+		this.write_off_outstanding_amount_automatically();
+	}
+
+	change_amount() {
+		if (this.frm.doc.paid_amount > this.frm.doc.grand_total) {
+			this.calculate_write_off_amount();
+		} else {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.frm.set_value("change_amount", 0.0);
 			this.frm.set_value("base_change_amount", 0.0);
 		}
@@ -456,7 +841,11 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		this.frm.refresh_fields();
 	}
 
+<<<<<<< HEAD
 	loyalty_amount(){
+=======
+	loyalty_amount() {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.calculate_outstanding_amount();
 		this.frm.refresh_field("outstanding_amount");
 		this.frm.refresh_field("paid_amount");
@@ -468,16 +857,34 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 		super.currency();
 		if (this.frm.doc.timesheets) {
 			this.frm.doc.timesheets.forEach((d) => {
+<<<<<<< HEAD
 				let row = frappe.get_doc(d.doctype, d.name)
 				set_timesheet_detail_rate(row.doctype, row.name, me.frm.doc.currency, row.timesheet_detail)
+=======
+				let row = frappe.get_doc(d.doctype, d.name);
+				set_timesheet_detail_rate(row.doctype, row.name, me.frm.doc.currency, row.timesheet_detail);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 			this.frm.trigger("calculate_timesheet_totals");
 		}
 	}
 
 	is_cash_or_non_trade_discount() {
+<<<<<<< HEAD
 		this.frm.set_df_property("additional_discount_account", "hidden", 1 - this.frm.doc.is_cash_or_non_trade_discount);
 		this.frm.set_df_property("additional_discount_account", "reqd", this.frm.doc.is_cash_or_non_trade_discount);
+=======
+		this.frm.set_df_property(
+			"additional_discount_account",
+			"hidden",
+			1 - this.frm.doc.is_cash_or_non_trade_discount
+		);
+		this.frm.set_df_property(
+			"additional_discount_account",
+			"reqd",
+			this.frm.doc.is_cash_or_non_trade_discount
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if (!this.frm.doc.is_cash_or_non_trade_discount) {
 			this.frm.set_value("additional_discount_account", "");
@@ -488,6 +895,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends e
 };
 
 // for backward compatibility: combine new and previous states
+<<<<<<< HEAD
 extend_cscript(cur_frm.cscript, new erpnext.accounts.SalesInvoiceController({frm: cur_frm}));
 
 cur_frm.cscript['Make Delivery Note'] = function() {
@@ -734,62 +1142,354 @@ frappe.ui.form.on('Sales Invoice', {
 	},
 
 	loyalty_points: function(frm) {
+=======
+extend_cscript(cur_frm.cscript, new erpnext.accounts.SalesInvoiceController({ frm: cur_frm }));
+
+cur_frm.cscript["Make Delivery Note"] = function () {
+	frappe.model.open_mapped_doc({
+		method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_delivery_note",
+		frm: cur_frm,
+	});
+};
+
+cur_frm.cscript.income_account = function (doc, cdt, cdn) {
+	erpnext.utils.copy_value_in_all_rows(doc, cdt, cdn, "items", "income_account");
+};
+
+cur_frm.cscript.expense_account = function (doc, cdt, cdn) {
+	erpnext.utils.copy_value_in_all_rows(doc, cdt, cdn, "items", "expense_account");
+};
+
+cur_frm.cscript.cost_center = function (doc, cdt, cdn) {
+	erpnext.utils.copy_value_in_all_rows(doc, cdt, cdn, "items", "cost_center");
+};
+
+frappe.ui.form.on("Sales Invoice", {
+	setup: function (frm) {
+		frm.add_fetch("customer", "tax_id", "tax_id");
+		frm.add_fetch("payment_term", "invoice_portion", "invoice_portion");
+		frm.add_fetch("payment_term", "description", "description");
+
+		frm.set_df_property("packed_items", "cannot_add_rows", true);
+		frm.set_df_property("packed_items", "cannot_delete_rows", true);
+
+		frm.set_query("cash_bank_account", function (doc) {
+			return {
+				filters: [
+					["Account", "account_type", "in", ["Cash", "Bank"]],
+					["Account", "root_type", "=", "Asset"],
+					["Account", "is_group", "=", 0],
+					["Account", "company", "=", doc.company],
+				],
+			};
+		});
+
+		frm.set_query("write_off_account", function (doc) {
+			return {
+				filters: {
+					report_type: "Profit and Loss",
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("write_off_cost_center", function (doc) {
+			return {
+				filters: {
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("cost_center", "items", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("debit_to", function (doc) {
+			return {
+				filters: {
+					account_type: "Receivable",
+					is_group: 0,
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("asset", "items", function (doc, cdt, cdn) {
+			const row = locals[cdt][cdn];
+			return {
+				filters: [
+					["Asset", "item_code", "=", row.item_code],
+					["Asset", "docstatus", "=", 1],
+					["Asset", "status", "in", ["Submitted", "Partially Depreciated", "Fully Depreciated"]],
+					["Asset", "company", "=", doc.company],
+				],
+			};
+		});
+
+		frm.set_query("account_for_change_amount", function (doc) {
+			return {
+				filters: {
+					account_type: ["in", ["Cash", "Bank"]],
+					company: doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("unrealized_profit_loss_account", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+					is_group: 0,
+					root_type: "Liability",
+				},
+			};
+		});
+
+		frm.set_query("adjustment_against", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+					customer: doc.customer,
+					docstatus: 1,
+				},
+			};
+		});
+
+		frm.set_query("additional_discount_account", function (doc) {
+			return {
+				filters: {
+					company: doc.company,
+					is_group: 0,
+					report_type: "Profit and Loss",
+				},
+			};
+		});
+
+		frm.set_query("income_account", "items", function (doc) {
+			return {
+				query: "erpnext.controllers.queries.get_income_account",
+				filters: {
+					company: doc.company,
+					disabled: 0,
+				},
+			};
+		});
+
+		frm.custom_make_buttons = {
+			"Delivery Note": "Delivery",
+			"Sales Invoice": "Return / Credit Note",
+			"Payment Request": "Payment Request",
+			"Payment Entry": "Payment",
+		};
+
+		frm.set_query("time_sheet", "timesheets", function (doc, cdt, cdn) {
+			return {
+				query: "erpnext.projects.doctype.timesheet.timesheet.get_timesheet",
+				filters: { project: doc.project },
+			};
+		});
+
+		frm.set_query("discount_account", "items", function (doc) {
+			return {
+				filters: {
+					report_type: "Profit and Loss",
+					company: doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("deferred_revenue_account", "items", function (doc) {
+			return {
+				filters: {
+					root_type: "Liability",
+					company: doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("pos_profile", function (doc) {
+			if (!doc.company) {
+				frappe.throw(__("Please set Company"));
+			}
+
+			return {
+				query: "erpnext.accounts.doctype.pos_profile.pos_profile.pos_profile_query",
+				filters: {
+					company: doc.company,
+				},
+			};
+		});
+
+		frm.set_query("loyalty_redemption_account", function () {
+			return {
+				filters: {
+					company: frm.doc.company,
+					is_group: 0,
+				},
+			};
+		});
+
+		frm.set_query("loyalty_redemption_cost_center", function () {
+			return {
+				filters: {
+					company: frm.doc.company,
+					is_group: 0,
+				},
+			};
+		});
+	},
+	// When multiple companies are set up. in case company name is changed set default company address
+	company: function (frm) {
+		if (frm.doc.company) {
+			frappe.call({
+				method: "erpnext.setup.doctype.company.company.get_default_company_address",
+				args: { name: frm.doc.company, existing_address: frm.doc.company_address || "" },
+				debounce: 2000,
+				callback: function (r) {
+					if (r.message) {
+						frm.set_value("company_address", r.message);
+					} else {
+						frm.set_value("company_address", "");
+					}
+				},
+			});
+		}
+	},
+
+	onload: function (frm) {
+		frm.redemption_conversion_factor = null;
+	},
+
+	update_stock: function (frm, dt, dn) {
+		frm.events.hide_fields(frm);
+		frm.trigger("reset_posting_time");
+	},
+
+	redeem_loyalty_points: function (frm) {
+		frm.events.get_loyalty_details(frm);
+	},
+
+	loyalty_points: function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.redemption_conversion_factor) {
 			frm.events.set_loyalty_points(frm);
 		} else {
 			frappe.call({
 				method: "erpnext.accounts.doctype.loyalty_program.loyalty_program.get_redeemption_factor",
 				args: {
+<<<<<<< HEAD
 					"loyalty_program": frm.doc.loyalty_program
 				},
 				callback: function(r) {
+=======
+					loyalty_program: frm.doc.loyalty_program,
+				},
+				callback: function (r) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					if (r) {
 						frm.redemption_conversion_factor = r.message;
 						frm.events.set_loyalty_points(frm);
 					}
+<<<<<<< HEAD
 				}
+=======
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
 
+<<<<<<< HEAD
 	hide_fields: function(frm) {
 		let doc = frm.doc;
 		var parent_fields = ['project', 'due_date', 'is_opening', 'source', 'total_advance', 'get_advances',
 		'advances', 'from_date', 'to_date'];
 
 		if(cint(doc.is_pos) == 1) {
+=======
+	hide_fields: function (frm) {
+		let doc = frm.doc;
+		var parent_fields = [
+			"project",
+			"due_date",
+			"is_opening",
+			"utm_source",
+			"utm_campaign",
+			"utm_medium",
+			"total_advance",
+			"get_advances",
+			"advances",
+			"from_date",
+			"to_date",
+		];
+
+		if (cint(doc.is_pos) == 1) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			hide_field(parent_fields);
 		} else {
 			for (var i in parent_fields) {
 				var docfield = frappe.meta.docfield_map[doc.doctype][parent_fields[i]];
+<<<<<<< HEAD
 				if(!docfield.hidden) unhide_field(parent_fields[i]);
+=======
+				if (!docfield.hidden) unhide_field(parent_fields[i]);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 
 		frm.refresh_fields();
 	},
 
+<<<<<<< HEAD
 	get_loyalty_details: function(frm) {
+=======
+	get_loyalty_details: function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.customer && frm.doc.redeem_loyalty_points) {
 			frappe.call({
 				method: "erpnext.accounts.doctype.loyalty_program.loyalty_program.get_loyalty_program_details",
 				args: {
+<<<<<<< HEAD
 					"customer": frm.doc.customer,
 					"loyalty_program": frm.doc.loyalty_program,
 					"expiry_date": frm.doc.posting_date,
 					"company": frm.doc.company
 				},
 				callback: function(r) {
+=======
+					customer: frm.doc.customer,
+					loyalty_program: frm.doc.loyalty_program,
+					expiry_date: frm.doc.posting_date,
+					company: frm.doc.company,
+				},
+				callback: function (r) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					if (r) {
 						frm.set_value("loyalty_redemption_account", r.message.expense_account);
 						frm.set_value("loyalty_redemption_cost_center", r.message.cost_center);
 						frm.redemption_conversion_factor = r.message.conversion_factor;
 					}
+<<<<<<< HEAD
 				}
+=======
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
 
+<<<<<<< HEAD
 	set_loyalty_points: function(frm) {
 		if (frm.redemption_conversion_factor) {
 			let loyalty_amount = flt(frm.redemption_conversion_factor*flt(frm.doc.loyalty_points), precision("loyalty_amount"));
@@ -797,15 +1497,35 @@ frappe.ui.form.on('Sales Invoice', {
 			if (frm.doc.grand_total && (remaining_amount < loyalty_amount)) {
 				let redeemable_points = parseInt(remaining_amount/frm.redemption_conversion_factor);
 				frappe.throw(__("You can only redeem max {0} points in this order.",[redeemable_points]));
+=======
+	set_loyalty_points: function (frm) {
+		if (frm.redemption_conversion_factor) {
+			let loyalty_amount = flt(
+				frm.redemption_conversion_factor * flt(frm.doc.loyalty_points),
+				precision("loyalty_amount")
+			);
+			var remaining_amount =
+				flt(frm.doc.grand_total) - flt(frm.doc.total_advance) - flt(frm.doc.write_off_amount);
+			if (frm.doc.grand_total && remaining_amount < loyalty_amount) {
+				let redeemable_points = parseInt(remaining_amount / frm.redemption_conversion_factor);
+				frappe.throw(__("You can only redeem max {0} points in this order.", [redeemable_points]));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 			frm.set_value("loyalty_amount", loyalty_amount);
 		}
 	},
 
+<<<<<<< HEAD
 	project: function(frm) {
 		if (frm.doc.project) {
 			frm.events.add_timesheet_data(frm, {
 				project: frm.doc.project
+=======
+	project: function (frm) {
+		if (frm.doc.project) {
+			frm.events.add_timesheet_data(frm, {
+				project: frm.doc.project,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
@@ -816,7 +1536,11 @@ frappe.ui.form.on('Sales Invoice', {
 			kwargs = Object();
 		}
 
+<<<<<<< HEAD
 		if (!kwargs.hasOwnProperty("project") && frm.doc.project) {
+=======
+		if (!Object.prototype.hasOwnProperty.call(kwargs, "project") && frm.doc.project) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			kwargs.project = frm.doc.project;
 		}
 
@@ -825,6 +1549,7 @@ frappe.ui.form.on('Sales Invoice', {
 	},
 
 	async get_timesheet_data(frm, kwargs) {
+<<<<<<< HEAD
 		return frappe.call({
 			method: "erpnext.projects.doctype.timesheet.timesheet.get_projectwise_timesheet_data",
 			args: kwargs
@@ -845,6 +1570,32 @@ frappe.ui.form.on('Sales Invoice', {
 					frm, timesheet.currency, frm.doc.currency
 				)
 				frm.events.append_time_log(frm, timesheet, exchange_rate)
+=======
+		return frappe
+			.call({
+				method: "erpnext.projects.doctype.timesheet.timesheet.get_projectwise_timesheet_data",
+				args: kwargs,
+			})
+			.then((r) => {
+				if (!r.exc && r.message.length > 0) {
+					return r.message;
+				} else {
+					return [];
+				}
+			});
+	},
+
+	set_timesheet_data: function (frm, timesheets) {
+		frm.clear_table("timesheets");
+		timesheets.forEach(async (timesheet) => {
+			if (frm.doc.currency != timesheet.currency) {
+				const exchange_rate = await frm.events.get_exchange_rate(
+					frm,
+					timesheet.currency,
+					frm.doc.currency
+				);
+				frm.events.append_time_log(frm, timesheet, exchange_rate);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			} else {
 				frm.events.append_time_log(frm, timesheet, 1.0);
 			}
@@ -855,9 +1606,15 @@ frappe.ui.form.on('Sales Invoice', {
 
 	async get_exchange_rate(frm, from_currency, to_currency) {
 		if (
+<<<<<<< HEAD
 			frm.exchange_rates
 			&& frm.exchange_rates[from_currency]
 			&& frm.exchange_rates[from_currency][to_currency]
+=======
+			frm.exchange_rates &&
+			frm.exchange_rates[from_currency] &&
+			frm.exchange_rates[from_currency][to_currency]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		) {
 			return frm.exchange_rates[from_currency][to_currency];
 		}
@@ -866,20 +1623,34 @@ frappe.ui.form.on('Sales Invoice', {
 			method: "erpnext.setup.utils.get_exchange_rate",
 			args: {
 				from_currency,
+<<<<<<< HEAD
 				to_currency
 			},
 			callback: function(r) {
+=======
+				to_currency,
+			},
+			callback: function (r) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (r.message) {
 					// cache exchange rates
 					frm.exchange_rates = frm.exchange_rates || {};
 					frm.exchange_rates[from_currency] = frm.exchange_rates[from_currency] || {};
 					frm.exchange_rates[from_currency][to_currency] = r.message;
 				}
+<<<<<<< HEAD
 			}
 		});
 	},
 
 	append_time_log: function(frm, time_log, exchange_rate) {
+=======
+			},
+		});
+	},
+
+	append_time_log: function (frm, time_log, exchange_rate) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const row = frm.add_child("timesheets");
 		row.activity_type = time_log.activity_type;
 		row.description = time_log.description;
@@ -892,6 +1663,7 @@ frappe.ui.form.on('Sales Invoice', {
 		row.project_name = time_log.project_name;
 	},
 
+<<<<<<< HEAD
 	calculate_timesheet_totals: function(frm) {
 		frm.set_value("total_billing_amount",
 			frm.doc.timesheets.reduce((a, b) => a + (b["billing_amount"] || 0.0), 0.0));
@@ -902,20 +1674,44 @@ frappe.ui.form.on('Sales Invoice', {
 	refresh: function(frm) {
 		if (frm.doc.docstatus===0 && !frm.doc.is_return) {
 			frm.add_custom_button(__("Fetch Timesheet"), function() {
+=======
+	calculate_timesheet_totals: function (frm) {
+		frm.set_value(
+			"total_billing_amount",
+			frm.doc.timesheets.reduce((a, b) => a + (b["billing_amount"] || 0.0), 0.0)
+		);
+		frm.set_value(
+			"total_billing_hours",
+			frm.doc.timesheets.reduce((a, b) => a + (b["billing_hours"] || 0.0), 0.0)
+		);
+	},
+
+	refresh: function (frm) {
+		if (frm.doc.docstatus === 0 && !frm.doc.is_return) {
+			frm.add_custom_button(__("Fetch Timesheet"), function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				let d = new frappe.ui.Dialog({
 					title: __("Fetch Timesheet"),
 					fields: [
 						{
+<<<<<<< HEAD
 							"label" : __("From"),
 							"fieldname": "from_time",
 							"fieldtype": "Date",
 							"reqd": 1,
+=======
+							label: __("From"),
+							fieldname: "from_time",
+							fieldtype: "Date",
+							reqd: 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						},
 						{
 							fieldtype: "Column Break",
 							fieldname: "col_break_1",
 						},
 						{
+<<<<<<< HEAD
 							"label" : __("To"),
 							"fieldname": "to_time",
 							"fieldtype": "Date",
@@ -930,21 +1726,46 @@ frappe.ui.form.on('Sales Invoice', {
 						},
 					],
 					primary_action: function() {
+=======
+							label: __("To"),
+							fieldname: "to_time",
+							fieldtype: "Date",
+							reqd: 1,
+						},
+						{
+							label: __("Project"),
+							fieldname: "project",
+							fieldtype: "Link",
+							options: "Project",
+							default: frm.doc.project,
+						},
+					],
+					primary_action: function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						const data = d.get_values();
 						frm.events.add_timesheet_data(frm, {
 							from_time: data.from_time,
 							to_time: data.to_time,
+<<<<<<< HEAD
 							project: data.project
 						});
 						d.hide();
 					},
 					primary_action_label: __("Get Timesheets")
+=======
+							project: data.project,
+						});
+						d.hide();
+					},
+					primary_action_label: __("Get Timesheets"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				});
 				d.show();
 			});
 		}
 
 		if (frm.doc.is_debit_note) {
+<<<<<<< HEAD
 			frm.set_df_property('return_against', 'label', __('Adjustment Against'));
 		}
 	},
@@ -962,19 +1783,46 @@ frappe.ui.form.on('Sales Invoice', {
 			frm: frm
 		});
 	}
+=======
+			frm.set_df_property("return_against", "label", __("Adjustment Against"));
+		}
+	},
+
+	create_invoice_discounting: function (frm) {
+		frappe.model.open_mapped_doc({
+			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.create_invoice_discounting",
+			frm: frm,
+		});
+	},
+
+	create_dunning: function (frm) {
+		frappe.model.open_mapped_doc({
+			method: "erpnext.accounts.doctype.sales_invoice.sales_invoice.create_dunning",
+			frm: frm,
+		});
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });
 
 frappe.ui.form.on("Sales Invoice Timesheet", {
 	timesheets_remove(frm) {
 		frm.trigger("calculate_timesheet_totals");
+<<<<<<< HEAD
 	}
 });
 
 var set_timesheet_detail_rate = function(cdt, cdn, currency, timelog) {
+=======
+	},
+});
+
+var set_timesheet_detail_rate = function (cdt, cdn, currency, timelog) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.call({
 		method: "erpnext.projects.doctype.timesheet.timesheet.get_timesheet_detail_rate",
 		args: {
 			timelog: timelog,
+<<<<<<< HEAD
 			currency: currency
 		},
 		callback: function(r) {
@@ -986,10 +1834,24 @@ var set_timesheet_detail_rate = function(cdt, cdn, currency, timelog) {
 }
 
 var select_loyalty_program = function(frm, loyalty_programs) {
+=======
+			currency: currency,
+		},
+		callback: function (r) {
+			if (!r.exc && r.message) {
+				frappe.model.set_value(cdt, cdn, "billing_amount", r.message);
+			}
+		},
+	});
+};
+
+var select_loyalty_program = function (frm, loyalty_programs) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	var dialog = new frappe.ui.Dialog({
 		title: __("Select Loyalty Program"),
 		fields: [
 			{
+<<<<<<< HEAD
 				"label": __("Loyalty Program"),
 				"fieldname": "loyalty_program",
 				"fieldtype": "Select",
@@ -1000,6 +1862,18 @@ var select_loyalty_program = function(frm, loyalty_programs) {
 	});
 
 	dialog.set_primary_action(__("Set Loyalty Program"), function() {
+=======
+				label: __("Loyalty Program"),
+				fieldname: "loyalty_program",
+				fieldtype: "Select",
+				options: loyalty_programs,
+				default: loyalty_programs[0],
+			},
+		],
+	});
+
+	dialog.set_primary_action(__("Set Loyalty Program"), function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		dialog.hide();
 		return frappe.call({
 			method: "frappe.client.set_value",
@@ -1009,9 +1883,17 @@ var select_loyalty_program = function(frm, loyalty_programs) {
 				fieldname: "loyalty_program",
 				value: dialog.get_value("loyalty_program"),
 			},
+<<<<<<< HEAD
 			callback: function(r) { }
+=======
+			callback: function (r) {},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	});
 
 	dialog.show();
+<<<<<<< HEAD
 }
+=======
+};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

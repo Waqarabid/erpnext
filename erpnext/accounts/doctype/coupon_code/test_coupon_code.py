@@ -1,5 +1,6 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -8,6 +9,16 @@ import frappe
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
 test_dependencies = ["Item"]
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+
+from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def test_create_test_data():
@@ -110,7 +121,11 @@ def test_create_test_data():
 		coupon_code.insert()
 
 
+<<<<<<< HEAD
 class TestCouponCode(unittest.TestCase):
+=======
+class TestCouponCode(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		test_create_test_data()
 
@@ -142,3 +157,42 @@ class TestCouponCode(unittest.TestCase):
 
 		so.submit()
 		self.assertEqual(frappe.db.get_value("Coupon Code", "SAVE30", "used"), 1)
+<<<<<<< HEAD
+=======
+
+	def test_coupon_without_max_use(self):
+		from erpnext.accounts.doctype.pricing_rule.utils import (
+			update_coupon_code_count,
+			validate_coupon_code,
+		)
+
+		coupon = frappe.get_doc(
+			{
+				"doctype": "Coupon Code",
+				"coupon_name": "_Test Coupon Without Max Use",
+				"coupon_code": "TESTUNLIMITED",
+				"from_external_ecomm_platform": 1,  # avoids requirement for pricing rule
+				"valid_from": frappe.utils.nowdate(),
+				"maximum_use": 0,
+				"used": 0,
+			}
+		)
+		coupon.insert(ignore_permissions=True)
+
+		# Validate initial state
+		self.assertEqual(coupon.used, 0)
+		self.assertEqual(coupon.maximum_use, 0)
+
+		# Use coupon multiple times
+		for _ in range(5):
+			validate_coupon_code(coupon.name)
+			update_coupon_code_count(coupon.name, "used")
+			coupon.reload()
+
+		# Check that the coupon is still valid and usage count increased
+		self.assertEqual(coupon.used, 5)
+		validate_coupon_code(coupon.name)  # This should not raise an error
+
+		# Clean up
+		coupon.delete()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

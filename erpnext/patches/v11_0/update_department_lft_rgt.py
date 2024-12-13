@@ -16,4 +16,8 @@ def execute():
 		where is_group = 0""".format(_("All Departments"))
 	)
 
+<<<<<<< HEAD
 	rebuild_tree("Department", "parent_department")
+=======
+	rebuild_tree("Department")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

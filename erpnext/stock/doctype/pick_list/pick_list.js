@@ -3,6 +3,11 @@
 
 frappe.ui.form.on("Pick List", {
 	setup: (frm) => {
+<<<<<<< HEAD
+=======
+		frm.ignore_doctypes_on_cancel_all = ["Serial and Batch Bundle"];
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_indicator_formatter("item_code", function (doc) {
 			return doc.stock_qty === 0 ? "red" : "green";
 		});
@@ -11,14 +16,25 @@ frappe.ui.form.on("Pick List", {
 			"Delivery Note": "Delivery Note",
 			"Stock Entry": "Stock Entry",
 		};
+<<<<<<< HEAD
 		frm.set_query("parent_warehouse", () => {
 			return {
 				filters: {
 					is_group: 1,
+=======
+
+		frm.set_query("parent_warehouse", () => {
+			return {
+				filters: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					company: frm.doc.company,
 				},
 			};
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("work_order", () => {
 			return {
 				query: "erpnext.stock.doctype.pick_list.pick_list.get_pending_work_orders",
@@ -27,6 +43,10 @@ frappe.ui.form.on("Pick List", {
 				},
 			};
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("material_request", () => {
 			return {
 				filters: {
@@ -34,9 +54,17 @@ frappe.ui.form.on("Pick List", {
 				},
 			};
 		});
+<<<<<<< HEAD
 		frm.set_query("item_code", "locations", () => {
 			return erpnext.queries.item({ is_stock_item: 1 });
 		});
+=======
+
+		frm.set_query("item_code", "locations", () => {
+			return erpnext.queries.item({ is_stock_item: 1 });
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("batch_no", "locations", (frm, cdt, cdn) => {
 			const row = locals[cdt][cdn];
 			return {
@@ -47,6 +75,21 @@ frappe.ui.form.on("Pick List", {
 				},
 			};
 		});
+<<<<<<< HEAD
+=======
+
+		frm.set_query("serial_and_batch_bundle", "locations", (doc, cdt, cdn) => {
+			let row = locals[cdt][cdn];
+			return {
+				filters: {
+					item_code: row.item_code,
+					voucher_type: doc.doctype,
+					voucher_no: ["in", [doc.name, ""]],
+					is_cancelled: 0,
+				},
+			};
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 	set_item_locations: (frm, save) => {
 		if (!(frm.doc.locations && frm.doc.locations.length)) {
@@ -60,6 +103,12 @@ frappe.ui.form.on("Pick List", {
 				},
 				freeze: 1,
 				freeze_message: __("Setting Item Locations..."),
+<<<<<<< HEAD
+=======
+				callback(r) {
+					refresh_field("locations");
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
@@ -98,6 +147,50 @@ frappe.ui.form.on("Pick List", {
 						);
 					}
 				});
+<<<<<<< HEAD
+=======
+
+			if (frm.doc.purpose === "Delivery" && frm.doc.status === "Open") {
+				if (frm.doc.__onload && frm.doc.__onload.has_unreserved_stock) {
+					frm.add_custom_button(
+						__("Reserve"),
+						() => frm.events.create_stock_reservation_entries(frm),
+						__("Stock Reservation")
+					);
+				}
+
+				if (frm.doc.__onload && frm.doc.__onload.has_reserved_stock) {
+					frm.add_custom_button(
+						__("Unreserve"),
+						() => {
+							frappe.confirm(
+								__(
+									"The reserved stock will be released. Are you certain you wish to proceed?"
+								),
+								() => frm.events.cancel_stock_reservation_entries(frm)
+							);
+						},
+						__("Stock Reservation")
+					);
+					frm.add_custom_button(
+						__("Reserved Stock"),
+						() => frm.events.show_reserved_stock(frm),
+						__("Stock Reservation")
+					);
+				}
+			}
+		}
+
+		let sbb_field = frm.get_docfield("locations", "serial_and_batch_bundle");
+		if (sbb_field) {
+			sbb_field.get_route_options_for_new_doc = (row) => {
+				return {
+					item_code: row.doc.item_code,
+					warehouse: row.doc.warehouse,
+					voucher_type: frm.doc.doctype,
+				};
+			};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	},
 	work_order: (frm) => {
@@ -198,6 +291,55 @@ frappe.ui.form.on("Pick List", {
 		const barcode_scanner = new erpnext.utils.BarcodeScanner(opts);
 		barcode_scanner.process_scan();
 	},
+<<<<<<< HEAD
+=======
+	create_stock_reservation_entries: (frm) => {
+		frappe.call({
+			doc: frm.doc,
+			method: "create_stock_reservation_entries",
+			args: {
+				notify: true,
+			},
+			freeze: true,
+			freeze_message: __("Reserving Stock..."),
+			callback: (r) => {
+				frm.doc.__onload.has_unreserved_stock = false;
+				frm.reload_doc();
+			},
+		});
+	},
+	cancel_stock_reservation_entries: (frm) => {
+		frappe.call({
+			doc: frm.doc,
+			method: "cancel_stock_reservation_entries",
+			args: {
+				notify: true,
+			},
+			freeze: true,
+			freeze_message: __("Unreserving Stock..."),
+			callback: (r) => {
+				frm.doc.__onload.has_reserved_stock = false;
+				frm.reload_doc();
+			},
+		});
+	},
+	show_reserved_stock(frm) {
+		// Get the latest modified date from the locations table.
+		var to_date = moment(
+			new Date(Math.max(...frm.doc.locations.map((e) => new Date(e.modified))))
+		).format("YYYY-MM-DD");
+
+		frappe.route_options = {
+			company: frm.doc.company,
+			from_date: moment(frm.doc.creation).format("YYYY-MM-DD"),
+			to_date: to_date,
+			voucher_type: "Sales Order",
+			from_voucher_type: "Pick List",
+			from_voucher_no: frm.doc.name,
+		};
+		frappe.set_route("query-report", "Reserved Stock");
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });
 
 frappe.ui.form.on("Pick List Item", {
@@ -211,6 +353,10 @@ frappe.ui.form.on("Pick List Item", {
 			});
 		}
 	},
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	uom: (frm, cdt, cdn) => {
 		let row = frappe.get_doc(cdt, cdn);
 		if (row.uom) {
@@ -219,14 +365,55 @@ frappe.ui.form.on("Pick List Item", {
 			});
 		}
 	},
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	qty: (frm, cdt, cdn) => {
 		let row = frappe.get_doc(cdt, cdn);
 		frappe.model.set_value(cdt, cdn, "stock_qty", row.qty * row.conversion_factor);
 	},
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	conversion_factor: (frm, cdt, cdn) => {
 		let row = frappe.get_doc(cdt, cdn);
 		frappe.model.set_value(cdt, cdn, "stock_qty", row.qty * row.conversion_factor);
 	},
+<<<<<<< HEAD
+=======
+
+	pick_serial_and_batch(frm, cdt, cdn) {
+		let item = locals[cdt][cdn];
+		let path = "assets/erpnext/js/utils/serial_no_batch_selector.js";
+
+		frappe.db.get_value("Item", item.item_code, ["has_batch_no", "has_serial_no"]).then((r) => {
+			if (r.message && (r.message.has_batch_no || r.message.has_serial_no)) {
+				item.has_serial_no = r.message.has_serial_no;
+				item.has_batch_no = r.message.has_batch_no;
+				item.type_of_transaction = item.qty > 0 ? "Outward" : "Inward";
+
+				item.title = item.has_serial_no ? __("Select Serial No") : __("Select Batch No");
+
+				if (item.has_serial_no && item.has_batch_no) {
+					item.title = __("Select Serial and Batch");
+				}
+
+				new erpnext.SerialBatchPackageSelector(frm, item, (r) => {
+					if (r) {
+						let qty = Math.abs(r.total_qty);
+						frappe.model.set_value(item.doctype, item.name, {
+							serial_and_batch_bundle: r.name,
+							use_serial_batch_fields: 0,
+							qty: qty / flt(item.conversion_factor || 1, precision("conversion_factor", item)),
+						});
+					}
+				});
+			}
+		});
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });
 
 function get_item_details(item_code, uom = null) {

@@ -69,6 +69,10 @@ frappe.ui.form.on("Repost Item Valuation", {
 			if (frm.doc.status == "In Progress") {
 				frm.doc.current_index = data.current_index;
 				frm.doc.items_to_be_repost = data.items_to_be_repost;
+<<<<<<< HEAD
+=======
+				frm.doc.total_reposting_count = data.total_reposting_count;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				frm.dashboard.reset();
 				frm.trigger("show_reposting_progress");
@@ -105,6 +109,14 @@ frappe.ui.form.on("Repost Item Valuation", {
 		var bars = [];
 
 		let total_count = frm.doc.items_to_be_repost ? JSON.parse(frm.doc.items_to_be_repost).length : 0;
+<<<<<<< HEAD
+=======
+
+		if (frm.doc?.total_reposting_count) {
+			total_count = frm.doc.total_reposting_count;
+		}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		let progress = flt((cint(frm.doc.current_index) / total_count) * 100, 2) || 0.5;
 		var title = __("Reposting Completed {0}%", [progress]);
 
@@ -122,9 +134,13 @@ frappe.ui.form.on("Repost Item Valuation", {
 			method: "restart_reposting",
 			doc: frm.doc,
 			callback: function (r) {
+<<<<<<< HEAD
 				if (!r.exc) {
 					frm.refresh();
 				}
+=======
+				frm.reload_doc();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		});
 	},

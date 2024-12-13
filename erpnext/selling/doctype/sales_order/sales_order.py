@@ -3,6 +3,10 @@
 
 
 import json
+<<<<<<< HEAD
+=======
+from typing import Literal
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import frappe
 import frappe.utils
@@ -30,7 +34,20 @@ from erpnext.manufacturing.doctype.production_plan.production_plan import (
 from erpnext.selling.doctype.customer.customer import check_credit_limit
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock.doctype.item.item import get_item_defaults
+<<<<<<< HEAD
 from erpnext.stock.get_item_details import get_bin_details, get_default_bom, get_price_list_rate
+=======
+from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+	get_sre_reserved_qty_details_for_voucher,
+	has_reserved_stock,
+)
+from erpnext.stock.get_item_details import (
+	ItemDetailsCtx,
+	get_bin_details,
+	get_default_bom,
+	get_price_list_rate,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.stock_balance import get_reserved_qty, update_bin_qty
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
@@ -41,9 +58,163 @@ class WarehouseRequired(frappe.ValidationError):
 
 
 class SalesOrder(SellingController):
+<<<<<<< HEAD
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.payment_schedule.payment_schedule import PaymentSchedule
+		from erpnext.accounts.doctype.pricing_rule_detail.pricing_rule_detail import PricingRuleDetail
+		from erpnext.accounts.doctype.sales_taxes_and_charges.sales_taxes_and_charges import (
+			SalesTaxesandCharges,
+		)
+		from erpnext.selling.doctype.sales_order_item.sales_order_item import SalesOrderItem
+		from erpnext.selling.doctype.sales_team.sales_team import SalesTeam
+		from erpnext.stock.doctype.packed_item.packed_item import PackedItem
+
+		additional_discount_percentage: DF.Float
+		address_display: DF.TextEditor | None
+		advance_paid: DF.Currency
+		advance_payment_status: DF.Literal["Not Requested", "Requested", "Partially Paid", "Fully Paid"]
+		amended_from: DF.Link | None
+		amount_eligible_for_commission: DF.Currency
+		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
+		auto_repeat: DF.Link | None
+		base_discount_amount: DF.Currency
+		base_grand_total: DF.Currency
+		base_in_words: DF.Data | None
+		base_net_total: DF.Currency
+		base_rounded_total: DF.Currency
+		base_rounding_adjustment: DF.Currency
+		base_total: DF.Currency
+		base_total_taxes_and_charges: DF.Currency
+		billing_status: DF.Literal["Not Billed", "Fully Billed", "Partly Billed", "Closed"]
+		commission_rate: DF.Float
+		company: DF.Link
+		company_address: DF.Link | None
+		company_address_display: DF.TextEditor | None
+		company_contact_person: DF.Link | None
+		contact_display: DF.SmallText | None
+		contact_email: DF.Data | None
+		contact_mobile: DF.SmallText | None
+		contact_person: DF.Link | None
+		contact_phone: DF.Data | None
+		conversion_rate: DF.Float
+		cost_center: DF.Link | None
+		coupon_code: DF.Link | None
+		currency: DF.Link
+		customer: DF.Link
+		customer_address: DF.Link | None
+		customer_group: DF.Link | None
+		customer_name: DF.Data | None
+		delivery_date: DF.Date | None
+		delivery_status: DF.Literal[
+			"Not Delivered", "Fully Delivered", "Partly Delivered", "Closed", "Not Applicable"
+		]
+		disable_rounded_total: DF.Check
+		discount_amount: DF.Currency
+		dispatch_address: DF.TextEditor | None
+		dispatch_address_name: DF.Link | None
+		from_date: DF.Date | None
+		grand_total: DF.Currency
+		group_same_items: DF.Check
+		ignore_pricing_rule: DF.Check
+		in_words: DF.Data | None
+		incoterm: DF.Link | None
+		inter_company_order_reference: DF.Link | None
+		is_internal_customer: DF.Check
+		items: DF.Table[SalesOrderItem]
+		language: DF.Link | None
+		letter_head: DF.Link | None
+		loyalty_amount: DF.Currency
+		loyalty_points: DF.Int
+		named_place: DF.Data | None
+		naming_series: DF.Literal["SAL-ORD-.YYYY.-"]
+		net_total: DF.Currency
+		order_type: DF.Literal["", "Sales", "Maintenance", "Shopping Cart"]
+		other_charges_calculation: DF.TextEditor | None
+		packed_items: DF.Table[PackedItem]
+		party_account_currency: DF.Link | None
+		payment_schedule: DF.Table[PaymentSchedule]
+		payment_terms_template: DF.Link | None
+		per_billed: DF.Percent
+		per_delivered: DF.Percent
+		per_picked: DF.Percent
+		plc_conversion_rate: DF.Float
+		po_date: DF.Date | None
+		po_no: DF.Data | None
+		price_list_currency: DF.Link
+		pricing_rules: DF.Table[PricingRuleDetail]
+		project: DF.Link | None
+		represents_company: DF.Link | None
+		reserve_stock: DF.Check
+		rounded_total: DF.Currency
+		rounding_adjustment: DF.Currency
+		sales_partner: DF.Link | None
+		sales_team: DF.Table[SalesTeam]
+		scan_barcode: DF.Data | None
+		select_print_heading: DF.Link | None
+		selling_price_list: DF.Link
+		set_warehouse: DF.Link | None
+		shipping_address: DF.TextEditor | None
+		shipping_address_name: DF.Link | None
+		shipping_rule: DF.Link | None
+		skip_delivery_note: DF.Check
+		status: DF.Literal[
+			"",
+			"Draft",
+			"On Hold",
+			"To Pay",
+			"To Deliver and Bill",
+			"To Bill",
+			"To Deliver",
+			"Completed",
+			"Cancelled",
+			"Closed",
+		]
+		tax_category: DF.Link | None
+		tax_id: DF.Data | None
+		taxes: DF.Table[SalesTaxesandCharges]
+		taxes_and_charges: DF.Link | None
+		tc_name: DF.Link | None
+		terms: DF.TextEditor | None
+		territory: DF.Link | None
+		title: DF.Data | None
+		to_date: DF.Date | None
+		total: DF.Currency
+		total_commission: DF.Currency
+		total_net_weight: DF.Float
+		total_qty: DF.Float
+		total_taxes_and_charges: DF.Currency
+		transaction_date: DF.Date
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+	# end: auto-generated types
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+	def onload(self) -> None:
+		super().onload()
+
+		if frappe.db.get_single_value("Stock Settings", "enable_stock_reservation"):
+			if self.has_unreserved_stock():
+				self.set_onload("has_unreserved_stock", True)
+
+		if has_reserved_stock(self.doctype, self.name):
+			self.set_onload("has_reserved_stock", True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		super().validate()
 		self.validate_delivery_date()
@@ -54,6 +225,10 @@ class SalesOrder(SellingController):
 		self.validate_for_items()
 		self.validate_warehouse()
 		self.validate_drop_ship()
+<<<<<<< HEAD
+=======
+		self.validate_reserved_stock()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_serial_no_based_delivery()
 		validate_against_blanket_order(self)
 		validate_inter_company_party(
@@ -76,6 +251,11 @@ class SalesOrder(SellingController):
 			self.billing_status = "Not Billed"
 		if not self.delivery_status:
 			self.delivery_status = "Not Delivered"
+<<<<<<< HEAD
+=======
+		if not self.advance_payment_status:
+			self.advance_payment_status = "Not Requested"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.reset_default_field_value("set_warehouse", "items", "warehouse")
 
@@ -268,6 +448,12 @@ class SalesOrder(SellingController):
 
 			update_coupon_code_count(self.coupon_code, "used")
 
+<<<<<<< HEAD
+=======
+		if self.get("reserve_stock"):
+			self.create_stock_reservation_entries()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_cancel(self):
 		self.ignore_linked_doctypes = (
 			"GL Entry",
@@ -290,6 +476,10 @@ class SalesOrder(SellingController):
 		self.db_set("status", "Cancelled")
 
 		self.update_blanket_order()
+<<<<<<< HEAD
+=======
+		self.cancel_stock_reservation_entries()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		unlink_inter_company_doc(self.doctype, self.name, self.inter_company_order_reference)
 		if self.coupon_code:
@@ -380,6 +570,11 @@ class SalesOrder(SellingController):
 		pass
 
 	def on_update_after_submit(self):
+<<<<<<< HEAD
+=======
+		self.calculate_commission()
+		self.calculate_contribution()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.check_credit_limit()
 
 	def before_update_after_submit(self):
@@ -394,9 +589,13 @@ class SalesOrder(SellingController):
 
 		for item in self.items:
 			if item.supplier:
+<<<<<<< HEAD
 				supplier = frappe.db.get_value(
 					"Sales Order Item", {"parent": self.name, "item_code": item.item_code}, "supplier"
 				)
+=======
+				supplier = frappe.db.get_value("Sales Order Item", item.name, "supplier")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if item.ordered_qty > 0.0 and item.supplier != supplier:
 					exc_list.append(
 						_("Row #{0}: Not allowed to change Supplier as Purchase Order already exists").format(
@@ -427,7 +626,11 @@ class SalesOrder(SellingController):
 				item_delivered_qty = item_delivered_qty[0][0] if item_delivered_qty else 0
 				item.db_set("delivered_qty", flt(item_delivered_qty), update_modified=False)
 
+<<<<<<< HEAD
 			delivered_qty += item.delivered_qty
+=======
+			delivered_qty += min(item.delivered_qty, item.qty)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			tot_qty += item.qty
 
 		if tot_qty != 0:
@@ -448,6 +651,20 @@ class SalesOrder(SellingController):
 		if total_picked_qty and total_qty:
 			per_picked = total_picked_qty / total_qty * 100
 
+<<<<<<< HEAD
+=======
+			pick_percentage = frappe.db.get_single_value("Stock Settings", "over_picking_allowance")
+			if pick_percentage:
+				total_qty += flt(total_qty) * (pick_percentage / 100)
+
+			if total_picked_qty > total_qty:
+				frappe.throw(
+					_(
+						"Total Picked Quantity {0} is more than ordered qty {1}. You can set the Over Picking Allowance in Stock Settings."
+					).format(total_picked_qty, total_qty)
+				)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.db_set("per_picked", flt(per_picked), update_modified=False)
 
 	def set_indicator(self):
@@ -510,7 +727,11 @@ class SalesOrder(SellingController):
 					if not frappe.get_cached_value("Item", item.item_code, "has_serial_no"):
 						frappe.throw(
 							_(
+<<<<<<< HEAD
 								"Item {0} has no Serial No. Only serilialized items can have delivery based on Serial No"
+=======
+								"Item {0} has no Serial No. Only serialized items can have delivery based on Serial No"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							).format(item.item_code)
 						)
 					if not frappe.db.exists("BOM", {"item": item.item_code, "is_active": 1}):
@@ -530,6 +751,72 @@ class SalesOrder(SellingController):
 					).format(item.item_code)
 				)
 
+<<<<<<< HEAD
+=======
+	def validate_reserved_stock(self):
+		"""Clean reserved stock flag for non-stock Item"""
+
+		enable_stock_reservation = frappe.db.get_single_value("Stock Settings", "enable_stock_reservation")
+
+		for item in self.items:
+			if item.reserve_stock and (not enable_stock_reservation or not cint(item.is_stock_item)):
+				item.reserve_stock = 0
+
+	def has_unreserved_stock(self) -> bool:
+		"""Returns True if there is any unreserved item in the Sales Order."""
+
+		reserved_qty_details = get_sre_reserved_qty_details_for_voucher("Sales Order", self.name)
+
+		for item in self.get("items"):
+			if not item.get("reserve_stock"):
+				continue
+
+			unreserved_qty = get_unreserved_qty(item, reserved_qty_details)
+			if unreserved_qty > 0:
+				return True
+
+		return False
+
+	@frappe.whitelist()
+	def create_stock_reservation_entries(
+		self,
+		items_details: list[dict] | None = None,
+		from_voucher_type: Literal["Pick List", "Purchase Receipt"] = None,
+		notify=True,
+	) -> None:
+		"""Creates Stock Reservation Entries for Sales Order Items."""
+
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			create_stock_reservation_entries_for_so_items as create_stock_reservation_entries,
+		)
+
+		create_stock_reservation_entries(
+			sales_order=self,
+			items_details=items_details,
+			from_voucher_type=from_voucher_type,
+			notify=notify,
+		)
+
+	@frappe.whitelist()
+	def cancel_stock_reservation_entries(self, sre_list=None, notify=True) -> None:
+		"""Cancel Stock Reservation Entries for Sales Order Items."""
+
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			cancel_stock_reservation_entries,
+		)
+
+		cancel_stock_reservation_entries(
+			voucher_type=self.doctype, voucher_no=self.name, sre_list=sre_list, notify=notify
+		)
+
+
+def get_unreserved_qty(item: object, reserved_qty_details: dict) -> float:
+	"""Returns the unreserved quantity for the Sales Order Item."""
+
+	existing_reserved_qty = reserved_qty_details.get(item.name, 0)
+	return item.stock_qty - flt(item.delivered_qty) * item.get("conversion_factor", 1) - existing_reserved_qty
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def get_list_context(context=None):
 	from erpnext.controllers.website_list_for_contact import get_list_context
@@ -548,6 +835,14 @@ def get_list_context(context=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
+=======
+def is_enable_cutoff_date_on_bulk_delivery_note_creation():
+	return frappe.db.get_single_value("Selling Settings", "enable_cutoff_date_on_bulk_delivery_note_creation")
+
+
+@frappe.whitelist()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def close_or_unclose_sales_orders(names, status):
 	if not frappe.has_permission("Sales Order", "write"):
 		frappe.throw(_("Not permitted"), frappe.PermissionError)
@@ -611,8 +906,13 @@ def make_material_request(source_name, target_doc=None):
 			target.item_code, target.warehouse, source_parent.company, True
 		).get("actual_qty", 0)
 
+<<<<<<< HEAD
 		args = target.as_dict().copy()
 		args.update(
+=======
+		ctx = ItemDetailsCtx(target.as_dict().copy())
+		ctx.update(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				"company": source_parent.get("company"),
 				"price_list": frappe.db.get_single_value("Buying Settings", "buying_price_list"),
@@ -622,7 +922,11 @@ def make_material_request(source_name, target_doc=None):
 		)
 
 		target.rate = flt(
+<<<<<<< HEAD
 			get_price_list_rate(args=args, item_doc=frappe.get_cached_doc("Item", target.item_code)).get(
+=======
+			get_price_list_rate(ctx, item_doc=frappe.get_cached_doc("Item", target.item_code)).get(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"price_list_rate"
 			)
 		)
@@ -683,6 +987,7 @@ def make_project(source_name, target_doc=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 	from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
 
@@ -690,6 +995,43 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 		target.run_method("set_missing_values")
 		target.run_method("set_po_nos")
 		target.run_method("calculate_taxes_and_totals")
+=======
+def make_delivery_note(source_name, target_doc=None, kwargs=None):
+	from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
+	from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+		get_sre_details_for_voucher,
+		get_sre_reserved_qty_details_for_voucher,
+		get_ssb_bundle_for_voucher,
+	)
+
+	if not kwargs:
+		kwargs = {
+			"for_reserved_stock": frappe.flags.args and frappe.flags.args.for_reserved_stock,
+			"skip_item_mapping": frappe.flags.args and frappe.flags.args.skip_item_mapping,
+		}
+
+	kwargs = frappe._dict(kwargs)
+
+	sre_details = {}
+	if kwargs.for_reserved_stock:
+		sre_details = get_sre_reserved_qty_details_for_voucher("Sales Order", source_name)
+
+	mapper = {
+		"Sales Order": {"doctype": "Delivery Note", "validation": {"docstatus": ["=", 1]}},
+		"Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "reset_value": True},
+		"Sales Team": {"doctype": "Sales Team", "add_if_empty": True},
+	}
+
+	def set_missing_values(source, target):
+		if kwargs.get("ignore_pricing_rule"):
+			# Skip pricing rule when the dn is creating from the pick list
+			target.ignore_pricing_rule = 1
+
+		target.run_method("set_missing_values")
+		target.run_method("set_po_nos")
+		target.run_method("calculate_taxes_and_totals")
+		target.run_method("set_use_serial_batch_fields")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if source.company_address:
 			target.update({"company_address": source.company_address})
@@ -700,8 +1042,33 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 		if target.company_address:
 			target.update(get_fetch_values("Delivery Note", "company_address", target.company_address))
 
+<<<<<<< HEAD
 		make_packing_list(target)
 
+=======
+		# if invoked in bulk creation, validations are ignored and thus this method is nerver invoked
+		if frappe.flags.bulk_transaction:
+			# set target items names to ensure proper linking with packed_items
+			target.set_new_name()
+
+		make_packing_list(target)
+
+	def condition(doc):
+		if doc.name in sre_details:
+			del sre_details[doc.name]
+			return False
+
+		# make_mapped_doc sets js `args` into `frappe.flags.args`
+		if frappe.flags.args and frappe.flags.args.delivery_dates:
+			if cstr(doc.delivery_date) not in frappe.flags.args.delivery_dates:
+				return False
+		if frappe.flags.args and frappe.flags.args.until_delivery_date:
+			if cstr(doc.delivery_date) > frappe.flags.args.until_delivery_date:
+				return False
+
+		return abs(doc.delivered_qty) < abs(doc.qty) and doc.delivered_by_supplier != 1
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_item(source, target, source_parent):
 		target.base_amount = (flt(source.qty) - flt(source.delivered_qty)) * flt(source.base_rate)
 		target.amount = (flt(source.qty) - flt(source.delivered_qty)) * flt(source.rate)
@@ -717,6 +1084,7 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 				or item_group.get("buying_cost_center")
 			)
 
+<<<<<<< HEAD
 	mapper = {
 		"Sales Order": {"doctype": "Delivery Note", "validation": {"docstatus": ["=", 1]}},
 		"Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "add_if_empty": True},
@@ -732,6 +1100,9 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 					return False
 			return abs(doc.delivered_qty) < abs(doc.qty) and doc.delivered_by_supplier != 1
 
+=======
+	if not kwargs.skip_item_mapping:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		mapper["Sales Order Item"] = {
 			"doctype": "Delivery Note Item",
 			"field_map": {
@@ -739,11 +1110,71 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 				"name": "so_detail",
 				"parent": "against_sales_order",
 			},
+<<<<<<< HEAD
 			"postprocess": update_item,
 			"condition": condition,
 		}
 
 	target_doc = get_mapped_doc("Sales Order", source_name, mapper, target_doc, set_missing_values)
+=======
+			"condition": condition,
+			"postprocess": update_item,
+		}
+
+	so = frappe.get_doc("Sales Order", source_name)
+	target_doc = get_mapped_doc("Sales Order", so.name, mapper, target_doc)
+
+	if not kwargs.skip_item_mapping and kwargs.for_reserved_stock:
+		sre_list = get_sre_details_for_voucher("Sales Order", source_name)
+
+		if sre_list:
+
+			def update_dn_item(source, target, source_parent):
+				update_item(source, target, so)
+
+			so_items = {d.name: d for d in so.items if d.stock_reserved_qty}
+
+			for sre in sre_list:
+				if not condition(so_items[sre.voucher_detail_no]):
+					continue
+
+				dn_item = get_mapped_doc(
+					"Sales Order Item",
+					sre.voucher_detail_no,
+					{
+						"Sales Order Item": {
+							"doctype": "Delivery Note Item",
+							"field_map": {
+								"rate": "rate",
+								"name": "so_detail",
+								"parent": "against_sales_order",
+							},
+							"postprocess": update_dn_item,
+						}
+					},
+					ignore_permissions=True,
+				)
+
+				dn_item.qty = flt(sre.reserved_qty) * flt(dn_item.get("conversion_factor", 1))
+				dn_item.warehouse = sre.warehouse
+
+				if sre.reservation_based_on == "Serial and Batch" and (sre.has_serial_no or sre.has_batch_no):
+					dn_item.serial_and_batch_bundle = get_ssb_bundle_for_voucher(sre)
+
+				target_doc.append("items", dn_item)
+			else:
+				# Correct rows index.
+				for idx, item in enumerate(target_doc.items):
+					item.idx = idx + 1
+
+	if not kwargs.skip_item_mapping and frappe.flags.bulk_transaction and not target_doc.items:
+		# the (date) condition filter resulted in an unintendedly created empty DN; remove it
+		del target_doc
+		return
+
+	# Should be called after mapping items.
+	set_missing_values(so, target_doc)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return target_doc
 
@@ -761,6 +1192,10 @@ def make_sales_invoice(source_name, target_doc=None, ignore_permissions=False):
 		target.run_method("set_missing_values")
 		target.run_method("set_po_nos")
 		target.run_method("calculate_taxes_and_totals")
+<<<<<<< HEAD
+=======
+		target.run_method("set_use_serial_batch_fields")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if source.company_address:
 			target.update({"company_address": source.company_address})
@@ -774,6 +1209,10 @@ def make_sales_invoice(source_name, target_doc=None, ignore_permissions=False):
 		# set the redeem loyalty points if provided via shopping cart
 		if source.loyalty_points and source.order_type == "Shopping Cart":
 			target.redeem_loyalty_points = 1
+<<<<<<< HEAD
+=======
+			target.loyalty_points = source.loyalty_points
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		target.debit_to = get_party_account("Customer", source.customer, source.company)
 
@@ -819,7 +1258,14 @@ def make_sales_invoice(source_name, target_doc=None, ignore_permissions=False):
 				"condition": lambda doc: doc.qty
 				and (doc.base_amount == 0 or abs(doc.billed_amt) < abs(doc.amount)),
 			},
+<<<<<<< HEAD
 			"Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "add_if_empty": True},
+=======
+			"Sales Taxes and Charges": {
+				"doctype": "Sales Taxes and Charges",
+				"reset_value": True,
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Sales Team": {"doctype": "Sales Team", "add_if_empty": True},
 		},
 		target_doc,
@@ -1316,6 +1762,19 @@ def make_inter_company_purchase_order(source_name, target_doc=None):
 def create_pick_list(source_name, target_doc=None):
 	from erpnext.stock.doctype.packed_item.packed_item import is_product_bundle
 
+<<<<<<< HEAD
+=======
+	def validate_sales_order():
+		so = frappe.get_doc("Sales Order", source_name)
+		for item in so.items:
+			if item.stock_reserved_qty > 0:
+				frappe.throw(
+					_(
+						"Cannot create a pick list for Sales Order {0} because it has reserved stock. Please unreserve the stock in order to create a pick list."
+					).format(frappe.bold(source_name))
+				)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_item_quantity(source, target, source_parent) -> None:
 		picked_qty = flt(source.picked_qty) / (flt(source.conversion_factor) or 1)
 		qty_to_be_picked = flt(source.qty) - max(picked_qty, flt(source.delivered_qty))
@@ -1339,6 +1798,12 @@ def create_pick_list(source_name, target_doc=None):
 			and not is_product_bundle(item.item_code)
 		)
 
+<<<<<<< HEAD
+=======
+	# Don't allow a Pick List to be created against a Sales Order that has reserved stock.
+	validate_sales_order()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	doc = get_mapped_doc(
 		"Sales Order",
 		source_name,
@@ -1446,3 +1911,11 @@ def get_work_order_items(sales_order, for_raw_material_request=0):
 					)
 
 		return items
+<<<<<<< HEAD
+=======
+
+
+@frappe.whitelist()
+def get_stock_reservation_status():
+	return frappe.db.get_single_value("Stock Settings", "enable_stock_reservation")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

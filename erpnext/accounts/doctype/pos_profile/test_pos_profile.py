@@ -1,5 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -12,6 +13,22 @@ test_dependencies = ["Item"]
 
 
 class TestPOSProfile(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+
+from erpnext.accounts.doctype.pos_profile.pos_profile import (
+	get_child_nodes,
+)
+from erpnext.stock.get_item_details import get_pos_profile
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item"]
+
+
+class TestPOSProfile(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_pos_profile(self):
 		make_pos_profile()
 
@@ -48,7 +65,11 @@ def get_customers_list(pos_profile=None):
 			customer_groups.extend(
 				[d.get("name") for d in get_child_nodes("Customer Group", d.get("customer_group"))]
 			)
+<<<<<<< HEAD
 		cond = "customer_group in (%s)" % (", ".join(["%s"] * len(customer_groups)))
+=======
+		cond = "customer_group in ({})".format(", ".join(["%s"] * len(customer_groups)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return (
 		frappe.db.sql(
@@ -70,7 +91,11 @@ def get_items_list(pos_profile, company):
 		for d in pos_profile.get("item_groups"):
 			args_list.extend([d.name for d in get_child_nodes("Item Group", d.item_group)])
 		if args_list:
+<<<<<<< HEAD
 			cond = "and i.item_group in (%s)" % (", ".join(["%s"] * len(args_list)))
+=======
+			cond = "and i.item_group in ({})".format(", ".join(["%s"] * len(args_list)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return frappe.db.sql(
 		f"""
@@ -114,6 +139,10 @@ def make_pos_profile(**args):
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
 			"write_off_account": args.write_off_account or "_Test Write Off - _TC",
 			"write_off_cost_center": args.write_off_cost_center or "_Test Write Off Cost Center - _TC",
+<<<<<<< HEAD
+=======
+			"location": "Block 1" if not args.do_not_set_accounting_dimension else None,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	)
 
@@ -128,6 +157,11 @@ def make_pos_profile(**args):
 	pos_profile.append("payments", {"mode_of_payment": "Cash", "default": 1})
 
 	if not frappe.db.exists("POS Profile", args.name or "_Test POS Profile"):
+<<<<<<< HEAD
 		pos_profile.insert()
+=======
+		if not args.get("do_not_insert"):
+			pos_profile.insert()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return pos_profile

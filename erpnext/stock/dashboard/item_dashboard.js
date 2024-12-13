@@ -48,17 +48,29 @@ erpnext.stock.ItemDashboard = class ItemDashboard {
 			let actual_qty = unescape(element.attr("data-actual_qty"));
 			let disable_quick_entry = Number(unescape(element.attr("data-disable_quick_entry")));
 			let entry_type = action === "Move" ? "Material Transfer" : "Material Receipt";
+<<<<<<< HEAD
+=======
+			let stock_uom = unescape(element.attr("data-stock-uom"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if (disable_quick_entry) {
 				open_stock_entry(item, warehouse, entry_type);
 			} else {
 				if (action === "Add") {
 					let rate = unescape($(this).attr("data-rate"));
+<<<<<<< HEAD
 					erpnext.stock.move_item(item, null, warehouse, actual_qty, rate, function () {
 						me.refresh();
 					});
 				} else {
 					erpnext.stock.move_item(item, warehouse, null, actual_qty, null, function () {
+=======
+					erpnext.stock.move_item(item, null, warehouse, actual_qty, rate, stock_uom, function () {
+						me.refresh();
+					});
+				} else {
+					erpnext.stock.move_item(item, warehouse, null, actual_qty, null, stock_uom, function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						me.refresh();
 					});
 				}
@@ -113,6 +125,12 @@ erpnext.stock.ItemDashboard = class ItemDashboard {
 			args: args,
 			callback: function (r) {
 				me.render(r.message);
+<<<<<<< HEAD
+=======
+				if (me.after_refresh) {
+					me.after_refresh();
+				}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		});
 	}
@@ -129,8 +147,11 @@ erpnext.stock.ItemDashboard = class ItemDashboard {
 			context = this.get_item_dashboard_data(data, this.max_count, true);
 		}
 
+<<<<<<< HEAD
 		this.max_count = this.max_count;
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		// show more button
 		if (data && data.length === this.page_length + 1) {
 			this.content.find(".more").removeClass("hidden");
@@ -206,7 +227,11 @@ erpnext.stock.ItemDashboard = class ItemDashboard {
 	}
 };
 
+<<<<<<< HEAD
 erpnext.stock.move_item = function (item, source, target, actual_qty, rate, callback) {
+=======
+erpnext.stock.move_item = function (item, source, target, actual_qty, rate, stock_uom, callback) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	var dialog = new frappe.ui.Dialog({
 		title: target ? __("Add Item") : __("Move Item"),
 		fields: [
@@ -294,6 +319,11 @@ erpnext.stock.move_item = function (item, source, target, actual_qty, rate, call
 			let row = frappe.model.add_child(doc, "items");
 			row.item_code = dialog.get_value("item_code");
 			row.s_warehouse = dialog.get_value("source");
+<<<<<<< HEAD
+=======
+			row.stock_uom = stock_uom;
+			row.uom = stock_uom;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			row.t_warehouse = dialog.get_value("target");
 			row.qty = dialog.get_value("qty");
 			row.conversion_factor = 1;

@@ -34,7 +34,11 @@
 	}
 
 	.abbr {
+<<<<<<< HEAD
 		background-color: var(--gray-50);
+=======
+		background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		font-size: var(--text-3xl);
 	}
 
@@ -53,7 +57,11 @@
 
 	.seperator {
 		margin-left: var(--margin-sm);
+<<<<<<< HEAD
 		margin-right: var(--margin-sm);
+=======
+		margin-right: var(--margin-md);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		border-bottom: 1px solid var(--gray-300);
 	}
 
@@ -72,7 +80,11 @@
 	.highlighted-numpad-btn {
 		box-shadow: inset 0 0px 4px 0px rgba(0, 0, 0, 0.15) !important;
 		font-weight: 700;
+<<<<<<< HEAD
 		background-color: var(--gray-50);
+=======
+		background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	> .items-selector {
@@ -152,7 +164,10 @@
 					margin-bottom: 0px;
 					min-height: 8rem;
 					height: 8rem;
+<<<<<<< HEAD
 					color: var(--gray-500);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 					> img {
 						@extend .image;
@@ -241,7 +256,11 @@
 						width: 3rem;
 						height: 3rem;
 						border-radius: 50%;
+<<<<<<< HEAD
 						color: var(--gray-500);
+=======
+						color: var(--text-light);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						margin-right: var(--margin-md);
 
 						> img {
@@ -267,7 +286,10 @@
 						}
 
 						> .customer-desc {
+<<<<<<< HEAD
 							color: var(--gray-600);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							font-weight: 500;
 							font-size: var(--text-sm);
 						}
@@ -361,7 +383,11 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
+<<<<<<< HEAD
 					background-color: var(--gray-50);
+=======
+					background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					border-radius: var(--border-radius-md);
 					font-size: var(--text-md);
 					font-weight: 500;
@@ -381,9 +407,16 @@
 						align-items: center;
 						padding: var(--padding-sm);
 						border-radius: var(--border-radius-md);
+<<<<<<< HEAD
 
 						&:hover {
 							background-color: var(--gray-50);
+=======
+						margin-right: var(--margin-sm);
+
+						&:hover {
+							background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						}
 
 						> .item-image {
@@ -393,7 +426,11 @@
 							width: 2rem;
 							height: 2rem;
 							border-radius: var(--border-radius-md);
+<<<<<<< HEAD
 							color: var(--gray-500);
+=======
+							color: var(--text-light);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							margin-right: var(--margin-md);
 
 							> img {
@@ -533,13 +570,22 @@
 					> .edit-cart-btn {
 						@extend .primary-action;
 						display: none;
+<<<<<<< HEAD
 						background-color: var(--gray-300);
+=======
+						background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						font-weight: 500;
 						transition: all 0.15s ease-in-out;
 
 						&:hover {
+<<<<<<< HEAD
 							background-color: var(--gray-600);
 							color: white;
+=======
+							background-color: var(--control-bg);
+							color: var(--text-light);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							font-weight: 700;
 						}
 					}
@@ -828,13 +874,21 @@
 						> .shortcut {
 							@extend .pointer-no-select;
 							border-radius: var(--border-radius-sm);
+<<<<<<< HEAD
 							background-color: var(--gray-100);
+=======
+							background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							font-weight: 500;
 							padding: var(--padding-xs) var(--padding-sm);
 							transition: all 0.15s ease-in-out;
 
 							&:hover {
+<<<<<<< HEAD
 								background-color: var(--gray-300);
+=======
+								background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							}
 						}
 					}
@@ -856,13 +910,19 @@
 
 			> .fields-section {
 				flex: 1;
+<<<<<<< HEAD
 				position: absolute;
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				display: flex;
 				flex-direction: column;
 				width: 50%;
 				height: 100%;
+<<<<<<< HEAD
 				top: 0;
 				left: 0;
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				padding-bottom: var(--margin-md);
 
 				.invoice-fields {
@@ -908,7 +968,11 @@
 
 			> .totals {
 				display: flex;
+<<<<<<< HEAD
 				background-color: var(--gray-100);
+=======
+				background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				justify-content: center;
 				padding: var(--padding-md);
 				border-radius: var(--border-radius-md);
@@ -920,7 +984,10 @@
 					> .total-label {
 						font-size: var(--text-md);
 						font-weight: 500;
+<<<<<<< HEAD
 						color: var(--gray-600);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					}
 
 					> .value {
@@ -1032,7 +1099,10 @@
 						> .customer-email {
 							font-size: var(--text-md);
 							font-weight: 500;
+<<<<<<< HEAD
 							color: var(--gray-600);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						}
 
 						> .cashier {
@@ -1067,7 +1137,11 @@
 					display: flex;
 					flex-direction: column;
 					border-radius: var(--border-radius-md);
+<<<<<<< HEAD
 					background-color: var(--gray-50);
+=======
+					background-color: var(--control-bg);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					margin: var(--margin-md) 0px;
 
 					> .summary-row-wrapper {
@@ -1151,3 +1225,66 @@
 		}
 	}
 }
+<<<<<<< HEAD
+=======
+
+@media screen and (max-width: 620px) {
+	.point-of-sale-app {
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+
+		> .items-selector {
+			grid-column: span 6 / span 1 !important;
+			> .items-container {
+				grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+			}
+		}
+
+		> .item-details-container,
+		.customer-cart-container {
+			grid-column: span 6 / span 1;
+		}
+
+		> .payment-container {
+			overflow: scroll;
+			> .fields-numpad-container {
+				flex-direction: column-reverse;
+				> .number-pad {
+					display: none;
+				}
+				> .fields-section {
+					width: 100%;
+				}
+			}
+		}
+
+		> .past-order-summary {
+			> .invoice-summary-wrapper {
+				width: 100%;
+			}
+		}
+
+		.numpad-totals {
+			> span {
+				padding: 0 5px;
+				font-size: var(--text-sm);
+			}
+		}
+
+		.col > * {
+			font-size: var(--text-sm) !important;
+		}
+
+		.control-input-wrapper {
+			padding-left: 0.15rem;
+		}
+
+		.pay-amount {
+			margin-left: 0.2rem;
+		}
+
+		.past-order-list {
+			grid-column: span 6 / span 1;
+		}
+	}
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

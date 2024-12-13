@@ -6,13 +6,24 @@ import json
 
 import frappe
 from frappe import _, msgprint, scrub
+<<<<<<< HEAD
 from frappe.utils import cint, cstr, flt, fmt_money, formatdate, get_link_to_form, nowdate
+=======
+from frappe.utils import comma_and, cstr, flt, fmt_money, formatdate, get_link_to_form, nowdate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.accounts.deferred_revenue import get_deferred_booking_accounts
 from erpnext.accounts.doctype.invoice_discounting.invoice_discounting import (
 	get_party_account_based_on_invoice_discounting,
 )
+<<<<<<< HEAD
+=======
+from erpnext.accounts.doctype.repost_accounting_ledger.repost_accounting_ledger import (
+	validate_docs_for_deferred_accounting,
+	validate_docs_for_voucher_types,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.accounts.doctype.tax_withholding_category.tax_withholding_category import (
 	get_party_tax_withholding_details,
 )
@@ -24,6 +35,12 @@ from erpnext.accounts.utils import (
 	get_stock_accounts,
 	get_stock_and_account_balance,
 )
+<<<<<<< HEAD
+=======
+from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
+	get_depr_schedule,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.controllers.accounts_controller import AccountsController
 
 
@@ -32,12 +49,88 @@ class StockAccountInvalidTransaction(frappe.ValidationError):
 
 
 class JournalEntry(AccountsController):
+<<<<<<< HEAD
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
 	def get_feed(self):
 		return self.voucher_type
 
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.journal_entry_account.journal_entry_account import JournalEntryAccount
+
+		accounts: DF.Table[JournalEntryAccount]
+		amended_from: DF.Link | None
+		apply_tds: DF.Check
+		auto_repeat: DF.Link | None
+		bill_date: DF.Date | None
+		bill_no: DF.Data | None
+		cheque_date: DF.Date | None
+		cheque_no: DF.Data | None
+		clearance_date: DF.Date | None
+		company: DF.Link
+		difference: DF.Currency
+		due_date: DF.Date | None
+		finance_book: DF.Link | None
+		from_template: DF.Link | None
+		inter_company_journal_entry_reference: DF.Link | None
+		is_opening: DF.Literal["No", "Yes"]
+		is_system_generated: DF.Check
+		letter_head: DF.Link | None
+		mode_of_payment: DF.Link | None
+		multi_currency: DF.Check
+		naming_series: DF.Literal["ACC-JV-.YYYY.-"]
+		paid_loan: DF.Data | None
+		pay_to_recd_from: DF.Data | None
+		payment_order: DF.Link | None
+		posting_date: DF.Date
+		process_deferred_accounting: DF.Link | None
+		remark: DF.SmallText | None
+		reversal_of: DF.Link | None
+		select_print_heading: DF.Link | None
+		stock_entry: DF.Link | None
+		tax_withholding_category: DF.Link | None
+		title: DF.Data | None
+		total_amount: DF.Currency
+		total_amount_currency: DF.Link | None
+		total_amount_in_words: DF.Data | None
+		total_credit: DF.Currency
+		total_debit: DF.Currency
+		user_remark: DF.SmallText | None
+		voucher_type: DF.Literal[
+			"Journal Entry",
+			"Inter Company Journal Entry",
+			"Bank Entry",
+			"Cash Entry",
+			"Credit Card Entry",
+			"Debit Note",
+			"Credit Note",
+			"Contra Entry",
+			"Excise Entry",
+			"Write Off Entry",
+			"Opening Entry",
+			"Depreciation Entry",
+			"Exchange Rate Revaluation",
+			"Exchange Gain Or Loss",
+			"Deferred Revenue",
+			"Deferred Expense",
+		]
+		write_off_amount: DF.Currency
+		write_off_based_on: DF.Literal["Accounts Receivable", "Accounts Payable"]
+	# end: auto-generated types
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if self.voucher_type == "Opening Entry":
 			self.is_opening = "Yes"
@@ -53,9 +146,12 @@ class JournalEntry(AccountsController):
 		self.set_amounts_in_company_currency()
 		self.validate_debit_credit_amount()
 		self.set_total_debit_credit()
+<<<<<<< HEAD
 		# Do not validate while importing via data import
 		if not frappe.flags.in_import:
 			self.validate_total_debit_and_credit()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not frappe.flags.is_reverse_depr_entry:
 			self.validate_against_jv()
@@ -70,6 +166,10 @@ class JournalEntry(AccountsController):
 		self.validate_empty_accounts_table()
 		self.validate_inter_company_accounts()
 		self.validate_depr_entry_voucher_type()
+<<<<<<< HEAD
+=======
+		self.validate_advance_accounts()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.docstatus == 0:
 			self.apply_tax_withholding()
@@ -77,6 +177,27 @@ class JournalEntry(AccountsController):
 		if not self.title:
 			self.title = self.get_title()
 
+<<<<<<< HEAD
+=======
+	def validate_advance_accounts(self):
+		journal_accounts = set([x.account for x in self.accounts])
+		advance_accounts = set()
+		advance_accounts.add(
+			frappe.get_cached_value("Company", self.company, "default_advance_received_account")
+		)
+		advance_accounts.add(frappe.get_cached_value("Company", self.company, "default_advance_paid_account"))
+		if advance_accounts_used := journal_accounts & advance_accounts:
+			frappe.msgprint(
+				_(
+					"Making Journal Entries against advance accounts: {0} is not recommended. These Journals won't be available for Reconciliation."
+				).format(frappe.bold(comma_and(advance_accounts_used)))
+			)
+
+	def validate_for_repost(self):
+		validate_docs_for_voucher_types(["Journal Entry"])
+		validate_docs_for_deferred_accounting([self.name], [])
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def submit(self):
 		if len(self.accounts) > 100:
 			msgprint(_("The task has been enqueued as a background job."), alert=True)
@@ -91,14 +212,41 @@ class JournalEntry(AccountsController):
 		else:
 			return self._cancel()
 
+<<<<<<< HEAD
+=======
+	def before_submit(self):
+		# Do not validate while importing via data import
+		if not frappe.flags.in_import:
+			self.validate_total_debit_and_credit()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_submit(self):
 		self.validate_cheque_info()
 		self.check_credit_limit()
 		self.make_gl_entries()
+<<<<<<< HEAD
+=======
+		self.make_advance_payment_ledger_entries()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_advance_paid()
 		self.update_asset_value()
 		self.update_inter_company_jv()
 		self.update_invoice_discounting()
+<<<<<<< HEAD
+=======
+		self.update_booked_depreciation()
+
+	def on_update_after_submit(self):
+		# Flag will be set on Reconciliation
+		# Reconciliation tool will anyways repost ledger entries. So, no need to check and do implicit repost.
+		if self.flags.get("ignore_reposting_on_reconciliation"):
+			return
+
+		self.needs_repost = self.check_if_fields_updated(fields_to_check=[], child_tables={"accounts": []})
+		if self.needs_repost:
+			self.validate_for_repost()
+			self.repost_accounting_entries()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def on_cancel(self):
 		# References for this Journal are removed on the `on_cancel` event in accounts_controller
@@ -113,23 +261,43 @@ class JournalEntry(AccountsController):
 			"Repost Accounting Ledger Items",
 			"Unreconcile Payment",
 			"Unreconcile Payment Entries",
+<<<<<<< HEAD
 		)
 		self.make_gl_entries(1)
+=======
+			"Advance Payment Ledger Entry",
+		)
+		self.make_gl_entries(1)
+		self.make_advance_payment_ledger_entries()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_advance_paid()
 		self.unlink_advance_entry_reference()
 		self.unlink_asset_reference()
 		self.unlink_inter_company_jv()
 		self.unlink_asset_adjustment_entry()
 		self.update_invoice_discounting()
+<<<<<<< HEAD
+=======
+		self.update_booked_depreciation(1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_title(self):
 		return self.pay_to_recd_from or self.accounts[0].account
 
 	def update_advance_paid(self):
 		advance_paid = frappe._dict()
+<<<<<<< HEAD
 		for d in self.get("accounts"):
 			if d.is_advance:
 				if d.reference_type in frappe.get_hooks("advance_payment_doctypes"):
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		for d in self.get("accounts"):
+			if d.is_advance:
+				if d.reference_type in advance_payment_doctypes:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					advance_paid.setdefault(d.reference_type, []).append(d.reference_name)
 
 		for voucher_type, order_list in advance_paid.items():
@@ -335,6 +503,28 @@ class JournalEntry(AccountsController):
 			if status:
 				inv_disc_doc.set_status(status=status)
 
+<<<<<<< HEAD
+=======
+	def update_booked_depreciation(self, cancel=0):
+		for d in self.get("accounts"):
+			if (
+				self.voucher_type == "Depreciation Entry"
+				and d.reference_type == "Asset"
+				and d.reference_name
+				and frappe.get_cached_value("Account", d.account, "root_type") == "Expense"
+				and d.debit
+			):
+				asset = frappe.get_doc("Asset", d.reference_name)
+				for fb_row in asset.get("finance_books"):
+					if fb_row.finance_book == self.finance_book:
+						if cancel:
+							fb_row.total_number_of_booked_depreciations -= 1
+						else:
+							fb_row.total_number_of_booked_depreciations += 1
+						fb_row.db_update()
+						break
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def unlink_advance_entry_reference(self):
 		for d in self.get("accounts"):
 			if d.is_advance == "Yes" and d.reference_type in ("Sales Invoice", "Purchase Invoice"):
@@ -350,12 +540,17 @@ class JournalEntry(AccountsController):
 				self.voucher_type == "Depreciation Entry"
 				and d.reference_type == "Asset"
 				and d.reference_name
+<<<<<<< HEAD
 				and d.account_type == "Depreciation"
+=======
+				and frappe.get_cached_value("Account", d.account, "root_type") == "Expense"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				and d.debit
 			):
 				asset = frappe.get_doc("Asset", d.reference_name)
 
 				if asset.calculate_depreciation:
+<<<<<<< HEAD
 					fb_idx = None
 					for s in asset.get("schedules"):
 						if s.journal_entry == self.name:
@@ -363,15 +558,42 @@ class JournalEntry(AccountsController):
 							fb_idx = cint(s.finance_book_id) or 1
 							break
 					if not fb_idx:
+=======
+					je_found = False
+
+					for fb_row in asset.get("finance_books"):
+						if je_found:
+							break
+
+						depr_schedule = get_depr_schedule(asset.name, "Active", fb_row.finance_book)
+
+						for s in depr_schedule or []:
+							if s.journal_entry == self.name:
+								s.db_set("journal_entry", None)
+
+								fb_row.value_after_depreciation += d.debit
+								fb_row.db_update()
+
+								je_found = True
+								break
+					if not je_found:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						fb_idx = 1
 						if self.finance_book:
 							for fb_row in asset.get("finance_books"):
 								if fb_row.finance_book == self.finance_book:
 									fb_idx = fb_row.idx
 									break
+<<<<<<< HEAD
 					fb_row = asset.get("finance_books")[fb_idx - 1]
 					fb_row.value_after_depreciation += d.debit
 					fb_row.db_update()
+=======
+
+						fb_row = asset.get("finance_books")[fb_idx - 1]
+						fb_row.value_after_depreciation += d.debit
+						fb_row.db_update()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				else:
 					asset.db_set("value_after_depreciation", asset.value_after_depreciation + d.debit)
 				asset.set_status()
@@ -404,7 +626,11 @@ class JournalEntry(AccountsController):
 
 	def validate_party(self):
 		for d in self.get("accounts"):
+<<<<<<< HEAD
 			account_type = frappe.db.get_value("Account", d.account, "account_type")
+=======
+			account_type = frappe.get_cached_value("Account", d.account, "account_type")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if account_type in ["Receivable", "Payable"]:
 				if not (d.party_type and d.party):
 					frappe.throw(
@@ -750,7 +976,11 @@ class JournalEntry(AccountsController):
 	def validate_multi_currency(self):
 		alternate_currency = []
 		for d in self.get("accounts"):
+<<<<<<< HEAD
 			account = frappe.db.get_value(
+=======
+			account = frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"Account", d.account, ["account_currency", "account_type"], as_dict=1
 			)
 			if account:
@@ -889,8 +1119,13 @@ class JournalEntry(AccountsController):
 					party_amount += flt(d.debit_in_account_currency) or flt(d.credit_in_account_currency)
 					party_account_currency = d.account_currency
 
+<<<<<<< HEAD
 			elif frappe.db.get_value("Account", d.account, "account_type") in ["Bank", "Cash"]:
 				bank_amount += d.debit_in_account_currency or d.credit_in_account_currency
+=======
+			elif frappe.get_cached_value("Account", d.account, "account_type") in ["Bank", "Cash"]:
+				bank_amount += flt(d.debit_in_account_currency) or flt(d.credit_in_account_currency)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				bank_account_currency = d.account_currency
 
 		if party_type and pay_to_recd_from:
@@ -915,6 +1150,20 @@ class JournalEntry(AccountsController):
 
 	def build_gl_map(self):
 		gl_map = []
+<<<<<<< HEAD
+=======
+
+		company_currency = erpnext.get_company_currency(self.company)
+		if self.multi_currency:
+			for row in self.get("accounts"):
+				if row.account_currency != company_currency:
+					self.currency = row.account_currency
+					self.conversion_rate = row.exchange_rate
+					break
+		else:
+			self.currency = company_currency
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for d in self.get("accounts"):
 			if d.debit or d.credit or (self.voucher_type == "Exchange Gain Or Loss"):
 				r = [d.user_remark, self.remark]
@@ -1079,7 +1328,13 @@ class JournalEntry(AccountsController):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_default_bank_cash_account(company, account_type=None, mode_of_payment=None, account=None):
+=======
+def get_default_bank_cash_account(
+	company, account_type=None, mode_of_payment=None, account=None, ignore_permissions=False
+):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	from erpnext.accounts.doctype.sales_invoice.sales_invoice import get_bank_cash_account
 
 	if mode_of_payment:
@@ -1110,14 +1365,22 @@ def get_default_bank_cash_account(company, account_type=None, mode_of_payment=No
 					account = account_list[0].name
 
 	if account:
+<<<<<<< HEAD
 		account_details = frappe.db.get_value(
+=======
+		account_details = frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Account", account, ["account_currency", "account_type"], as_dict=1
 		)
 
 		return frappe._dict(
 			{
 				"account": account,
+<<<<<<< HEAD
 				"balance": get_balance_on(account),
+=======
+				"balance": get_balance_on(account, ignore_account_permission=ignore_permissions),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"account_currency": account_details.account_currency,
 				"account_type": account_details.account_type,
 			}
@@ -1237,7 +1500,11 @@ def get_payment_entry(ref_doc, args):
 			"party_type": args.get("party_type"),
 			"party": ref_doc.get(args.get("party_type").lower()),
 			"cost_center": cost_center,
+<<<<<<< HEAD
 			"account_type": frappe.db.get_value("Account", args.get("party_account"), "account_type"),
+=======
+			"account_type": frappe.get_cached_value("Account", args.get("party_account"), "account_type"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"account_currency": args.get("party_account_currency")
 			or get_account_currency(args.get("party_account")),
 			"exchange_rate": exchange_rate,
@@ -1396,7 +1663,13 @@ def get_account_details_and_party_type(account, date, company, debit=None, credi
 		frappe.msgprint(_("No Permission"), raise_exception=1)
 
 	company_currency = erpnext.get_company_currency(company)
+<<<<<<< HEAD
 	account_details = frappe.db.get_value("Account", account, ["account_type", "account_currency"], as_dict=1)
+=======
+	account_details = frappe.get_cached_value(
+		"Account", account, ["account_type", "account_currency"], as_dict=1
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if not account_details:
 		return
@@ -1446,7 +1719,11 @@ def get_exchange_rate(
 ):
 	from erpnext.setup.utils import get_exchange_rate
 
+<<<<<<< HEAD
 	account_details = frappe.db.get_value(
+=======
+	account_details = frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Account", account, ["account_type", "root_type", "account_currency", "company"], as_dict=1
 	)
 
@@ -1518,6 +1795,11 @@ def make_reverse_journal_entry(source_name, target_doc=None):
 					"debit": "credit",
 					"credit_in_account_currency": "debit_in_account_currency",
 					"credit": "debit",
+<<<<<<< HEAD
+=======
+					"reference_type": "reference_type",
+					"reference_name": "reference_name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				},
 			},
 		},

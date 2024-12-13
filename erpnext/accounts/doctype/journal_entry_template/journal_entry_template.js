@@ -28,7 +28,14 @@ frappe.ui.form.on("Journal Entry Template", {
 
 			if (!frm.doc.multi_currency) {
 				$.extend(filters, {
+<<<<<<< HEAD
 					account_currency: frappe.get_doc(":Company", frm.doc.company).default_currency,
+=======
+					account_currency: [
+						"in",
+						[frappe.get_doc(":Company", frm.doc.company).default_currency, null],
+					],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				});
 			}
 

@@ -15,10 +15,19 @@ erpnext.StockGridReport = class StockGridReport extends frappe.views.TreeGridRep
 
 	get_value_diff(wh, sl, is_fifo) {
 		// value
+<<<<<<< HEAD
 		if (sl.qty > 0) {
 			// incoming - rate is given
 			var rate = sl.incoming_rate;
 			var add_qty = sl.qty;
+=======
+		let value_diff = 0;
+
+		if (sl.qty > 0) {
+			// incoming - rate is given
+			let rate = sl.incoming_rate;
+			let add_qty = sl.qty;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if (wh.balance_qty < 0) {
 				// negative valuation
 				// only add value of quantity if
@@ -28,10 +37,18 @@ erpnext.StockGridReport = class StockGridReport extends frappe.views.TreeGridRep
 					add_qty = 0;
 				}
 			}
+<<<<<<< HEAD
 			if (sl.serial_no) {
 				var value_diff = this.get_serialized_value_diff(sl);
 			} else {
 				var value_diff = rate * add_qty;
+=======
+
+			if (sl.serial_no) {
+				value_diff = this.get_serialized_value_diff(sl);
+			} else {
+				value_diff = rate * add_qty;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 
 			if (add_qty) wh.fifo_stack.push([add_qty, sl.incoming_rate, sl.posting_date]);
@@ -41,6 +58,7 @@ erpnext.StockGridReport = class StockGridReport extends frappe.views.TreeGridRep
 
 			// outgoing
 			if (sl.serial_no) {
+<<<<<<< HEAD
 				var value_diff = -1 * this.get_serialized_value_diff(sl);
 			} else if (is_fifo) {
 				var value_diff = fifo_value_diff;
@@ -51,6 +69,18 @@ erpnext.StockGridReport = class StockGridReport extends frappe.views.TreeGridRep
 				// no change in value if negative qty
 				if ((wh.balance_qty + sl.qty).toFixed(2) >= 0.0) var value_diff = rate * sl.qty;
 				else var value_diff = -wh.balance_value;
+=======
+				value_diff = -1 * this.get_serialized_value_diff(sl);
+			} else if (is_fifo) {
+				value_diff = fifo_value_diff;
+			} else {
+				// average rate for weighted average
+				let rate = wh.balance_qty.toFixed(2) == 0.0 ? 0 : flt(wh.balance_value) / flt(wh.balance_qty);
+
+				// no change in value if negative qty
+				if ((wh.balance_qty + sl.qty).toFixed(2) >= 0.0) value_diff = rate * sl.qty;
+				else value_diff = -wh.balance_value;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 

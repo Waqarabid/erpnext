@@ -5,12 +5,20 @@
 import frappe
 from frappe.utils import cint
 
+<<<<<<< HEAD
+=======
+import erpnext.accounts.utils
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def boot_session(bootinfo):
 	"""boot session - send website info if guest"""
 
+<<<<<<< HEAD
 	bootinfo.custom_css = frappe.db.get_value("Style Settings", None, "custom_css") or ""
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if frappe.session["user"] != "Guest":
 		update_page_info(bootinfo)
 
@@ -54,6 +62,14 @@ def boot_session(bootinfo):
 
 		party_account_types = frappe.db.sql(""" select name, ifnull(account_type, '') from `tabParty Type`""")
 		bootinfo.party_account_types = frappe._dict(party_account_types)
+<<<<<<< HEAD
+=======
+		fiscal_year = erpnext.accounts.utils.get_fiscal_years(frappe.utils.nowdate(), raise_on_missing=False)
+		if fiscal_year:
+			bootinfo.current_fiscal_year = fiscal_year[0]
+
+		bootinfo.sysdefaults.demo_company = frappe.db.get_single_value("Global Defaults", "demo_company")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def update_page_info(bootinfo):

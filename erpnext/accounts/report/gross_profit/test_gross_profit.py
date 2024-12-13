@@ -1,6 +1,10 @@
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt, nowdate
 
 from erpnext.accounts.doctype.sales_invoice.sales_invoice import make_delivery_note
@@ -12,7 +16,11 @@ from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 
 
+<<<<<<< HEAD
 class TestGrossProfit(FrappeTestCase):
+=======
+class TestGrossProfit(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_item()
@@ -227,7 +235,12 @@ class TestGrossProfit(FrappeTestCase):
 			"gross_profit_%": -50.0,
 		}
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry_without_dn, gp_entry[0])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry_without_dn}
+		self.assertEqual(report_output, expected_entry_without_dn)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# make delivery note
 		dn = make_delivery_note(sinv.name)
@@ -255,7 +268,12 @@ class TestGrossProfit(FrappeTestCase):
 			"gross_profit_%": 0.0,
 		}
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry_with_dn, gp_entry[0])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry_with_dn}
+		self.assertEqual(report_output, expected_entry_with_dn)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_bundled_delivery_note_with_different_warehouses(self):
 		"""
@@ -386,7 +404,12 @@ class TestGrossProfit(FrappeTestCase):
 			"gross_profit_%": -25.0,
 		}
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry, gp_entry[0])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry}
+		self.assertEqual(report_output, expected_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_crnote_against_invoice_with_multiple_instances_of_same_item(self):
 		"""
@@ -428,8 +451,15 @@ class TestGrossProfit(FrappeTestCase):
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
 		# Both items of Invoice should have '0' qty
 		self.assertEqual(len(gp_entry), 2)
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry, gp_entry[0])
 		self.assertDictContainsSubset(expected_entry, gp_entry[1])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry}
+		self.assertEqual(report_output, expected_entry)
+		report_output = {k: v for k, v in gp_entry[1].items() if k in expected_entry}
+		self.assertEqual(report_output, expected_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_standalone_cr_notes(self):
 		"""
@@ -465,7 +495,12 @@ class TestGrossProfit(FrappeTestCase):
 			"gross_profit_%": 100.0,
 		}
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry, gp_entry[0])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry}
+		self.assertEqual(report_output, expected_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_different_rates_in_si_and_dn(self):
 		from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
@@ -557,4 +592,56 @@ class TestGrossProfit(FrappeTestCase):
 			"gross_profit_%": 12.5,
 		}
 		gp_entry = [x for x in data if x.parent_invoice == sinv.name]
+<<<<<<< HEAD
 		self.assertDictContainsSubset(expected_entry, gp_entry[0])
+=======
+		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry}
+		self.assertEqual(report_output, expected_entry)
+
+	def test_valuation_rate_without_previous_sle(self):
+		"""
+		Test Valuation rate calculation when stock ledger is empty and invoices are against different warehouses
+		"""
+		stock_settings = frappe.get_doc("Stock Settings")
+		stock_settings.valuation_method = "FIFO"
+		stock_settings.save()
+
+		item = create_item(
+			item_code="_Test Wirebound Notebook",
+			is_stock_item=1,
+		)
+		item.allow_negative_stock = True
+		item.save()
+		self.item = item.item_code
+
+		item.reload()
+		item.valuation_rate = 1900
+		item.save()
+		sinv1 = self.create_sales_invoice(qty=1, rate=2000, posting_date=nowdate(), do_not_submit=True)
+		sinv1.update_stock = 1
+		sinv1.set_warehouse = self.warehouse
+		sinv1.items[0].warehouse = self.warehouse
+		sinv1.save().submit()
+
+		item.reload()
+		item.valuation_rate = 1800
+		item.save()
+		sinv2 = self.create_sales_invoice(qty=1, rate=2000, posting_date=nowdate(), do_not_submit=True)
+		sinv2.update_stock = 1
+		sinv2.set_warehouse = self.finished_warehouse
+		sinv2.items[0].warehouse = self.finished_warehouse
+		sinv2.save().submit()
+
+		filters = frappe._dict(
+			company=self.company, from_date=nowdate(), to_date=nowdate(), group_by="Invoice"
+		)
+		columns, data = execute(filters=filters)
+
+		item_from_sinv1 = [x for x in data if x.parent_invoice == sinv1.name]
+		self.assertEqual(len(item_from_sinv1), 1)
+		self.assertEqual(1900, item_from_sinv1[0].valuation_rate)
+
+		item_from_sinv2 = [x for x in data if x.parent_invoice == sinv2.name]
+		self.assertEqual(len(item_from_sinv2), 1)
+		self.assertEqual(1800, item_from_sinv2[0].valuation_rate)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

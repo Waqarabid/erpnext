@@ -5,7 +5,11 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
@@ -15,10 +19,27 @@ from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.get_item_details import get_item_details
 
 
+<<<<<<< HEAD
 class TestPricingRule(FrappeTestCase):
 	def setUp(self):
 		delete_existing_pricing_rules()
 		setup_pricing_rule_data()
+=======
+class UnitTestPricingRule(UnitTestCase):
+	"""
+	Unit tests for PricingRule.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPricingRule(IntegrationTestCase):
+	def setUp(self):
+		delete_existing_pricing_rules()
+		setup_pricing_rule_data()
+		self.enterClassContext(self.change_settings("Selling Settings", validate_selling_price=0))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def tearDown(self):
 		delete_existing_pricing_rules()
@@ -709,6 +730,135 @@ class TestPricingRule(FrappeTestCase):
 
 		item.delete()
 
+<<<<<<< HEAD
+=======
+	def test_item_group_price_with_blank_uom_pricing_rule(self):
+		group = frappe.get_doc(doctype="Item Group", item_group_name="_Test Pricing Rule Item Group")
+		group.save()
+		properties = {
+			"item_code": "Item with Group Blank UOM",
+			"item_group": "_Test Pricing Rule Item Group",
+			"stock_uom": "Nos",
+			"sales_uom": "Box",
+			"uoms": [dict(uom="Box", conversion_factor=10)],
+		}
+		item = make_item(properties=properties)
+
+		make_item_price("Item with Group Blank UOM", "_Test Price List", 100)
+
+		pricing_rule_record = {
+			"doctype": "Pricing Rule",
+			"title": "_Test Item with Group Blank UOM Rule",
+			"apply_on": "Item Group",
+			"item_groups": [
+				{
+					"item_group": "_Test Pricing Rule Item Group",
+				}
+			],
+			"selling": 1,
+			"currency": "INR",
+			"rate_or_discount": "Rate",
+			"rate": 101,
+			"company": "_Test Company",
+		}
+		rule = frappe.get_doc(pricing_rule_record)
+		rule.insert()
+
+		si = create_sales_invoice(
+			do_not_save=True, item_code="Item with Group Blank UOM", uom="Box", conversion_factor=10
+		)
+		si.selling_price_list = "_Test Price List"
+		si.save()
+
+		# If UOM is blank consider it as stock UOM and apply pricing_rule on all UOM.
+		# rate is 101, Selling UOM is Box that have conversion_factor of 10 so 101 * 10 = 1010
+		self.assertEqual(si.items[0].price_list_rate, 1010)
+		self.assertEqual(si.items[0].rate, 1010)
+
+		si.delete()
+
+		si = create_sales_invoice(do_not_save=True, item_code="Item with Group Blank UOM", uom="Nos")
+		si.selling_price_list = "_Test Price List"
+		si.save()
+
+		# UOM is blank so consider it as stock UOM and apply pricing_rule on all UOM.
+		# rate is 101, Selling UOM is Nos that have conversion_factor of 1 so 101 * 1 = 101
+		self.assertEqual(si.items[0].price_list_rate, 101)
+		self.assertEqual(si.items[0].rate, 101)
+
+		si.delete()
+		rule.delete()
+		frappe.get_doc("Item Price", {"item_code": "Item with Group Blank UOM"}).delete()
+		item.delete()
+		group.delete()
+
+	def test_item_group_price_with_selling_uom_pricing_rule(self):
+		group = frappe.get_doc(doctype="Item Group", item_group_name="_Test Pricing Rule Item Group UOM")
+		group.save()
+		properties = {
+			"item_code": "Item with Group UOM other than Stock",
+			"item_group": "_Test Pricing Rule Item Group UOM",
+			"stock_uom": "Nos",
+			"sales_uom": "Box",
+			"uoms": [dict(uom="Box", conversion_factor=10)],
+		}
+		item = make_item(properties=properties)
+
+		make_item_price("Item with Group UOM other than Stock", "_Test Price List", 100)
+
+		pricing_rule_record = {
+			"doctype": "Pricing Rule",
+			"title": "_Test Item with Group UOM other than Stock Rule",
+			"apply_on": "Item Group",
+			"item_groups": [
+				{
+					"item_group": "_Test Pricing Rule Item Group UOM",
+					"uom": "Box",
+				}
+			],
+			"selling": 1,
+			"currency": "INR",
+			"rate_or_discount": "Rate",
+			"rate": 101,
+			"company": "_Test Company",
+		}
+		rule = frappe.get_doc(pricing_rule_record)
+		rule.insert()
+
+		si = create_sales_invoice(
+			do_not_save=True,
+			item_code="Item with Group UOM other than Stock",
+			uom="Box",
+			conversion_factor=10,
+		)
+		si.selling_price_list = "_Test Price List"
+		si.save()
+
+		# UOM is Box so apply pricing_rule only on Box UOM.
+		# Selling UOM is Box and as both UOM are same no need to multiply by conversion_factor.
+		self.assertEqual(si.items[0].price_list_rate, 101)
+		self.assertEqual(si.items[0].rate, 101)
+
+		si.delete()
+
+		si = create_sales_invoice(
+			do_not_save=True, item_code="Item with Group UOM other than Stock", uom="Nos"
+		)
+		si.selling_price_list = "_Test Price List"
+		si.save()
+
+		# UOM is Box so pricing_rule won't apply as selling_uom is Nos.
+		# As Pricing Rule is not applied price of 100 will be fetched from Item Price List.
+		self.assertEqual(si.items[0].price_list_rate, 100)
+		self.assertEqual(si.items[0].rate, 100)
+
+		si.delete()
+		rule.delete()
+		frappe.get_doc("Item Price", {"item_code": "Item with Group UOM other than Stock"}).delete()
+		item.delete()
+		group.delete()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_pricing_rule_for_different_currency(self):
 		make_item("Test Sanitizer Item")
 
@@ -806,6 +956,33 @@ class TestPricingRule(FrappeTestCase):
 		for doc in [si, si1]:
 			doc.delete()
 
+<<<<<<< HEAD
+=======
+	def test_pricing_rule_for_transaction_with_condition(self):
+		make_item("PR Transaction Condition")
+		frappe.delete_doc_if_exists("Pricing Rule", "_Test Pricing Rule")
+		make_pricing_rule(
+			selling=1,
+			min_qty=0,
+			price_or_product_discount="Product",
+			apply_on="Transaction",
+			free_item="PR Transaction Condition",
+			free_qty=1,
+			free_item_rate=10,
+			condition="customer=='_Test Customer 1'",
+		)
+
+		si = create_sales_invoice(qty=5, customer="_Test Customer 1", do_not_submit=True)
+		self.assertEqual(len(si.items), 2)
+		self.assertEqual(si.items[1].rate, 10)
+
+		si1 = create_sales_invoice(qty=5, customer="_Test Customer 2", do_not_submit=True)
+		self.assertEqual(len(si1.items), 1)
+
+		for doc in [si, si1]:
+			doc.delete()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_remove_pricing_rule(self):
 		item = make_item("Water Flask")
 		make_item_price("Water Flask", "_Test Price List", 100)
@@ -1135,6 +1312,71 @@ class TestPricingRule(FrappeTestCase):
 		frappe.delete_doc_if_exists("Pricing Rule", "_Test Pricing Rule 1")
 		frappe.delete_doc_if_exists("Pricing Rule", "_Test Pricing Rule 2")
 
+<<<<<<< HEAD
+=======
+	def test_pricing_rules_with_and_without_apply_multiple(self):
+		item = make_item("PR Item 99")
+
+		test_records = [
+			{
+				"doctype": "Pricing Rule",
+				"title": "_Test discount on item group",
+				"name": "_Test discount on item group",
+				"apply_on": "Item Group",
+				"item_groups": [
+					{
+						"item_group": "Products",
+					}
+				],
+				"selling": 1,
+				"price_or_product_discount": "Price",
+				"rate_or_discount": "Discount Percentage",
+				"discount_percentage": 60,
+				"has_priority": 1,
+				"company": "_Test Company",
+				"apply_multiple_pricing_rules": True,
+			},
+			{
+				"doctype": "Pricing Rule",
+				"title": "_Test fixed rate on item code",
+				"name": "_Test fixed rate on item code",
+				"apply_on": "Item Code",
+				"items": [
+					{
+						"item_code": item.name,
+					}
+				],
+				"selling": 1,
+				"price_or_product_discount": "Price",
+				"rate_or_discount": "Rate",
+				"rate": 25,
+				"has_priority": 1,
+				"company": "_Test Company",
+				"apply_multiple_pricing_rules": False,
+			},
+		]
+
+		for item_group_priority, item_code_priority in [(2, 4), (4, 2)]:
+			item_group_rule = frappe.get_doc(test_records[0].copy())
+			item_group_rule.priority = item_group_priority
+			item_group_rule.insert()
+
+			item_code_rule = frappe.get_doc(test_records[1].copy())
+			item_code_rule.priority = item_code_priority
+			item_code_rule.insert()
+
+			si = create_sales_invoice(qty=5, customer="_Test Customer 1", item=item.name, do_not_submit=True)
+			si.save()
+			self.assertEqual(len(si.pricing_rules), 1)
+			# Item Code rule should've applied as it has higher priority
+			expected_rule = item_group_rule if item_group_priority > item_code_priority else item_code_rule
+			self.assertEqual(si.pricing_rules[0].pricing_rule, expected_rule.name)
+
+			si.delete()
+			item_group_rule.delete()
+			item_code_rule.delete()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_validation_on_mixed_condition_with_recursion(self):
 		pricing_rule = make_pricing_rule(
 			discount_percentage=10,
@@ -1211,7 +1453,11 @@ class TestPricingRule(FrappeTestCase):
 		pi.cancel()
 
 
+<<<<<<< HEAD
 test_dependencies = ["Campaign"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["UTM Campaign"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def make_pricing_rule(**args):
@@ -1271,9 +1517,15 @@ def make_pricing_rule(**args):
 
 
 def setup_pricing_rule_data():
+<<<<<<< HEAD
 	if not frappe.db.exists("Campaign", "_Test Campaign"):
 		frappe.get_doc(
 			{"doctype": "Campaign", "campaign_name": "_Test Campaign", "name": "_Test Campaign"}
+=======
+	if not frappe.db.exists("UTM Campaign", "_Test Campaign"):
+		frappe.get_doc(
+			{"doctype": "UTM Campaign", "description": "_Test Campaign", "name": "_Test Campaign"}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		).insert()
 
 

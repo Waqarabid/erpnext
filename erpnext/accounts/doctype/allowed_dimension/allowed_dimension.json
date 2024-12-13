@@ -14,30 +14,48 @@
    "fieldtype": "Link",
    "label": "Accounting Dimension",
    "options": "DocType",
+<<<<<<< HEAD
    "read_only": 1,
    "show_days": 1,
    "show_seconds": 1
+=======
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "dimension_value",
    "fieldtype": "Dynamic Link",
    "in_list_view": 1,
+<<<<<<< HEAD
    "options": "accounting_dimension",
    "show_days": 1,
    "show_seconds": 1
+=======
+   "options": "accounting_dimension"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-11-23 09:56:19.744200",
+=======
+ "modified": "2024-03-27 13:05:58.587487",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Allowed Dimension",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

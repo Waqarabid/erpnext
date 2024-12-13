@@ -34,6 +34,7 @@ repos:
                 .*boilerplate.*|
                 erpnext/public/js/controllers/.*|
                 erpnext/templates/pages/order.js|
+<<<<<<< HEAD
                 erpnext/templates/includes/.*|
                 .*/supplier_quotation.js|
                 .*/sales_taxes_and_charges_template.js|
@@ -63,6 +64,27 @@ repos:
                 .*/stock_entry.js|
                 .*/purchase_order.js|
                 .*/loan_write_off.js
+=======
+                erpnext/templates/includes/.*
+            )$
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.44.0
+    hooks:
+      - id: eslint
+        types_or: [javascript]
+        args: ['--quiet']
+        # Ignore any files that might contain jinja / bundles
+        exclude: |
+            (?x)^(
+                erpnext/public/dist/.*|
+                cypress/.*|
+                .*node_modules.*|
+                .*boilerplate.*|
+                erpnext/public/js/controllers/.*|
+                erpnext/templates/pages/order.js|
+                erpnext/templates/includes/.*
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
             )$
 
   - repo: https://github.com/astral-sh/ruff-pre-commit

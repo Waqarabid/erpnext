@@ -70,6 +70,10 @@ def get_columns(filters):
 def get_data(filters):
 	data = []
 	batchwise_data = get_batchwise_data_from_stock_ledger(filters)
+<<<<<<< HEAD
+=======
+	batchwise_data = get_batchwise_data_from_serial_batch_bundle(batchwise_data, filters)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	data = parse_batchwise_data(batchwise_data)
 
@@ -118,6 +122,43 @@ def get_batchwise_data_from_stock_ledger(filters):
 	return batchwise_data
 
 
+<<<<<<< HEAD
+=======
+def get_batchwise_data_from_serial_batch_bundle(batchwise_data, filters):
+	table = frappe.qb.DocType("Stock Ledger Entry")
+	ch_table = frappe.qb.DocType("Serial and Batch Entry")
+	batch = frappe.qb.DocType("Batch")
+
+	query = (
+		frappe.qb.from_(table)
+		.inner_join(ch_table)
+		.on(table.serial_and_batch_bundle == ch_table.parent)
+		.inner_join(batch)
+		.on(ch_table.batch_no == batch.name)
+		.select(
+			table.item_code,
+			ch_table.batch_no,
+			table.warehouse,
+			batch.expiry_date,
+			Sum(ch_table.qty).as_("balance_qty"),
+		)
+		.where((table.is_cancelled == 0) & (table.docstatus == 1))
+		.groupby(ch_table.batch_no, table.item_code, ch_table.warehouse)
+	)
+
+	query = get_query_based_on_filters(query, batch, table, filters)
+
+	for d in query.run(as_dict=True):
+		key = (d.item_code, d.warehouse, d.batch_no)
+		if key in batchwise_data:
+			batchwise_data[key].balance_qty += flt(d.balance_qty)
+		else:
+			batchwise_data.setdefault(key, d)
+
+	return batchwise_data
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_query_based_on_filters(query, batch, table, filters):
 	if filters.item_code:
 		query = query.where(table.item_code == filters.item_code)

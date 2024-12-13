@@ -113,7 +113,11 @@ def get_provisional_profit_loss(
 ):
 	provisional_profit_loss = {}
 	total_row = {}
+<<<<<<< HEAD
 	if asset and (liability or equity):
+=======
+	if asset:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		total = total_row_total = 0
 		currency = currency or frappe.get_cached_value("Company", company, "default_currency")
 		total_row = {
@@ -126,6 +130,7 @@ def get_provisional_profit_loss(
 
 		for period in period_list:
 			key = period if consolidated else period.key
+<<<<<<< HEAD
 			effective_liability = 0.0
 			if liability:
 				effective_liability += flt(liability[-2].get(key))
@@ -134,6 +139,18 @@ def get_provisional_profit_loss(
 
 			provisional_profit_loss[key] = flt(asset[-2].get(key)) - effective_liability
 			total_row[key] = effective_liability + provisional_profit_loss[key]
+=======
+			total_assets = flt(asset[-2].get(key))
+			effective_liability = 0.00
+
+			if liability and liability[-1] == {}:
+				effective_liability += flt(liability[-2].get(key))
+			if equity and equity[-1] == {}:
+				effective_liability += flt(equity[-2].get(key))
+
+			provisional_profit_loss[key] = total_assets - effective_liability
+			total_row[key] = provisional_profit_loss[key] + effective_liability
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if provisional_profit_loss[key]:
 				has_value = True
@@ -197,9 +214,15 @@ def get_report_summary(
 		key = period if consolidated else period.key
 		if asset:
 			net_asset += asset[-2].get(key)
+<<<<<<< HEAD
 		if liability:
 			net_liability += liability[-2].get(key)
 		if equity:
+=======
+		if liability and liability[-1] == {}:
+			net_liability += liability[-2].get(key)
+		if equity and equity[-1] == {}:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			net_equity += equity[-2].get(key)
 		if provisional_profit_loss:
 			net_provisional_profit_loss += provisional_profit_loss.get(key)

@@ -24,6 +24,21 @@ from erpnext.accounts.doctype.account.chart_of_accounts.chart_of_accounts import
 
 
 class ChartofAccountsImporter(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		company: DF.Link | None
+		import_file: DF.Attach | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if self.import_file:
 			get_coa("Chart of Accounts Importer", "All Accounts", file_name=self.import_file, for_validate=1)
@@ -35,17 +50,30 @@ def validate_columns(data):
 
 	no_of_columns = max([len(d) for d in data])
 
+<<<<<<< HEAD
 	if no_of_columns > 8:
 		frappe.throw(
 			_("More columns found than expected. Please compare the uploaded file with standard template"),
+=======
+	if no_of_columns != 8:
+		frappe.throw(
+			_(
+				"Columns are not according to template. Please compare the uploaded file with standard template"
+			),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			title=(_("Wrong Template")),
 		)
 
 
 @frappe.whitelist()
 def validate_company(company):
+<<<<<<< HEAD
 	parent_company, allow_account_creation_against_child_company = frappe.db.get_value(
 		"Company", {"name": company}, ["parent_company", "allow_account_creation_against_child_company"]
+=======
+	parent_company, allow_account_creation_against_child_company = frappe.get_cached_value(
+		"Company", company, ["parent_company", "allow_account_creation_against_child_company"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if parent_company and (not allow_account_creation_against_child_company):

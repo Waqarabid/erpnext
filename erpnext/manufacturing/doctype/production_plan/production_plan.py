@@ -33,6 +33,83 @@ from erpnext.utilities.transaction_base import validate_uom_is_integer
 
 
 class ProductionPlan(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.manufacturing.doctype.material_request_plan_item.material_request_plan_item import (
+			MaterialRequestPlanItem,
+		)
+		from erpnext.manufacturing.doctype.production_plan_item.production_plan_item import ProductionPlanItem
+		from erpnext.manufacturing.doctype.production_plan_item_reference.production_plan_item_reference import (
+			ProductionPlanItemReference,
+		)
+		from erpnext.manufacturing.doctype.production_plan_material_request.production_plan_material_request import (
+			ProductionPlanMaterialRequest,
+		)
+		from erpnext.manufacturing.doctype.production_plan_material_request_warehouse.production_plan_material_request_warehouse import (
+			ProductionPlanMaterialRequestWarehouse,
+		)
+		from erpnext.manufacturing.doctype.production_plan_sales_order.production_plan_sales_order import (
+			ProductionPlanSalesOrder,
+		)
+		from erpnext.manufacturing.doctype.production_plan_sub_assembly_item.production_plan_sub_assembly_item import (
+			ProductionPlanSubAssemblyItem,
+		)
+
+		amended_from: DF.Link | None
+		combine_items: DF.Check
+		combine_sub_items: DF.Check
+		company: DF.Link
+		consider_minimum_order_qty: DF.Check
+		customer: DF.Link | None
+		for_warehouse: DF.Link | None
+		from_date: DF.Date | None
+		from_delivery_date: DF.Date | None
+		get_items_from: DF.Literal["", "Sales Order", "Material Request"]
+		ignore_existing_ordered_qty: DF.Check
+		include_non_stock_items: DF.Check
+		include_safety_stock: DF.Check
+		include_subcontracted_items: DF.Check
+		item_code: DF.Link | None
+		material_requests: DF.Table[ProductionPlanMaterialRequest]
+		mr_items: DF.Table[MaterialRequestPlanItem]
+		naming_series: DF.Literal["MFG-PP-.YYYY.-"]
+		po_items: DF.Table[ProductionPlanItem]
+		posting_date: DF.Date
+		prod_plan_references: DF.Table[ProductionPlanItemReference]
+		project: DF.Link | None
+		sales_order_status: DF.Literal["", "To Deliver and Bill", "To Bill", "To Deliver"]
+		sales_orders: DF.Table[ProductionPlanSalesOrder]
+		skip_available_sub_assembly_item: DF.Check
+		status: DF.Literal[
+			"",
+			"Draft",
+			"Submitted",
+			"Not Started",
+			"In Process",
+			"Completed",
+			"Closed",
+			"Cancelled",
+			"Material Requested",
+		]
+		sub_assembly_items: DF.Table[ProductionPlanSubAssemblyItem]
+		sub_assembly_warehouse: DF.Link | None
+		to_date: DF.Date | None
+		to_delivery_date: DF.Date | None
+		total_planned_qty: DF.Float
+		total_produced_qty: DF.Float
+		warehouse: DF.Link | None
+		warehouses: DF.TableMultiSelect[ProductionPlanMaterialRequestWarehouse]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.set_pending_qty_in_row_without_reference()
 		self.calculate_total_planned_qty()
@@ -194,6 +271,34 @@ class ProductionPlan(Document):
 			)
 
 	@frappe.whitelist()
+<<<<<<< HEAD
+=======
+	def combine_so_items(self):
+		if self.combine_items and self.po_items and len(self.po_items) > 0:
+			items = []
+			for row in self.po_items:
+				items.append(
+					frappe._dict(
+						{
+							"parent": row.sales_order,
+							"item_code": row.item_code,
+							"warehouse": row.warehouse,
+							"qty": row.pending_qty,
+							"pending_qty": row.pending_qty,
+							"conversion_factor": 1.0,
+							"description": row.description,
+							"bom_no": row.bom_no,
+						}
+					)
+				)
+
+			self.set("po_items", [])
+			self.add_items(items)
+		else:
+			self.get_items()
+
+	@frappe.whitelist()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def get_items(self):
 		self.set("po_items", [])
 		if self.get_items_from == "Sales Order":
@@ -359,6 +464,7 @@ class ProductionPlan(Document):
 
 			item_details = get_item_details(data.item_code, throw=False)
 			if self.combine_items:
+<<<<<<< HEAD
 				if item_details.bom_no in refs:
 					refs[item_details.bom_no]["so_details"].append(
 						{"sales_order": data.parent, "sales_order_item": data.name, "qty": data.pending_qty}
@@ -368,14 +474,40 @@ class ProductionPlan(Document):
 
 				else:
 					refs[item_details.bom_no] = {
+=======
+				bom_no = item_details.bom_no
+				if data.get("bom_no"):
+					bom_no = data.get("bom_no")
+
+				if bom_no in refs:
+					refs[bom_no]["so_details"].append(
+						{"sales_order": data.parent, "sales_order_item": data.name, "qty": data.pending_qty}
+					)
+					refs[bom_no]["qty"] += data.pending_qty
+					continue
+
+				else:
+					refs[bom_no] = {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"qty": data.pending_qty,
 						"po_item_ref": data.name,
 						"so_details": [],
 					}
+<<<<<<< HEAD
 					refs[item_details.bom_no]["so_details"].append(
 						{"sales_order": data.parent, "sales_order_item": data.name, "qty": data.pending_qty}
 					)
 
+=======
+					refs[bom_no]["so_details"].append(
+						{"sales_order": data.parent, "sales_order_item": data.name, "qty": data.pending_qty}
+					)
+
+			bom_no = data.bom_no or item_details and item_details.get("bom_no") or ""
+			if not bom_no:
+				continue
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			pi = self.append(
 				"po_items",
 				{
@@ -383,7 +515,11 @@ class ProductionPlan(Document):
 					"item_code": data.item_code,
 					"description": data.description or item_details.description,
 					"stock_uom": item_details and item_details.stock_uom or "",
+<<<<<<< HEAD
 					"bom_no": data.bom_no or item_details and item_details.bom_no or "",
+=======
+					"bom_no": bom_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"planned_qty": data.pending_qty,
 					"pending_qty": data.pending_qty,
 					"planned_start_date": now_datetime(),
@@ -700,6 +836,10 @@ class ProductionPlan(Document):
 
 				po.append("items", po_data)
 
+<<<<<<< HEAD
+=======
+			po.set_service_items_for_finished_goods()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			po.set_missing_values()
 			po.flags.ignore_mandatory = True
 			po.flags.ignore_validate = True
@@ -975,6 +1115,7 @@ def download_raw_materials(doc, warehouses=None):
 	frappe.flags.show_qty_in_stock_uom = 1
 	items = get_items_for_material_requests(doc, warehouses=warehouses, get_parent_warehouse_data=True)
 
+<<<<<<< HEAD
 	for d in items:
 		item_list.append(
 			[
@@ -993,6 +1134,35 @@ def download_raw_materials(doc, warehouses=None):
 				d.get("quantity"),
 			]
 		)
+=======
+	duplicate_item_wh_list = frappe._dict()
+
+	for d in items:
+		key = (d.get("item_code"), d.get("warehouse"))
+		if key in duplicate_item_wh_list:
+			rm_data = duplicate_item_wh_list[key]
+			rm_data[12] += d.get("quantity")
+			continue
+
+		rm_data = [
+			d.get("item_code"),
+			d.get("item_name"),
+			d.get("description"),
+			d.get("stock_uom"),
+			d.get("warehouse"),
+			d.get("required_bom_qty"),
+			d.get("projected_qty"),
+			d.get("actual_qty"),
+			d.get("ordered_qty"),
+			d.get("planned_qty"),
+			d.get("reserved_qty_for_production"),
+			d.get("safety_stock"),
+			d.get("quantity"),
+		]
+
+		duplicate_item_wh_list[key] = rm_data
+		item_list.append(rm_data)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not doc.get("for_warehouse"):
 			row = {"item_code": d.get("item_code")}
@@ -1270,10 +1440,17 @@ def get_sales_orders(self):
 	)
 
 	date_field_mapper = {
+<<<<<<< HEAD
 		"from_date": self.from_date >= so.transaction_date,
 		"to_date": self.to_date <= so.transaction_date,
 		"from_delivery_date": self.from_delivery_date >= so_item.delivery_date,
 		"to_delivery_date": self.to_delivery_date <= so_item.delivery_date,
+=======
+		"from_date": so.transaction_date >= self.from_date,
+		"to_date": so.transaction_date <= self.to_date,
+		"from_delivery_date": so_item.delivery_date >= self.from_delivery_date,
+		"to_delivery_date": so_item.delivery_date <= self.to_delivery_date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	for field, value in date_field_mapper.items():

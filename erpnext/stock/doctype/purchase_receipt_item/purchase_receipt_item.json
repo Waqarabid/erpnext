@@ -34,8 +34,13 @@
   "sample_quantity",
   "tracking_section",
   "received_stock_qty",
+<<<<<<< HEAD
   "stock_qty",
   "col_break_tracking_section",
+=======
+  "col_break_tracking_section",
+  "stock_qty",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "returned_qty",
   "rate_and_amount",
   "price_list_rate",
@@ -48,6 +53,10 @@
   "column_break_37",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "sec_break1",
   "rate",
@@ -58,6 +67,10 @@
   "pricing_rules",
   "stock_uom_rate",
   "is_free_item",
+<<<<<<< HEAD
+=======
+  "apply_tds",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_29",
   "net_rate",
   "net_amount",
@@ -66,6 +79,10 @@
   "base_net_rate",
   "base_net_amount",
   "valuation_rate",
+<<<<<<< HEAD
+=======
+  "sales_incoming_rate",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "item_tax_amount",
   "rm_supp_cost",
   "landed_cost_voucher_amount",
@@ -79,6 +96,11 @@
   "purchase_order",
   "purchase_invoice",
   "column_break_40",
+<<<<<<< HEAD
+=======
+  "allow_zero_valuation_rate",
+  "return_qty_from_rejected_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "is_fixed_asset",
   "asset_location",
   "asset_category",
@@ -91,6 +113,7 @@
   "delivery_note_item",
   "putaway_rule",
   "section_break_45",
+<<<<<<< HEAD
   "allow_zero_valuation_rate",
   "bom",
   "serial_no",
@@ -99,6 +122,22 @@
   "batch_no",
   "rejected_serial_no",
   "item_tax_rate",
+=======
+  "add_serial_batch_bundle",
+  "serial_and_batch_bundle",
+  "use_serial_batch_fields",
+  "col_break5",
+  "add_serial_batch_for_rejected_qty",
+  "rejected_serial_and_batch_bundle",
+  "section_break_3vxt",
+  "serial_no",
+  "rejected_serial_no",
+  "column_break_tolu",
+  "batch_no",
+  "subcontract_bom_section",
+  "include_exploded_items",
+  "bom",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "item_weight_details",
   "weight_per_unit",
   "total_weight",
@@ -110,6 +149,10 @@
   "manufacturer_part_no",
   "accounting_details_section",
   "expense_account",
+<<<<<<< HEAD
+=======
+  "item_tax_rate",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "wip_composite_asset",
   "column_break_102",
   "provisional_expense_account",
@@ -120,7 +163,12 @@
   "section_break_80",
   "page_break",
   "sales_order",
+<<<<<<< HEAD
   "sales_order_item"
+=======
+  "sales_order_item",
+  "subcontracting_receipt_item"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -182,7 +230,10 @@
    "oldfieldname": "description",
    "oldfieldtype": "Text",
    "print_width": "300px",
+<<<<<<< HEAD
    "reqd": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "300px"
   },
   {
@@ -499,7 +550,10 @@
   {
    "fieldname": "rejected_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Rejected Warehouse",
    "no_copy": 1,
    "oldfieldname": "rejected_warehouse",
@@ -571,6 +625,7 @@
   },
   {
    "fieldname": "section_break_45",
+<<<<<<< HEAD
    "fieldtype": "Section Break"
   },
   {
@@ -602,6 +657,10 @@
    "label": "Rejected Serial No",
    "no_copy": 1,
    "print_hide": 1
+=======
+   "fieldtype": "Section Break",
+   "label": "Serial and Batch No"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "item_tax_template",
@@ -885,7 +944,12 @@
   },
   {
    "fieldname": "tracking_section",
+<<<<<<< HEAD
    "fieldtype": "Section Break"
+=======
+   "fieldtype": "Section Break",
+   "label": "Qty as Per Stock UOM"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "col_break_tracking_section",
@@ -929,7 +993,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "discount_and_margin_section",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -1025,6 +1093,71 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:doc.use_serial_batch_fields === 0 || doc.docstatus === 1",
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1,
+   "search_index": 1
+  },
+  {
+   "depends_on": "eval:parent.is_old_subcontracting_flow",
+   "fieldname": "subcontract_bom_section",
+   "fieldtype": "Section Break",
+   "label": "Subcontract BOM"
+  },
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Text",
+   "label": "Serial No"
+  },
+  {
+   "fieldname": "rejected_serial_no",
+   "fieldtype": "Text",
+   "label": "Rejected Serial No"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch No",
+   "options": "Batch",
+   "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0 || doc.docstatus === 1",
+   "fieldname": "rejected_serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Rejected Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0",
+   "fieldname": "add_serial_batch_for_rejected_qty",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch No (Rejected Qty)"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 1",
+   "fieldname": "section_break_3vxt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_tolu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0",
+   "fieldname": "add_serial_batch_bundle",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch No"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "wip_composite_asset",
    "fieldtype": "Link",
    "label": "WIP Composite Asset",
@@ -1049,12 +1182,67 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "subcontracting_receipt_item",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Subcontracting Receipt Item",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "report_hide": 1,
+   "search_index": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "use_serial_batch_fields",
+   "fieldtype": "Check",
+   "label": "Use Serial No / Batch Fields"
+  },
+  {
+   "default": "1",
+   "fieldname": "apply_tds",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Apply TDS",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "return_qty_from_rejected_warehouse",
+   "fieldtype": "Check",
+   "label": "Return Qty from Rejected Warehouse",
+   "read_only": 1
+  },
+  {
+   "description": "Valuation rate for the item as per Sales Invoice (Only for Internal Transfers)",
+   "fieldname": "sales_incoming_rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Sales Incoming Rate",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-12-25 22:32:09.801965",
+=======
+ "modified": "2024-07-19 12:14:21.521466",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Purchase Receipt Item",
@@ -1062,7 +1250,11 @@
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

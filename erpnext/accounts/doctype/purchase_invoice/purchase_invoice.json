@@ -5,6 +5,10 @@
  "creation": "2013-05-21 16:16:39",
  "doctype": "DocType",
  "document_type": "Document",
+<<<<<<< HEAD
+=======
+ "email_append_to": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "engine": "InnoDB",
  "field_order": [
   "title",
@@ -171,6 +175,10 @@
   "column_break_63",
   "unrealized_profit_loss_account",
   "subscription_section",
+<<<<<<< HEAD
+=======
+  "subscription",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "auto_repeat",
   "update_auto_repeat_reference",
   "column_break_114",
@@ -190,6 +198,11 @@
   "additional_info_section",
   "is_internal_supplier",
   "represents_company",
+<<<<<<< HEAD
+=======
+  "supplier_group",
+  "sender",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_147",
   "inter_company_invoice_reference",
   "is_old_subcontracting_flow",
@@ -296,6 +309,10 @@
    "remember_last_selected_value": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_on_submit": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -441,7 +458,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
@@ -463,12 +484,20 @@
    "fieldname": "contact_mobile",
    "fieldtype": "Small Text",
    "label": "Mobile No",
+<<<<<<< HEAD
+=======
+   "options": "Phone",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
    "fieldname": "contact_email",
    "fieldtype": "Small Text",
    "label": "Contact Email",
+<<<<<<< HEAD
+=======
+   "options": "Email",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide": 1,
    "read_only": 1
   },
@@ -485,7 +514,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address",
    "print_hide": 1,
    "read_only": 1
@@ -1109,6 +1142,10 @@
    "fieldtype": "Button",
    "label": "Get Advances Paid",
    "oldfieldtype": "Button",
+<<<<<<< HEAD
+=======
+   "options": "set_advances",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide": 1
   },
   {
@@ -1360,11 +1397,19 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address",
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_on_submit": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "project",
    "fieldtype": "Link",
    "label": "Project",
@@ -1392,12 +1437,19 @@
    "depends_on": "eval:doc.update_stock && doc.is_internal_supplier",
    "fieldname": "set_from_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
+=======
+   "ignore_user_permissions": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Set From Warehouse",
    "no_copy": 1,
    "options": "Warehouse",
    "print_hide": 1,
    "print_width": "50px",
+<<<<<<< HEAD
    "ignore_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "50px"
   },
   {
@@ -1449,6 +1501,15 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "subscription",
+   "fieldtype": "Link",
+   "label": "Subscription",
+   "options": "Subscription"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "fieldname": "is_old_subcontracting_flow",
    "fieldtype": "Check",
@@ -1601,12 +1662,31 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "supplier.supplier_group",
+   "fieldname": "supplier_group",
+   "fieldtype": "Link",
+   "label": "Supplier Group",
+   "options": "Supplier Group"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "1",
    "depends_on": "eval: doc.is_return && doc.return_against",
    "description": "Debit Note will update it's own outstanding amount, even if \"Return Against\" is specified.",
    "fieldname": "update_outstanding_for_self",
    "fieldtype": "Check",
    "label": "Update Outstanding for Self"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "sender",
+   "fieldtype": "Data",
+   "label": "Sender",
+   "options": "Email"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-file-text",
@@ -1669,11 +1749,21 @@
   }
  ],
  "search_fields": "posting_date, supplier, bill_no, base_grand_total, outstanding_amount",
+<<<<<<< HEAD
  "show_name_in_global_search": 1,
  "sort_field": "modified",
+=======
+ "sender_field": "sender",
+ "show_name_in_global_search": 1,
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
  "allow_copy": 0,
  "allow_import": 1,
  "allow_rename": 1,
@@ -50,12 +51,42 @@
  "istable": 0,
  "max_attachments": 0,
  "modified": "2016-07-25 05:24:26.534086",
+=======
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:branch",
+ "creation": "2013-01-10 16:34:13",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "branch"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Branch",
+   "oldfieldname": "branch",
+   "oldfieldtype": "Data",
+   "reqd": 1,
+   "unique": 1
+  }
+ ],
+ "icon": "fa fa-code-fork",
+ "idx": 1,
+ "links": [],
+ "modified": "2024-03-27 13:06:42.370664",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Branch",
  "owner": "Administrator",
  "permissions": [
   {
+<<<<<<< HEAD
    "amend": 0,
    "apply_user_permissions": 0,
    "cancel": 0,
@@ -66,10 +97,16 @@
    "if_owner": 0,
    "import": 0,
    "permlevel": 0,
+=======
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "HR User",
+<<<<<<< HEAD
    "set_user_permissions": 0,
    "share": 1,
    "submit": 0,
@@ -86,18 +123,37 @@
    "if_owner": 0,
    "import": 0,
    "permlevel": 0,
+=======
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "HR Manager",
+<<<<<<< HEAD
    "set_user_permissions": 0,
    "share": 1,
    "submit": 0,
+=======
+   "share": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "write": 1
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "read_only": 0,
  "read_only_onload": 0,
  "track_seen": 0
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

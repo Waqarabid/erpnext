@@ -7,12 +7,22 @@ from frappe.utils import get_link_to_form, today
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def transaction_processing(data, from_doctype, to_doctype):
+=======
+def transaction_processing(data, from_doctype, to_doctype, args=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if isinstance(data, str):
 		deserialized_data = json.loads(data)
 	else:
 		deserialized_data = data
 
+<<<<<<< HEAD
+=======
+	if isinstance(args, str):
+		args = frappe._dict(json.loads(args))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	length_of_data = len(deserialized_data)
 
 	frappe.msgprint(_("Started a background job to create {1} {0}").format(to_doctype, length_of_data))
@@ -21,6 +31,10 @@ def transaction_processing(data, from_doctype, to_doctype):
 		deserialized_data=deserialized_data,
 		from_doctype=from_doctype,
 		to_doctype=to_doctype,
+<<<<<<< HEAD
+=======
+		args=args,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
@@ -69,8 +83,18 @@ def update_log(log_name, status, retried, err=None):
 		frappe.db.set_value("Bulk Transaction Log Detail", log_name, "error_description", err)
 
 
+<<<<<<< HEAD
 def job(deserialized_data, from_doctype, to_doctype):
 	fail_count = 0
+=======
+def job(deserialized_data, from_doctype, to_doctype, args):
+	fail_count = 0
+
+	if args:
+		# currently: flag-based transport to `task`
+		frappe.flags.args = args
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	for d in deserialized_data:
 		try:
 			doc_name = d.get("name")
@@ -137,14 +161,33 @@ def task(doc_name, from_doctype, to_doctype):
 		},
 		"Purchase Receipt": {"Purchase Invoice": purchase_receipt.make_purchase_invoice},
 	}
+<<<<<<< HEAD
+=======
+
+	hooks = frappe.get_hooks("bulk_transaction_task_mapper")
+	for hook in hooks:
+		mapper.update(frappe.get_attr(hook)())
+
+	frappe.flags.bulk_transaction = True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if to_doctype in ["Payment Entry"]:
 		obj = mapper[from_doctype][to_doctype](from_doctype, doc_name)
 	else:
 		obj = mapper[from_doctype][to_doctype](doc_name)
 
+<<<<<<< HEAD
 	obj.flags.ignore_validate = True
 	obj.set_title_field()
 	obj.insert(ignore_mandatory=True)
+=======
+	if obj:
+		obj.flags.ignore_validate = True
+		obj.set_title_field()
+		obj.insert(ignore_mandatory=True)
+
+	del obj
+	del frappe.flags.bulk_transaction
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def create_log(doc_name, e, from_doctype, to_doctype, status, log_date=None, restarted=0):

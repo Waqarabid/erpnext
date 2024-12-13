@@ -15,7 +15,11 @@ def execute():
 
 def find_broken_stock_entries() -> list[StockEntryCode]:
 	period_closing_date = frappe.db.get_value(
+<<<<<<< HEAD
 		"Period Closing Voucher", {"docstatus": 1}, "posting_date", order_by="posting_date desc"
+=======
+		"Period Closing Voucher", {"docstatus": 1}, "period_end_date", order_by="period_end_date desc"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	stock_entries_to_patch = frappe.db.sql(

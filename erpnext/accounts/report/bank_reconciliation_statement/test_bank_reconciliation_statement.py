@@ -2,6 +2,7 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 
 from erpnext.accounts.doctype.bank_transaction.test_bank_transaction import (
@@ -27,6 +28,27 @@ class TestBankReconciliationStatement(FrappeTestCase):
 
 	def test_loan_entries_in_bank_reco_statement(self):
 		create_loan_accounts()
+=======
+from frappe.tests import IntegrationTestCase
+
+from erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_statement import (
+	execute,
+)
+from erpnext.tests.utils import if_lending_app_installed
+
+
+class TestBankReconciliationStatement(IntegrationTestCase):
+	@if_lending_app_installed
+	def test_loan_entries_in_bank_reco_statement(self):
+		from lending.loan_management.doctype.loan.test_loan import create_loan_accounts
+
+		from erpnext.accounts.doctype.bank_transaction.test_bank_transaction import (
+			create_loan_and_repayment,
+		)
+
+		create_loan_accounts()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		repayment_entry = create_loan_and_repayment()
 
 		filters = frappe._dict(

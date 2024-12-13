@@ -208,7 +208,11 @@ def set_gl_entries_by_account(
 	additional_conditions = []
 
 	if ignore_closing_entries:
+<<<<<<< HEAD
 		additional_conditions.append("and ifnull(voucher_type, '')!='Period Closing Voucher'")
+=======
+		additional_conditions.append("and voucher_type !='Period Closing Voucher'")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if from_date:
 		additional_conditions.append("and posting_date >= %(from_date)s")

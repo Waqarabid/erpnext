@@ -10,6 +10,34 @@ from frappe.utils import flt
 
 
 class Bin(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		actual_qty: DF.Float
+		indented_qty: DF.Float
+		item_code: DF.Link
+		ordered_qty: DF.Float
+		planned_qty: DF.Float
+		projected_qty: DF.Float
+		reserved_qty: DF.Float
+		reserved_qty_for_production: DF.Float
+		reserved_qty_for_production_plan: DF.Float
+		reserved_qty_for_sub_contract: DF.Float
+		reserved_stock: DF.Float
+		stock_uom: DF.Link | None
+		stock_value: DF.Float
+		valuation_rate: DF.Float
+		warehouse: DF.Link
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def before_save(self):
 		if self.get("__islocal") or not self.stock_uom:
 			self.stock_uom = frappe.get_cached_value("Item", self.item_code, "stock_uom")
@@ -170,6 +198,20 @@ class Bin(Document):
 		self.set_projected_qty()
 		self.db_set("projected_qty", self.projected_qty, update_modified=True)
 
+<<<<<<< HEAD
+=======
+	def update_reserved_stock(self):
+		"""Update `Reserved Stock` on change in Reserved Qty of Stock Reservation Entry"""
+
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			get_sre_reserved_qty_for_item_and_warehouse,
+		)
+
+		reserved_stock = get_sre_reserved_qty_for_item_and_warehouse(self.item_code, self.warehouse)
+
+		self.db_set("reserved_stock", flt(reserved_stock), update_modified=True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def on_doctype_update():
 	frappe.db.add_unique("Bin", ["item_code", "warehouse"], constraint_name="unique_item_warehouse")

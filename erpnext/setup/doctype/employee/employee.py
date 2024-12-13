@@ -8,7 +8,10 @@ from frappe.permissions import (
 	get_doc_permissions,
 	has_permission,
 	remove_user_permission,
+<<<<<<< HEAD
 	set_user_permission_if_allowed,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 from frappe.utils import cstr, getdate, today, validate_email_address
 from frappe.utils.nestedset import NestedSet
@@ -88,7 +91,11 @@ class Employee(NestedSet):
 	def update_user_permissions(self):
 		if not self.create_user_permission:
 			return
+<<<<<<< HEAD
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
+=======
+		if not has_permission("User Permission", ptype="write", print_logs=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		employee_user_permission_exists = frappe.db.exists(
@@ -99,7 +106,11 @@ class Employee(NestedSet):
 			return
 
 		add_user_permission("Employee", self.name, self.user_id)
+<<<<<<< HEAD
 		set_user_permission_if_allowed("Company", self.company, self.user_id)
+=======
+		add_user_permission("Company", self.company, self.user_id)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_user(self):
 		# add employee role if missing
@@ -127,7 +138,11 @@ class Employee(NestedSet):
 			user.gender = self.gender
 
 		if self.image:
+<<<<<<< HEAD
 			if not user.user_image:
+=======
+			if not user.user_image or self.has_value_changed("image"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				user.user_image = self.image
 				try:
 					frappe.get_doc(
@@ -148,6 +163,7 @@ class Employee(NestedSet):
 		if self.date_of_birth and getdate(self.date_of_birth) > getdate(today()):
 			throw(_("Date of Birth cannot be greater than today."))
 
+<<<<<<< HEAD
 		if (
 			self.date_of_birth
 			and self.date_of_joining
@@ -175,6 +191,12 @@ class Employee(NestedSet):
 			and (getdate(self.contract_end_date) <= getdate(self.date_of_joining))
 		):
 			throw(_("Contract End Date must be greater than Date of Joining"))
+=======
+		self.validate_from_to_dates("date_of_birth", "date_of_joining")
+		self.validate_from_to_dates("date_of_joining", "date_of_retirement")
+		self.validate_from_to_dates("date_of_joining", "relieving_date")
+		self.validate_from_to_dates("date_of_joining", "contract_end_date")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_email(self):
 		if self.company_email:
@@ -211,7 +233,11 @@ class Employee(NestedSet):
 				throw(_("Please enter relieving date."))
 
 	def validate_for_enabled_user_id(self, enabled):
+<<<<<<< HEAD
 		if not self.status == "Active":
+=======
+		if self.status != "Active":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		if enabled is None:
@@ -278,7 +304,11 @@ def validate_employee_role(doc, method=None, ignore_emp_check=False):
 def update_user_permissions(doc, method):
 	# called via User hook
 	if "Employee" in [d.role for d in doc.get("roles")]:
+<<<<<<< HEAD
 		if not has_permission("User Permission", ptype="write", raise_exception=False):
+=======
+		if not has_permission("User Permission", ptype="write", print_logs=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 		employee = frappe.get_doc("Employee", {"user_id": doc.name})
 		employee.update_user_permissions()

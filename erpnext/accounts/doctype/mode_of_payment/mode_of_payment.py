@@ -8,6 +8,27 @@ from frappe.model.document import Document
 
 
 class ModeofPayment(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.mode_of_payment_account.mode_of_payment_account import (
+			ModeofPaymentAccount,
+		)
+
+		accounts: DF.Table[ModeofPaymentAccount]
+		enabled: DF.Check
+		mode_of_payment: DF.Data
+		type: DF.Literal["Cash", "Bank", "General", "Phone"]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_accounts()
 		self.validate_repeating_companies()
@@ -25,7 +46,11 @@ class ModeofPayment(Document):
 	def validate_accounts(self):
 		for entry in self.accounts:
 			"""Error when Company of Ledger account doesn't match with Company Selected"""
+<<<<<<< HEAD
 			if frappe.db.get_value("Account", entry.default_account, "company") != entry.company:
+=======
+			if frappe.get_cached_value("Account", entry.default_account, "company") != entry.company:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(
 					_("Account {0} does not match with Company {1} in Mode of Account: {2}").format(
 						entry.default_account, entry.company, self.name

@@ -58,9 +58,15 @@ class Deferred_Item:
 		For a given GL/Journal posting, get balance based on item type
 		"""
 		if self.type == "Deferred Sale Item":
+<<<<<<< HEAD
 			return entry.debit - entry.credit
 		elif self.type == "Deferred Purchase Item":
 			return -(entry.credit - entry.debit)
+=======
+			return flt(entry.debit) - flt(entry.credit)
+		elif self.type == "Deferred Purchase Item":
+			return -(flt(entry.credit) - flt(entry.debit))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return 0
 
 	def get_item_total(self):
@@ -97,7 +103,11 @@ class Deferred_Item:
 		if base_amount + already_booked_amount > self.base_net_amount:
 			base_amount = self.base_net_amount - already_booked_amount
 
+<<<<<<< HEAD
 		if not (get_first_day(start_date) == start_date and get_last_day(end_date) == end_date):
+=======
+		if get_first_day(start_date) != start_date or get_last_day(end_date) != end_date:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			partial_month = flt(date_diff(end_date, start_date)) / flt(
 				date_diff(get_last_day(end_date), get_first_day(start_date))
 			)
@@ -150,7 +160,11 @@ class Deferred_Item:
 			actual = 0
 			for posting in self.gle_entries:
 				# if period.from_date <= posting.posting_date <= period.to_date:
+<<<<<<< HEAD
 				if period.from_date <= posting.gle_posting_date <= period.to_date:
+=======
+				if period.from_date <= getdate(posting.gle_posting_date) <= period.to_date:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					period_sum += self.get_amount(posting)
 					if posting.posted == "posted":
 						actual += self.get_amount(posting)
@@ -288,7 +302,11 @@ class Deferred_Revenue_and_Expense_Report:
 			qb.from_(inv_item)
 			.join(inv)
 			.on(inv.name == inv_item.parent)
+<<<<<<< HEAD
 			.join(gle)
+=======
+			.left_join(gle)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			.on((inv_item.name == gle.voucher_detail_no) & (deferred_account_field == gle.account))
 			.select(
 				inv.name.as_("doc"),

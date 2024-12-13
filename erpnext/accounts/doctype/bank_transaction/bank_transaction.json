@@ -13,6 +13,10 @@
   "status",
   "bank_account",
   "company",
+<<<<<<< HEAD
+=======
+  "amended_from",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_4",
   "deposit",
   "withdrawal",
@@ -25,10 +29,17 @@
   "transaction_id",
   "transaction_type",
   "section_break_14",
+<<<<<<< HEAD
   "payment_entries",
   "section_break_18",
   "allocated_amount",
   "amended_from",
+=======
+  "column_break_oufv",
+  "payment_entries",
+  "section_break_18",
+  "allocated_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_17",
   "unallocated_amount",
   "party_section",
@@ -138,10 +149,19 @@
    "fieldtype": "Section Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "allocated_amount",
    "fieldtype": "Currency",
    "label": "Allocated Amount",
    "options": "currency"
+=======
+   "allow_on_submit": 1,
+   "fieldname": "allocated_amount",
+   "fieldtype": "Currency",
+   "label": "Allocated Amount",
+   "options": "currency",
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "amended_from",
@@ -157,10 +177,19 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "unallocated_amount",
    "fieldtype": "Currency",
    "label": "Unallocated Amount",
    "options": "currency"
+=======
+   "allow_on_submit": 1,
+   "fieldname": "unallocated_amount",
+   "fieldtype": "Currency",
+   "label": "Unallocated Amount",
+   "options": "currency",
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "party_section",
@@ -217,19 +246,36 @@
    "label": "Party Name/Account Holder (Bank Statement)"
   },
   {
+<<<<<<< HEAD
     "fieldname": "bank_party_iban",
     "fieldtype": "Data",
     "label": "Party IBAN (Bank Statement)"
+=======
+   "fieldname": "bank_party_iban",
+   "fieldtype": "Data",
+   "label": "Party IBAN (Bank Statement)"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "bank_party_account_number",
    "fieldtype": "Data",
    "label": "Party Account No. (Bank Statement)"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "column_break_oufv",
+   "fieldtype": "Column Break"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-06-06 13:58:12.821411",
+=======
+ "modified": "2023-11-18 18:32:47.203694",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Bank Transaction",

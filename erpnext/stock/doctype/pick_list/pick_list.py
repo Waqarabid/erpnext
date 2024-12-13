@@ -11,19 +11,79 @@ from frappe.model.document import Document
 from frappe.model.mapper import map_child_doc
 from frappe.query_builder import Case
 from frappe.query_builder.custom import GROUP_CONCAT
+<<<<<<< HEAD
 from frappe.query_builder.functions import Coalesce, IfNull, Locate, Replace, Sum
 from frappe.utils import ceil, cint, floor, flt, today
+=======
+from frappe.query_builder.functions import Coalesce, Locate, Replace, Sum
+from frappe.utils import ceil, cint, floor, flt, get_link_to_form
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.nestedset import get_descendants_of
 
 from erpnext.selling.doctype.sales_order.sales_order import (
 	make_delivery_note as create_delivery_note_from_sales_order,
 )
+<<<<<<< HEAD
 from erpnext.stock.get_item_details import get_conversion_factor
+=======
+from erpnext.stock.doctype.serial_and_batch_bundle.serial_and_batch_bundle import (
+	get_auto_batch_nos,
+	get_picked_serial_nos,
+)
+from erpnext.stock.get_item_details import get_conversion_factor
+from erpnext.stock.serial_batch_bundle import (
+	SerialBatchCreation,
+	get_batches_from_bundle,
+	get_serial_nos_from_bundle,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 # TODO: Prioritize SO or WO group warehouse
 
 
 class PickList(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.stock.doctype.pick_list_item.pick_list_item import PickListItem
+
+		amended_from: DF.Link | None
+		company: DF.Link
+		consider_rejected_warehouses: DF.Check
+		customer: DF.Link | None
+		customer_name: DF.Data | None
+		for_qty: DF.Float
+		group_same_items: DF.Check
+		ignore_pricing_rule: DF.Check
+		locations: DF.Table[PickListItem]
+		material_request: DF.Link | None
+		naming_series: DF.Literal["STO-PICK-.YYYY.-"]
+		parent_warehouse: DF.Link | None
+		pick_manually: DF.Check
+		prompt_qty: DF.Check
+		purpose: DF.Literal["Material Transfer for Manufacture", "Material Transfer", "Delivery"]
+		scan_barcode: DF.Data | None
+		scan_mode: DF.Check
+		status: DF.Literal["Draft", "Open", "Completed", "Cancelled"]
+		work_order: DF.Link | None
+	# end: auto-generated types
+
+	def onload(self) -> None:
+		if frappe.get_cached_value("Stock Settings", None, "enable_stock_reservation"):
+			if self.has_unreserved_stock():
+				self.set_onload("has_unreserved_stock", True)
+
+		if self.has_reserved_stock():
+			self.set_onload("has_reserved_stock", True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_for_qty()
 		if self.pick_manually and self.get("locations"):
@@ -104,8 +164,33 @@ class PickList(Document):
 				)
 
 	def before_submit(self):
+<<<<<<< HEAD
 		self.validate_picked_items()
 
+=======
+		self.validate_sales_order()
+		self.validate_picked_items()
+
+	def validate_sales_order(self):
+		"""Raises an exception if the `Sales Order` has reserved stock."""
+
+		if self.purpose != "Delivery":
+			return
+
+		so_list = set(location.sales_order for location in self.locations if location.sales_order)
+
+		if so_list:
+			for so in so_list:
+				so_doc = frappe.get_doc("Sales Order", so)
+				for item in so_doc.items:
+					if item.stock_reserved_qty > 0:
+						frappe.throw(
+							_(
+								"Cannot create a pick list for Sales Order {0} because it has reserved stock. Please unreserve the stock in order to create a pick list."
+							).format(frappe.bold(so))
+						)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_picked_items(self):
 		for item in self.locations:
 			if self.scan_mode and item.picked_qty < item.stock_qty:
@@ -120,6 +205,7 @@ class PickList(Document):
 				# if the user has not entered any picked qty, set it to stock_qty, before submit
 				item.picked_qty = item.stock_qty
 
+<<<<<<< HEAD
 			if not frappe.get_cached_value("Item", item.item_code, "has_serial_no"):
 				continue
 
@@ -146,12 +232,114 @@ class PickList(Document):
 		self.update_sales_order_picking_status()
 
 	def on_cancel(self):
+=======
+	def on_submit(self):
+		self.validate_serial_and_batch_bundle()
+		self.make_bundle_using_old_serial_batch_fields()
 		self.update_status()
 		self.update_bundle_picked_qty()
 		self.update_reference_qty()
 		self.update_sales_order_picking_status()
 
+	def make_bundle_using_old_serial_batch_fields(self):
+		from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
+
+		for row in self.locations:
+			if not row.serial_no and not row.batch_no:
+				continue
+
+			if not row.use_serial_batch_fields and (row.serial_no or row.batch_no):
+				frappe.throw(_("Please enable Use Old Serial / Batch Fields to make_bundle"))
+
+			if row.use_serial_batch_fields and (not row.serial_and_batch_bundle):
+				sn_doc = SerialBatchCreation(
+					{
+						"item_code": row.item_code,
+						"warehouse": row.warehouse,
+						"voucher_type": self.doctype,
+						"voucher_no": self.name,
+						"voucher_detail_no": row.name,
+						"qty": row.stock_qty,
+						"type_of_transaction": "Outward",
+						"company": self.company,
+						"serial_nos": get_serial_nos(row.serial_no) if row.serial_no else None,
+						"batches": frappe._dict({row.batch_no: row.stock_qty}) if row.batch_no else None,
+						"batch_no": row.batch_no,
+					}
+				).make_serial_and_batch_bundle()
+
+				row.serial_and_batch_bundle = sn_doc.name
+				row.db_set("serial_and_batch_bundle", sn_doc.name)
+
+	def on_update_after_submit(self) -> None:
+		if self.has_reserved_stock():
+			msg = _(
+				"The Pick List having Stock Reservation Entries cannot be updated. If you need to make changes, we recommend canceling the existing Stock Reservation Entries before updating the Pick List."
+			)
+			frappe.throw(msg)
+
+	def on_cancel(self):
+		self.ignore_linked_doctypes = [
+			"Serial and Batch Bundle",
+			"Stock Reservation Entry",
+			"Delivery Note",
+		]
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
+		self.update_status()
+		self.update_bundle_picked_qty()
+		self.update_reference_qty()
+		self.update_sales_order_picking_status()
+<<<<<<< HEAD
+
 	def update_status(self, status=None):
+=======
+		self.delink_serial_and_batch_bundle()
+
+	def delink_serial_and_batch_bundle(self):
+		for row in self.locations:
+			if (
+				row.serial_and_batch_bundle
+				and frappe.db.get_value("Serial and Batch Bundle", row.serial_and_batch_bundle, "docstatus")
+				== 1
+			):
+				frappe.db.set_value(
+					"Serial and Batch Bundle",
+					row.serial_and_batch_bundle,
+					{"is_cancelled": 1, "voucher_no": ""},
+				)
+
+				frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle).cancel()
+				row.db_set("serial_and_batch_bundle", None)
+
+	def on_update(self):
+		if self.get("locations"):
+			self.linked_serial_and_batch_bundle()
+
+	def linked_serial_and_batch_bundle(self):
+		for row in self.get("locations"):
+			if row.serial_and_batch_bundle:
+				frappe.get_doc(
+					"Serial and Batch Bundle", row.serial_and_batch_bundle
+				).set_serial_and_batch_values(self, row)
+
+	def on_trash(self):
+		self.remove_serial_and_batch_bundle()
+
+	def remove_serial_and_batch_bundle(self):
+		for row in self.locations:
+			if row.serial_and_batch_bundle:
+				frappe.delete_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+
+	def validate_serial_and_batch_bundle(self):
+		for row in self.locations:
+			if row.serial_and_batch_bundle:
+				doc = frappe.get_doc("Serial and Batch Bundle", row.serial_and_batch_bundle)
+				if doc.docstatus == 0:
+					doc.submit()
+
+	def update_status(self, status=None, update_modified=True):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not status:
 			if self.docstatus == 0:
 				status = "Draft"
@@ -225,6 +413,48 @@ class PickList(Document):
 		for sales_order in sales_orders:
 			frappe.get_doc("Sales Order", sales_order, for_update=True).update_picking_status()
 
+<<<<<<< HEAD
+=======
+	@frappe.whitelist()
+	def create_stock_reservation_entries(self, notify=True) -> None:
+		"""Creates Stock Reservation Entries for Sales Order Items against Pick List."""
+
+		so_items_details_map = {}
+		for location in self.locations:
+			if location.warehouse and location.sales_order and location.sales_order_item:
+				item_details = {
+					"sales_order_item": location.sales_order_item,
+					"item_code": location.item_code,
+					"warehouse": location.warehouse,
+					"qty_to_reserve": (flt(location.picked_qty) - flt(location.stock_reserved_qty)),
+					"from_voucher_no": location.parent,
+					"from_voucher_detail_no": location.name,
+					"serial_and_batch_bundle": location.serial_and_batch_bundle,
+				}
+				so_items_details_map.setdefault(location.sales_order, []).append(item_details)
+
+		if so_items_details_map:
+			for so, items_details in so_items_details_map.items():
+				so_doc = frappe.get_doc("Sales Order", so)
+				so_doc.create_stock_reservation_entries(
+					items_details=items_details,
+					from_voucher_type="Pick List",
+					notify=notify,
+				)
+
+	@frappe.whitelist()
+	def cancel_stock_reservation_entries(self, notify=True) -> None:
+		"""Cancel Stock Reservation Entries for Sales Order Items created against Pick List."""
+
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			cancel_stock_reservation_entries,
+		)
+
+		cancel_stock_reservation_entries(
+			from_voucher_type="Pick List", from_voucher_no=self.name, notify=notify
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_picked_qty(self, data):
 		over_delivery_receipt_allowance = 100 + flt(
 			frappe.db.get_single_value("Stock Settings", "over_delivery_receipt_allowance")
@@ -400,6 +630,7 @@ class PickList(Document):
 	def get_picked_items_details(self, items):
 		picked_items = frappe._dict()
 
+<<<<<<< HEAD
 		if items:
 			pi = frappe.qb.DocType("Pick List")
 			pi_item = frappe.qb.DocType("Pick List Item")
@@ -448,6 +679,86 @@ class PickList(Document):
 
 		return picked_items
 
+=======
+		if not items:
+			return picked_items
+
+		items_data = self._get_pick_list_items(items)
+
+		for item_data in items_data:
+			key = (item_data.warehouse, item_data.batch_no) if item_data.batch_no else item_data.warehouse
+			serial_no = [x for x in item_data.serial_no.split("\n") if x] if item_data.serial_no else None
+
+			if item_data.serial_and_batch_bundle:
+				if not serial_no:
+					serial_no = get_serial_nos_from_bundle(item_data.serial_and_batch_bundle)
+
+				if not item_data.batch_no and not serial_no:
+					bundle_batches = get_batches_from_bundle(item_data.serial_and_batch_bundle)
+					for batch_no, batch_qty in bundle_batches.items():
+						batch_qty = abs(batch_qty)
+
+						key = (item_data.warehouse, batch_no)
+						if item_data.item_code not in picked_items:
+							picked_items[item_data.item_code] = {key: {"picked_qty": batch_qty}}
+						else:
+							picked_items[item_data.item_code][key]["picked_qty"] += batch_qty
+
+					continue
+
+			if item_data.item_code not in picked_items:
+				picked_items[item_data.item_code] = {}
+
+			if key not in picked_items[item_data.item_code]:
+				picked_items[item_data.item_code][key] = frappe._dict(
+					{
+						"picked_qty": 0,
+						"serial_no": [],
+						"batch_no": item_data.batch_no or "",
+						"warehouse": item_data.warehouse,
+					}
+				)
+
+			picked_items[item_data.item_code][key]["picked_qty"] += item_data.picked_qty
+			if serial_no:
+				picked_items[item_data.item_code][key]["serial_no"].extend(serial_no)
+
+		return picked_items
+
+	def _get_pick_list_items(self, items):
+		pi = frappe.qb.DocType("Pick List")
+		pi_item = frappe.qb.DocType("Pick List Item")
+		query = (
+			frappe.qb.from_(pi)
+			.inner_join(pi_item)
+			.on(pi.name == pi_item.parent)
+			.select(
+				pi_item.item_code,
+				pi_item.warehouse,
+				pi_item.batch_no,
+				pi_item.serial_and_batch_bundle,
+				pi_item.serial_no,
+				(Case().when(pi_item.picked_qty > 0, pi_item.picked_qty).else_(pi_item.stock_qty)).as_(
+					"picked_qty"
+				),
+			)
+			.where(
+				(pi_item.item_code.isin([x.item_code for x in items]))
+				& ((pi_item.picked_qty > 0) | (pi_item.stock_qty > 0))
+				& (pi.status != "Completed")
+				& (pi.status != "Cancelled")
+				& (pi_item.docstatus != 2)
+			)
+		)
+
+		if self.name:
+			query = query.where(pi_item.parent != self.name)
+
+		query = query.for_update()
+
+		return query.run(as_dict=True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def _get_product_bundles(self) -> dict[str, str]:
 		# Dict[so_item_row: item_code]
 		product_bundles = {}
@@ -484,6 +795,33 @@ class PickList(Document):
 				possible_bundles.append(0)
 		return int(flt(min(possible_bundles), precision or 6))
 
+<<<<<<< HEAD
+=======
+	def has_unreserved_stock(self):
+		if self.purpose == "Delivery":
+			for location in self.locations:
+				if (
+					location.sales_order
+					and location.sales_order_item
+					and (flt(location.picked_qty) - flt(location.stock_reserved_qty)) > 0
+				):
+					return True
+
+		return False
+
+	def has_reserved_stock(self):
+		if self.purpose == "Delivery":
+			for location in self.locations:
+				if (
+					location.sales_order
+					and location.sales_order_item
+					and flt(location.stock_reserved_qty) > 0
+				):
+					return True
+
+		return False
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def update_pick_list_status(pick_list):
 	if pick_list:
@@ -523,7 +861,12 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 	# if stock qty is zero on submitted entry, show positive remaining qty to recalculate in case of restock.
 	remaining_stock_qty = item_doc.qty if (docstatus == 1 and item_doc.stock_qty == 0) else item_doc.stock_qty
 
+<<<<<<< HEAD
 	while flt(remaining_stock_qty) > 0 and available_locations:
+=======
+	precision = frappe.get_precision("Pick List Item", "qty")
+	while flt(remaining_stock_qty, precision) > 0 and available_locations:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item_location = available_locations.pop(0)
 		item_location = frappe._dict(item_location)
 
@@ -538,8 +881,13 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 				break
 
 		serial_nos = None
+<<<<<<< HEAD
 		if item_location.serial_no:
 			serial_nos = "\n".join(item_location.serial_no[0 : cint(stock_qty)])
+=======
+		if item_location.serial_nos:
+			serial_nos = "\n".join(item_location.serial_nos[0 : cint(stock_qty)])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		locations.append(
 			frappe._dict(
@@ -549,6 +897,10 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 					"warehouse": item_location.warehouse,
 					"serial_no": serial_nos,
 					"batch_no": item_location.batch_no,
+<<<<<<< HEAD
+=======
+					"use_serial_batch_fields": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			)
 		)
@@ -579,9 +931,13 @@ def get_available_item_locations(
 	consider_rejected_warehouses=False,
 ):
 	locations = []
+<<<<<<< HEAD
 	total_picked_qty = (
 		sum([v.get("picked_qty") for k, v in picked_item_details.items()]) if picked_item_details else 0
 	)
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	has_serial_no = frappe.get_cached_value("Item", item_code, "has_serial_no")
 	has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
 
@@ -591,31 +947,42 @@ def get_available_item_locations(
 			from_warehouses,
 			required_qty,
 			company,
+<<<<<<< HEAD
 			total_picked_qty,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			consider_rejected_warehouses=consider_rejected_warehouses,
 		)
 	elif has_serial_no:
 		locations = get_available_item_locations_for_serialized_item(
 			item_code,
 			from_warehouses,
+<<<<<<< HEAD
 			required_qty,
 			company,
 			total_picked_qty,
+=======
+			company,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			consider_rejected_warehouses=consider_rejected_warehouses,
 		)
 	elif has_batch_no:
 		locations = get_available_item_locations_for_batched_item(
 			item_code,
 			from_warehouses,
+<<<<<<< HEAD
 			required_qty,
 			company,
 			total_picked_qty,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			consider_rejected_warehouses=consider_rejected_warehouses,
 		)
 	else:
 		locations = get_available_item_locations_for_other_item(
 			item_code,
 			from_warehouses,
+<<<<<<< HEAD
 			required_qty,
 			company,
 			total_picked_qty,
@@ -662,10 +1029,57 @@ def get_available_item_locations(
 			frappe.msgprint(
 				_("{0} units of Item {1} is picked in another Pick List.").format(
 					remaining_qty, frappe.get_desk_link("Item", item_code)
+=======
+			company,
+			consider_rejected_warehouses=consider_rejected_warehouses,
+		)
+
+	if picked_item_details:
+		locations = filter_locations_by_picked_materials(locations, picked_item_details)
+
+	if locations:
+		locations = get_locations_based_on_required_qty(locations, required_qty)
+
+	if not ignore_validation:
+		validate_picked_materials(item_code, required_qty, locations, picked_item_details)
+
+	return locations
+
+
+def get_locations_based_on_required_qty(locations, required_qty):
+	filtered_locations = []
+
+	for location in locations:
+		if location.qty >= required_qty:
+			location.qty = required_qty
+			filtered_locations.append(location)
+			break
+
+		required_qty -= location.qty
+		filtered_locations.append(location)
+
+	return filtered_locations
+
+
+def validate_picked_materials(item_code, required_qty, locations, picked_item_details=None):
+	for location in list(locations):
+		if location["qty"] < 0:
+			locations.remove(location)
+
+	total_qty_available = sum(location.get("qty") for location in locations)
+	remaining_qty = required_qty - total_qty_available
+
+	if remaining_qty > 0:
+		if picked_item_details:
+			frappe.msgprint(
+				_("{0} units of Item {1} is picked in another Pick List.").format(
+					remaining_qty, get_link_to_form("Item", item_code)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				),
 				title=_("Already Picked"),
 			)
 
+<<<<<<< HEAD
 	return locations
 
 
@@ -745,6 +1159,42 @@ def get_available_item_locations_for_batched_item(
 			query = query.where(sle.warehouse.notin(rejected_warehouses))
 
 	return query.run(as_dict=True)
+=======
+		else:
+			frappe.msgprint(
+				_("{0} units of Item {1} is not available in any of the warehouses.").format(
+					remaining_qty, get_link_to_form("Item", item_code)
+				),
+				title=_("Insufficient Stock"),
+			)
+
+
+def filter_locations_by_picked_materials(locations, picked_item_details) -> list[dict]:
+	filterd_locations = []
+	precision = frappe.get_precision("Pick List Item", "qty")
+	for row in locations:
+		key = row.warehouse
+		if row.batch_no:
+			key = (row.warehouse, row.batch_no)
+
+		picked_qty = picked_item_details.get(key, {}).get("picked_qty", 0)
+		if not picked_qty:
+			filterd_locations.append(row)
+			continue
+		if picked_qty > row.qty:
+			row.qty = 0
+			picked_item_details[key]["picked_qty"] -= row.qty
+		else:
+			row.qty -= picked_qty
+			picked_item_details[key]["picked_qty"] = 0.0
+			if row.serial_nos:
+				row.serial_nos = list(set(row.serial_nos) - set(picked_item_details[key].get("serial_no")))
+
+		if flt(row.qty, precision) > 0:
+			filterd_locations.append(row)
+
+	return filterd_locations
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_available_item_locations_for_serial_and_batched_item(
@@ -752,15 +1202,21 @@ def get_available_item_locations_for_serial_and_batched_item(
 	from_warehouses,
 	required_qty,
 	company,
+<<<<<<< HEAD
 	total_picked_qty=0,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	consider_rejected_warehouses=False,
 ):
 	# Get batch nos by FIFO
 	locations = get_available_item_locations_for_batched_item(
 		item_code,
 		from_warehouses,
+<<<<<<< HEAD
 		required_qty,
 		company,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		consider_rejected_warehouses=consider_rejected_warehouses,
 	)
 
@@ -779,13 +1235,122 @@ def get_available_item_locations_for_serial_and_batched_item(
 				.where(
 					(conditions) & (sn.batch_no == location.batch_no) & (sn.warehouse == location.warehouse)
 				)
+<<<<<<< HEAD
 				.orderby(sn.purchase_date)
 				.limit(ceil(location.qty + total_picked_qty))
 			).run(as_dict=True)
 
 			serial_nos = [sn.name for sn in serial_nos]
 			location.serial_no = serial_nos
+=======
+				.orderby(sn.creation)
+			).run(as_dict=True)
+
+			serial_nos = [sn.name for sn in serial_nos]
+			location.serial_nos = serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			location.qty = len(serial_nos)
+
+	return locations
+
+
+<<<<<<< HEAD
+def get_available_item_locations_for_other_item(
+	item_code,
+	from_warehouses,
+	required_qty,
+	company,
+	total_picked_qty=0,
+=======
+def get_available_item_locations_for_serialized_item(
+	item_code,
+	from_warehouses,
+	company,
+	consider_rejected_warehouses=False,
+):
+	sn = frappe.qb.DocType("Serial No")
+	query = (
+		frappe.qb.from_(sn)
+		.select(sn.name, sn.warehouse)
+		.where(sn.item_code == item_code)
+		.orderby(sn.creation)
+	)
+
+	if from_warehouses:
+		query = query.where(sn.warehouse.isin(from_warehouses))
+	else:
+		query = query.where(Coalesce(sn.warehouse, "") != "")
+		query = query.where(sn.company == company)
+
+	if not consider_rejected_warehouses:
+		if rejected_warehouses := get_rejected_warehouses():
+			query = query.where(sn.warehouse.notin(rejected_warehouses))
+
+	serial_nos = query.run(as_list=True)
+
+	warehouse_serial_nos_map = frappe._dict()
+	for serial_no, warehouse in serial_nos:
+		warehouse_serial_nos_map.setdefault(warehouse, []).append(serial_no)
+
+	locations = []
+
+	for warehouse, serial_nos in warehouse_serial_nos_map.items():
+		qty = len(serial_nos)
+
+		locations.append(
+			frappe._dict(
+				{
+					"qty": qty,
+					"warehouse": warehouse,
+					"item_code": item_code,
+					"serial_nos": serial_nos,
+				}
+			)
+		)
+
+	return locations
+
+
+def get_available_item_locations_for_batched_item(
+	item_code,
+	from_warehouses,
+	consider_rejected_warehouses=False,
+):
+	locations = []
+	data = get_auto_batch_nos(
+		frappe._dict(
+			{
+				"item_code": item_code,
+				"warehouse": from_warehouses,
+				"based_on": frappe.db.get_single_value("Stock Settings", "pick_serial_and_batch_based_on"),
+			}
+		)
+	)
+
+	warehouse_wise_batches = frappe._dict()
+	rejected_warehouses = get_rejected_warehouses()
+
+	for d in data:
+		if not consider_rejected_warehouses and rejected_warehouses and d.warehouse in rejected_warehouses:
+			continue
+
+		if d.warehouse not in warehouse_wise_batches:
+			warehouse_wise_batches.setdefault(d.warehouse, defaultdict(float))
+
+		warehouse_wise_batches[d.warehouse][d.batch_no] += d.qty
+
+	for warehouse, batches in warehouse_wise_batches.items():
+		for batch_no, qty in batches.items():
+			locations.append(
+				frappe._dict(
+					{
+						"qty": qty,
+						"warehouse": warehouse,
+						"item_code": item_code,
+						"batch_no": batch_no,
+					}
+				)
+			)
 
 	return locations
 
@@ -793,9 +1358,8 @@ def get_available_item_locations_for_serial_and_batched_item(
 def get_available_item_locations_for_other_item(
 	item_code,
 	from_warehouses,
-	required_qty,
 	company,
-	total_picked_qty=0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	consider_rejected_warehouses=False,
 ):
 	bin = frappe.qb.DocType("Bin")
@@ -804,7 +1368,10 @@ def get_available_item_locations_for_other_item(
 		.select(bin.warehouse, bin.actual_qty.as_("qty"))
 		.where((bin.item_code == item_code) & (bin.actual_qty > 0))
 		.orderby(bin.creation)
+<<<<<<< HEAD
 		.limit(ceil(required_qty + total_picked_qty))
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if from_warehouses:
@@ -884,7 +1451,12 @@ def create_dn_with_so(sales_dict, pick_list):
 	for customer in sales_dict:
 		for so in sales_dict[customer]:
 			delivery_note = None
+<<<<<<< HEAD
 			delivery_note = create_delivery_note_from_sales_order(so, delivery_note, skip_item_mapping=True)
+=======
+			kwargs = {"skip_item_mapping": True, "ignore_pricing_rule": pick_list.ignore_pricing_rule}
+			delivery_note = create_delivery_note_from_sales_order(so, delivery_note, kwargs=kwargs)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			break
 		if delivery_note:
 			# map all items of all sales orders of that customer
@@ -918,6 +1490,10 @@ def map_pl_locations(pick_list, item_mapper, delivery_note, sales_order=None):
 			dn_item.qty = flt(location.picked_qty) / (flt(location.conversion_factor) or 1)
 			dn_item.batch_no = location.batch_no
 			dn_item.serial_no = location.serial_no
+<<<<<<< HEAD
+=======
+			dn_item.use_serial_batch_fields = location.use_serial_batch_fields
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			update_delivery_note_item(source_doc, dn_item, delivery_note)
 
@@ -1020,7 +1596,11 @@ def get_pending_work_orders(doctype, txt, searchfield, start, page_length, filte
 @frappe.whitelist()
 def target_document_exists(pick_list_name, purpose):
 	if purpose == "Delivery":
+<<<<<<< HEAD
 		return frappe.db.exists("Delivery Note", {"pick_list": pick_list_name})
+=======
+		return frappe.db.exists("Delivery Note", {"pick_list": pick_list_name, "docstatus": 1})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return stock_entry_exists(pick_list_name)
 

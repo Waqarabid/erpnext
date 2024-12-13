@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Purchase Analytics"] = {
 	filters: [
@@ -78,8 +81,14 @@ frappe.query_reports["Purchase Analytics"] = {
 					const tree_type = frappe.query_report.filters[0].value;
 					if (data_doctype != tree_type) return;
 
+<<<<<<< HEAD
 					row_name = data[2].content;
 					length = data.length;
+=======
+					let row_name = data[2].content;
+					let length = data.length;
+					let row_values = "";
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 					if (tree_type == "Supplier") {
 						row_values = data.slice(4, length - 1).map(function (column) {
@@ -95,7 +104,11 @@ frappe.query_reports["Purchase Analytics"] = {
 						});
 					}
 
+<<<<<<< HEAD
 					entry = {
+=======
+					let entry = {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						name: row_name,
 						values: row_values,
 					};

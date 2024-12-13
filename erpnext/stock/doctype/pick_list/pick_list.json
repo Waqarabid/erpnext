@@ -19,6 +19,10 @@
   "consider_rejected_warehouses",
   "get_item_locations",
   "pick_manually",
+<<<<<<< HEAD
+=======
+  "ignore_pricing_rule",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_6",
   "scan_barcode",
   "column_break_13",
@@ -53,7 +57,11 @@
    "description": "Items under this warehouse will be suggested",
    "fieldname": "parent_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "label": "Parent Warehouse",
+=======
+   "label": "Warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Warehouse"
   },
   {
@@ -200,11 +208,25 @@
    "fieldname": "pick_manually",
    "fieldtype": "Check",
    "label": "Pick Manually"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "description": "If enabled then system won't apply the pricing rule on the delivery note which will be create from the pick list",
+   "fieldname": "ignore_pricing_rule",
+   "fieldtype": "Check",
+   "label": "Ignore Pricing Rule"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-27 22:49:16.954637",
+=======
+ "modified": "2024-08-14 13:20:42.168827",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Pick List",
@@ -276,4 +298,8 @@
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

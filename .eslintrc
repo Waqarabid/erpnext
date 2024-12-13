@@ -2,14 +2,21 @@
 	"env": {
 		"browser": true,
 		"node": true,
+<<<<<<< HEAD
 		"es6": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 11,
+=======
+		"es2022": true
+	},
+	"parserOptions": {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"sourceType": "module"
 	},
 	"extends": "eslint:recommended",
 	"rules": {
+<<<<<<< HEAD
 		"indent": [
 			"error",
 			"tab",
@@ -56,11 +63,30 @@
 		"keyword-spacing": "warn",
 		"comma-spacing": "warn",
 		"key-spacing": "warn"
+=======
+		"indent": "off",
+		"brace-style": "off",
+		"no-mixed-spaces-and-tabs": "off",
+		"no-useless-escape": "off",
+		"space-unary-ops": ["error", { "words": true }],
+		"linebreak-style": "off",
+		"quotes": ["off"],
+		"semi": "off",
+		"camelcase": "off",
+		"no-unused-vars": "off",
+		"no-console": ["warn"],
+		"no-extra-boolean-cast": ["off"],
+		"no-control-regex": ["off"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 	"root": true,
 	"globals": {
 		"frappe": true,
 		"Vue": true,
+<<<<<<< HEAD
+=======
+		"SetVueGlobals": true,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"erpnext": true,
 		"hub": true,
 		"$": true,
@@ -97,8 +123,15 @@
 		"is_null": true,
 		"in_list": true,
 		"has_common": true,
+<<<<<<< HEAD
 		"has_words": true,
 		"validate_email": true,
+=======
+		"posthog": true,
+		"has_words": true,
+		"validate_email": true,
+		"open_web_template_values_editor": true,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"get_number_format": true,
 		"format_number": true,
 		"format_currency": true,
@@ -154,7 +187,10 @@
 		"before": true,
 		"beforeEach": true,
 		"onScan": true,
+<<<<<<< HEAD
 		"html2canvas": true,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"extend_cscript": true,
 		"localforage": true,
 		"Plaid": true

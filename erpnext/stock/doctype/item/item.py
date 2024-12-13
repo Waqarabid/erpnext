@@ -7,6 +7,11 @@ import json
 import frappe
 from frappe import _, bold
 from frappe.model.document import Document
+<<<<<<< HEAD
+=======
+from frappe.query_builder import Interval
+from frappe.query_builder.functions import Count, CurDate, UnixTimestamp
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import (
 	cint,
 	cstr,
@@ -20,6 +25,10 @@ from frappe.utils import (
 	strip_html,
 )
 from frappe.utils.html_utils import clean_html
+<<<<<<< HEAD
+=======
+from pypika import Order
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.controllers.item_variant import (
@@ -29,7 +38,10 @@ from erpnext.controllers.item_variant import (
 	make_variant_item_code,
 	validate_item_variant_attributes,
 )
+<<<<<<< HEAD
 from erpnext.setup.doctype.item_group.item_group import invalidate_cache_for
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.item_default.item_default import ItemDefault
 
 
@@ -50,6 +62,107 @@ class DataValidationError(frappe.ValidationError):
 
 
 class Item(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.stock.doctype.item_barcode.item_barcode import ItemBarcode
+		from erpnext.stock.doctype.item_customer_detail.item_customer_detail import ItemCustomerDetail
+		from erpnext.stock.doctype.item_default.item_default import ItemDefault
+		from erpnext.stock.doctype.item_reorder.item_reorder import ItemReorder
+		from erpnext.stock.doctype.item_supplier.item_supplier import ItemSupplier
+		from erpnext.stock.doctype.item_tax.item_tax import ItemTax
+		from erpnext.stock.doctype.item_variant_attribute.item_variant_attribute import ItemVariantAttribute
+		from erpnext.stock.doctype.uom_conversion_detail.uom_conversion_detail import UOMConversionDetail
+
+		allow_alternative_item: DF.Check
+		allow_negative_stock: DF.Check
+		asset_category: DF.Link | None
+		asset_naming_series: DF.Literal[None]
+		attributes: DF.Table[ItemVariantAttribute]
+		auto_create_assets: DF.Check
+		barcodes: DF.Table[ItemBarcode]
+		batch_number_series: DF.Data | None
+		brand: DF.Link | None
+		country_of_origin: DF.Link | None
+		create_new_batch: DF.Check
+		customer: DF.Link | None
+		customer_code: DF.SmallText | None
+		customer_items: DF.Table[ItemCustomerDetail]
+		customs_tariff_number: DF.Link | None
+		default_bom: DF.Link | None
+		default_item_manufacturer: DF.Link | None
+		default_manufacturer_part_no: DF.Data | None
+		default_material_request_type: DF.Literal[
+			"Purchase", "Material Transfer", "Material Issue", "Manufacture", "Customer Provided"
+		]
+		delivered_by_supplier: DF.Check
+		description: DF.TextEditor | None
+		disabled: DF.Check
+		enable_deferred_expense: DF.Check
+		enable_deferred_revenue: DF.Check
+		end_of_life: DF.Date | None
+		grant_commission: DF.Check
+		has_batch_no: DF.Check
+		has_expiry_date: DF.Check
+		has_serial_no: DF.Check
+		has_variants: DF.Check
+		image: DF.AttachImage | None
+		include_item_in_manufacturing: DF.Check
+		inspection_required_before_delivery: DF.Check
+		inspection_required_before_purchase: DF.Check
+		is_customer_provided_item: DF.Check
+		is_fixed_asset: DF.Check
+		is_grouped_asset: DF.Check
+		is_purchase_item: DF.Check
+		is_sales_item: DF.Check
+		is_stock_item: DF.Check
+		is_sub_contracted_item: DF.Check
+		item_code: DF.Data
+		item_defaults: DF.Table[ItemDefault]
+		item_group: DF.Link
+		item_name: DF.Data | None
+		last_purchase_rate: DF.Float
+		lead_time_days: DF.Int
+		max_discount: DF.Float
+		min_order_qty: DF.Float
+		naming_series: DF.Literal["STO-ITEM-.YYYY.-"]
+		no_of_months: DF.Int
+		no_of_months_exp: DF.Int
+		opening_stock: DF.Float
+		over_billing_allowance: DF.Float
+		over_delivery_receipt_allowance: DF.Float
+		purchase_uom: DF.Link | None
+		quality_inspection_template: DF.Link | None
+		reorder_levels: DF.Table[ItemReorder]
+		retain_sample: DF.Check
+		safety_stock: DF.Float
+		sales_uom: DF.Link | None
+		sample_quantity: DF.Int
+		serial_no_series: DF.Data | None
+		shelf_life_in_days: DF.Int
+		standard_rate: DF.Currency
+		stock_uom: DF.Link
+		supplier_items: DF.Table[ItemSupplier]
+		taxes: DF.Table[ItemTax]
+		total_projected_qty: DF.Float
+		uoms: DF.Table[UOMConversionDetail]
+		valuation_method: DF.Literal["", "FIFO", "Moving Average", "LIFO"]
+		valuation_rate: DF.Currency
+		variant_based_on: DF.Literal["Item Attribute", "Manufacturer"]
+		variant_of: DF.Link | None
+		warranty_period: DF.Data | None
+		weight_per_unit: DF.Float
+		weight_uom: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		self.set_onload("stock_exists", self.stock_ledger_created())
 		self.set_onload("asset_naming_series", get_asset_naming_series())
@@ -114,16 +227,24 @@ class Item(Document):
 		self.validate_auto_reorder_enabled_in_stock_settings()
 		self.cant_change()
 		self.validate_item_tax_net_rate_range()
+<<<<<<< HEAD
 		set_item_tax_from_hsn_code(self)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.is_new():
 			self.old_item_group = frappe.db.get_value(self.doctype, self.name, "item_group")
 
 	def on_update(self):
+<<<<<<< HEAD
 		invalidate_cache_for_item(self)
 		self.update_variants()
 		self.update_item_price()
 		self.update_website_item()
+=======
+		self.update_variants()
+		self.update_item_price()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_description(self):
 		"""Clean HTML description if set"""
@@ -246,6 +367,7 @@ class Item(Document):
 		if self.stock_uom not in uoms_list:
 			self.append("uoms", {"uom": self.stock_uom, "conversion_factor": 1})
 
+<<<<<<< HEAD
 	def update_website_item(self):
 		"""Update Website Item if change in Item impacts it."""
 		web_item = frappe.db.exists("Website Item", {"item_code": self.item_code})
@@ -273,6 +395,18 @@ class Item(Document):
 		for tax in self.get("taxes"):
 			if flt(tax.maximum_net_rate) < flt(tax.minimum_net_rate):
 				frappe.throw(_("Row #{0}: Maximum Net Rate cannot be greater than Minimum Net Rate"))
+=======
+	def validate_item_tax_net_rate_range(self):
+		for tax in self.get("taxes"):
+			if flt(tax.maximum_net_rate) < flt(tax.minimum_net_rate):
+				frappe.throw(
+					_("Taxes row #{0}: {1} cannot be smaller than {2}").format(
+						tax.idx,
+						bold(_(tax.meta.get_label("maximum_net_rate"))),
+						bold(_(tax.meta.get_label("minimum_net_rate"))),
+					)
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_template_tables(self):
 		template = frappe.get_cached_doc("Item", self.variant_of)
@@ -360,7 +494,11 @@ class Item(Document):
 					check_list.append((d.item_tax_template, d.tax_category))
 
 	def validate_barcode(self):
+<<<<<<< HEAD
 		from stdnum import ean
+=======
+		import barcodenumber
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if len(self.barcodes) > 0:
 			for item_barcode in self.barcodes:
@@ -380,6 +518,7 @@ class Item(Document):
 					item_barcode.barcode_type = (
 						"" if item_barcode.barcode_type not in options else item_barcode.barcode_type
 					)
+<<<<<<< HEAD
 					if item_barcode.barcode_type and item_barcode.barcode_type.upper() in (
 						"EAN",
 						"UPC-A",
@@ -393,6 +532,20 @@ class Item(Document):
 								),
 								InvalidBarcode,
 							)
+=======
+					if item_barcode.barcode_type:
+						barcode_type = convert_erpnext_to_barcodenumber(
+							item_barcode.barcode_type.upper(), item_barcode.barcode
+						)
+						if barcode_type in barcodenumber.barcodes():
+							if not barcodenumber.check_code(barcode_type, item_barcode.barcode):
+								frappe.throw(
+									_("Barcode {0} is not a valid {1} code").format(
+										item_barcode.barcode, item_barcode.barcode_type
+									),
+									InvalidBarcode,
+								)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_warehouse_for_reorder(self):
 		"""Validate Reorder level table for duplicate and conditional mandatory"""
@@ -475,7 +628,10 @@ class Item(Document):
 		if merge:
 			self.validate_properties_before_merge(new_name)
 			self.validate_duplicate_product_bundles_before_merge(old_name, new_name)
+<<<<<<< HEAD
 			self.validate_duplicate_website_item_before_merge(old_name, new_name)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.delete_old_bins(old_name)
 
 	def after_rename(self, old_name, new_name, merge):
@@ -487,9 +643,12 @@ class Item(Document):
 				title=_("Note"),
 			)
 
+<<<<<<< HEAD
 		if self.published_in_website:
 			invalidate_cache_for_item(self)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.db.set_value("Item", new_name, "item_code", new_name)
 
 		if merge:
@@ -574,6 +733,7 @@ class Item(Document):
 			)
 			frappe.throw(msg, title=_("Cannot Merge"), exc=DataValidationError)
 
+<<<<<<< HEAD
 	def validate_duplicate_website_item_before_merge(self, old_name, new_name):
 		"""
 		Block merge if both old and new items have website items against them.
@@ -595,6 +755,8 @@ class Item(Document):
 		msg = f"Please delete linked Website Item {frappe.bold(web_item_link)} before merging {old_name} into {new_name}"
 		frappe.throw(_(msg), title=_("Cannot Merge"), exc=DataValidationError)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def set_last_purchase_rate(self, new_name):
 		last_purchase_rate = get_last_purchase_details(new_name).get("base_net_rate", 0)
 		frappe.db.set_value("Item", new_name, "last_purchase_rate", last_purchase_rate)
@@ -602,8 +764,13 @@ class Item(Document):
 	def recalculate_bin_qty(self, new_name):
 		from erpnext.stock.stock_balance import repost_stock
 
+<<<<<<< HEAD
 		existing_allow_negative_stock = frappe.db.get_value("Stock Settings", None, "allow_negative_stock")
 		frappe.db.set_value("Stock Settings", None, "allow_negative_stock", 1)
+=======
+		existing_allow_negative_stock = frappe.db.get_single_value("Stock Settings", "allow_negative_stock")
+		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		repost_stock_for_warehouses = frappe.get_all(
 			"Stock Ledger Entry",
@@ -619,7 +786,11 @@ class Item(Document):
 		for warehouse in repost_stock_for_warehouses:
 			repost_stock(new_name, warehouse)
 
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "allow_negative_stock", existing_allow_negative_stock)
+=======
+		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", existing_allow_negative_stock)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_bom_item_desc(self):
 		if self.is_new():
@@ -787,7 +958,11 @@ class Item(Document):
 
 		rows = ""
 		for docname, attr_list in not_included.items():
+<<<<<<< HEAD
 			link = f"<a href='/app/Form/Item/{frappe.bold(_(docname))}'>{frappe.bold(_(docname))}</a>"
+=======
+			link = f"<a href='/app/item/{docname}'>{frappe.bold(docname)}</a>"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			rows += table_row(link, body(attr_list))
 
 		error_description = _(
@@ -1001,6 +1176,34 @@ class Item(Document):
 				)
 
 
+<<<<<<< HEAD
+=======
+def convert_erpnext_to_barcodenumber(erpnext_number, barcode):
+	if erpnext_number == "EAN":
+		ean_type = {
+			8: "EAN8",
+			13: "EAN13",
+		}
+		barcode_length = len(barcode)
+		if barcode_length in ean_type:
+			return ean_type[barcode_length]
+
+		return erpnext_number
+
+	convert = {
+		"UPC-A": "UPCA",
+		"CODE-39": "CODE39",
+		"ISBN-10": "ISBN10",
+		"ISBN-13": "ISBN13",
+	}
+
+	if erpnext_number in convert:
+		return convert[erpnext_number]
+
+	return erpnext_number
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def make_item_price(item, price_list_name, item_price):
 	frappe.get_doc(
 		{
@@ -1012,6 +1215,7 @@ def make_item_price(item, price_list_name, item_price):
 	).insert()
 
 
+<<<<<<< HEAD
 def get_timeline_data(doctype, name):
 	"""get timeline data based on Stock Ledger Entry. This is displayed as heatmap on the item page."""
 
@@ -1024,6 +1228,21 @@ def get_timeline_data(doctype, name):
 	)
 
 	return dict(items)
+=======
+def get_timeline_data(doctype: str, name: str) -> dict[int, int]:
+	"""get timeline data based on Stock Ledger Entry. This is displayed as heatmap on the item page."""
+
+	sle = frappe.qb.DocType("Stock Ledger Entry")
+
+	return dict(
+		frappe.qb.from_(sle)
+		.select(UnixTimestamp(sle.posting_date), Count("*"))
+		.where(sle.item_code == name)
+		.where(sle.posting_date > CurDate() - Interval(years=1))
+		.groupby(sle.posting_date)
+		.run()
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def validate_end_of_life(item_code, end_of_life=None, disabled=None):
@@ -1060,6 +1279,7 @@ def get_last_purchase_details(item_code, doc_name=None, conversion_rate=1.0):
 	"""returns last purchase details in stock uom"""
 	# get last purchase order item details
 
+<<<<<<< HEAD
 	last_purchase_order = frappe.db.sql(
 		"""\
 		select po.name, po.transaction_date, po.conversion_rate,
@@ -1088,6 +1308,12 @@ def get_last_purchase_details(item_code, doc_name=None, conversion_rate=1.0):
 		(item_code, cstr(doc_name)),
 		as_dict=1,
 	)
+=======
+	last_purchase_order = get_purchase_voucher_details("Purchase Order", item_code, doc_name)
+
+	# get last purchase receipt item details
+	last_purchase_receipt = get_purchase_voucher_details("Purchase Receipt", item_code, doc_name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	purchase_order_date = getdate(
 		last_purchase_order and last_purchase_order[0].transaction_date or "1900-01-01"
@@ -1108,7 +1334,17 @@ def get_last_purchase_details(item_code, doc_name=None, conversion_rate=1.0):
 		purchase_date = purchase_receipt_date
 
 	else:
+<<<<<<< HEAD
 		return frappe._dict()
+=======
+		last_purchase_invoice = get_purchase_voucher_details("Purchase Invoice", item_code, doc_name)
+
+		if last_purchase_invoice:
+			last_purchase = last_purchase_invoice[0]
+			purchase_date = getdate(last_purchase.posting_date)
+		else:
+			return frappe._dict()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	conversion_factor = flt(last_purchase.conversion_factor)
 	out = frappe._dict(
@@ -1134,6 +1370,7 @@ def get_last_purchase_details(item_code, doc_name=None, conversion_rate=1.0):
 	return out
 
 
+<<<<<<< HEAD
 def invalidate_cache_for_item(doc):
 	"""Invalidate Item Group cache and rebuild ItemVariantsCacheManager."""
 	invalidate_cache_for(doc, doc.item_group)
@@ -1158,6 +1395,40 @@ def invalidate_item_variants_cache_for_website(doc):
 	if item_code:
 		item_cache = ItemVariantsCacheManager(item_code)
 		item_cache.rebuild_cache()
+=======
+def get_purchase_voucher_details(doctype, item_code, document_name):
+	parent_doc = frappe.qb.DocType(doctype)
+	child_doc = frappe.qb.DocType(doctype + " Item")
+
+	query = (
+		frappe.qb.from_(parent_doc)
+		.inner_join(child_doc)
+		.on(parent_doc.name == child_doc.parent)
+		.select(
+			parent_doc.name,
+			parent_doc.conversion_rate,
+			child_doc.conversion_factor,
+			child_doc.base_price_list_rate,
+			child_doc.discount_percentage,
+			child_doc.base_rate,
+			child_doc.base_net_rate,
+		)
+		.where(parent_doc.docstatus == 1)
+		.where(child_doc.item_code == item_code)
+		.where(parent_doc.name != document_name)
+	)
+
+	if doctype in ("Purchase Receipt", "Purchase Invoice"):
+		query = query.select(parent_doc.posting_date, parent_doc.posting_time)
+		query = query.orderby(
+			parent_doc.posting_date, parent_doc.posting_time, parent_doc.name, order=Order.desc
+		)
+	else:
+		query = query.select(parent_doc.transaction_date)
+		query = query.orderby(parent_doc.transaction_date, parent_doc.name, order=Order.desc)
+
+	return query.run(as_dict=1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def check_stock_uom_with_bin(item, stock_uom):
@@ -1304,11 +1575,14 @@ def update_variants(variants, template, publish_progress=True):
 			frappe.publish_progress(count / total * 100, title=_("Updating Variants..."))
 
 
+<<<<<<< HEAD
 @erpnext.allow_regional
 def set_item_tax_from_hsn_code(item):
 	pass
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def validate_item_default_company_links(item_defaults: list[ItemDefault]) -> None:
 	for item_default in item_defaults:
 		for doctype, field in [

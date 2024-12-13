@@ -102,6 +102,15 @@ frappe.query_reports["Stock Balance"] = {
 			default: 0,
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "include_zero_stock_items",
+			label: __("Include Zero Stock Items"),
+			fieldtype: "Check",
+			default: 0,
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "show_dimension_wise_stock",
 			label: __("Show Dimension Wise Stock"),
 			fieldtype: "Check",

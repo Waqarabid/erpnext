@@ -58,10 +58,18 @@ frappe.ui.form.on("Delivery Trip", {
 						date_field: "posting_date",
 						setters: {
 							company: frm.doc.company,
+<<<<<<< HEAD
 						},
 						get_query_filters: {
 							docstatus: 1,
 							company: frm.doc.company,
+=======
+							customer: null,
+						},
+						get_query_filters: {
+							company: frm.doc.company,
+							status: ["Not In", ["Completed", "Cancelled"]],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						},
 					});
 				},

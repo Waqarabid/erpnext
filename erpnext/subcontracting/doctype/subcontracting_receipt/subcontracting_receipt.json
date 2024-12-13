@@ -23,7 +23,33 @@
   "cost_center",
   "dimension_col_break",
   "project",
+<<<<<<< HEAD
   "section_addresses",
+=======
+  "sec_warehouse",
+  "set_warehouse",
+  "rejected_warehouse",
+  "col_break_warehouse",
+  "supplier_warehouse",
+  "items_section",
+  "get_scrap_items",
+  "items",
+  "section_break0",
+  "total_qty",
+  "column_break_27",
+  "total",
+  "raw_materials_consumed_section",
+  "reset_raw_materials_table",
+  "column_break_uinr",
+  "get_current_stock",
+  "raw_material_details",
+  "supplied_items",
+  "section_break_46",
+  "in_words",
+  "bill_no",
+  "bill_date",
+  "tab_addresses",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "supplier_address",
   "contact_person",
   "address_display",
@@ -35,6 +61,7 @@
   "shipping_address_display",
   "billing_address",
   "billing_address_display",
+<<<<<<< HEAD
   "sec_warehouse",
   "set_warehouse",
   "rejected_warehouse",
@@ -62,10 +89,25 @@
   "column_break_39",
   "per_returned",
   "section_break_47",
+=======
+  "tab_additional_costs",
+  "distribute_additional_costs_based_on",
+  "additional_costs",
+  "total_additional_costs",
+  "tab_other_info",
+  "more_info",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "amended_from",
   "range",
   "column_break4",
   "represents_company",
+<<<<<<< HEAD
+=======
+  "order_status_section",
+  "status",
+  "column_break_39",
+  "per_returned",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "subscription_detail",
   "auto_repeat",
   "printing_settings",
@@ -80,7 +122,12 @@
   "transporter_name",
   "column_break5",
   "lr_no",
+<<<<<<< HEAD
   "lr_date"
+=======
+  "lr_date",
+  "tab_connections"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -108,7 +155,11 @@
    "fieldname": "supplier",
    "fieldtype": "Link",
    "in_global_search": 1,
+<<<<<<< HEAD
    "label": "Supplier",
+=======
+   "label": "Job Worker",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Supplier",
    "print_hide": 1,
    "print_width": "150px",
@@ -123,7 +174,11 @@
    "fieldname": "supplier_name",
    "fieldtype": "Data",
    "in_global_search": 1,
+<<<<<<< HEAD
    "label": "Supplier Name",
+=======
+   "label": "Job Worker Name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -170,15 +225,24 @@
    "width": "150px"
   },
   {
+<<<<<<< HEAD
    "collapsible": 1,
    "fieldname": "section_addresses",
    "fieldtype": "Section Break",
+=======
+   "fieldname": "tab_addresses",
+   "fieldtype": "Tab Break",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address and Contact"
   },
   {
    "fieldname": "supplier_address",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "label": "Select Supplier Address",
+=======
+   "label": "Select Job Worker Address",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Address",
    "print_hide": 1
   },
@@ -191,7 +255,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
@@ -206,6 +274,10 @@
    "fieldname": "contact_mobile",
    "fieldtype": "Small Text",
    "label": "Mobile No",
+<<<<<<< HEAD
+=======
+   "options": "Phone",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -229,7 +301,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address",
    "print_hide": 1,
    "read_only": 1
@@ -264,7 +340,11 @@
   {
    "fieldname": "supplier_warehouse",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "label": "Supplier Warehouse",
+=======
+   "label": "Job Worker Warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "no_copy": 1,
    "options": "Warehouse",
    "print_hide": 1,
@@ -285,7 +365,11 @@
    "reqd": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "supplied_items",
+=======
+   "depends_on": "eval: (!doc.__islocal && doc.docstatus == 0 && doc.supplied_items)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "get_current_stock",
    "fieldtype": "Button",
    "label": "Get Current Stock",
@@ -298,6 +382,10 @@
    "depends_on": "supplied_items",
    "fieldname": "raw_material_details",
    "fieldtype": "Section Break",
+<<<<<<< HEAD
+=======
+   "hide_border": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Raw Materials Consumed",
    "options": "fa fa-table",
    "print_hide": 1,
@@ -408,6 +496,10 @@
    "width": "50%"
   },
   {
+<<<<<<< HEAD
+=======
+   "collapsible": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "subscription_detail",
    "fieldtype": "Section Break",
    "label": "Auto Repeat Detail"
@@ -519,7 +611,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address",
    "read_only": 1
   },
@@ -566,10 +662,13 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "section_break_47",
    "fieldtype": "Section Break"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "collapsible": 1,
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
@@ -592,11 +691,17 @@
    "options": "Project"
   },
   {
+<<<<<<< HEAD
    "collapsible": 1,
    "collapsible_depends_on": "total_additional_costs",
    "depends_on": "eval:(doc.docstatus == 0 || doc.total_additional_costs)",
    "fieldname": "additional_costs_section",
    "fieldtype": "Section Break",
+=======
+   "depends_on": "eval:(doc.docstatus == 0 || doc.total_additional_costs)",
+   "fieldname": "tab_additional_costs",
+   "fieldtype": "Tab Break",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Additional Costs"
   },
   {
@@ -628,15 +733,63 @@
    "print_hide": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "supplier_delivery_note",
    "fieldtype": "Data",
    "label": "Supplier Delivery Note"
+=======
+   "depends_on": "eval: (!doc.__islocal && doc.docstatus == 0)",
+   "fieldname": "get_scrap_items",
+   "fieldtype": "Button",
+   "label": "Get Scrap Items",
+   "options": "get_scrap_items"
+  },
+  {
+   "fieldname": "supplier_delivery_note",
+   "fieldtype": "Data",
+   "label": "Job Worker Delivery Note"
+  },
+  {
+   "fieldname": "raw_materials_consumed_section",
+   "fieldtype": "Section Break",
+   "label": "Raw Materials Actions"
+  },
+  {
+   "fieldname": "reset_raw_materials_table",
+   "fieldtype": "Button",
+   "label": "Reset Raw Materials Table"
+  },
+  {
+   "fieldname": "column_break_uinr",
+   "fieldtype": "Column Break"
+  },
+  {
+    "fieldname": "tab_other_info",
+    "fieldtype": "Tab Break",
+    "label": "Other Info"
+  },
+  {
+    "collapsible": 1,
+    "fieldname": "order_status_section",
+    "fieldtype": "Section Break",
+    "label": "Order Status"
+  },
+  {
+    "fieldname": "tab_connections",
+    "fieldtype": "Tab Break",
+    "label": "Connections",
+    "show_dashboard": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "in_create": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-16 13:04:00.710534",
+=======
+ "modified": "2024-05-27 15:02:13.517969",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Subcontracting",
  "name": "Subcontracting Receipt",
@@ -699,10 +852,18 @@
  ],
  "search_fields": "status, posting_date, supplier",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -33,7 +33,13 @@
                 }, 
                 "Stocks": {
                     "Mati\u00e8res premi\u00e8res": {}, 
+<<<<<<< HEAD
                     "Stock de produits fini": {}, 
+=======
+                    "Stock de produits fini": {
+                        "account_type": "Stock"
+                    }, 
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                     "Stock exp\u00e9di\u00e9 non-factur\u00e9": {}, 
                     "Travaux en cours": {}, 
                     "account_type": "Stock"
@@ -395,9 +401,17 @@
         }, 
         "Produits": {
             "Revenus de ventes": {
+<<<<<<< HEAD
                 " Escomptes de volume sur ventes": {}, 
                 "Autres produits d'exploitation": {}, 
                 "Ventes": {}, 
+=======
+                "Escomptes de volume sur ventes": {}, 
+                "Autres produits d'exploitation": {}, 
+                "Ventes": {
+                    "account_type": "Income Account"
+                }, 
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                 "Ventes avec des provinces harmonis\u00e9es": {}, 
                 "Ventes avec des provinces non-harmonis\u00e9es": {}, 
                 "Ventes \u00e0 l'\u00e9tranger": {}

@@ -72,7 +72,11 @@ frappe.ui.form.on("Cost Center", {
 				},
 			],
 			primary_action: function () {
+<<<<<<< HEAD
 				var data = d.get_values();
+=======
+				let data = d.get_values();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (
 					data.cost_center_name === frm.doc.cost_center_name &&
 					data.cost_center_number === frm.doc.cost_center_number
@@ -96,8 +100,13 @@ frappe.ui.form.on("Cost Center", {
 							if (r.message) {
 								frappe.set_route("Form", "Cost Center", r.message);
 							} else {
+<<<<<<< HEAD
 								me.frm.set_value("cost_center_name", data.cost_center_name);
 								me.frm.set_value("cost_center_number", data.cost_center_number);
+=======
+								frm.set_value("cost_center_name", data.cost_center_name);
+								frm.set_value("cost_center_number", data.cost_center_number);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							}
 							d.hide();
 						}

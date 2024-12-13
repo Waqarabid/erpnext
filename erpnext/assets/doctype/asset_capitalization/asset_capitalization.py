@@ -8,7 +8,10 @@ import frappe
 # import erpnext
 from frappe import _
 from frappe.utils import cint, flt, get_link_to_form
+<<<<<<< HEAD
 from six import string_types
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.assets.doctype.asset.asset import get_asset_value_after_depreciation
@@ -19,6 +22,10 @@ from erpnext.assets.doctype.asset.depreciation import (
 	reset_depreciation_schedule,
 	reverse_depreciation_entry_made_after_disposal,
 )
+<<<<<<< HEAD
+=======
+from erpnext.assets.doctype.asset_activity.asset_activity import add_asset_activity
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.assets.doctype.asset_category.asset_category import get_asset_category_account
 from erpnext.controllers.stock_controller import StockController
 from erpnext.setup.doctype.brand.brand import get_brand_defaults
@@ -26,9 +33,16 @@ from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock import get_warehouse_account_map
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
 	get_default_cost_center,
 	get_default_expense_account,
 	get_item_warehouse,
+=======
+	ItemDetailsCtx,
+	get_default_cost_center,
+	get_default_expense_account,
+	get_item_warehouse_,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 from erpnext.stock.stock_ledger import get_previous_sle
 from erpnext.stock.utils import get_incoming_rate
@@ -49,6 +63,62 @@ force_fields = [
 
 
 class AssetCapitalization(StockController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.assets.doctype.asset_capitalization_asset_item.asset_capitalization_asset_item import (
+			AssetCapitalizationAssetItem,
+		)
+		from erpnext.assets.doctype.asset_capitalization_service_item.asset_capitalization_service_item import (
+			AssetCapitalizationServiceItem,
+		)
+		from erpnext.assets.doctype.asset_capitalization_stock_item.asset_capitalization_stock_item import (
+			AssetCapitalizationStockItem,
+		)
+
+		amended_from: DF.Link | None
+		asset_items: DF.Table[AssetCapitalizationAssetItem]
+		asset_items_total: DF.Currency
+		capitalization_method: DF.Literal["", "Create a new composite asset", "Choose a WIP composite asset"]
+		company: DF.Link
+		cost_center: DF.Link | None
+		entry_type: DF.Literal["Capitalization", "Decapitalization"]
+		finance_book: DF.Link | None
+		naming_series: DF.Literal["ACC-ASC-.YYYY.-"]
+		posting_date: DF.Date
+		posting_time: DF.Time
+		service_items: DF.Table[AssetCapitalizationServiceItem]
+		service_items_total: DF.Currency
+		set_posting_time: DF.Check
+		stock_items: DF.Table[AssetCapitalizationStockItem]
+		stock_items_total: DF.Currency
+		target_asset: DF.Link | None
+		target_asset_location: DF.Link | None
+		target_asset_name: DF.Data | None
+		target_batch_no: DF.Link | None
+		target_fixed_asset_account: DF.Link | None
+		target_has_batch_no: DF.Check
+		target_has_serial_no: DF.Check
+		target_incoming_rate: DF.Currency
+		target_is_fixed_asset: DF.Check
+		target_item_code: DF.Link | None
+		target_item_name: DF.Data | None
+		target_qty: DF.Float
+		target_serial_no: DF.SmallText | None
+		target_stock_uom: DF.Link | None
+		target_warehouse: DF.Link | None
+		title: DF.Data | None
+		total_value: DF.Currency
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_posting_time()
 		self.set_missing_values(for_validate=True)
@@ -62,11 +132,22 @@ class AssetCapitalization(StockController):
 		self.calculate_totals()
 		self.set_title()
 
+<<<<<<< HEAD
+=======
+	def on_update(self):
+		if self.stock_items:
+			self.set_serial_and_batch_bundle(table_name="stock_items")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def before_submit(self):
 		self.validate_source_mandatory()
 		self.create_target_asset()
 
 	def on_submit(self):
+<<<<<<< HEAD
+=======
+		self.make_bundle_using_old_serial_batch_fields()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_stock_ledger()
 		self.make_gl_entries()
 		self.update_target_asset()
@@ -76,14 +157,22 @@ class AssetCapitalization(StockController):
 			"GL Entry",
 			"Stock Ledger Entry",
 			"Repost Item Valuation",
+<<<<<<< HEAD
 			"Asset",
 			"Asset Movement",
 		)
 		self.cancel_target_asset()
+=======
+			"Serial and Batch Bundle",
+			"Asset",
+			"Asset Movement",
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_stock_ledger()
 		self.make_gl_entries()
 		self.restore_consumed_asset_items()
 
+<<<<<<< HEAD
 	def on_trash(self):
 		frappe.db.set_value("Asset", self.target_asset, "capitalized_in", None)
 		super().on_trash()
@@ -95,6 +184,8 @@ class AssetCapitalization(StockController):
 			if asset_doc.docstatus == 1:
 				asset_doc.cancel()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def set_title(self):
 		self.title = self.target_asset_name or self.target_item_name or self.target_item_code
 
@@ -270,8 +361,26 @@ class AssetCapitalization(StockController):
 		if not self.target_is_fixed_asset and not self.get("asset_items"):
 			frappe.throw(_("Consumed Asset Items is mandatory for Decapitalization"))
 
+<<<<<<< HEAD
 		if not self.get("stock_items") and not self.get("asset_items"):
 			frappe.throw(_("Consumed Stock Items or Consumed Asset Items is mandatory for Capitalization"))
+=======
+		if self.capitalization_method == "Create a new composite asset" and not (
+			self.get("stock_items") or self.get("asset_items")
+		):
+			frappe.throw(
+				_(
+					"Consumed Stock Items or Consumed Asset Items are mandatory for creating new composite asset"
+				)
+			)
+
+		elif not (self.get("stock_items") or self.get("asset_items") or self.get("service_items")):
+			frappe.throw(
+				_(
+					"Consumed Stock Items, Consumed Asset Items or Consumed Service Items is mandatory for Capitalization"
+				)
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_item(self, item):
 		from erpnext.stock.doctype.item.item import validate_end_of_life
@@ -356,9 +465,13 @@ class AssetCapitalization(StockController):
 		for d in self.stock_items:
 			sle = self.get_sl_entries(
 				d,
+<<<<<<< HEAD
 				{
 					"actual_qty": -flt(d.stock_qty),
 				},
+=======
+				{"actual_qty": -flt(d.stock_qty), "serial_and_batch_bundle": d.serial_and_batch_bundle},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 			sl_entries.append(sle)
 
@@ -368,8 +481,11 @@ class AssetCapitalization(StockController):
 				{
 					"item_code": self.target_item_code,
 					"warehouse": self.target_warehouse,
+<<<<<<< HEAD
 					"batch_no": self.target_batch_no,
 					"serial_no": self.target_serial_no,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"actual_qty": flt(self.target_qty),
 					"incoming_rate": flt(self.target_incoming_rate),
 				},
@@ -413,13 +529,32 @@ class AssetCapitalization(StockController):
 		self.get_gl_entries_for_consumed_asset_items(gl_entries, target_account, target_against, precision)
 		self.get_gl_entries_for_consumed_service_items(gl_entries, target_account, target_against, precision)
 
+<<<<<<< HEAD
 		self.get_gl_entries_for_target_item(gl_entries, target_against, precision)
+=======
+		self.get_gl_entries_for_target_item(gl_entries, target_account, target_against, precision)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		return gl_entries
 
 	def get_target_account(self):
 		if self.target_is_fixed_asset:
+<<<<<<< HEAD
 			return self.target_fixed_asset_account
+=======
+			from erpnext.assets.doctype.asset.asset import is_cwip_accounting_enabled
+
+			asset_category = frappe.get_cached_value("Asset", self.target_asset, "asset_category")
+			if is_cwip_accounting_enabled(asset_category):
+				target_account = get_asset_category_account(
+					"capital_work_in_progress_account",
+					asset_category=asset_category,
+					company=self.company,
+				)
+				return target_account if target_account else self.target_fixed_asset_account
+			else:
+				return self.target_fixed_asset_account
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			return self.warehouse_account[self.target_warehouse]["account"]
 
@@ -458,7 +593,17 @@ class AssetCapitalization(StockController):
 			asset = frappe.get_doc("Asset", item.asset)
 
 			if asset.calculate_depreciation:
+<<<<<<< HEAD
 				depreciate_asset(asset, self.posting_date)
+=======
+				notes = _(
+					"This schedule was created when Asset {0} was consumed through Asset Capitalization {1}."
+				).format(
+					get_link_to_form(asset.doctype, asset.name),
+					get_link_to_form(self.doctype, self.get("name")),
+				)
+				depreciate_asset(asset, self.posting_date, notes)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				asset.reload()
 
 			fixed_asset_gl_entries = get_gl_entries_on_asset_disposal(
@@ -501,13 +646,21 @@ class AssetCapitalization(StockController):
 				)
 			)
 
+<<<<<<< HEAD
 	def get_gl_entries_for_target_item(self, gl_entries, target_against, precision):
+=======
+	def get_gl_entries_for_target_item(self, gl_entries, target_account, target_against, precision):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.target_is_fixed_asset:
 			# Capitalization
 			gl_entries.append(
 				self.get_gl_dict(
 					{
+<<<<<<< HEAD
 						"account": self.target_fixed_asset_account,
+=======
+						"account": target_account,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"against": ", ".join(target_against),
 						"remarks": self.get("remarks") or _("Accounting Entry for Asset"),
 						"debit": flt(self.total_value, precision),
@@ -555,10 +708,16 @@ class AssetCapitalization(StockController):
 		asset_doc.available_for_use_date = self.posting_date
 		asset_doc.purchase_date = self.posting_date
 		asset_doc.gross_purchase_amount = total_target_asset_value
+<<<<<<< HEAD
 		asset_doc.purchase_receipt_amount = total_target_asset_value
 		asset_doc.purchase_receipt_amount = total_target_asset_value
 		asset_doc.capitalized_in = self.name
 		asset_doc.flags.ignore_validate = True
+=======
+		asset_doc.purchase_amount = total_target_asset_value
+		asset_doc.flags.ignore_validate = True
+		asset_doc.flags.asset_created_via_asset_capitalization = True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_doc.insert()
 
 		self.target_asset = asset_doc.name
@@ -567,6 +726,16 @@ class AssetCapitalization(StockController):
 			"fixed_asset_account", item=self.target_item_code, company=asset_doc.company
 		)
 
+<<<<<<< HEAD
+=======
+		add_asset_activity(
+			asset_doc.name,
+			_("Asset created after Asset Capitalization {0} was submitted").format(
+				get_link_to_form("Asset Capitalization", self.name)
+			),
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.msgprint(
 			_("Asset {0} has been created. Please set the depreciation details if any and submit it.").format(
 				get_link_to_form("Asset", asset_doc.name)
@@ -584,8 +753,12 @@ class AssetCapitalization(StockController):
 
 		asset_doc = frappe.get_doc("Asset", self.target_asset)
 		asset_doc.gross_purchase_amount = total_target_asset_value
+<<<<<<< HEAD
 		asset_doc.purchase_receipt_amount = total_target_asset_value
 		asset_doc.capitalized_in = self.name
+=======
+		asset_doc.purchase_amount = total_target_asset_value
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_doc.flags.ignore_validate = True
 		asset_doc.save()
 
@@ -603,6 +776,7 @@ class AssetCapitalization(StockController):
 
 			if asset.calculate_depreciation:
 				reverse_depreciation_entry_made_after_disposal(asset, self.posting_date)
+<<<<<<< HEAD
 				reset_depreciation_schedule(asset, self.posting_date)
 
 	def set_consumed_asset_status(self, asset):
@@ -610,6 +784,41 @@ class AssetCapitalization(StockController):
 			asset.set_status("Capitalized" if self.target_is_fixed_asset else "Decapitalized")
 		else:
 			asset.set_status()
+=======
+				notes = _(
+					"This schedule was created when Asset {0} was restored on Asset Capitalization {1}'s cancellation."
+				).format(
+					get_link_to_form(asset.doctype, asset.name), get_link_to_form(self.doctype, self.name)
+				)
+				reset_depreciation_schedule(asset, self.posting_date, notes)
+
+	def set_consumed_asset_status(self, asset):
+		if self.docstatus == 1:
+			if self.target_is_fixed_asset:
+				asset.set_status("Capitalized")
+				add_asset_activity(
+					asset.name,
+					_("Asset capitalized after Asset Capitalization {0} was submitted").format(
+						get_link_to_form("Asset Capitalization", self.name)
+					),
+				)
+			else:
+				asset.set_status("Decapitalized")
+				add_asset_activity(
+					asset.name,
+					_("Asset decapitalized after Asset Capitalization {0} was submitted").format(
+						get_link_to_form("Asset Capitalization", self.name)
+					),
+				)
+		else:
+			asset.set_status()
+			add_asset_activity(
+				asset.name,
+				_("Asset restored after Asset Capitalization {0} was cancelled").format(
+					get_link_to_form("Asset Capitalization", self.name)
+				),
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -644,7 +853,11 @@ def get_target_item_details(item_code=None, company=None):
 	item_group_defaults = get_item_group_defaults(item.name, company)
 	brand_defaults = get_brand_defaults(item.name, company)
 	out.cost_center = get_default_cost_center(
+<<<<<<< HEAD
 		frappe._dict({"item_code": item.name, "company": company}),
+=======
+		ItemDetailsCtx({"item_code": item.name, "company": company}),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item_defaults,
 		item_group_defaults,
 		brand_defaults,
@@ -681,6 +894,7 @@ def get_target_asset_details(asset=None, company=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_consumed_stock_item_details(args):
 	if isinstance(args, string_types):
 		args = json.loads(args)
@@ -691,11 +905,21 @@ def get_consumed_stock_item_details(args):
 	item = frappe._dict()
 	if args.item_code:
 		item = frappe.get_cached_doc("Item", args.item_code)
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_consumed_stock_item_details(ctx: ItemDetailsCtx):
+	out = frappe._dict()
+
+	item = frappe._dict()
+	if ctx.item_code:
+		item = frappe.get_cached_doc("Item", ctx.item_code)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	out.item_name = item.item_name
 	out.batch_no = None
 	out.serial_no = ""
 
+<<<<<<< HEAD
 	out.stock_qty = flt(args.stock_qty) or 1
 	out.stock_uom = item.stock_uom
 
@@ -720,6 +944,32 @@ def get_consumed_stock_item_details(args):
 				"company": args.company,
 				"serial_no": args.serial_no,
 				"batch_no": args.batch_no,
+=======
+	out.stock_qty = flt(ctx.stock_qty) or 1
+	out.stock_uom = item.stock_uom
+
+	out.warehouse = get_item_warehouse_(ctx, item, overwrite_warehouse=True) if item else None
+
+	# Cost Center
+	item_defaults = get_item_defaults(item.name, ctx.company)
+	item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+	brand_defaults = get_brand_defaults(item.name, ctx.company)
+	out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+
+	if ctx.item_code and out.warehouse:
+		incoming_rate_args = frappe._dict(
+			{
+				"item_code": ctx.item_code,
+				"warehouse": out.warehouse,
+				"posting_date": ctx.posting_date,
+				"posting_time": ctx.posting_time,
+				"qty": -1 * flt(out.stock_qty),
+				"voucher_type": ctx.doctype,
+				"voucher_no": ctx.name,
+				"company": ctx.company,
+				"serial_no": ctx.serial_no,
+				"batch_no": ctx.batch_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 		out.update(get_warehouse_details(incoming_rate_args))
@@ -732,7 +982,11 @@ def get_consumed_stock_item_details(args):
 
 @frappe.whitelist()
 def get_warehouse_details(args):
+<<<<<<< HEAD
 	if isinstance(args, string_types):
+=======
+	if isinstance(args, str):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		args = json.loads(args)
 
 	args = frappe._dict(args)
@@ -747,6 +1001,7 @@ def get_warehouse_details(args):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_consumed_asset_details(args):
 	if isinstance(args, string_types):
 		args = json.loads(args)
@@ -761,17 +1016,39 @@ def get_consumed_asset_details(args):
 		)
 		if not asset_details:
 			frappe.throw(_("Asset {0} does not exist").format(args.asset))
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_consumed_asset_details(ctx):
+	out = frappe._dict()
+
+	asset_details = frappe._dict()
+	if ctx.asset:
+		asset_details = frappe.db.get_value(
+			"Asset", ctx.asset, ["asset_name", "item_code", "item_name"], as_dict=1
+		)
+		if not asset_details:
+			frappe.throw(_("Asset {0} does not exist").format(ctx.asset))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	out.item_code = asset_details.item_code
 	out.asset_name = asset_details.asset_name
 	out.item_name = asset_details.item_name
 
+<<<<<<< HEAD
 	if args.asset:
 		out.current_asset_value = flt(
 			get_asset_value_after_depreciation(args.asset, finance_book=args.finance_book)
 		)
 		out.asset_value = get_value_after_depreciation_on_disposal_date(
 			args.asset, args.posting_date, finance_book=args.finance_book
+=======
+	if ctx.asset:
+		out.current_asset_value = flt(
+			get_asset_value_after_depreciation(ctx.asset, finance_book=ctx.finance_book)
+		)
+		out.asset_value = get_value_after_depreciation_on_disposal_date(
+			ctx.asset, ctx.posting_date, finance_book=ctx.finance_book
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 	else:
 		out.current_asset_value = 0
@@ -780,7 +1057,11 @@ def get_consumed_asset_details(args):
 	# Account
 	if asset_details.item_code:
 		out.fixed_asset_account = get_asset_category_account(
+<<<<<<< HEAD
 			"fixed_asset_account", item=asset_details.item_code, company=args.company
+=======
+			"fixed_asset_account", item=asset_details.item_code, company=ctx.company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 	else:
 		out.fixed_asset_account = None
@@ -788,14 +1069,22 @@ def get_consumed_asset_details(args):
 	# Cost Center
 	if asset_details.item_code:
 		item = frappe.get_cached_doc("Item", asset_details.item_code)
+<<<<<<< HEAD
 		item_defaults = get_item_defaults(item.name, args.company)
 		item_group_defaults = get_item_group_defaults(item.name, args.company)
 		brand_defaults = get_brand_defaults(item.name, args.company)
 		out.cost_center = get_default_cost_center(args, item_defaults, item_group_defaults, brand_defaults)
+=======
+		item_defaults = get_item_defaults(item.name, ctx.company)
+		item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+		brand_defaults = get_brand_defaults(item.name, ctx.company)
+		out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return out
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_service_item_details(args):
 	if isinstance(args, string_types):
 		args = json.loads(args)
@@ -819,6 +1108,26 @@ def get_service_item_details(args):
 		args, item_defaults, item_group_defaults, brand_defaults
 	)
 	out.cost_center = get_default_cost_center(args, item_defaults, item_group_defaults, brand_defaults)
+=======
+@erpnext.normalize_ctx_input(ItemDetailsCtx)
+def get_service_item_details(ctx):
+	out = frappe._dict()
+
+	item = frappe._dict()
+	if ctx.item_code:
+		item = frappe.get_cached_doc("Item", ctx.item_code)
+
+	out.item_name = item.item_name
+	out.qty = flt(ctx.qty) or 1
+	out.uom = item.purchase_uom or item.stock_uom
+
+	item_defaults = get_item_defaults(item.name, ctx.company)
+	item_group_defaults = get_item_group_defaults(item.name, ctx.company)
+	brand_defaults = get_brand_defaults(item.name, ctx.company)
+
+	out.expense_account = get_default_expense_account(ctx, item_defaults, item_group_defaults, brand_defaults)
+	out.cost_center = get_default_cost_center(ctx, item_defaults, item_group_defaults, brand_defaults)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return out
 

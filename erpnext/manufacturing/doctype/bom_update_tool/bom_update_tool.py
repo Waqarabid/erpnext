@@ -12,6 +12,21 @@ from frappe.model.document import Document
 
 
 class BOMUpdateTool(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		current_bom: DF.Link
+		new_bom: DF.Link
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass
 
 

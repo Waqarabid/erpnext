@@ -9,10 +9,28 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.query_builder.functions import Sum
+<<<<<<< HEAD
 from frappe.utils import cint, comma_or, cstr, flt, format_time, formatdate, getdate, nowdate
 
 import erpnext
 from erpnext.accounts.general_ledger import process_gl_map
+=======
+from frappe.utils import (
+	cint,
+	comma_or,
+	cstr,
+	flt,
+	format_time,
+	formatdate,
+	get_link_to_form,
+	getdate,
+	nowdate,
+)
+
+import erpnext
+from erpnext.accounts.general_ledger import process_gl_map
+from erpnext.buying.utils import check_on_hold_or_closed_status
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.controllers.taxes_and_totals import init_landed_taxes_and_totals
 from erpnext.manufacturing.doctype.bom.bom import (
 	add_additional_cost,
@@ -22,21 +40,39 @@ from erpnext.manufacturing.doctype.bom.bom import (
 )
 from erpnext.setup.doctype.brand.brand import get_brand_defaults
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
+<<<<<<< HEAD
 from erpnext.stock.doctype.batch.batch import get_batch_no, get_batch_qty, set_batch_nos
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.stock.doctype.serial_no.serial_no import (
 	get_serial_nos,
 	update_serial_nos_after_submit,
 )
+=======
+from erpnext.stock.doctype.batch.batch import get_batch_qty
+from erpnext.stock.doctype.item.item import get_item_defaults
+from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.stock_reconciliation.stock_reconciliation import (
 	OpeningEntryAccountError,
 )
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
+=======
+	ItemDetailsCtx,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	get_barcode_data,
 	get_bin_details,
 	get_conversion_factor,
 	get_default_cost_center,
+<<<<<<< HEAD
 	get_reserved_qty_for_so,
+=======
+)
+from erpnext.stock.serial_batch_bundle import (
+	SerialBatchCreation,
+	get_empty_batches_based_work_order,
+	get_serial_or_batch_items,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 from erpnext.stock.stock_ledger import NegativeStockError, get_previous_sle, get_valuation_rate
 from erpnext.stock.utils import get_bin, get_incoming_rate
@@ -68,6 +104,87 @@ form_grid_templates = {"items": "templates/form_grid/stock_entry_grid.html"}
 
 
 class StockEntry(StockController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.stock.doctype.landed_cost_taxes_and_charges.landed_cost_taxes_and_charges import (
+			LandedCostTaxesandCharges,
+		)
+		from erpnext.stock.doctype.stock_entry_detail.stock_entry_detail import StockEntryDetail
+
+		add_to_transit: DF.Check
+		additional_costs: DF.Table[LandedCostTaxesandCharges]
+		address_display: DF.TextEditor | None
+		amended_from: DF.Link | None
+		apply_putaway_rule: DF.Check
+		asset_repair: DF.Link | None
+		bom_no: DF.Link | None
+		company: DF.Link
+		credit_note: DF.Link | None
+		delivery_note_no: DF.Link | None
+		fg_completed_qty: DF.Float
+		from_bom: DF.Check
+		from_warehouse: DF.Link | None
+		inspection_required: DF.Check
+		is_opening: DF.Literal["No", "Yes"]
+		is_return: DF.Check
+		items: DF.Table[StockEntryDetail]
+		job_card: DF.Link | None
+		letter_head: DF.Link | None
+		naming_series: DF.Literal["MAT-STE-.YYYY.-"]
+		outgoing_stock_entry: DF.Link | None
+		per_transferred: DF.Percent
+		pick_list: DF.Link | None
+		posting_date: DF.Date | None
+		posting_time: DF.Time | None
+		process_loss_percentage: DF.Percent
+		process_loss_qty: DF.Float
+		project: DF.Link | None
+		purchase_order: DF.Link | None
+		purchase_receipt_no: DF.Link | None
+		purpose: DF.Literal[
+			"Material Issue",
+			"Material Receipt",
+			"Material Transfer",
+			"Material Transfer for Manufacture",
+			"Material Consumption for Manufacture",
+			"Manufacture",
+			"Repack",
+			"Send to Subcontractor",
+			"Disassemble",
+		]
+		remarks: DF.Text | None
+		sales_invoice_no: DF.Link | None
+		scan_barcode: DF.Data | None
+		select_print_heading: DF.Link | None
+		set_posting_time: DF.Check
+		source_address_display: DF.TextEditor | None
+		source_warehouse_address: DF.Link | None
+		stock_entry_type: DF.Link
+		subcontracting_order: DF.Link | None
+		supplier: DF.Link | None
+		supplier_address: DF.Link | None
+		supplier_name: DF.Data | None
+		target_address_display: DF.TextEditor | None
+		target_warehouse_address: DF.Link | None
+		to_warehouse: DF.Link | None
+		total_additional_costs: DF.Currency
+		total_amount: DF.Currency
+		total_incoming_value: DF.Currency
+		total_outgoing_value: DF.Currency
+		use_multi_level_bom: DF.Check
+		value_difference: DF.Currency
+		work_order: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		if self.purchase_order:
@@ -89,9 +206,12 @@ class StockEntry(StockController):
 				}
 			)
 
+<<<<<<< HEAD
 	def get_feed(self):
 		return self.stock_entry_type
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		for item in self.get("items"):
 			item.update(get_bin_details(item.item_code, item.s_warehouse))
@@ -109,6 +229,10 @@ class StockEntry(StockController):
 		if self.work_order:
 			self.pro_doc = frappe.get_doc("Work Order", self.work_order)
 
+<<<<<<< HEAD
+=======
+		self.validate_duplicate_serial_and_batch_bundle("items")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_posting_time()
 		self.validate_purpose()
 		self.validate_item()
@@ -122,11 +246,21 @@ class StockEntry(StockController):
 		self.validate_bom()
 		self.set_process_loss_qty()
 		self.validate_purchase_order()
+<<<<<<< HEAD
 		self.validate_subcontracting_order()
 
 		if self.purpose in ("Manufacture", "Repack"):
 			self.mark_finished_and_scrap_items()
 			self.validate_finished_goods()
+=======
+
+		if self.purpose in ("Manufacture", "Repack"):
+			self.mark_finished_and_scrap_items()
+			if not self.job_card:
+				self.validate_finished_goods()
+			else:
+				self.validate_job_card_fg_item()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.validate_with_material_request()
 		self.validate_batch()
@@ -137,11 +271,15 @@ class StockEntry(StockController):
 		self.validate_job_card_item()
 		self.set_purpose_for_stock_entry()
 		self.clean_serial_nos()
+<<<<<<< HEAD
 		self.validate_duplicate_serial_no()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.from_bom:
 			self.fg_completed_qty = 0.0
 
+<<<<<<< HEAD
 		if self._action == "submit":
 			self.make_batches("t_warehouse")
 		else:
@@ -152,15 +290,30 @@ class StockEntry(StockController):
 		self.validate_putaway_capacity()
 
 		if not self.get("purpose") == "Manufacture":
+=======
+		self.make_serial_and_batch_bundle_for_outward()
+		self.validate_serialized_batch()
+		self.calculate_rate_and_amount()
+		self.validate_putaway_capacity()
+		self.validate_component_quantities()
+
+		if self.get("purpose") != "Manufacture":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			# ignore scrap item wh difference and empty source/target wh
 			# in Manufacture Entry
 			self.reset_default_field_value("from_warehouse", "items", "s_warehouse")
 			self.reset_default_field_value("to_warehouse", "items", "t_warehouse")
 
 	def on_submit(self):
+<<<<<<< HEAD
 		self.update_stock_ledger()
 
 		update_serial_nos_after_submit(self, "items")
+=======
+		self.validate_closed_subcontracting_order()
+		self.make_bundle_using_old_serial_batch_fields()
+		self.update_stock_ledger()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_work_order()
 		self.validate_subcontract_order()
 		self.update_subcontract_order_supplied_items()
@@ -171,6 +324,7 @@ class StockEntry(StockController):
 
 		self.repost_future_sle_and_gle()
 		self.update_cost_in_project()
+<<<<<<< HEAD
 		self.validate_reserved_serial_no_consumption()
 		self.update_transferred_qty()
 		self.update_quality_inspection()
@@ -178,12 +332,21 @@ class StockEntry(StockController):
 		if self.work_order and self.purpose == "Manufacture":
 			self.update_so_in_serial_number()
 
+=======
+		self.update_transferred_qty()
+		self.update_quality_inspection()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.purpose == "Material Transfer" and self.add_to_transit:
 			self.set_material_request_transfer_status("In Transit")
 		if self.purpose == "Material Transfer" and self.outgoing_stock_entry:
 			self.set_material_request_transfer_status("Completed")
 
 	def on_cancel(self):
+<<<<<<< HEAD
+=======
+		self.validate_closed_subcontracting_order()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_subcontract_order_supplied_items()
 		self.update_subcontracting_order_status()
 
@@ -193,7 +356,16 @@ class StockEntry(StockController):
 		self.update_work_order()
 		self.update_stock_ledger()
 
+<<<<<<< HEAD
 		self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Repost Item Valuation")
+=======
+		self.ignore_linked_doctypes = (
+			"GL Entry",
+			"Stock Ledger Entry",
+			"Repost Item Valuation",
+			"Serial and Batch Bundle",
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.make_gl_entries_on_cancel()
 		self.repost_future_sle_and_gle()
@@ -208,6 +380,12 @@ class StockEntry(StockController):
 		if self.purpose == "Material Transfer" and self.outgoing_stock_entry:
 			self.set_material_request_transfer_status("In Transit")
 
+<<<<<<< HEAD
+=======
+	def on_update(self):
+		self.set_serial_and_batch_bundle()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def set_job_card_data(self):
 		if self.job_card and not self.work_order:
 			data = frappe.db.get_value(
@@ -218,10 +396,31 @@ class StockEntry(StockController):
 			self.from_bom = 1
 			self.bom_no = data.bom_no
 
+<<<<<<< HEAD
 	def validate_job_card_item(self):
 		if not self.job_card:
 			return
 
+=======
+	def validate_job_card_fg_item(self):
+		if not self.job_card:
+			return
+
+		job_card = frappe.db.get_value(
+			"Job Card", self.job_card, ["finished_good", "manufactured_qty"], as_dict=1
+		)
+
+		for row in self.items:
+			if row.is_finished_item and row.item_code != job_card.finished_good:
+				frappe.throw(
+					_("Row #{0}: Finished Good must be {1}").format(row.idx, job_card.fininshed_good)
+				)
+
+	def validate_job_card_item(self):
+		if not self.job_card or self.purpose == "Manufacture":
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if cint(frappe.db.get_single_value("Manufacturing Settings", "job_card_excess_transfer")):
 			return
 
@@ -251,11 +450,16 @@ class StockEntry(StockController):
 			"Repack",
 			"Send to Subcontractor",
 			"Material Consumption for Manufacture",
+<<<<<<< HEAD
+=======
+			"Disassemble",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		if self.purpose not in valid_purposes:
 			frappe.throw(_("Purpose must be one of {0}").format(comma_or(valid_purposes)))
 
+<<<<<<< HEAD
 		if self.job_card and self.purpose not in ["Material Transfer for Manufacture", "Repack"]:
 			frappe.throw(
 				_(
@@ -263,6 +467,8 @@ class StockEntry(StockController):
 				).format(self.job_card)
 			)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def delete_linked_stock_entry(self):
 		if self.purpose == "Send to Warehouse":
 			for d in frappe.get_all(
@@ -276,9 +482,14 @@ class StockEntry(StockController):
 				frappe.delete_doc("Stock Entry", d.name)
 
 	def set_transfer_qty(self):
+<<<<<<< HEAD
 		for item in self.get("items"):
 			if not flt(item.qty):
 				frappe.throw(_("Row {0}: Qty is mandatory").format(item.idx), title=_("Zero quantity"))
+=======
+		self.validate_qty_is_not_zero()
+		for item in self.get("items"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if not flt(item.conversion_factor):
 				frappe.throw(_("Row {0}: UOM Conversion Factor is mandatory").format(item.idx))
 			item.transfer_qty = flt(
@@ -326,7 +537,10 @@ class StockEntry(StockController):
 
 	def validate_item(self):
 		stock_items = self.get_stock_items()
+<<<<<<< HEAD
 		serialized_items = self.get_serialized_items()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for item in self.get("items"):
 			if flt(item.qty) and flt(item.qty) < 0:
 				frappe.throw(
@@ -375,6 +589,7 @@ class StockEntry(StockController):
 					flt(item.qty) * flt(item.conversion_factor), self.precision("transfer_qty", item)
 				)
 
+<<<<<<< HEAD
 			if (
 				self.purpose in ("Material Transfer", "Material Transfer for Manufacture")
 				and not item.serial_no
@@ -385,6 +600,8 @@ class StockEntry(StockController):
 					frappe.MandatoryError,
 				)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_qty(self):
 		manufacture_purpose = ["Manufacture", "Material Consumption for Manufacture"]
 
@@ -540,19 +757,34 @@ class StockEntry(StockController):
 				frappe.throw(_("Source and target warehouse cannot be same for row {0}").format(d.idx))
 
 			if not (d.s_warehouse or d.t_warehouse):
+<<<<<<< HEAD
 				frappe.throw(_("Atleast one warehouse is mandatory"))
+=======
+				frappe.throw(_("At least one warehouse is mandatory"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_work_order(self):
 		if self.purpose in (
 			"Manufacture",
 			"Material Transfer for Manufacture",
 			"Material Consumption for Manufacture",
+<<<<<<< HEAD
+=======
+			"Disassemble",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		):
 			# check if work order is entered
 
 			if (
+<<<<<<< HEAD
 				self.purpose == "Manufacture" or self.purpose == "Material Consumption for Manufacture"
 			) and self.work_order:
+=======
+				(self.purpose == "Manufacture" or self.purpose == "Material Consumption for Manufacture")
+				and self.work_order
+				and frappe.get_cached_value("Work Order", self.work_order, "track_semi_finished_goods") != 1
+			):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if not self.fg_completed_qty:
 					frappe.throw(_("For Quantity (Manufactured Qty) is mandatory"))
 				self.check_if_operations_completed()
@@ -581,8 +813,13 @@ class StockEntry(StockController):
 						)
 					)
 
+<<<<<<< HEAD
 				work_order_link = frappe.utils.get_link_to_form("Work Order", self.work_order)
 				job_card_link = frappe.utils.get_link_to_form("Job Card", job_card)
+=======
+				work_order_link = get_link_to_form("Work Order", self.work_order)
+				job_card_link = get_link_to_form("Job Card", job_card)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(
 					_(
 						"Row #{0}: Operation {1} is not completed for {2} qty of finished goods in Work Order {3}. Please update operation status via Job Card {4}."
@@ -675,6 +912,37 @@ class StockEntry(StockController):
 					title=_("Insufficient Stock"),
 				)
 
+<<<<<<< HEAD
+=======
+	def validate_component_quantities(self):
+		if self.purpose not in ["Manufacture", "Material Transfer for Manufacture"]:
+			return
+
+		if not frappe.db.get_single_value("Manufacturing Settings", "validate_components_quantities_per_bom"):
+			return
+
+		if not self.fg_completed_qty:
+			return
+
+		raw_materials = self.get_bom_raw_materials(self.fg_completed_qty)
+
+		precision = frappe.get_precision("Stock Entry Detail", "qty")
+		for row in self.items:
+			if not row.s_warehouse:
+				continue
+
+			if details := raw_materials.get(row.item_code):
+				if flt(details.get("qty"), precision) != flt(row.qty, precision):
+					frappe.throw(
+						_("For the item {0}, the quantity should be {1} according to the BOM {2}.").format(
+							frappe.bold(row.item_code),
+							flt(details.get("qty"), precision),
+							get_link_to_form("BOM", self.bom_no),
+						),
+						title=_("Incorrect Component Quantity"),
+					)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@frappe.whitelist()
 	def get_stock_and_rate(self):
 		"""
@@ -721,6 +989,12 @@ class StockEntry(StockController):
 					d.basic_rate = self.get_basic_rate_for_repacked_items(d.transfer_qty, outgoing_items_cost)
 
 			if not d.basic_rate and not d.allow_zero_valuation_rate:
+<<<<<<< HEAD
+=======
+				if self.is_new():
+					raise_error_if_no_rate = False
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				d.basic_rate = get_valuation_rate(
 					d.item_code,
 					d.t_warehouse,
@@ -731,6 +1005,10 @@ class StockEntry(StockController):
 					company=self.company,
 					raise_error_if_no_rate=raise_error_if_no_rate,
 					batch_no=d.batch_no,
+<<<<<<< HEAD
+=======
+					serial_and_batch_bundle=d.serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				)
 
 			# do not round off basic rate to avoid precision loss
@@ -758,7 +1036,11 @@ class StockEntry(StockController):
 				if reset_outgoing_rate:
 					args = self.get_args_for_incoming_rate(d)
 					rate = get_incoming_rate(args, raise_error_if_no_rate)
+<<<<<<< HEAD
 					if rate > 0:
+=======
+					if rate >= 0:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						d.basic_rate = rate
 
 				d.basic_amount = flt(flt(d.transfer_qty) * flt(d.basic_rate), d.precision("basic_amount"))
@@ -775,12 +1057,22 @@ class StockEntry(StockController):
 				"posting_date": self.posting_date,
 				"posting_time": self.posting_time,
 				"qty": item.s_warehouse and -1 * flt(item.transfer_qty) or flt(item.transfer_qty),
+<<<<<<< HEAD
 				"serial_no": item.serial_no,
 				"batch_no": item.batch_no,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"voucher_type": self.doctype,
 				"voucher_no": self.name,
 				"company": self.company,
 				"allow_zero_valuation": item.allow_zero_valuation_rate,
+<<<<<<< HEAD
+=======
+				"serial_and_batch_bundle": item.serial_and_batch_bundle,
+				"voucher_detail_no": item.name,
+				"batch_no": item.batch_no,
+				"serial_no": item.serial_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 
@@ -795,6 +1087,7 @@ class StockEntry(StockController):
 				return flt(outgoing_items_cost / total_fg_qty)
 
 	def get_basic_rate_for_manufactured_item(self, finished_item_qty, outgoing_items_cost=0) -> float:
+<<<<<<< HEAD
 		scrap_items_cost = sum([flt(d.basic_amount) for d in self.get("items") if d.is_scrap_item])
 
 		# Get raw materials cost from BOM if multiple material consumption entries
@@ -803,6 +1096,66 @@ class StockEntry(StockController):
 		):
 			bom_items = self.get_bom_raw_materials(finished_item_qty)
 			outgoing_items_cost = sum([flt(row.qty) * flt(row.rate) for row in bom_items.values()])
+=======
+		settings = frappe.get_single("Manufacturing Settings")
+		scrap_items_cost = sum([flt(d.basic_amount) for d in self.get("items") if d.is_scrap_item])
+
+		if settings.material_consumption:
+			if settings.get_rm_cost_from_consumption_entry and self.work_order:
+				# Validate only if Material Consumption Entry exists for the Work Order.
+				if frappe.db.exists(
+					"Stock Entry",
+					{
+						"docstatus": 1,
+						"work_order": self.work_order,
+						"purpose": "Material Consumption for Manufacture",
+					},
+				):
+					for item in self.items:
+						if not item.is_finished_item and not item.is_scrap_item:
+							label = frappe.get_meta(settings.doctype).get_label(
+								"get_rm_cost_from_consumption_entry"
+							)
+							frappe.throw(
+								_(
+									"Row {0}: As {1} is enabled, raw materials cannot be added to {2} entry. Use {3} entry to consume raw materials."
+								).format(
+									item.idx,
+									frappe.bold(label),
+									frappe.bold(_("Manufacture")),
+									frappe.bold(_("Material Consumption for Manufacture")),
+								)
+							)
+
+					if frappe.db.exists(
+						"Stock Entry",
+						{"docstatus": 1, "work_order": self.work_order, "purpose": "Manufacture"},
+					):
+						frappe.throw(
+							_("Only one {0} entry can be created against the Work Order {1}").format(
+								frappe.bold(_("Manufacture")), frappe.bold(self.work_order)
+							)
+						)
+
+					SE = frappe.qb.DocType("Stock Entry")
+					SE_ITEM = frappe.qb.DocType("Stock Entry Detail")
+
+					outgoing_items_cost = (
+						frappe.qb.from_(SE)
+						.left_join(SE_ITEM)
+						.on(SE.name == SE_ITEM.parent)
+						.select(Sum(SE_ITEM.valuation_rate * SE_ITEM.transfer_qty))
+						.where(
+							(SE.docstatus == 1)
+							& (SE.work_order == self.work_order)
+							& (SE.purpose == "Material Consumption for Manufacture")
+						)
+					).run()[0][0] or 0
+
+			elif not outgoing_items_cost:
+				bom_items = self.get_bom_raw_materials(finished_item_qty)
+				outgoing_items_cost = sum([flt(row.qty) * flt(row.rate) for row in bom_items.values()])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		return flt((outgoing_items_cost - scrap_items_cost) / finished_item_qty)
 
@@ -855,13 +1208,18 @@ class StockEntry(StockController):
 	def set_stock_entry_type(self):
 		if self.purpose:
 			self.stock_entry_type = frappe.get_cached_value(
+<<<<<<< HEAD
 				"Stock Entry Type", {"purpose": self.purpose}, "name"
+=======
+				"Stock Entry Type", {"purpose": self.purpose, "is_standard": 1}, "name"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 	def set_purpose_for_stock_entry(self):
 		if self.stock_entry_type and not self.purpose:
 			self.purpose = frappe.get_cached_value("Stock Entry Type", self.stock_entry_type, "purpose")
 
+<<<<<<< HEAD
 	def validate_duplicate_serial_no(self):
 		# In case of repack the source and target serial nos could be same
 		for warehouse in ["s_warehouse", "t_warehouse"]:
@@ -879,6 +1237,69 @@ class StockEntry(StockController):
 						)
 
 					serial_nos.append(sn)
+=======
+	def make_serial_and_batch_bundle_for_outward(self):
+		if self.docstatus == 0:
+			return
+
+		serial_or_batch_items = get_serial_or_batch_items(self.items)
+		if not serial_or_batch_items:
+			return
+
+		already_picked_serial_nos = []
+
+		for row in self.items:
+			if row.use_serial_batch_fields:
+				continue
+
+			if not row.s_warehouse:
+				continue
+
+			if row.item_code not in serial_or_batch_items:
+				continue
+
+			bundle_doc = None
+			if row.serial_and_batch_bundle and abs(row.transfer_qty) != abs(
+				frappe.get_cached_value("Serial and Batch Bundle", row.serial_and_batch_bundle, "total_qty")
+			):
+				bundle_doc = SerialBatchCreation(
+					{
+						"item_code": row.item_code,
+						"warehouse": row.s_warehouse,
+						"serial_and_batch_bundle": row.serial_and_batch_bundle,
+						"type_of_transaction": "Outward",
+						"ignore_serial_nos": already_picked_serial_nos,
+						"qty": row.transfer_qty * -1,
+					}
+				).update_serial_and_batch_entries()
+			elif not row.serial_and_batch_bundle:
+				bundle_doc = SerialBatchCreation(
+					{
+						"item_code": row.item_code,
+						"warehouse": row.s_warehouse,
+						"posting_date": self.posting_date,
+						"posting_time": self.posting_time,
+						"voucher_type": self.doctype,
+						"voucher_detail_no": row.name,
+						"qty": row.transfer_qty * -1,
+						"ignore_serial_nos": already_picked_serial_nos,
+						"type_of_transaction": "Outward",
+						"company": self.company,
+						"do_not_submit": True,
+					}
+				).make_serial_and_batch_bundle()
+
+			if not bundle_doc:
+				continue
+
+			for entry in bundle_doc.entries:
+				if not entry.serial_no:
+					continue
+
+				already_picked_serial_nos.append(entry.serial_no)
+
+			row.serial_and_batch_bundle = bundle_doc.name
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_subcontract_order(self):
 		"""Throw exception if more raw material is transferred against Subcontract Order than in
@@ -1062,6 +1483,7 @@ class StockEntry(StockController):
 					)
 				)
 
+<<<<<<< HEAD
 	def validate_subcontracting_order(self):
 		if self.get("subcontracting_order") and self.purpose in [
 			"Send to Subcontractor",
@@ -1075,6 +1497,11 @@ class StockEntry(StockController):
 						self.subcontracting_order
 					)
 				)
+=======
+	def validate_closed_subcontracting_order(self):
+		if self.get("subcontracting_order"):
+			check_on_hold_or_closed_status("Subcontracting Order", self.subcontracting_order)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def mark_finished_and_scrap_items(self):
 		if self.purpose != "Repack" and any(
@@ -1115,10 +1542,17 @@ class StockEntry(StockController):
 		3. Check FG Item and Qty against WO if present (mfg)
 		"""
 		production_item, wo_qty, finished_items = None, 0, []
+<<<<<<< HEAD
 
 		wo_details = frappe.db.get_value("Work Order", self.work_order, ["production_item", "qty"])
 		if wo_details:
 			production_item, wo_qty = wo_details
+=======
+		if self.work_order:
+			wo_details = frappe.db.get_value("Work Order", self.work_order, ["production_item", "qty"])
+			if wo_details:
+				production_item, wo_qty = wo_details
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for d in self.get("items"):
 			if d.is_finished_item:
@@ -1197,9 +1631,30 @@ class StockEntry(StockController):
 
 		return finished_item_row
 
+<<<<<<< HEAD
 	def get_sle_for_source_warehouse(self, sl_entries, finished_item_row):
 		for d in self.get("items"):
 			if cstr(d.s_warehouse):
+=======
+	def validate_serial_batch_bundle_type(self, serial_and_batch_bundle):
+		if (
+			frappe.db.get_value("Serial and Batch Bundle", serial_and_batch_bundle, "type_of_transaction")
+			!= "Outward"
+		):
+			frappe.throw(
+				_(
+					"The Serial and Batch Bundle {0} is not valid for this transaction. The 'Type of Transaction' should be 'Outward' instead of 'Inward' in Serial and Batch Bundle {0}"
+				).format(get_link_to_form("Serial and Batch Bundle", serial_and_batch_bundle)),
+				title=_("Invalid Serial and Batch Bundle"),
+			)
+
+	def get_sle_for_source_warehouse(self, sl_entries, finished_item_row):
+		for d in self.get("items"):
+			if cstr(d.s_warehouse):
+				if d.serial_and_batch_bundle and self.docstatus == 1:
+					self.validate_serial_batch_bundle_type(d.serial_and_batch_bundle)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				sle = self.get_sl_entries(
 					d,
 					{
@@ -1216,8 +1671,50 @@ class StockEntry(StockController):
 				):
 					sle.dependant_sle_voucher_detail_no = finished_item_row.name
 
+<<<<<<< HEAD
 				sl_entries.append(sle)
 
+=======
+				if sle.serial_and_batch_bundle and self.docstatus == 2:
+					bundle_id = frappe.get_cached_value(
+						"Serial and Batch Bundle",
+						{
+							"voucher_detail_no": d.name,
+							"voucher_no": self.name,
+							"is_cancelled": 0,
+							"type_of_transaction": "Outward",
+						},
+						"name",
+					)
+
+					if bundle_id:
+						sle.serial_and_batch_bundle = bundle_id
+
+				sl_entries.append(sle)
+
+	def make_serial_and_batch_bundle_for_transfer(self):
+		ids = frappe._dict(
+			frappe.get_all(
+				"Stock Entry Detail",
+				fields=["name", "serial_and_batch_bundle"],
+				filters={"parent": self.outgoing_stock_entry, "serial_and_batch_bundle": ("is", "set")},
+				as_list=1,
+			)
+		)
+
+		if not ids:
+			return
+
+		for d in self.get("items"):
+			serial_and_batch_bundle = ids.get(d.ste_detail)
+			if not serial_and_batch_bundle:
+				continue
+
+			d.serial_and_batch_bundle = self.make_package_for_transfer(
+				serial_and_batch_bundle, d.s_warehouse, "Outward", do_not_submit=True
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def get_sle_for_target_warehouse(self, sl_entries, finished_item_row):
 		for d in self.get("items"):
 			if cstr(d.t_warehouse):
@@ -1229,9 +1726,42 @@ class StockEntry(StockController):
 						"incoming_rate": flt(d.valuation_rate),
 					},
 				)
+<<<<<<< HEAD
 				if cstr(d.s_warehouse) or (finished_item_row and d.name == finished_item_row.name):
 					sle.recalculate_rate = 1
 
+=======
+
+				if cstr(d.s_warehouse) or (finished_item_row and d.name == finished_item_row.name):
+					sle.recalculate_rate = 1
+
+				allowed_types = [
+					"Material Transfer",
+					"Send to Subcontractor",
+					"Material Transfer for Manufacture",
+				]
+
+				if self.purpose in allowed_types and d.serial_and_batch_bundle and self.docstatus == 1:
+					sle.serial_and_batch_bundle = self.make_package_for_transfer(
+						d.serial_and_batch_bundle, d.t_warehouse
+					)
+
+				if sle.serial_and_batch_bundle and self.docstatus == 2:
+					bundle_id = frappe.get_cached_value(
+						"Serial and Batch Bundle",
+						{
+							"voucher_detail_no": d.name,
+							"voucher_no": self.name,
+							"is_cancelled": 0,
+							"type_of_transaction": "Inward",
+						},
+						"name",
+					)
+
+					if sle.serial_and_batch_bundle != bundle_id:
+						sle.serial_and_batch_bundle = bundle_id
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				sl_entries.append(sle)
 
 	def get_gl_entries(self, warehouse_account):
@@ -1321,17 +1851,31 @@ class StockEntry(StockController):
 			if pro_doc.status == "Stopped":
 				msg = f"Transaction not allowed against stopped Work Order {self.work_order}"
 
+<<<<<<< HEAD
 			if self.is_return and pro_doc.status not in ["Completed", "Closed"]:
 				title = _("Stock Return")
 				msg = f"Work Order {self.work_order} must be completed or closed"
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if msg:
 				frappe.throw(_(msg), title=title)
 
 		if self.job_card:
 			job_doc = frappe.get_doc("Job Card", self.job_card)
+<<<<<<< HEAD
 			job_doc.set_transferred_qty(update_status=True)
 			job_doc.set_transferred_qty_in_job_card_item(self)
+=======
+			if self.purpose != "Manufacture":
+				job_doc.set_transferred_qty(update_status=True)
+				job_doc.set_transferred_qty_in_job_card_item(self)
+			else:
+				job_doc.set_manufactured_qty()
+
+		if self.job_card and frappe.get_cached_value("Job Card", self.job_card, "finished_good"):
+			return
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.work_order:
 			pro_doc = frappe.get_doc("Work Order", self.work_order)
@@ -1341,14 +1885,21 @@ class StockEntry(StockController):
 				pro_doc.run_method("update_work_order_qty")
 				if self.purpose == "Manufacture":
 					pro_doc.run_method("update_planned_qty")
+<<<<<<< HEAD
 					pro_doc.update_batch_produced_qty(self)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			pro_doc.run_method("update_status")
 			if not pro_doc.operations:
 				pro_doc.set_actual_dates()
 
 	@frappe.whitelist()
+<<<<<<< HEAD
 	def get_item_details(self, args=None, for_update=False):
+=======
+	def get_item_details(self, args: ItemDetailsCtx = None, for_update=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item = frappe.db.sql(
 			"""select i.name, i.stock_uom, i.description, i.image, i.item_name, i.item_group,
 				i.has_batch_no, i.sample_quantity, i.has_serial_no, i.allow_alternative_item,
@@ -1383,6 +1934,7 @@ class StockEntry(StockController):
 				"qty": args.get("qty"),
 				"transfer_qty": args.get("qty"),
 				"conversion_factor": 1,
+<<<<<<< HEAD
 				"batch_no": "",
 				"actual_qty": 0,
 				"basic_rate": 0,
@@ -1391,6 +1943,14 @@ class StockEntry(StockController):
 				"has_batch_no": item.has_batch_no,
 				"sample_quantity": item.sample_quantity,
 				"expense_account": item.expense_account,
+=======
+				"actual_qty": 0,
+				"basic_rate": 0,
+				"has_serial_no": item.has_serial_no,
+				"has_batch_no": item.has_batch_no,
+				"sample_quantity": item.sample_quantity,
+				"expense_account": item.expense_account or item_group_defaults.get("expense_account"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 
@@ -1417,6 +1977,7 @@ class StockEntry(StockController):
 		stock_and_rate = get_warehouse_details(args) if args.get("warehouse") else {}
 		ret.update(stock_and_rate)
 
+<<<<<<< HEAD
 		# automatically select batch for outgoing item
 		if (
 			args.get("s_warehouse", None)
@@ -1426,6 +1987,8 @@ class StockEntry(StockController):
 		):
 			args.batch_no = get_batch_no(args["item_code"], args["s_warehouse"], args["qty"])
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (
 			self.purpose == "Send to Subcontractor"
 			and self.get(self.subcontract_data.order_field)
@@ -1471,16 +2034,77 @@ class StockEntry(StockController):
 						"ste_detail": d.name,
 						"stock_uom": d.stock_uom,
 						"conversion_factor": d.conversion_factor,
+<<<<<<< HEAD
 						"serial_no": d.serial_no,
 						"batch_no": d.batch_no,
 					},
 				)
 
+=======
+					},
+				)
+
+	def get_items_for_disassembly(self):
+		"""Get items for Disassembly Order"""
+
+		if not self.work_order:
+			frappe.throw(_("The Work Order is mandatory for Disassembly Order"))
+
+		items = self.get_items_from_manufacture_entry()
+
+		s_warehouse = ""
+		if self.work_order:
+			s_warehouse = frappe.db.get_value("Work Order", self.work_order, "fg_warehouse")
+
+		for row in items:
+			child_row = self.append("items", {})
+			for field, value in row.items():
+				if value is not None:
+					child_row.set(field, value)
+
+			child_row.s_warehouse = (self.from_warehouse or s_warehouse) if row.is_finished_item else ""
+			child_row.t_warehouse = self.to_warehouse if not row.is_finished_item else ""
+			child_row.is_finished_item = 0 if row.is_finished_item else 1
+
+	def get_items_from_manufacture_entry(self):
+		return frappe.get_all(
+			"Stock Entry",
+			fields=[
+				"`tabStock Entry Detail`.`item_code`",
+				"`tabStock Entry Detail`.`item_name`",
+				"`tabStock Entry Detail`.`description`",
+				"`tabStock Entry Detail`.`qty`",
+				"`tabStock Entry Detail`.`transfer_qty`",
+				"`tabStock Entry Detail`.`stock_uom`",
+				"`tabStock Entry Detail`.`uom`",
+				"`tabStock Entry Detail`.`basic_rate`",
+				"`tabStock Entry Detail`.`conversion_factor`",
+				"`tabStock Entry Detail`.`is_finished_item`",
+				"`tabStock Entry Detail`.`batch_no`",
+				"`tabStock Entry Detail`.`serial_no`",
+				"`tabStock Entry Detail`.`use_serial_batch_fields`",
+			],
+			filters=[
+				["Stock Entry", "purpose", "=", "Manufacture"],
+				["Stock Entry", "work_order", "=", self.work_order],
+				["Stock Entry", "docstatus", "=", 1],
+				["Stock Entry Detail", "docstatus", "=", 1],
+			],
+			order_by="`tabStock Entry Detail`.`idx` desc, `tabStock Entry Detail`.`is_finished_item` desc",
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@frappe.whitelist()
 	def get_items(self):
 		self.set("items", [])
 		self.validate_work_order()
 
+<<<<<<< HEAD
+=======
+		if self.purpose == "Disassemble":
+			return self.get_items_for_disassembly()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not self.posting_date or not self.posting_time:
 			frappe.throw(_("Posting date and posting time is mandatory"))
 
@@ -1675,6 +2299,10 @@ class StockEntry(StockController):
 		if (
 			self.work_order
 			and self.pro_doc.has_batch_no
+<<<<<<< HEAD
+=======
+			and not self.pro_doc.has_serial_no
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			and cint(
 				frappe.db.get_single_value(
 					"Manufacturing Settings", "make_serial_no_batch_from_work_order", cache=True
@@ -1686,6 +2314,7 @@ class StockEntry(StockController):
 			self.add_finished_goods(args, item)
 
 	def set_batchwise_finished_goods(self, args, item):
+<<<<<<< HEAD
 		filters = {
 			"reference_name": self.pro_doc.name,
 			"reference_doctype": self.pro_doc.doctype,
@@ -1722,6 +2351,37 @@ class StockEntry(StockController):
 			args["batch_no"] = row.name
 
 			self.add_finished_goods(args, item)
+=======
+		batches = get_empty_batches_based_work_order(self.work_order, self.pro_doc.production_item)
+
+		if not batches:
+			self.add_finished_goods(args, item)
+		else:
+			self.add_batchwise_finished_good(batches, args, item)
+
+	def add_batchwise_finished_good(self, batches, args, item):
+		qty = flt(self.fg_completed_qty)
+		row = frappe._dict({"batches_to_be_consume": defaultdict(float)})
+
+		self.update_batches_to_be_consume(batches, row, qty)
+
+		if not row.batches_to_be_consume:
+			return
+
+		id = create_serial_and_batch_bundle(
+			self,
+			row,
+			frappe._dict(
+				{
+					"item_code": self.pro_doc.production_item,
+					"warehouse": args.get("to_warehouse"),
+				}
+			),
+		)
+
+		args["serial_and_batch_bundle"] = id
+		self.add_finished_goods(args, item)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def add_finished_goods(self, args, item):
 		self.add_to_stock_entry_detail({item.name: args}, bom_no=self.bom_no)
@@ -1920,6 +2580,10 @@ class StockEntry(StockController):
 			as_dict=1,
 		)
 
+<<<<<<< HEAD
+=======
+		precision = frappe.get_precision("Stock Entry Detail", "qty")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		for _key, row in available_materials.items():
 			remaining_qty_to_produce = flt(wo_data.trans_qty) - flt(wo_data.produced_qty)
 			if remaining_qty_to_produce <= 0 and not self.is_return:
@@ -1934,6 +2598,7 @@ class StockEntry(StockController):
 				qty = frappe.utils.ceil(qty)
 
 			if row.batch_details:
+<<<<<<< HEAD
 				batches = sorted(row.batch_details.items(), key=lambda x: x[0])
 				for batch_no, batch_qty in batches:
 					if qty <= 0 or batch_qty <= 0:
@@ -1950,26 +2615,84 @@ class StockEntry(StockController):
 			else:
 				self.update_item_in_stock_entry_detail(row, item, qty)
 
+=======
+				row.batches_to_be_consume = defaultdict(float)
+				batches = row.batch_details
+				self.update_batches_to_be_consume(batches, row, qty)
+
+			elif row.serial_nos:
+				serial_nos = row.serial_nos[0 : cint(qty)]
+				row.serial_nos = serial_nos
+
+			if flt(qty, precision) != 0.0:
+				self.update_item_in_stock_entry_detail(row, item, qty)
+
+	def update_batches_to_be_consume(self, batches, row, qty):
+		qty_to_be_consumed = qty
+		batches = sorted(batches.items(), key=lambda x: x[0])
+
+		for batch_no, batch_qty in batches:
+			if qty_to_be_consumed <= 0 or batch_qty <= 0:
+				continue
+
+			if batch_qty > qty_to_be_consumed:
+				batch_qty = qty_to_be_consumed
+
+			row.batches_to_be_consume[batch_no] += batch_qty
+
+			if batch_no and row.serial_nos:
+				serial_nos = self.get_serial_nos_based_on_transferred_batch(batch_no, row.serial_nos)
+				serial_nos = serial_nos[0 : cint(batch_qty)]
+
+				# remove consumed serial nos from list
+				for sn in serial_nos:
+					row.serial_nos.remove(sn)
+
+			if "batch_details" in row:
+				row.batch_details[batch_no] -= batch_qty
+
+			qty_to_be_consumed -= batch_qty
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_item_in_stock_entry_detail(self, row, item, qty) -> None:
 		if not qty:
 			return
 
+<<<<<<< HEAD
+=======
+		use_serial_batch_fields = frappe.db.get_single_value("Stock Settings", "use_serial_batch_fields")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		ste_item_details = {
 			"from_warehouse": item.warehouse,
 			"to_warehouse": "",
 			"qty": qty,
 			"item_name": item.item_name,
+<<<<<<< HEAD
 			"batch_no": item.batch_no,
+=======
+			"serial_and_batch_bundle": create_serial_and_batch_bundle(self, row, item, "Outward")
+			if not use_serial_batch_fields
+			else "",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"description": item.description,
 			"stock_uom": item.stock_uom,
 			"expense_account": item.expense_account,
 			"cost_center": item.buying_cost_center,
 			"original_item": item.original_item,
+<<<<<<< HEAD
+=======
+			"serial_no": "\n".join(row.serial_nos)
+			if row.serial_nos and not row.batches_to_be_consume
+			else "",
+			"use_serial_batch_fields": use_serial_batch_fields,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		if self.is_return:
 			ste_item_details["to_warehouse"] = item.s_warehouse
 
+<<<<<<< HEAD
 		if row.serial_nos:
 			serial_nos = row.serial_nos
 			if item.batch_no:
@@ -1983,11 +2706,31 @@ class StockEntry(StockController):
 				row.serial_nos.remove(sn)
 
 		self.add_to_stock_entry_detail({item.item_code: ste_item_details})
+=======
+		if use_serial_batch_fields and not row.serial_no and row.batches_to_be_consume:
+			for batch_no, batch_qty in row.batches_to_be_consume.items():
+				ste_item_details.update(
+					{
+						"batch_no": batch_no,
+						"qty": batch_qty,
+					}
+				)
+
+				self.add_to_stock_entry_detail({item.item_code: ste_item_details})
+		else:
+			self.add_to_stock_entry_detail({item.item_code: ste_item_details})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	@staticmethod
 	def get_serial_nos_based_on_transferred_batch(batch_no, serial_nos) -> list:
 		serial_nos = frappe.get_all(
+<<<<<<< HEAD
 			"Serial No", filters={"batch_no": batch_no, "name": ("in", serial_nos)}, order_by="creation"
+=======
+			"Serial No",
+			filters={"batch_no": batch_no, "name": ("in", serial_nos), "warehouse": ("is", "not set")},
+			order_by="creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		return [d.name for d in serial_nos]
@@ -2102,17 +2845,34 @@ class StockEntry(StockController):
 		return [d.item_code for d in job_card_items]
 
 	def add_to_stock_entry_detail(self, item_dict, bom_no=None):
+<<<<<<< HEAD
 		for d in item_dict:
 			item_row = item_dict[d]
 			stock_uom = item_row.get("stock_uom") or frappe.db.get_value("Item", d, "stock_uom")
 
 			se_child = self.append("items")
+=======
+		precision = frappe.get_precision("Stock Entry Detail", "qty")
+		for d in item_dict:
+			item_row = item_dict[d]
+
+			child_qty = flt(item_row["qty"], precision)
+			if not self.is_return and child_qty <= 0:
+				continue
+
+			se_child = self.append("items")
+			stock_uom = item_row.get("stock_uom") or frappe.db.get_value("Item", d, "stock_uom")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			se_child.s_warehouse = item_row.get("from_warehouse")
 			se_child.t_warehouse = item_row.get("to_warehouse")
 			se_child.item_code = item_row.get("item_code") or cstr(d)
 			se_child.uom = item_row["uom"] if item_row.get("uom") else stock_uom
 			se_child.stock_uom = stock_uom
+<<<<<<< HEAD
 			se_child.qty = flt(item_row["qty"], se_child.precision("qty"))
+=======
+			se_child.qty = child_qty
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			se_child.allow_alternative_item = item_row.get("allow_alternative_item", 0)
 			se_child.subcontracted_item = item_row.get("main_item_code")
 			se_child.cost_center = item_row.get("cost_center") or get_default_cost_center(
@@ -2129,9 +2889,17 @@ class StockEntry(StockController):
 				"expense_account",
 				"description",
 				"item_name",
+<<<<<<< HEAD
 				"serial_no",
 				"batch_no",
 				"allow_zero_valuation_rate",
+=======
+				"serial_and_batch_bundle",
+				"allow_zero_valuation_rate",
+				"use_serial_batch_fields",
+				"batch_no",
+				"serial_no",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			]:
 				if item_row.get(field):
 					se_child.set(field, item_row.get(field))
@@ -2244,6 +3012,7 @@ class StockEntry(StockController):
 				stock_bin = get_bin(item_code, reserve_warehouse)
 				stock_bin.update_reserved_qty_for_sub_contracting()
 
+<<<<<<< HEAD
 	def update_so_in_serial_number(self):
 		so_name, item_code = frappe.db.get_value(
 			"Work Order", self.work_order, ["sales_order", "production_item"]
@@ -2280,6 +3049,8 @@ class StockEntry(StockController):
 
 						frappe.throw(_("Item {0} {1}").format(item.item_code, msg))
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_transferred_qty(self):
 		if self.purpose == "Material Transfer" and self.outgoing_stock_entry:
 			stock_entries = {}
@@ -2374,6 +3145,7 @@ class StockEntry(StockController):
 				frappe.db.set_value("Material Request", material_request, "transfer_status", status)
 
 	def set_serial_no_batch_for_finished_good(self):
+<<<<<<< HEAD
 		serial_nos = []
 		if self.pro_doc.serial_no:
 			serial_nos = self.get_serial_nos_for_fg() or []
@@ -2408,6 +3180,56 @@ class StockEntry(StockController):
 				used_serial_nos.extend(get_serial_nos(row.serial_no))
 
 		return sorted(list(set(get_serial_nos(self.pro_doc.serial_no)) - set(used_serial_nos)))
+=======
+		if not (
+			(self.pro_doc.has_serial_no or self.pro_doc.has_batch_no)
+			and frappe.db.get_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order")
+		):
+			return
+
+		for d in self.items:
+			if (
+				d.is_finished_item
+				and d.item_code == self.pro_doc.production_item
+				and not d.serial_and_batch_bundle
+			):
+				serial_nos = self.get_available_serial_nos()
+				if serial_nos:
+					row = frappe._dict({"serial_nos": serial_nos[0 : cint(d.qty)]})
+
+					id = create_serial_and_batch_bundle(
+						self,
+						row,
+						frappe._dict(
+							{
+								"item_code": d.item_code,
+								"warehouse": d.t_warehouse,
+							}
+						),
+					)
+
+					d.serial_and_batch_bundle = id
+					d.use_serial_batch_fields = 0
+
+	def get_available_serial_nos(self) -> list[str]:
+		serial_nos = []
+		data = frappe.get_all(
+			"Serial No",
+			filters={
+				"item_code": self.pro_doc.production_item,
+				"warehouse": ("is", "not set"),
+				"status": "Inactive",
+				"work_order": self.pro_doc.name,
+			},
+			fields=["name"],
+			order_by="creation asc",
+		)
+
+		for row in data:
+			serial_nos.append(row.name)
+
+		return serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_subcontracting_order_status(self):
 		if self.subcontracting_order and self.purpose in ["Send to Subcontractor", "Material Transfer"]:
@@ -2431,6 +3253,14 @@ class StockEntry(StockController):
 
 @frappe.whitelist()
 def move_sample_to_retention_warehouse(company, items):
+<<<<<<< HEAD
+=======
+	from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+		get_batch_from_bundle,
+	)
+	from erpnext.stock.serial_batch_bundle import SerialBatchCreation
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if isinstance(items, str):
 		items = json.loads(items)
 	retention_warehouse = frappe.db.get_single_value("Stock Settings", "sample_retention_warehouse")
@@ -2439,11 +3269,17 @@ def move_sample_to_retention_warehouse(company, items):
 	stock_entry.purpose = "Material Transfer"
 	stock_entry.set_stock_entry_type()
 	for item in items:
+<<<<<<< HEAD
 		if item.get("sample_quantity") and item.get("batch_no"):
+=======
+		if item.get("sample_quantity") and item.get("serial_and_batch_bundle"):
+			batch_no = get_batch_from_bundle(item.get("serial_and_batch_bundle"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			sample_quantity = validate_sample_quantity(
 				item.get("item_code"),
 				item.get("sample_quantity"),
 				item.get("transfer_qty") or item.get("qty"),
+<<<<<<< HEAD
 				item.get("batch_no"),
 			)
 			if sample_quantity:
@@ -2453,6 +3289,22 @@ def move_sample_to_retention_warehouse(company, items):
 					if serial_nos and len(serial_nos) > item.get("sample_quantity"):
 						serial_no_list = serial_nos[: -(len(serial_nos) - item.get("sample_quantity"))]
 						sample_serial_nos = "\n".join(serial_no_list)
+=======
+				batch_no,
+			)
+
+			if sample_quantity:
+				cls_obj = SerialBatchCreation(
+					{
+						"type_of_transaction": "Outward",
+						"serial_and_batch_bundle": item.get("serial_and_batch_bundle"),
+						"item_code": item.get("item_code"),
+						"warehouse": item.get("t_warehouse"),
+					}
+				)
+
+				cls_obj.duplicate_package()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				stock_entry.append(
 					"items",
@@ -2465,8 +3317,12 @@ def move_sample_to_retention_warehouse(company, items):
 						"uom": item.get("uom"),
 						"stock_uom": item.get("stock_uom"),
 						"conversion_factor": item.get("conversion_factor") or 1.0,
+<<<<<<< HEAD
 						"serial_no": sample_serial_nos,
 						"batch_no": item.get("batch_no"),
+=======
+						"serial_and_batch_bundle": cls_obj.serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					},
 				)
 	if stock_entry.get("items"):
@@ -2479,6 +3335,12 @@ def make_stock_in_entry(source_name, target_doc=None):
 		target.stock_entry_type = "Material Transfer"
 		target.set_missing_values()
 
+<<<<<<< HEAD
+=======
+		if not frappe.db.get_single_value("Stock Settings", "use_serial_batch_fields"):
+			target.make_serial_and_batch_bundle_for_transfer()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_item(source_doc, target_doc, source_parent):
 		target_doc.t_warehouse = ""
 
@@ -2511,7 +3373,11 @@ def make_stock_in_entry(source_name, target_doc=None):
 					"batch_no": "batch_no",
 				},
 				"postprocess": update_item,
+<<<<<<< HEAD
 				"condition": lambda doc: flt(doc.qty) - flt(doc.transferred_qty) > 0.01,
+=======
+				"condition": lambda doc: flt(doc.qty) - flt(doc.transferred_qty) > 0.00001,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		},
 		target_doc,
@@ -2790,9 +3656,23 @@ def get_available_materials(work_order) -> dict:
 			if row.batch_no:
 				item_data.batch_details[row.batch_no] += row.qty
 
+<<<<<<< HEAD
 			if row.serial_no:
 				item_data.serial_nos.extend(get_serial_nos(row.serial_no))
 				item_data.serial_nos.sort()
+=======
+			elif row.batch_nos:
+				for batch_no, qty in row.batch_nos.items():
+					item_data.batch_details[batch_no] += qty
+
+			if row.serial_no:
+				item_data.serial_nos.extend(get_serial_nos(row.serial_no))
+				item_data.serial_nos.sort()
+
+			elif row.serial_nos:
+				item_data.serial_nos.extend(get_serial_nos(row.serial_nos))
+				item_data.serial_nos.sort()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			# Consume raw material qty in case of 'Manufacture' or 'Material Consumption for Manufacture'
 
@@ -2800,18 +3680,45 @@ def get_available_materials(work_order) -> dict:
 			if row.batch_no:
 				item_data.batch_details[row.batch_no] -= row.qty
 
+<<<<<<< HEAD
 			if row.serial_no:
 				for serial_no in get_serial_nos(row.serial_no):
 					item_data.serial_nos.remove(serial_no)
+=======
+			elif row.batch_nos:
+				for batch_no, qty in row.batch_nos.items():
+					item_data.batch_details[batch_no] += qty
+
+			if row.serial_no:
+				for serial_no in get_serial_nos(row.serial_no):
+					if serial_no in item_data.serial_nos:
+						item_data.serial_nos.remove(serial_no)
+
+			elif row.serial_nos:
+				for serial_no in get_serial_nos(row.serial_nos):
+					if serial_no in item_data.serial_nos:
+						item_data.serial_nos.remove(serial_no)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return available_materials
 
 
 def get_stock_entry_data(work_order):
+<<<<<<< HEAD
 	stock_entry = frappe.qb.DocType("Stock Entry")
 	stock_entry_detail = frappe.qb.DocType("Stock Entry Detail")
 
 	return (
+=======
+	from erpnext.stock.doctype.serial_and_batch_bundle.serial_and_batch_bundle import (
+		get_voucher_wise_serial_batch_from_bundle,
+	)
+
+	stock_entry = frappe.qb.DocType("Stock Entry")
+	stock_entry_detail = frappe.qb.DocType("Stock Entry Detail")
+
+	data = (
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.qb.from_(stock_entry)
 		.from_(stock_entry_detail)
 		.select(
@@ -2825,9 +3732,17 @@ def get_stock_entry_data(work_order):
 			stock_entry_detail.stock_uom,
 			stock_entry_detail.expense_account,
 			stock_entry_detail.cost_center,
+<<<<<<< HEAD
 			stock_entry_detail.batch_no,
 			stock_entry_detail.serial_no,
 			stock_entry.purpose,
+=======
+			stock_entry_detail.serial_and_batch_bundle,
+			stock_entry_detail.batch_no,
+			stock_entry_detail.serial_no,
+			stock_entry.purpose,
+			stock_entry.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		.where(
 			(stock_entry.name == stock_entry_detail.parent)
@@ -2846,3 +3761,93 @@ def get_stock_entry_data(work_order):
 		)
 		.orderby(stock_entry.creation, stock_entry_detail.item_code, stock_entry_detail.idx)
 	).run(as_dict=1)
+<<<<<<< HEAD
+=======
+
+	if not data:
+		return []
+
+	voucher_nos = [row.get("name") for row in data if row.get("name")]
+	if voucher_nos:
+		bundle_data = get_voucher_wise_serial_batch_from_bundle(voucher_no=voucher_nos)
+		for row in data:
+			key = (row.item_code, row.warehouse, row.name)
+			if row.purpose != "Material Transfer for Manufacture":
+				key = (row.item_code, row.s_warehouse, row.name)
+
+			if bundle_data.get(key):
+				row.update(bundle_data.get(key))
+
+	return data
+
+
+def create_serial_and_batch_bundle(parent_doc, row, child, type_of_transaction=None):
+	item_details = frappe.get_cached_value(
+		"Item", child.item_code, ["has_serial_no", "has_batch_no"], as_dict=1
+	)
+
+	if not (item_details.has_serial_no or item_details.has_batch_no):
+		return
+
+	if not type_of_transaction:
+		type_of_transaction = "Inward"
+
+	doc = frappe.get_doc(
+		{
+			"doctype": "Serial and Batch Bundle",
+			"voucher_type": "Stock Entry",
+			"item_code": child.item_code,
+			"warehouse": child.warehouse,
+			"type_of_transaction": type_of_transaction,
+			"posting_date": parent_doc.posting_date,
+			"posting_time": parent_doc.posting_time,
+		}
+	)
+
+	if row.serial_nos and row.batches_to_be_consume:
+		doc.has_serial_no = 1
+		doc.has_batch_no = 1
+		batchwise_serial_nos = get_batchwise_serial_nos(child.item_code, row)
+		for batch_no, qty in row.batches_to_be_consume.items():
+			while qty > 0:
+				qty -= 1
+				doc.append(
+					"entries",
+					{
+						"batch_no": batch_no,
+						"serial_no": batchwise_serial_nos.get(batch_no).pop(0),
+						"warehouse": row.warehouse,
+						"qty": -1,
+					},
+				)
+
+	elif row.serial_nos:
+		doc.has_serial_no = 1
+		for serial_no in row.serial_nos:
+			doc.append("entries", {"serial_no": serial_no, "warehouse": row.warehouse, "qty": -1})
+
+	elif row.batches_to_be_consume:
+		doc.has_batch_no = 1
+		for batch_no, qty in row.batches_to_be_consume.items():
+			doc.append("entries", {"batch_no": batch_no, "warehouse": row.warehouse, "qty": qty * -1})
+
+	if not doc.entries:
+		return None
+
+	return doc.insert(ignore_permissions=True).name
+
+
+def get_batchwise_serial_nos(item_code, row):
+	batchwise_serial_nos = {}
+
+	for batch_no in row.batches_to_be_consume:
+		serial_nos = frappe.get_all(
+			"Serial No",
+			filters={"item_code": item_code, "batch_no": batch_no, "name": ("in", row.serial_nos)},
+		)
+
+		if serial_nos:
+			batchwise_serial_nos[batch_no] = sorted([serial_no.name for serial_no in serial_nos])
+
+	return batchwise_serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

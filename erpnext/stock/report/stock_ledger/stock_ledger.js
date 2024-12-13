@@ -59,6 +59,17 @@ frappe.query_reports["Stock Ledger"] = {
 			label: __("Batch No"),
 			fieldtype: "Link",
 			options: "Batch",
+<<<<<<< HEAD
+=======
+			on_change() {
+				const batch_no = frappe.query_report.get_filter_value("batch_no");
+				if (batch_no) {
+					frappe.query_report.set_filter_value("segregate_serial_batch_bundle", 1);
+				} else {
+					frappe.query_report.set_filter_value("segregate_serial_batch_bundle", 0);
+				}
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "brand",
@@ -91,6 +102,15 @@ frappe.query_reports["Stock Ledger"] = {
 			options: "Currency\nFloat",
 			default: "Currency",
 		},
+<<<<<<< HEAD
+=======
+		{
+			fieldname: "segregate_serial_batch_bundle",
+			label: __("Segregate Serial / Batch Bundle"),
+			fieldtype: "Check",
+			default: 0,
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 	formatter: function (value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);

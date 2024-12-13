@@ -15,9 +15,16 @@ Regional
 ERPNext Integrations
 Quality Management
 Communication
+<<<<<<< HEAD
 Loan Management
 Telephony
 Bulk Transaction
 E-commerce
 Subcontracting
 EDI
+=======
+Telephony
+Bulk Transaction
+Subcontracting
+EDI
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

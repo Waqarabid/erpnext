@@ -6,4 +6,28 @@ from frappe.model.document import Document
 
 
 class UnreconcilePaymentEntries(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Data | None
+		account_currency: DF.Link | None
+		allocated_amount: DF.Currency
+		parent: DF.Data
+		parentfield: DF.Data
+		parenttype: DF.Data
+		party: DF.Data | None
+		party_type: DF.Data | None
+		reference_doctype: DF.Link | None
+		reference_name: DF.DynamicLink | None
+		unlinked: DF.Check
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass

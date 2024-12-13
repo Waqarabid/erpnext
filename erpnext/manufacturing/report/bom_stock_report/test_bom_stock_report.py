@@ -4,7 +4,11 @@
 
 import frappe
 from frappe.exceptions import ValidationError
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import floor
 
 from erpnext.manufacturing.doctype.production_plan.test_production_plan import make_bom
@@ -15,7 +19,11 @@ from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 
 
+<<<<<<< HEAD
 class TestBomStockReport(FrappeTestCase):
+=======
+class TestBomStockReport(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.warehouse = "_Test Warehouse - _TC"
 		self.fg_item, self.rm_items = create_items()

@@ -1,5 +1,9 @@
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt, nowdate
 
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
@@ -13,7 +17,11 @@ from erpnext.selling.report.sales_person_target_variance_based_on_item_group.tes
 )
 
 
+<<<<<<< HEAD
 class TestSalesPartnerTargetVarianceBasedOnItemGroup(FrappeTestCase):
+=======
+class TestSalesPartnerTargetVarianceBasedOnItemGroup(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.fiscal_year = get_fiscal_year(nowdate())[0]
 

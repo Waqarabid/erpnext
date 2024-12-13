@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "transaction_date",
+<<<<<<< HEAD
   "posting_date",
   "fiscal_year",
   "year_start_date",
@@ -15,10 +16,25 @@
   "closing_account_head",
   "remarks",
   "gle_processing_status",
+=======
+  "company",
+  "fiscal_year",
+  "period_start_date",
+  "period_end_date",
+  "amended_from",
+  "column_break1",
+  "closing_account_head",
+  "gle_processing_status",
+  "remarks",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "error_message"
  ],
  "fields": [
   {
+<<<<<<< HEAD
+=======
+   "default": "Today",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "transaction_date",
    "fieldtype": "Date",
    "label": "Transaction Date",
@@ -26,6 +42,7 @@
    "oldfieldtype": "Date"
   },
   {
+<<<<<<< HEAD
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "label": "Posting Date",
@@ -34,11 +51,17 @@
    "reqd": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "fiscal_year",
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
+<<<<<<< HEAD
    "label": "Closing Fiscal Year",
+=======
+   "label": "Fiscal Year",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "oldfieldname": "fiscal_year",
    "oldfieldtype": "Select",
    "options": "Fiscal Year",
@@ -103,16 +126,35 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "year_start_date",
    "fieldtype": "Date",
    "label": "Year Start Date"
+=======
+   "fieldname": "period_end_date",
+   "fieldtype": "Date",
+   "label": "Period End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "period_start_date",
+   "fieldtype": "Date",
+   "label": "Period Start Date",
+   "oldfieldname": "posting_date",
+   "oldfieldtype": "Date",
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-09-11 20:19:11.810533",
+=======
+ "modified": "2024-08-30 17:22:45.291628",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Period Closing Voucher",
@@ -148,8 +190,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "search_fields": "posting_date, fiscal_year",
  "sort_field": "modified",
+=======
+ "search_fields": "fiscal_year, period_start_date, period_end_date",
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "closing_account_head"

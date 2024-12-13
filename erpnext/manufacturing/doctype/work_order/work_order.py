@@ -17,6 +17,10 @@ from frappe.utils import (
 	get_datetime,
 	get_link_to_form,
 	getdate,
+<<<<<<< HEAD
+=======
+	now,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	nowdate,
 	time_diff_in_hours,
 )
@@ -32,12 +36,16 @@ from erpnext.manufacturing.doctype.manufacturing_settings.manufacturing_settings
 )
 from erpnext.stock.doctype.batch.batch import make_batch
 from erpnext.stock.doctype.item.item import get_item_defaults, validate_end_of_life
+<<<<<<< HEAD
 from erpnext.stock.doctype.serial_no.serial_no import (
 	auto_make_serial_nos,
 	clean_serial_no_string,
 	get_auto_serial_nos,
 	get_serial_nos,
 )
+=======
+from erpnext.stock.doctype.serial_no.serial_no import get_available_serial_nos, get_serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.stock_balance import get_planned_qty, update_bin_qty
 from erpnext.stock.utils import get_bin, get_latest_stock_qty, validate_warehouse_company
 from erpnext.utilities.transaction_base import validate_uom_is_integer
@@ -68,11 +76,109 @@ class SerialNoQtyError(frappe.ValidationError):
 
 
 class WorkOrder(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.manufacturing.doctype.work_order_item.work_order_item import WorkOrderItem
+		from erpnext.manufacturing.doctype.work_order_operation.work_order_operation import (
+			WorkOrderOperation,
+		)
+
+		actual_end_date: DF.Datetime | None
+		actual_operating_cost: DF.Currency
+		actual_start_date: DF.Datetime | None
+		additional_operating_cost: DF.Currency
+		allow_alternative_item: DF.Check
+		amended_from: DF.Link | None
+		batch_size: DF.Float
+		bom_no: DF.Link
+		company: DF.Link
+		corrective_operation_cost: DF.Currency
+		description: DF.SmallText | None
+		expected_delivery_date: DF.Date | None
+		fg_warehouse: DF.Link
+		from_wip_warehouse: DF.Check
+		has_batch_no: DF.Check
+		has_serial_no: DF.Check
+		image: DF.AttachImage | None
+		item_name: DF.Data | None
+		lead_time: DF.Float
+		material_request: DF.Link | None
+		material_request_item: DF.Data | None
+		material_transferred_for_manufacturing: DF.Float
+		naming_series: DF.Literal["MFG-WO-.YYYY.-"]
+		operations: DF.Table[WorkOrderOperation]
+		planned_end_date: DF.Datetime | None
+		planned_operating_cost: DF.Currency
+		planned_start_date: DF.Datetime
+		process_loss_qty: DF.Float
+		produced_qty: DF.Float
+		product_bundle_item: DF.Link | None
+		production_item: DF.Link
+		production_plan: DF.Link | None
+		production_plan_item: DF.Data | None
+		production_plan_sub_assembly_item: DF.Data | None
+		project: DF.Link | None
+		qty: DF.Float
+		required_items: DF.Table[WorkOrderItem]
+		sales_order: DF.Link | None
+		sales_order_item: DF.Data | None
+		scrap_warehouse: DF.Link | None
+		skip_transfer: DF.Check
+		source_warehouse: DF.Link | None
+		status: DF.Literal[
+			"",
+			"Draft",
+			"Submitted",
+			"Not Started",
+			"In Process",
+			"Completed",
+			"Stopped",
+			"Closed",
+			"Cancelled",
+		]
+		stock_uom: DF.Link | None
+		total_operating_cost: DF.Currency
+		transfer_material_against: DF.Literal["", "Work Order", "Job Card"]
+		update_consumed_material_cost_in_project: DF.Check
+		use_multi_level_bom: DF.Check
+		wip_warehouse: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		ms = frappe.get_doc("Manufacturing Settings")
 		self.set_onload("material_consumption", ms.material_consumption)
 		self.set_onload("backflush_raw_materials_based_on", ms.backflush_raw_materials_based_on)
 		self.set_onload("overproduction_percentage", ms.overproduction_percentage_for_work_order)
+<<<<<<< HEAD
+=======
+		self.set_onload("show_create_job_card_button", self.show_create_job_card_button())
+
+	def show_create_job_card_button(self):
+		operation_details = frappe._dict(
+			frappe.get_all(
+				"Job Card",
+				fields=["operation", "for_quantity"],
+				filters={"docstatus": ("<", 2), "work_order": self.name},
+				as_list=1,
+			)
+		)
+
+		for d in self.operations:
+			job_card_qty = self.qty - flt(operation_details.get(d.operation))
+			if job_card_qty > 0:
+				return True
+
+		return False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate(self):
 		self.validate_production_item()
@@ -88,6 +194,10 @@ class WorkOrder(Document):
 		self.validate_operation_time()
 		self.status = self.get_status()
 		self.validate_workstation_type()
+<<<<<<< HEAD
+=======
+		self.reset_use_multi_level_bom()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.source_warehouse:
 			self.set_warehouses()
@@ -101,11 +211,33 @@ class WorkOrder(Document):
 			if not row.source_warehouse:
 				row.source_warehouse = self.source_warehouse
 
+<<<<<<< HEAD
 	def validate_workstation_type(self):
 		for row in self.operations:
 			if not row.workstation and not row.workstation_type:
 				msg = f"Row {row.idx}: Workstation or Workstation Type is mandatory for an operation {row.operation}"
 				frappe.throw(_(msg))
+=======
+	def reset_use_multi_level_bom(self):
+		if self.is_new():
+			return
+
+		before_save_obj = self.get_doc_before_save()
+		if before_save_obj.use_multi_level_bom != self.use_multi_level_bom:
+			self.get_items_and_operations_from_bom()
+
+	def validate_workstation_type(self):
+		if not self.docstatus.is_submitted():
+			return
+
+		for row in self.operations:
+			if not row.workstation and not row.workstation_type:
+				frappe.throw(
+					_("Row {0}: Workstation or Workstation Type is mandatory for an operation {1}").format(
+						row.idx, row.operation
+					)
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_sales_order(self):
 		if self.sales_order:
@@ -360,15 +492,31 @@ class WorkOrder(Document):
 		self.update_status()
 		production_plan.run_method("update_produced_pending_qty", produced_qty, self.production_plan_item)
 
+<<<<<<< HEAD
+=======
+	def validate_warehouse(self):
+		if self.track_semi_finished_goods:
+			return
+
+		if not self.wip_warehouse and not self.skip_transfer:
+			frappe.throw(_("Work-in-Progress Warehouse is required before Submit"))
+		if not self.fg_warehouse:
+			frappe.throw(_("Target Warehouse is required before Submit"))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def before_submit(self):
 		self.create_serial_no_batch_no()
 
 	def on_submit(self):
+<<<<<<< HEAD
 		if not self.wip_warehouse and not self.skip_transfer:
 			frappe.throw(_("Work-in-Progress Warehouse is required before Submit"))
 		if not self.fg_warehouse:
 			frappe.throw(_("For Warehouse is required before Submit"))
 
+=======
+		self.validate_warehouse()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.production_plan and frappe.db.exists(
 			"Production Plan Item Reference", {"parent": self.production_plan}
 		):
@@ -458,12 +606,16 @@ class WorkOrder(Document):
 	def delete_auto_created_batch_and_serial_no(self):
 		for row in frappe.get_all("Serial No", filters={"work_order": self.name}):
 			frappe.delete_doc("Serial No", row.name)
+<<<<<<< HEAD
 			self.db_set("serial_no", "")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for row in frappe.get_all("Batch", filters={"reference_name": self.name}):
 			frappe.delete_doc("Batch", row.name)
 
 	def make_serial_nos(self, args):
+<<<<<<< HEAD
 		self.serial_no = clean_serial_no_string(self.serial_no)
 		serial_no_series = frappe.get_cached_value("Item", self.production_item, "serial_no_series")
 		if serial_no_series:
@@ -482,6 +634,72 @@ class WorkOrder(Document):
 				SerialNoQtyError,
 			)
 
+=======
+		item_details = frappe.get_cached_value(
+			"Item", self.production_item, ["serial_no_series", "item_name", "description"], as_dict=1
+		)
+
+		batches = []
+		if self.has_batch_no:
+			batches = frappe.get_all(
+				"Batch", filters={"reference_name": self.name}, order_by="creation", pluck="name"
+			)
+
+		serial_nos = []
+		if item_details.serial_no_series:
+			serial_nos = get_available_serial_nos(item_details.serial_no_series, self.qty)
+
+		if not serial_nos:
+			return
+
+		fields = [
+			"name",
+			"serial_no",
+			"creation",
+			"modified",
+			"owner",
+			"modified_by",
+			"company",
+			"item_code",
+			"item_name",
+			"description",
+			"status",
+			"work_order",
+			"batch_no",
+		]
+
+		serial_nos_details = []
+		index = 0
+		for serial_no in serial_nos:
+			index += 1
+			batch_no = None
+			if batches and self.batch_size:
+				batch_no = batches[0]
+
+				if index % self.batch_size == 0:
+					batches.remove(batch_no)
+
+			serial_nos_details.append(
+				(
+					serial_no,
+					serial_no,
+					now(),
+					now(),
+					frappe.session.user,
+					frappe.session.user,
+					self.company,
+					self.production_item,
+					item_details.item_name,
+					item_details.description,
+					"Inactive",
+					self.name,
+					batch_no,
+				)
+			)
+
+		frappe.db.bulk_insert("Serial No", fields=fields, values=set(serial_nos_details))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def create_job_card(self):
 		manufacturing_settings_doc = frappe.get_doc("Manufacturing Settings")
 
@@ -507,8 +725,13 @@ class WorkOrder(Document):
 		)
 
 		if enable_capacity_planning and job_card_doc:
+<<<<<<< HEAD
 			row.planned_start_time = job_card_doc.time_logs[-1].from_time
 			row.planned_end_time = job_card_doc.time_logs[-1].to_time
+=======
+			row.planned_start_time = job_card_doc.scheduled_time_logs[-1].from_time
+			row.planned_end_time = job_card_doc.scheduled_time_logs[-1].to_time
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if date_diff(row.planned_end_time, self.planned_start_date) > plan_days:
 				frappe.message_log.pop()
@@ -559,6 +782,12 @@ class WorkOrder(Document):
 			)
 
 	def update_planned_qty(self):
+<<<<<<< HEAD
+=======
+		if self.track_semi_finished_goods:
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		from erpnext.manufacturing.doctype.production_plan.production_plan import (
 			get_reserved_qty_for_sub_assembly,
 		)
@@ -686,7 +915,11 @@ class WorkOrder(Document):
 				)
 
 	def update_completed_qty_in_material_request(self):
+<<<<<<< HEAD
 		if self.material_request:
+=======
+		if self.material_request and self.material_request_item:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.get_doc("Material Request", self.material_request).update_completed_qty(
 				[self.material_request_item]
 			)
@@ -703,13 +936,30 @@ class WorkOrder(Document):
 					"description",
 					"workstation",
 					"idx",
+<<<<<<< HEAD
+=======
+					"finished_good",
+					"is_subcontracted",
+					"wip_warehouse",
+					"source_warehouse",
+					"fg_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"workstation_type",
 					"base_hour_rate as hour_rate",
 					"time_in_mins",
 					"parent as bom",
+<<<<<<< HEAD
 					"batch_size",
 					"sequence_id",
 					"fixed_time",
+=======
+					"bom_no",
+					"batch_size",
+					"sequence_id",
+					"fixed_time",
+					"skip_material_transfer",
+					"backflush_from_wip_warehouse",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				],
 				order_by="idx",
 			)
@@ -719,6 +969,12 @@ class WorkOrder(Document):
 					d.time_in_mins = flt(d.time_in_mins) * flt(qty)
 				d.status = "Pending"
 
+<<<<<<< HEAD
+=======
+				if self.track_semi_finished_goods and not d.sequence_id:
+					d.sequence_id = d.idx
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return data
 
 		self.set("operations", [])
@@ -837,9 +1093,30 @@ class WorkOrder(Document):
 			validate_end_of_life(self.production_item)
 
 	def validate_qty(self):
+<<<<<<< HEAD
 		if not self.qty > 0:
 			frappe.throw(_("Quantity to Manufacture must be greater than 0."))
 
+=======
+		if self.qty <= 0:
+			frappe.throw(_("Quantity to Manufacture must be greater than 0."))
+
+		if (
+			self.stock_uom
+			and frappe.get_cached_value("UOM", self.stock_uom, "must_be_whole_number")
+			and abs(cint(self.qty) - flt(self.qty, self.precision("qty"))) > 0.0000001
+		):
+			frappe.throw(
+				_(
+					"Qty To Manufacture ({0}) cannot be a fraction for the UOM {2}. To allow this, disable '{1}' in the UOM {2}."
+				).format(
+					flt(self.qty, self.precision("qty")),
+					frappe.bold(_("Must be Whole Number")),
+					frappe.bold(self.stock_uom),
+				),
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.production_plan and self.production_plan_item and not self.production_plan_sub_assembly_item:
 			qty_dict = frappe.db.get_value(
 				"Production Plan Item", self.production_plan_item, ["planned_qty", "ordered_qty"], as_dict=1
@@ -860,7 +1137,11 @@ class WorkOrder(Document):
 
 			max_qty = qty_dict.get("planned_qty", 0) + allowance_qty - qty_dict.get("ordered_qty", 0)
 
+<<<<<<< HEAD
 			if not max_qty > 0:
+=======
+			if max_qty <= 0:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(
 					_("Cannot produce more item for {0}").format(self.production_item), OverProductionError
 				)
@@ -871,7 +1152,11 @@ class WorkOrder(Document):
 				)
 
 	def validate_transfer_against(self):
+<<<<<<< HEAD
 		if not self.docstatus == 1:
+=======
+		if self.docstatus != 1:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			# let user configure operations until they're ready to submit
 			return
 		if not self.operations:
@@ -884,7 +1169,11 @@ class WorkOrder(Document):
 
 	def validate_operation_time(self):
 		for d in self.operations:
+<<<<<<< HEAD
 			if not d.time_in_mins > 0:
+=======
+			if d.time_in_mins <= 0:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(_("Operation Time must be greater than 0 for Operation {0}").format(d.operation))
 
 	def update_required_items(self):
@@ -961,6 +1250,10 @@ class WorkOrder(Document):
 							"required_qty": item.qty,
 							"source_warehouse": item.source_warehouse or item.default_warehouse,
 							"include_item_in_manufacturing": item.include_item_in_manufacturing,
+<<<<<<< HEAD
+=======
+							"operation_row_id": item.operation_row_id,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						},
 					)
 
@@ -1082,6 +1375,7 @@ class WorkOrder(Document):
 		bom.set_bom_material_details()
 		return bom
 
+<<<<<<< HEAD
 	def update_batch_produced_qty(self, stock_entry_doc):
 		if not cint(
 			frappe.db.get_single_value("Manufacturing Settings", "make_serial_no_batch_from_work_order")
@@ -1100,6 +1394,8 @@ class WorkOrder(Document):
 
 				frappe.db.set_value("Batch", row.batch_no, "produced_qty", flt(qty))
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
@@ -1179,6 +1475,10 @@ def make_work_order(bom_no, item, qty=0, project=None, variant_items=None):
 	item_details = get_item_details(item, project)
 
 	wo_doc = frappe.new_doc("Work Order")
+<<<<<<< HEAD
+=======
+	wo_doc.track_semi_finished_goods = frappe.db.get_value("BOM", bom_no, "track_semi_finished_goods")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	wo_doc.production_item = item
 	wo_doc.update(item_details)
 	wo_doc.bom_no = bom_no
@@ -1254,7 +1554,11 @@ def set_work_order_ops(name):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def make_stock_entry(work_order_id, purpose, qty=None):
+=======
+def make_stock_entry(work_order_id, purpose, qty=None, target_warehouse=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	work_order = frappe.get_doc("Work Order", work_order_id)
 	if not frappe.db.get_value("Warehouse", work_order.wip_warehouse, "is_group"):
 		wip_warehouse = work_order.wip_warehouse
@@ -1284,9 +1588,22 @@ def make_stock_entry(work_order_id, purpose, qty=None):
 		stock_entry.to_warehouse = work_order.fg_warehouse
 		stock_entry.project = work_order.project
 
+<<<<<<< HEAD
 	stock_entry.set_stock_entry_type()
 	stock_entry.get_items()
 	stock_entry.set_serial_no_batch_for_finished_good()
+=======
+	if purpose == "Disassemble":
+		stock_entry.from_warehouse = work_order.fg_warehouse
+		stock_entry.to_warehouse = target_warehouse or work_order.source_warehouse
+
+	stock_entry.set_stock_entry_type()
+	stock_entry.get_items()
+
+	if purpose != "Disassemble":
+		stock_entry.set_serial_no_batch_for_finished_good()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return stock_entry.as_dict()
 
 
@@ -1345,6 +1662,11 @@ def make_job_card(work_order, operations):
 	work_order = frappe.get_doc("Work Order", work_order)
 	for row in operations:
 		row = frappe._dict(row)
+<<<<<<< HEAD
+=======
+		row.update(get_operation_details(row.name, work_order))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		validate_operation_data(row)
 		qty = row.get("qty")
 		while qty > 0:
@@ -1353,6 +1675,24 @@ def make_job_card(work_order, operations):
 				create_job_card(work_order, row, auto_create=True)
 
 
+<<<<<<< HEAD
+=======
+def get_operation_details(name, work_order):
+	for row in work_order.operations:
+		if row.name == name:
+			return {
+				"workstation": row.workstation,
+				"workstation_type": row.workstation_type,
+				"source_warehouse": row.source_warehouse,
+				"fg_warehouse": row.fg_warehouse,
+				"wip_warehouse": row.wip_warehouse,
+				"finished_good": row.finished_good,
+				"bom_no": row.get("bom_no"),
+				"is_subcontracted": row.get("is_subcontracted"),
+			}
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 @frappe.whitelist()
 def close_work_order(work_order, status):
 	if not frappe.has_permission("Work Order", "write"):
@@ -1396,10 +1736,17 @@ def split_qty_based_on_batch_size(wo_doc, row, qty):
 
 
 def get_serial_nos_for_job_card(row, wo_doc):
+<<<<<<< HEAD
 	if not wo_doc.serial_no:
 		return
 
 	serial_nos = get_serial_nos(wo_doc.serial_no)
+=======
+	if not wo_doc.has_serial_no:
+		return
+
+	serial_nos = get_serial_nos_for_work_order(wo_doc.name, wo_doc.production_item)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	used_serial_nos = []
 	for d in frappe.get_all(
 		"Job Card",
@@ -1412,17 +1759,43 @@ def get_serial_nos_for_job_card(row, wo_doc):
 	row.serial_no = "\n".join(serial_nos[0 : cint(row.job_card_qty)])
 
 
+<<<<<<< HEAD
 def validate_operation_data(row):
 	if row.get("qty") <= 0:
+=======
+def get_serial_nos_for_work_order(work_order, production_item):
+	serial_nos = []
+	for d in frappe.get_all(
+		"Serial No",
+		fields=["name"],
+		filters={
+			"work_order": work_order,
+			"item_code": production_item,
+		},
+	):
+		serial_nos.append(d.name)
+
+	return serial_nos
+
+
+def validate_operation_data(row):
+	if flt(row.get("qty")) <= 0:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.throw(
 			_("Quantity to Manufacture can not be zero for the operation {0}").format(
 				frappe.bold(row.get("operation"))
 			)
 		)
 
+<<<<<<< HEAD
 	if row.get("qty") > row.get("pending_qty"):
 		frappe.throw(
 			_("For operation {0}: Quantity ({1}) can not be greter than pending quantity({2})").format(
+=======
+	if flt(row.get("qty")) > flt(row.get("pending_qty")):
+		frappe.throw(
+			_("For operation {0}: Quantity ({1}) can not be greater than pending quantity({2})").format(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.bold(row.get("operation")),
 				frappe.bold(row.get("qty")),
 				frappe.bold(row.get("pending_qty")),
@@ -1438,6 +1811,10 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 			"workstation_type": row.get("workstation_type"),
 			"operation": row.get("operation"),
 			"workstation": row.get("workstation"),
+<<<<<<< HEAD
+=======
+			"operation_row_id": cint(row.idx),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"posting_date": nowdate(),
 			"for_quantity": row.job_card_qty or work_order.get("qty", 0),
 			"operation_id": row.get("name"),
@@ -1445,6 +1822,7 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 			"project": work_order.project,
 			"company": work_order.company,
 			"sequence_id": row.get("sequence_id"),
+<<<<<<< HEAD
 			"wip_warehouse": work_order.wip_warehouse,
 			"hour_rate": row.get("hour_rate"),
 			"serial_no": row.get("serial_no"),
@@ -1452,6 +1830,25 @@ def create_job_card(work_order, row, enable_capacity_planning=False, auto_create
 	)
 
 	if work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer:
+=======
+			"hour_rate": row.get("hour_rate"),
+			"serial_no": row.get("serial_no"),
+			"time_required": row.get("time_in_mins"),
+			"source_warehouse": row.get("source_warehouse"),
+			"target_warehouse": row.get("fg_warehouse"),
+			"wip_warehouse": work_order.wip_warehouse or row.get("wip_warehouse"),
+			"skip_material_transfer": row.get("skip_material_transfer"),
+			"backflush_from_wip_warehouse": row.get("backflush_from_wip_warehouse"),
+			"finished_good": row.get("finished_good"),
+			"semi_fg_bom": row.get("bom_no"),
+			"is_subcontracted": row.get("is_subcontracted"),
+		}
+	)
+
+	if work_order.track_semi_finished_goods or (
+		work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer
+	):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		doc.get_required_items()
 
 	if auto_create:

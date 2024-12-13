@@ -21,7 +21,11 @@ class PartyLedgerSummaryReport:
 			frappe.throw(_("From Date must be before To Date"))
 
 		self.filters.party_type = args.get("party_type")
+<<<<<<< HEAD
 		self.party_naming_by = frappe.db.get_value(args.get("naming_by")[0], None, args.get("naming_by")[1])
+=======
+		self.party_naming_by = frappe.db.get_single_value(args.get("naming_by")[0], args.get("naming_by")[1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.get_gl_entries()
 		self.get_additional_columns()
@@ -285,8 +289,13 @@ class PartyLedgerSummaryReport:
 
 		if self.filters.party_type == "Customer":
 			if self.filters.get("customer_group"):
+<<<<<<< HEAD
 				lft, rgt = frappe.db.get_value(
 					"Customer Group", self.filters.get("customer_group"), ["lft", "rgt"]
+=======
+				lft, rgt = frappe.get_cached_value(
+					"Customer Group", self.filters["customer_group"], ["lft", "rgt"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				)
 
 				conditions.append(

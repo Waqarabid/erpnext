@@ -30,7 +30,11 @@ erpnext.PointOfSale.Controller = class {
 				fieldname: "mode_of_payment",
 				fieldtype: "Link",
 				in_list_view: 1,
+<<<<<<< HEAD
 				label: __("Mode of Payment"),
+=======
+				label: "Mode of Payment",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				options: "Mode of Payment",
 				reqd: 1,
 			},
@@ -38,7 +42,11 @@ erpnext.PointOfSale.Controller = class {
 				fieldname: "opening_amount",
 				fieldtype: "Currency",
 				in_list_view: 1,
+<<<<<<< HEAD
 				label: __("Opening Amount"),
+=======
+				label: "Opening Amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				options: "company:company_currency",
 				change: function () {
 					dialog.fields_dict.balance_details.df.data.some((d) => {
@@ -87,7 +95,11 @@ erpnext.PointOfSale.Controller = class {
 				{
 					fieldname: "balance_details",
 					fieldtype: "Table",
+<<<<<<< HEAD
 					label: __("Opening Balance Details"),
+=======
+					label: "Opening Balance Details",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					cannot_add_rows: false,
 					in_place_edit: true,
 					reqd: 1,
@@ -249,6 +261,10 @@ erpnext.PointOfSale.Controller = class {
 		voucher.pos_opening_entry = this.pos_opening;
 		voucher.period_end_date = frappe.datetime.now_datetime();
 		voucher.posting_date = frappe.datetime.now_date();
+<<<<<<< HEAD
+=======
+		voucher.posting_time = frappe.datetime.now_time();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.set_route("Form", "POS Closing Entry", voucher.name);
 	}
 
@@ -388,7 +404,11 @@ erpnext.PointOfSale.Controller = class {
 						this.order_summary.load_summary_of(this.frm.doc, true);
 						frappe.show_alert({
 							indicator: "green",
+<<<<<<< HEAD
 							message: __("POS invoice {0} created succesfully", [r.doc.name]),
+=======
+							message: __("POS invoice {0} created successfully", [r.doc.name]),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						});
 					});
 				},
@@ -546,6 +566,11 @@ erpnext.PointOfSale.Controller = class {
 
 	async on_cart_update(args) {
 		frappe.dom.freeze();
+<<<<<<< HEAD
+=======
+		if (this.frm.doc.set_warehouse != this.settings.warehouse)
+			this.frm.doc.set_warehouse = this.settings.warehouse;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		let item_row = undefined;
 		try {
 			let { field, value, item } = args;
@@ -553,7 +578,11 @@ erpnext.PointOfSale.Controller = class {
 			const item_row_exists = !$.isEmptyObject(item_row);
 
 			const from_selector = field === "qty" && value === "+1";
+<<<<<<< HEAD
 			if (from_selector) value = flt(item_row.stock_qty) + flt(value);
+=======
+			if (from_selector) value = flt(item_row.qty) + flt(value);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if (item_row_exists) {
 				if (field === "qty") value = flt(value);
@@ -571,17 +600,37 @@ erpnext.PointOfSale.Controller = class {
 			} else {
 				if (!this.frm.doc.customer) return this.raise_customer_selection_alert();
 
+<<<<<<< HEAD
 				const { item_code, batch_no, serial_no, rate } = item;
 
 				if (!item_code) return;
 
 				const new_item = { item_code, batch_no, rate, [field]: value };
+=======
+				const { item_code, batch_no, serial_no, rate, uom } = item;
+
+				if (!item_code) return;
+
+				if (rate == undefined || rate == 0) {
+					frappe.show_alert({
+						message: __("Price is not set for the item."),
+						indicator: "orange",
+					});
+					frappe.utils.play_sound("error");
+					return;
+				}
+				const new_item = { item_code, batch_no, rate, uom, [field]: value };
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				if (serial_no) {
 					await this.check_serial_no_availablilty(item_code, this.frm.doc.set_warehouse, serial_no);
 					new_item["serial_no"] = serial_no;
 				}
 
+<<<<<<< HEAD
+=======
+				new_item["use_serial_batch_fields"] = 1;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (field === "serial_no") new_item["qty"] = value.split(`\n`).length || 0;
 
 				item_row = this.frm.add_child("items", new_item);
@@ -607,7 +656,11 @@ erpnext.PointOfSale.Controller = class {
 			console.log(error);
 		} finally {
 			frappe.dom.unfreeze();
+<<<<<<< HEAD
 			return item_row;
+=======
+			return item_row; // eslint-disable-line no-unsafe-finally
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	}
 
@@ -628,13 +681,21 @@ erpnext.PointOfSale.Controller = class {
 			// if item is clicked twice from item selector
 			// then "item_code, batch_no, uom, rate" will help in getting the exact item
 			// to increase the qty by one
+<<<<<<< HEAD
 			const has_batch_no = batch_no;
+=======
+			const has_batch_no = batch_no !== "null" && batch_no !== null;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			item_row = this.frm.doc.items.find(
 				(i) =>
 					i.item_code === item_code &&
 					(!has_batch_no || (has_batch_no && i.batch_no === batch_no)) &&
 					i.uom === uom &&
+<<<<<<< HEAD
 					i.rate == rate
+=======
+					i.rate === flt(rate)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			);
 		}
 
@@ -683,6 +744,10 @@ erpnext.PointOfSale.Controller = class {
 		const is_stock_item = resp[1];
 
 		frappe.dom.unfreeze();
+<<<<<<< HEAD
+=======
+		const bold_uom = item_row.stock_uom.bold();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const bold_item_code = item_row.item_code.bold();
 		const bold_warehouse = warehouse.bold();
 		const bold_available_qty = available_qty.toString().bold();
@@ -702,8 +767,13 @@ erpnext.PointOfSale.Controller = class {
 		} else if (is_stock_item && available_qty < qty_needed) {
 			frappe.throw({
 				message: __(
+<<<<<<< HEAD
 					"Stock quantity not enough for Item Code: {0} under warehouse {1}. Available quantity {2}.",
 					[bold_item_code, bold_warehouse, bold_available_qty]
+=======
+					"Stock quantity not enough for Item Code: {0} under warehouse {1}. Available quantity {2} {3}.",
+					[bold_item_code, bold_warehouse, bold_available_qty, bold_uom]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				),
 				indicator: "orange",
 			});

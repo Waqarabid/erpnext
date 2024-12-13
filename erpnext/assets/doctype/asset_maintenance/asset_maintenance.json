@@ -103,7 +103,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-05-28 20:28:32.993823",
+=======
+ "modified": "2024-03-27 13:06:34.491299",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Maintenance",
@@ -134,7 +138,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

@@ -72,6 +72,23 @@ frappe.query_reports["Item-wise Sales Register"] = {
 			fieldtype: "Select",
 			options: ["", "Customer Group", "Customer", "Item Group", "Item", "Territory", "Invoice"],
 		},
+<<<<<<< HEAD
+=======
+		{
+			fieldname: "income_account",
+			label: __("Income Account"),
+			fieldtype: "Link",
+			options: "Account",
+			get_query: () => {
+				let company = frappe.query_report.get_filter_value("company");
+				return {
+					filters: {
+						company: company,
+					},
+				};
+			},
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 	formatter: function (value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);

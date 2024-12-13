@@ -100,6 +100,10 @@ erpnext.integrations.plaidLink = class plaidLink {
 
 	onScriptLoaded(me) {
 		me.linkHandler = Plaid.create({
+<<<<<<< HEAD
+=======
+			// eslint-disable-line no-undef
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			clientName: me.client_name,
 			product: me.product,
 			env: me.plaid_env,

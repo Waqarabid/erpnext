@@ -46,10 +46,17 @@ erpnext.PointOfSale.PastOrderSummary = class {
 
 	init_email_print_dialog() {
 		const email_dialog = new frappe.ui.Dialog({
+<<<<<<< HEAD
 			title: __("Email Receipt"),
 			fields: [
 				{ fieldname: "email_id", fieldtype: "Data", options: "Email", label: "Email ID" },
 				// {fieldname:'remarks', fieldtype:'Text', label:'Remarks (if any)'}
+=======
+			title: "Email Receipt",
+			fields: [
+				{ fieldname: "email_id", fieldtype: "Data", options: "Email", label: "Email ID", reqd: 1 },
+				{ fieldname: "content", fieldtype: "Small Text", label: "Message (if any)" },
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			],
 			primary_action: () => {
 				this.send_email();
@@ -59,7 +66,11 @@ erpnext.PointOfSale.PastOrderSummary = class {
 		this.email_dialog = email_dialog;
 
 		const print_dialog = new frappe.ui.Dialog({
+<<<<<<< HEAD
 			title: __("Print Receipt"),
+=======
+			title: "Print Receipt",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fields: [{ fieldname: "print", fieldtype: "Data", label: "Print Preview" }],
 			primary_action: () => {
 				this.print_receipt();
@@ -92,7 +103,11 @@ erpnext.PointOfSale.PastOrderSummary = class {
 	get_item_html(doc, item_data) {
 		return `<div class="item-row-wrapper">
 					<div class="item-name">${item_data.item_name}</div>
+<<<<<<< HEAD
 					<div class="item-qty">${item_data.qty || 0}</div>
+=======
+					<div class="item-qty">${item_data.qty || 0} ${item_data.uom}</div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					<div class="item-rate-disc">${get_rate_discount_html()}</div>
 				</div>`;
 
@@ -112,7 +127,11 @@ erpnext.PointOfSale.PastOrderSummary = class {
 	get_discount_html(doc) {
 		if (doc.discount_amount) {
 			return `<div class="summary-row-wrapper">
+<<<<<<< HEAD
 						<div>${__("Discount")} (${doc.additional_discount_percentage} %)</div>
+=======
+						<div>Discount (${doc.additional_discount_percentage} %)</div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						<div>${format_currency(doc.discount_amount, doc.currency)}</div>
 					</div>`;
 		} else {
@@ -132,9 +151,18 @@ erpnext.PointOfSale.PastOrderSummary = class {
 
 		let taxes_html = doc.taxes
 			.map((t) => {
+<<<<<<< HEAD
 				const description = /[0-9]+/.test(t.description)
 					? t.description
 					: `${t.description} @ ${t.rate}%`;
+=======
+				// if tax rate is 0, don't print it.
+				const description = /[0-9]+/.test(t.description)
+					? t.description
+					: t.rate != 0
+					? `${t.description} @ ${t.rate}%`
+					: t.description;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				return `
 				<div class="tax-row">
 					<div class="tax-label">${description}</div>
@@ -249,6 +277,10 @@ erpnext.PointOfSale.PastOrderSummary = class {
 	send_email() {
 		const frm = this.events.get_frm();
 		const recipients = this.email_dialog.get_values().email_id;
+<<<<<<< HEAD
+=======
+		const content = this.email_dialog.get_values().content;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const doc = this.doc || frm.doc;
 		const print_format = frm.pos_print_format;
 
@@ -257,9 +289,15 @@ erpnext.PointOfSale.PastOrderSummary = class {
 			args: {
 				recipients: recipients,
 				subject: __(frm.meta.name) + ": " + doc.name,
+<<<<<<< HEAD
 				doctype: doc.doctype,
 				name: doc.name,
 				content: "",
+=======
+				content: content ? content : __(frm.meta.name) + ": " + doc.name,
+				doctype: doc.doctype,
+				name: doc.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				send_email: 1,
 				print_format,
 				sender_full_name: frappe.user.full_name(),

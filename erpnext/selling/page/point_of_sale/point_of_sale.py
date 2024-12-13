@@ -15,27 +15,51 @@ from erpnext.stock.utils import scan_barcode
 
 def search_by_term(search_term, warehouse, price_list):
 	result = search_for_serial_or_batch_or_barcode_number(search_term) or {}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	item_code = result.get("item_code", search_term)
 	serial_no = result.get("serial_no", "")
 	batch_no = result.get("batch_no", "")
 	barcode = result.get("barcode", "")
+<<<<<<< HEAD
 	if not result:
 		return
 	item_doc = frappe.get_doc("Item", item_code)
 	if not item_doc:
 		return
+=======
+
+	if not result:
+		return
+
+	item_doc = frappe.get_doc("Item", item_code)
+
+	if not item_doc:
+		return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	item = {
 		"barcode": barcode,
 		"batch_no": batch_no,
 		"description": item_doc.description,
 		"is_stock_item": item_doc.is_stock_item,
 		"item_code": item_doc.name,
+<<<<<<< HEAD
+=======
+		"item_group": item_doc.item_group,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"item_image": item_doc.image,
 		"item_name": item_doc.item_name,
 		"serial_no": serial_no,
 		"stock_uom": item_doc.stock_uom,
 		"uom": item_doc.stock_uom,
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if barcode:
 		barcode_info = next(filter(lambda x: x.barcode == barcode, item_doc.get("barcodes", [])), None)
 		if barcode_info and barcode_info.uom:
@@ -56,12 +80,22 @@ def search_by_term(search_term, warehouse, price_list):
 		filters={
 			"price_list": price_list,
 			"item_code": item_code,
+<<<<<<< HEAD
 		},
 		fields=["uom", "currency", "price_list_rate"],
+=======
+			"batch_no": batch_no,
+		},
+		fields=["uom", "currency", "price_list_rate", "batch_no"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	def __sort(p):
 		p_uom = p.get("uom")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if p_uom == item.get("uom"):
 			return 0
 		elif p_uom == item.get("stock_uom"):
@@ -71,6 +105,10 @@ def search_by_term(search_term, warehouse, price_list):
 
 	# sort by fallback preference. always pick exact uom match if available
 	price = sorted(price, key=__sort)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if len(price) > 0:
 		p = price.pop(0)
 		item.update(
@@ -79,9 +117,24 @@ def search_by_term(search_term, warehouse, price_list):
 				"price_list_rate": p.get("price_list_rate"),
 			}
 		)
+<<<<<<< HEAD
 	return {"items": [item]}
 
 
+=======
+
+	return {"items": [item]}
+
+
+def filter_result_items(result, pos_profile):
+	if result and result.get("items"):
+		pos_item_groups = frappe.db.get_all("POS Item Group", {"parent": pos_profile}, pluck="item_group")
+		if not pos_item_groups:
+			return
+		result["items"] = [item for item in result.get("items") if item.get("item_group") in pos_item_groups]
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 @frappe.whitelist()
 def get_items(start, page_length, price_list, item_group, pos_profile, search_term=""):
 	warehouse, hide_unavailable_items = frappe.db.get_value(
@@ -92,6 +145,10 @@ def get_items(start, page_length, price_list, item_group, pos_profile, search_te
 
 	if search_term:
 		result = search_by_term(search_term, warehouse, price_list) or []
+<<<<<<< HEAD
+=======
+		filter_result_items(result, pos_profile)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if result:
 			return result
 
@@ -145,6 +202,7 @@ def get_items(start, page_length, price_list, item_group, pos_profile, search_te
 		as_dict=1,
 	)
 
+<<<<<<< HEAD
 	if items_data:
 		items = [d.item_code for d in items_data]
 		item_prices_data = frappe.get_all(
@@ -173,6 +231,52 @@ def get_items(start, page_length, price_list, item_group, pos_profile, search_te
 			)
 			result.append(row)
 
+=======
+	# return (empty) list if there are no results
+	if not items_data:
+		return result
+
+	current_date = frappe.utils.today()
+
+	for item in items_data:
+		uoms = frappe.get_doc("Item", item.item_code).get("uoms", [])
+
+		item.actual_qty, _ = get_stock_availability(item.item_code, warehouse)
+		item.uom = item.stock_uom
+
+		item_price = frappe.get_all(
+			"Item Price",
+			fields=["price_list_rate", "currency", "uom", "batch_no", "valid_from", "valid_upto"],
+			filters={
+				"price_list": price_list,
+				"item_code": item.item_code,
+				"selling": True,
+				"valid_from": ["<=", current_date],
+				"valid_upto": ["in", [None, "", current_date]],
+			},
+			order_by="valid_from desc",
+			limit=1,
+		)
+
+		if not item_price:
+			result.append(item)
+
+		for price in item_price:
+			uom = next(filter(lambda x: x.uom == price.uom, uoms), {})
+
+			if price.uom != item.stock_uom and uom and uom.conversion_factor:
+				item.actual_qty = item.actual_qty // uom.conversion_factor
+
+			result.append(
+				{
+					**item,
+					"price_list_rate": price.get("price_list_rate"),
+					"currency": price.get("currency"),
+					"uom": price.uom or item.uom,
+					"batch_no": price.batch_no,
+				}
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return {"items": result}
 
 
@@ -274,16 +378,30 @@ def get_past_order_list(search_term, status, limit=20):
 			"POS Invoice",
 			filters={"customer": ["like", f"%{search_term}%"], "status": status},
 			fields=fields,
+<<<<<<< HEAD
+=======
+			page_length=limit,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		invoices_by_name = frappe.db.get_all(
 			"POS Invoice",
 			filters={"name": ["like", f"%{search_term}%"], "status": status},
 			fields=fields,
+<<<<<<< HEAD
+=======
+			page_length=limit,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		invoice_list = invoices_by_customer + invoices_by_name
 	elif status:
+<<<<<<< HEAD
 		invoice_list = frappe.db.get_all("POS Invoice", filters={"status": status}, fields=fields)
+=======
+		invoice_list = frappe.db.get_all(
+			"POS Invoice", filters={"status": status}, fields=fields, page_length=limit
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return invoice_list
 

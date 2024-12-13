@@ -1,4 +1,11 @@
 frappe.listview_settings["Lead"] = {
+<<<<<<< HEAD
+=======
+	get_indicator: function (doc) {
+		var indicator = [__(doc.status), frappe.utils.guess_colour(doc.status), "status,=," + doc.status];
+		return indicator;
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	onload: function (listview) {
 		if (frappe.boot.user.can_create.includes("Prospect")) {
 			listview.page.add_action_item(__("Create Prospect"), function () {

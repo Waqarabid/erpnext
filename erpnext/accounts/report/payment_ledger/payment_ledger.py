@@ -130,6 +130,10 @@ class PaymentLedger:
 		)
 
 	def get_columns(self):
+<<<<<<< HEAD
+=======
+		company_currency = frappe.get_cached_value("Company", self.filters.get("company"), "default_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		options = None
 		self.columns.append(
 			dict(
@@ -194,7 +198,11 @@ class PaymentLedger:
 				label=_("Amount"),
 				fieldname="amount",
 				fieldtype="Currency",
+<<<<<<< HEAD
 				options="Company:company:default_currency",
+=======
+				options=company_currency,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				width="100",
 			)
 		)

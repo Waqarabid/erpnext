@@ -1,6 +1,9 @@
 // Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 function get_filters() {
 	let filters = [
@@ -115,7 +118,11 @@ frappe.query_reports["Payment Terms Status for Sales Order"] = {
 	filters: get_filters(),
 	formatter: function (value, row, column, data, default_formatter) {
 		if (column.fieldname == "invoices" && value) {
+<<<<<<< HEAD
 			invoices = value.split(",");
+=======
+			let invoices = value.split(",");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			const invoice_formatter = (prev_value, curr_value) => {
 				if (prev_value != "") {
 					return prev_value + ", " + default_formatter(curr_value, row, column, data);
@@ -125,7 +132,11 @@ frappe.query_reports["Payment Terms Status for Sales Order"] = {
 			};
 			return invoices.reduce(invoice_formatter, "");
 		} else if (column.fieldname == "paid_amount" && value) {
+<<<<<<< HEAD
 			formatted_value = default_formatter(value, row, column, data);
+=======
+			let formatted_value = default_formatter(value, row, column, data);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if (value > 0) {
 				formatted_value = "<span style='color:green;'>" + formatted_value + "</span>";
 			}

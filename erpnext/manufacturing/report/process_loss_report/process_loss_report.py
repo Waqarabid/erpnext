@@ -102,7 +102,16 @@ def get_columns() -> Columns:
 			"fieldtype": "Float",
 			"width": "150",
 		},
+<<<<<<< HEAD
 		{"label": _("FG Value"), "fieldname": "total_fg_value", "fieldtype": "Float", "width": "150"},
+=======
+		{
+			"label": _("Finished Goods Value"),
+			"fieldname": "total_fg_value",
+			"fieldtype": "Float",
+			"width": "150",
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{
 			"label": _("Raw Material Value"),
 			"fieldname": "total_rm_value",

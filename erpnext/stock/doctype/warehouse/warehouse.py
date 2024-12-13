@@ -2,6 +2,11 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
+=======
+import json
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import frappe
 from frappe import _, throw
 from frappe.contacts.address_and_contact import load_address_and_contact
@@ -13,6 +18,38 @@ from erpnext.stock import get_warehouse_account
 
 
 class Warehouse(NestedSet):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		address_line_1: DF.Data | None
+		address_line_2: DF.Data | None
+		city: DF.Data | None
+		company: DF.Link
+		default_in_transit_warehouse: DF.Link | None
+		disabled: DF.Check
+		email_id: DF.Data | None
+		is_group: DF.Check
+		lft: DF.Int
+		mobile_no: DF.Data | None
+		old_parent: DF.Link | None
+		parent_warehouse: DF.Link | None
+		phone_no: DF.Data | None
+		pin: DF.Data | None
+		rgt: DF.Int
+		state: DF.Data | None
+		warehouse_name: DF.Data
+		warehouse_type: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	nsm_parent_field = "parent_warehouse"
 
 	def autoname(self):
@@ -152,15 +189,30 @@ class Warehouse(NestedSet):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_children(doctype, parent=None, company=None, is_root=False):
 	if is_root:
 		parent = ""
 
+=======
+def get_children(doctype, parent=None, company=None, is_root=False, include_disabled=False):
+	if is_root:
+		parent = ""
+
+	if isinstance(include_disabled, str):
+		include_disabled = json.loads(include_disabled)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	fields = ["name as value", "is_group as expandable"]
 	filters = [
 		["ifnull(`parent_warehouse`, '')", "=", parent],
 		["company", "in", (company, None, "")],
 	]
+<<<<<<< HEAD
+=======
+	if frappe.db.has_column(doctype, "disabled") and not include_disabled:
+		filters.append(["disabled", "=", False])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return frappe.get_list(doctype, fields=fields, filters=filters, order_by="name")
 

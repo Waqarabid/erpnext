@@ -22,9 +22,55 @@ STANDARD_USERS = ("Guest", "Administrator")
 
 
 class RequestforQuotation(BuyingController):
+<<<<<<< HEAD
 	def validate(self):
 		self.validate_duplicate_supplier()
 		self.validate_supplier_list()
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.buying.doctype.request_for_quotation_item.request_for_quotation_item import (
+			RequestforQuotationItem,
+		)
+		from erpnext.buying.doctype.request_for_quotation_supplier.request_for_quotation_supplier import (
+			RequestforQuotationSupplier,
+		)
+
+		amended_from: DF.Link | None
+		billing_address: DF.Link | None
+		billing_address_display: DF.TextEditor | None
+		company: DF.Link
+		email_template: DF.Link | None
+		incoterm: DF.Link | None
+		items: DF.Table[RequestforQuotationItem]
+		letter_head: DF.Link | None
+		message_for_supplier: DF.TextEditor
+		named_place: DF.Data | None
+		naming_series: DF.Literal["PUR-RFQ-.YYYY.-"]
+		opportunity: DF.Link | None
+		schedule_date: DF.Date | None
+		select_print_heading: DF.Link | None
+		send_attached_files: DF.Check
+		send_document_print: DF.Check
+		status: DF.Literal["", "Draft", "Submitted", "Cancelled"]
+		suppliers: DF.Table[RequestforQuotationSupplier]
+		tc_name: DF.Link | None
+		terms: DF.TextEditor | None
+		transaction_date: DF.Date
+		vendor: DF.Link | None
+	# end: auto-generated types
+
+	def validate(self):
+		self.validate_duplicate_supplier()
+		self.validate_supplier_list()
+		super().validate_qty_is_not_zero()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		validate_for_items(self)
 		super().set_qty_as_per_stock_uom()
 		self.update_email_id()
@@ -165,10 +211,36 @@ class RequestforQuotation(BuyingController):
 
 		contact.save(ignore_permissions=True)
 
+<<<<<<< HEAD
+=======
+		if rfq_supplier.supplier:
+			self.update_user_in_supplier(rfq_supplier.supplier, user.name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not rfq_supplier.contact:
 			# return contact to later update, RFQ supplier row's contact
 			return contact.name
 
+<<<<<<< HEAD
+=======
+	def update_user_in_supplier(self, supplier, user):
+		"""Update user in Supplier."""
+		if not frappe.db.exists("Portal User", {"parent": supplier, "user": user}):
+			supplier_doc = frappe.get_doc("Supplier", supplier)
+			supplier_doc.append(
+				"portal_users",
+				{
+					"user": user,
+				},
+			)
+
+			supplier_doc.flags.ignore_validate = True
+			supplier_doc.flags.ignore_mandatory = True
+			supplier_doc.flags.ignore_permissions = True
+
+			supplier_doc.save()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def create_user(self, rfq_supplier, link):
 		user = frappe.get_doc(
 			{
@@ -205,6 +277,13 @@ class RequestforQuotation(BuyingController):
 				"user_fullname": full_name,
 			}
 		)
+<<<<<<< HEAD
+=======
+
+		if not self.email_template:
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		email_template = frappe.get_doc("Email Template", self.email_template)
 		message = frappe.render_template(email_template.response_, doc_args)
 		subject = frappe.render_template(email_template.subject, doc_args)
@@ -315,8 +394,13 @@ def make_supplier_quotation_from_rfq(source_name, target_doc=None, for_supplier=
 			target_doc.currency = args.currency or get_party_account_currency(
 				"Supplier", for_supplier, source.company
 			)
+<<<<<<< HEAD
 			target_doc.buying_price_list = args.buying_price_list or frappe.db.get_value(
 				"Buying Settings", None, "buying_price_list"
+=======
+			target_doc.buying_price_list = args.buying_price_list or frappe.db.get_single_value(
+				"Buying Settings", "buying_price_list"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 		set_missing_values(source, target_doc)
 
@@ -327,6 +411,10 @@ def make_supplier_quotation_from_rfq(source_name, target_doc=None, for_supplier=
 			"Request for Quotation": {
 				"doctype": "Supplier Quotation",
 				"validation": {"docstatus": ["=", 1]},
+<<<<<<< HEAD
+=======
+				"field_map": {"opportunity": "opportunity"},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 			"Request for Quotation Item": {
 				"doctype": "Supplier Quotation Item",
@@ -356,7 +444,11 @@ def create_supplier_quotation(doc):
 				"currency": doc.get("currency")
 				or get_party_account_currency("Supplier", doc.get("supplier"), doc.get("company")),
 				"buying_price_list": doc.get("buying_price_list")
+<<<<<<< HEAD
 				or frappe.db.get_value("Buying Settings", None, "buying_price_list"),
+=======
+				or frappe.db.get_single_value("Buying Settings", "buying_price_list"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 		add_items(sq_doc, doc.get("supplier"), doc.get("items"))

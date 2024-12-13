@@ -55,8 +55,12 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
+<<<<<<< HEAD
    "label": "Account Number",
    "read_only": 1
+=======
+   "label": "Account Number"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "default": "0",
@@ -65,6 +69,11 @@
    "label": "Is Group"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "parent_account.company",
+   "fetch_if_empty": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "company",
    "fieldtype": "Link",
    "in_standard_filter": 1,
@@ -72,7 +81,10 @@
    "oldfieldname": "company",
    "oldfieldtype": "Link",
    "options": "Company",
+<<<<<<< HEAD
    "read_only": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "remember_last_selected_value": 1,
    "reqd": 1
   },
@@ -108,6 +120,10 @@
    "fieldname": "parent_account",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
+<<<<<<< HEAD
+=======
+   "in_preview": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Parent Account",
    "oldfieldname": "parent_account",
    "oldfieldtype": "Link",
@@ -123,7 +139,12 @@
    "label": "Account Type",
    "oldfieldname": "account_type",
    "oldfieldtype": "Select",
+<<<<<<< HEAD
    "options": "\nAccumulated Depreciation\nAsset Received But Not Billed\nBank\nCash\nChargeable\nCapital Work in Progress\nCost of Goods Sold\nDepreciation\nEquity\nExpense Account\nExpenses Included In Asset Valuation\nExpenses Included In Valuation\nFixed Asset\nIncome Account\nPayable\nReceivable\nRound Off\nStock\nStock Adjustment\nStock Received But Not Billed\nService Received But Not Billed\nTax\nTemporary"
+=======
+   "options": "\nAccumulated Depreciation\nAsset Received But Not Billed\nBank\nCash\nChargeable\nCapital Work in Progress\nCost of Goods Sold\nCurrent Asset\nCurrent Liability\nDepreciation\nDirect Expense\nDirect Income\nEquity\nExpense Account\nExpenses Included In Asset Valuation\nExpenses Included In Valuation\nFixed Asset\nIncome Account\nIndirect Expense\nIndirect Income\nLiability\nPayable\nReceivable\nRound Off\nRound Off for Opening\nStock\nStock Adjustment\nStock Received But Not Billed\nService Received But Not Billed\nTax\nTemporary",
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "description": "Rate at which this tax is applied",
@@ -192,7 +213,11 @@
  "idx": 1,
  "is_tree": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-04-11 16:08:46.983677",
+=======
+ "modified": "2024-08-19 15:19:11.095045",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Account",
@@ -243,14 +268,22 @@
    "read": 1,
    "report": 1,
    "role": "Accounts Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "share": 1,
    "write": 1
   }
  ],
  "search_fields": "account_number",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "show_preview_popup": 1,
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1

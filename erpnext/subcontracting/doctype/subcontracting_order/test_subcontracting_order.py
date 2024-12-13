@@ -5,7 +5,11 @@ import copy
 from collections import defaultdict
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt
 
 from erpnext.buying.doctype.purchase_order.purchase_order import get_mapped_subcontracting_order
@@ -25,6 +29,10 @@ from erpnext.controllers.tests.test_subcontracting_controller import (
 	make_subcontracted_items,
 	set_backflush_based_on,
 )
+<<<<<<< HEAD
+=======
+from erpnext.manufacturing.doctype.production_plan.test_production_plan import make_bom
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
@@ -32,7 +40,20 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 )
 
 
+<<<<<<< HEAD
 class TestSubcontractingOrder(FrappeTestCase):
+=======
+class UnitTestSubcontractingOrder(UnitTestCase):
+	"""
+	Unit tests for SubcontractingOrder.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSubcontractingOrder(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()
@@ -95,6 +116,7 @@ class TestSubcontractingOrder(FrappeTestCase):
 		self.assertEqual(sco.status, "Partially Received")
 
 		# Closed
+<<<<<<< HEAD
 		ste = get_materials_from_supplier(sco.name, [d.name for d in sco.supplied_items])
 		ste.save()
 		ste.submit()
@@ -103,6 +125,16 @@ class TestSubcontractingOrder(FrappeTestCase):
 		ste.cancel()
 		sco.load_from_db()
 		self.assertEqual(sco.status, "Partially Received")
+=======
+		sco.update_status("Closed")
+		self.assertEqual(sco.status, "Closed")
+		scr = make_subcontracting_receipt(sco.name)
+		scr.save()
+		self.assertRaises(frappe.exceptions.ValidationError, scr.submit)
+		sco.update_status()
+		self.assertEqual(sco.status, "Partially Received")
+		scr.cancel()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# Completed
 		scr = make_subcontracting_receipt(sco.name)
@@ -564,7 +596,10 @@ class TestSubcontractingOrder(FrappeTestCase):
 
 		sco.load_from_db()
 
+<<<<<<< HEAD
 		self.assertEqual(sco.status, "Closed")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertEqual(sco.supplied_items[0].returned_qty, 5)
 
 	def test_ordered_qty_for_subcontracting_order(self):
@@ -684,6 +719,31 @@ class TestSubcontractingOrder(FrappeTestCase):
 
 		self.assertEqual(requested_qty, new_requested_qty)
 
+<<<<<<< HEAD
+=======
+	def test_subcontracting_order_rm_required_items_for_precision(self):
+		item_code = "Subcontracted Item SA9"
+		raw_materials = ["Subcontracted SRM Item 9"]
+		if not frappe.db.exists("BOM", {"item": item_code}):
+			make_bom(item=item_code, raw_materials=raw_materials, rate=100, rm_qty=1.04)
+
+		service_items = [
+			{
+				"warehouse": "_Test Warehouse - _TC",
+				"item_code": "Subcontracted Service Item 9",
+				"qty": 1,  # 202.0656,
+				"rate": 100,
+				"fg_item": "Subcontracted Item SA9",
+				"fg_item_qty": 202.0656,
+			},
+		]
+
+		sco = get_subcontracting_order(service_items=service_items)
+		sco.reload()
+
+		self.assertEqual(sco.supplied_items[0].required_qty, 210.149)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def create_subcontracting_order(**args):
 	args = frappe._dict(args)
@@ -709,6 +769,16 @@ def create_subcontracting_order(**args):
 				for idx, val in enumerate(sco.items):
 					val.warehouse = warehouses[idx]
 
+<<<<<<< HEAD
+=======
+	warehouses = set()
+	for item in sco.items:
+		warehouses.add(item.warehouse)
+
+	if len(warehouses) == 1:
+		sco.set_warehouse = next(iter(warehouses))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not args.do_not_save:
 		sco.insert()
 		if not args.do_not_submit:

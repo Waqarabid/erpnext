@@ -6,19 +6,42 @@ import unittest
 
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, today
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.purchase_order import make_purchase_invoice
 
+<<<<<<< HEAD
 test_dependencies = ["Supplier Group", "Customer Group"]
 
 
 class TestTaxWithholdingCategory(FrappeTestCase):
 	@classmethod
 	def setUpClass(self):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Supplier Group", "Customer Group"]
+
+
+class UnitTestTaxWithholdingCategory(UnitTestCase):
+	"""
+	Unit tests for TaxWithholdingCategory.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestTaxWithholdingCategory(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# create relevant supplier, etc
 		create_records()
 		create_tax_withholding_category_records()
@@ -74,11 +97,25 @@ class TestTaxWithholdingCategory(FrappeTestCase):
 		self.assertEqual(pi.grand_total, 18000)
 
 		# check gl entry for the purchase invoice
+<<<<<<< HEAD
 		gl_entries = frappe.db.get_all("GL Entry", filters={"voucher_no": pi.name}, fields=["*"])
 		self.assertEqual(len(gl_entries), 3)
 		for d in gl_entries:
 			if d.account == pi.credit_to:
 				self.assertEqual(d.credit, 18000)
+=======
+		gl_entries = frappe.db.get_all(
+			"GL Entry",
+			filters={"voucher_no": pi.name},
+			fields=["account", "sum(debit) as debit", "sum(credit) as credit"],
+			group_by="account",
+		)
+		self.assertEqual(len(gl_entries), 3)
+		for d in gl_entries:
+			if d.account == pi.credit_to:
+				self.assertEqual(d.credit, 20000)
+				self.assertEqual(d.debit, 2000)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			elif d.account == pi.items[0].get("expense_account"):
 				self.assertEqual(d.debit, 20000)
 			elif d.account == pi.taxes[0].get("account_head"):
@@ -235,10 +272,13 @@ class TestTaxWithholdingCategory(FrappeTestCase):
 		for d in reversed(invoices):
 			d.cancel()
 
+<<<<<<< HEAD
 	@change_settings(
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1},
 	)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_tcs_on_unallocated_advance_payments(self):
 		frappe.db.set_value(
 			"Customer", "Test TCS Customer", "tax_withholding_category", "Cumulative Threshold TCS"
@@ -293,10 +333,13 @@ class TestTaxWithholdingCategory(FrappeTestCase):
 			d.reload()
 			d.cancel()
 
+<<<<<<< HEAD
 	@change_settings(
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1},
 	)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_tcs_on_allocated_advance_payments(self):
 		frappe.db.set_value(
 			"Customer", "Test TCS Customer", "tax_withholding_category", "Cumulative Threshold TCS"

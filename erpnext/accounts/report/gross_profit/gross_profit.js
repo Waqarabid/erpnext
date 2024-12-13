@@ -36,7 +36,11 @@ frappe.query_reports["Gross Profit"] = {
 			label: __("Group By"),
 			fieldtype: "Select",
 			options:
+<<<<<<< HEAD
 				"Invoice\nItem Code\nItem Group\nBrand\nWarehouse\nCustomer\nCustomer Group\nTerritory\nSales Person\nProject\nMonthly\nPayment Term",
+=======
+				"Invoice\nItem Code\nItem Group\nBrand\nWarehouse\nCustomer\nCustomer Group\nTerritory\nSales Person\nProject\nCost Center\nMonthly\nPayment Term",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			default: "Invoice",
 		},
 		{
@@ -51,6 +55,41 @@ frappe.query_reports["Gross Profit"] = {
 			fieldtype: "Link",
 			options: "Sales Person",
 		},
+<<<<<<< HEAD
+=======
+		{
+			fieldname: "warehouse",
+			label: __("Warehouse"),
+			fieldtype: "Link",
+			options: "Warehouse",
+			get_query: function () {
+				var company = frappe.query_report.get_filter_value("company");
+				return {
+					filters: [["Warehouse", "company", "=", company]],
+				};
+			},
+		},
+		{
+			fieldname: "cost_center",
+			label: __("Cost Center"),
+			fieldtype: "MultiSelectList",
+			get_data: function (txt) {
+				return frappe.db.get_link_options("Cost Center", txt, {
+					company: frappe.query_report.get_filter_value("company"),
+				});
+			},
+		},
+		{
+			fieldname: "project",
+			label: __("Project"),
+			fieldtype: "MultiSelectList",
+			get_data: function (txt) {
+				return frappe.db.get_link_options("Project", txt, {
+					company: frappe.query_report.get_filter_value("company"),
+				});
+			},
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 	tree: true,
 	name_field: "parent",
@@ -73,3 +112,8 @@ frappe.query_reports["Gross Profit"] = {
 		return value;
 	},
 };
+<<<<<<< HEAD
+=======
+
+erpnext.utils.add_dimensions("Gross Profit", 15);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

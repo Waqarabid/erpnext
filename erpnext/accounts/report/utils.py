@@ -376,7 +376,11 @@ def filter_invoices_based_on_dimensions(filters, query, parent_doc):
 
 
 def get_opening_row(party_type, party, from_date, company):
+<<<<<<< HEAD
 	party_account = get_party_account(party_type, party, company)
+=======
+	party_account = get_party_account(party_type, party, company, include_advance=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	gle = frappe.qb.DocType("GL Entry")
 	return (
 		frappe.qb.from_(gle)
@@ -387,7 +391,11 @@ def get_opening_row(party_type, party, from_date, company):
 			(Sum(gle.debit) - Sum(gle.credit)).as_("balance"),
 		)
 		.where(
+<<<<<<< HEAD
 			(gle.account == party_account)
+=======
+			(gle.account.isin(party_account))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			& (gle.party == party)
 			& (gle.posting_date < from_date)
 			& (gle.is_cancelled == 0)

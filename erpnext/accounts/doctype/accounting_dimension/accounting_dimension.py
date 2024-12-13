@@ -7,12 +7,44 @@ import json
 import frappe
 from frappe import _, scrub
 from frappe.custom.doctype.custom_field.custom_field import create_custom_field
+<<<<<<< HEAD
+=======
+from frappe.database.schema import validate_column_name
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.model import core_doctypes_list
 from frappe.model.document import Document
 from frappe.utils import cstr
 
+<<<<<<< HEAD
 
 class AccountingDimension(Document):
+=======
+from erpnext.accounts.doctype.repost_accounting_ledger.repost_accounting_ledger import (
+	get_allowed_types_from_settings,
+)
+
+
+class AccountingDimension(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.accounting_dimension_detail.accounting_dimension_detail import (
+			AccountingDimensionDetail,
+		)
+
+		dimension_defaults: DF.Table[AccountingDimensionDetail]
+		disabled: DF.Check
+		document_type: DF.Link
+		fieldname: DF.Data | None
+		label: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def before_insert(self):
 		self.set_fieldname_and_label()
 
@@ -37,6 +69,10 @@ class AccountingDimension(Document):
 		if not self.is_new():
 			self.validate_document_type_change()
 
+<<<<<<< HEAD
+=======
+		validate_column_name(self.fieldname)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_dimension_defaults()
 
 	def validate_document_type_change(self):
@@ -85,6 +121,10 @@ def make_dimension_in_accounting_doctypes(doc, doclist=None):
 
 	doc_count = len(get_accounting_dimensions())
 	count = 0
+<<<<<<< HEAD
+=======
+	repostable_doctypes = get_allowed_types_from_settings()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	for doctype in doclist:
 		if (doc_count + 1) % 2 == 0:
@@ -99,6 +139,10 @@ def make_dimension_in_accounting_doctypes(doc, doclist=None):
 			"options": doc.document_type,
 			"insert_after": insert_after_field,
 			"owner": "Administrator",
+<<<<<<< HEAD
+=======
+			"allow_on_submit": 1 if doctype in repostable_doctypes else 0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		meta = frappe.get_meta(doctype, cached=False)
@@ -258,6 +302,7 @@ def get_dimension_with_children(doctype, dimensions):
 
 @frappe.whitelist()
 def get_dimensions(with_cost_center_and_project=False):
+<<<<<<< HEAD
 	dimension_filters = frappe.db.sql(
 		"""
 		SELECT label, fieldname, document_type
@@ -272,6 +317,19 @@ def get_dimensions(with_cost_center_and_project=False):
 		FROM `tabAccounting Dimension Detail` c, `tabAccounting Dimension` p
 		WHERE c.parent = p.name""",
 		as_dict=1,
+=======
+	c = frappe.qb.DocType("Accounting Dimension Detail")
+	p = frappe.qb.DocType("Accounting Dimension")
+	dimension_filters = (
+		frappe.qb.from_(p).select(p.label, p.fieldname, p.document_type).where(p.disabled == 0).run(as_dict=1)
+	)
+	default_dimensions = (
+		frappe.qb.from_(c)
+		.inner_join(p)
+		.on(c.parent == p.name)
+		.select(p.fieldname, c.company, c.default_dimension)
+		.run(as_dict=1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if isinstance(with_cost_center_and_project, str):

@@ -9,6 +9,28 @@ from frappe.utils import cint, get_link_to_form
 
 
 class AssetCategory(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.assets.doctype.asset_category_account.asset_category_account import (
+			AssetCategoryAccount,
+		)
+		from erpnext.assets.doctype.asset_finance_book.asset_finance_book import AssetFinanceBook
+
+		accounts: DF.Table[AssetCategoryAccount]
+		asset_category_name: DF.Data
+		enable_cwip_accounting: DF.Check
+		finance_books: DF.Table[AssetFinanceBook]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_finance_books()
 		self.validate_account_types()

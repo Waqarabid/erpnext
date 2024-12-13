@@ -89,7 +89,11 @@ def set_gl_entries_by_account(dimension_list, filters, account, gl_entries_by_ac
 	gl_filters["dimensions"] = set(dimension_list)
 
 	if filters.get("include_default_book_entries"):
+<<<<<<< HEAD
 		gl_filters["company_fb"] = frappe.db.get_value("Company", filters.company, "default_finance_book")
+=======
+		gl_filters["company_fb"] = frappe.get_cached_value("Company", filters.company, "default_finance_book")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	gl_entries = frappe.db.sql(
 		"""

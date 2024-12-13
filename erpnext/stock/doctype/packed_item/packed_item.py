@@ -10,11 +10,65 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import flt
 
+<<<<<<< HEAD
 from erpnext.stock.get_item_details import get_item_details, get_price_list_rate
 
 
 class PackedItem(Document):
 	pass
+=======
+from erpnext.stock.get_item_details import ItemDetailsCtx, get_item_details, get_price_list_rate
+
+
+class PackedItem(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		actual_batch_qty: DF.Float
+		actual_qty: DF.Float
+		batch_no: DF.Link | None
+		conversion_factor: DF.Float
+		description: DF.TextEditor | None
+		incoming_rate: DF.Currency
+		item_code: DF.Link | None
+		item_name: DF.Data | None
+		ordered_qty: DF.Float
+		packed_qty: DF.Float
+		page_break: DF.Check
+		parent: DF.Data
+		parent_detail_docname: DF.Data | None
+		parent_item: DF.Link | None
+		parentfield: DF.Data
+		parenttype: DF.Data
+		picked_qty: DF.Float
+		prevdoc_doctype: DF.Data | None
+		projected_qty: DF.Float
+		qty: DF.Float
+		rate: DF.Currency
+		serial_and_batch_bundle: DF.Link | None
+		serial_no: DF.Text | None
+		target_warehouse: DF.Link | None
+		uom: DF.Link | None
+		use_serial_batch_fields: DF.Check
+		warehouse: DF.Link | None
+	# end: auto-generated types
+
+	def set_actual_and_projected_qty(self):
+		"Set actual and projected qty based on warehouse and item_code"
+		_bin = frappe.db.get_value(
+			"Bin",
+			{"item_code": self.item_code, "warehouse": self.warehouse},
+			["actual_qty", "projected_qty"],
+			as_dict=True,
+		)
+		self.actual_qty = _bin.actual_qty if _bin else 0
+		self.projected_qty = _bin.projected_qty if _bin else 0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def make_packing_list(doc):
@@ -188,6 +242,10 @@ def update_packed_item_stock_data(main_item_row, pi_row, packing_item, item_data
 	bin = get_packed_item_bin_qty(packing_item.item_code, pi_row.warehouse)
 	pi_row.actual_qty = flt(bin.get("actual_qty"))
 	pi_row.projected_qty = flt(bin.get("projected_qty"))
+<<<<<<< HEAD
+=======
+	pi_row.use_serial_batch_fields = frappe.db.get_single_value("Stock Settings", "use_serial_batch_fields")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def update_packed_item_price_data(pi_row, item_data, doc):
@@ -196,8 +254,13 @@ def update_packed_item_price_data(pi_row, item_data, doc):
 		return
 
 	item_doc = frappe.get_cached_doc("Item", pi_row.item_code)
+<<<<<<< HEAD
 	row_data = pi_row.as_dict().copy()
 	row_data.update(
+=======
+	ctx = ItemDetailsCtx(pi_row.as_dict().copy())
+	ctx.update(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{
 			"company": doc.get("company"),
 			"price_list": doc.get("selling_price_list"),
@@ -205,10 +268,17 @@ def update_packed_item_price_data(pi_row, item_data, doc):
 			"conversion_rate": doc.get("conversion_rate"),
 		}
 	)
+<<<<<<< HEAD
 	if not row_data.get("transaction_date"):
 		row_data.update({"transaction_date": doc.get("transaction_date")})
 
 	rate = get_price_list_rate(row_data, item_doc).get("price_list_rate")
+=======
+	if not ctx.transaction_date:
+		ctx.update({"transaction_date": doc.get("transaction_date")})
+
+	rate = get_price_list_rate(ctx, item_doc).get("price_list_rate")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	pi_row.rate = rate or item_data.get("valuation_rate") or 0.0
 
@@ -276,7 +346,11 @@ def on_doctype_update():
 
 @frappe.whitelist()
 def get_items_from_product_bundle(row):
+<<<<<<< HEAD
 	row, items = json.loads(row), []
+=======
+	row, items = ItemDetailsCtx(json.loads(row)), []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	bundled_items = get_product_bundle_items(row["item_code"])
 	for item in bundled_items:

@@ -1,9 +1,16 @@
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, today
 
 from erpnext.accounts.doctype.cost_center.test_cost_center import create_cost_center
@@ -17,7 +24,11 @@ from erpnext.accounts.doctype.cost_center_allocation.cost_center_allocation impo
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 
 
+<<<<<<< HEAD
 class TestCostCenterAllocation(unittest.TestCase):
+=======
+class TestCostCenterAllocation(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		cost_centers = [
 			"Main Cost Center 1",

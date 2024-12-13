@@ -1,11 +1,19 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
 
 import unittest
 
 import frappe
 from frappe.utils import add_months, today
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import today
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.finance_book.test_finance_book import create_finance_book
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
@@ -13,7 +21,11 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sal
 from erpnext.accounts.utils import get_fiscal_year
 
 
+<<<<<<< HEAD
 class TestPeriodClosingVoucher(unittest.TestCase):
+=======
+class TestPeriodClosingVoucher(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_closing_entry(self):
 		frappe.db.sql("delete from `tabGL Entry` where company='Test PCV Company'")
 		frappe.db.sql("delete from `tabPeriod Closing Voucher` where company='Test PCV Company'")
@@ -182,6 +194,7 @@ class TestPeriodClosingVoucher(unittest.TestCase):
 		)
 
 		self.assertSequenceEqual(pcv_gle, expected_gle)
+<<<<<<< HEAD
 		warehouse = frappe.db.get_value("Warehouse", {"company": company}, "name")
 
 		repost_doc = frappe.get_doc(
@@ -199,6 +212,8 @@ class TestPeriodClosingVoucher(unittest.TestCase):
 
 		repost_doc.posting_date = add_months(today(), 13)
 		repost_doc.save()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_gl_entries_restrictions(self):
 		frappe.db.sql("delete from `tabGL Entry` where company='Test PCV Company'")
@@ -222,7 +237,11 @@ class TestPeriodClosingVoucher(unittest.TestCase):
 
 		self.assertRaises(frappe.ValidationError, jv1.submit)
 
+<<<<<<< HEAD
 	def test_closing_balance_with_dimensions(self):
+=======
+	def test_closing_balance_with_dimensions_and_test_reposting_entry(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.db.sql("delete from `tabGL Entry` where company='Test PCV Company'")
 		frappe.db.sql("delete from `tabPeriod Closing Voucher` where company='Test PCV Company'")
 		frappe.db.sql("delete from `tabAccount Closing Balance` where company='Test PCV Company'")
@@ -316,16 +335,48 @@ class TestPeriodClosingVoucher(unittest.TestCase):
 		self.assertEqual(cc2_closing_balance.credit, 500)
 		self.assertEqual(cc2_closing_balance.credit_in_account_currency, 500)
 
+<<<<<<< HEAD
 	def make_period_closing_voucher(self, posting_date=None, submit=True):
 		surplus_account = create_account()
 		cost_center = create_cost_center("Test Cost Center 1")
+=======
+		warehouse = frappe.db.get_value("Warehouse", {"company": company}, "name")
+
+		repost_doc = frappe.get_doc(
+			{
+				"doctype": "Repost Item Valuation",
+				"company": company,
+				"posting_date": "2020-03-15",
+				"based_on": "Item and Warehouse",
+				"item_code": "Test Item 1",
+				"warehouse": warehouse,
+			}
+		)
+
+		self.assertRaises(frappe.ValidationError, repost_doc.save)
+
+		repost_doc.posting_date = today()
+		repost_doc.save()
+
+	def make_period_closing_voucher(self, posting_date, submit=True):
+		surplus_account = create_account()
+		cost_center = create_cost_center("Test Cost Center 1")
+		fy = get_fiscal_year(posting_date, company="Test PCV Company")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pcv = frappe.get_doc(
 			{
 				"doctype": "Period Closing Voucher",
 				"transaction_date": posting_date or today(),
+<<<<<<< HEAD
 				"posting_date": posting_date or today(),
 				"company": "Test PCV Company",
 				"fiscal_year": get_fiscal_year(today(), company="Test PCV Company")[0],
+=======
+				"period_start_date": fy[1],
+				"period_end_date": fy[2],
+				"company": "Test PCV Company",
+				"fiscal_year": fy[0],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"cost_center": cost_center,
 				"closing_account_head": surplus_account,
 				"remarks": "test",
@@ -380,5 +431,9 @@ def create_cost_center(cc_name):
 	return costcenter.name
 
 
+<<<<<<< HEAD
 test_dependencies = ["Customer", "Cost Center"]
 test_records = frappe.get_test_records("Period Closing Voucher")
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Customer", "Cost Center"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

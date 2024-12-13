@@ -147,7 +147,11 @@ frappe.ui.form.on("POS Closing Entry", {
 						frm.doc.grand_total += flt(doc.grand_total);
 						frm.doc.net_total += flt(doc.net_total);
 						frm.doc.total_quantity += flt(doc.total_qty);
+<<<<<<< HEAD
 						refresh_payments(doc, frm);
+=======
+						refresh_payments(doc, frm, false);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						refresh_taxes(doc, frm);
 						refresh_fields(frm);
 						set_html_data(frm);
@@ -172,7 +176,11 @@ function set_form_data(data, frm) {
 		frm.doc.grand_total += flt(d.grand_total);
 		frm.doc.net_total += flt(d.net_total);
 		frm.doc.total_quantity += flt(d.total_qty);
+<<<<<<< HEAD
 		refresh_payments(d, frm);
+=======
+		refresh_payments(d, frm, true);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		refresh_taxes(d, frm);
 	});
 }
@@ -186,7 +194,11 @@ function add_to_pos_transaction(d, frm) {
 	});
 }
 
+<<<<<<< HEAD
 function refresh_payments(d, frm) {
+=======
+function refresh_payments(d, frm, is_new) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	d.payments.forEach((p) => {
 		const payment = frm.doc.payment_reconciliation.find(
 			(pay) => pay.mode_of_payment === p.mode_of_payment
@@ -196,6 +208,10 @@ function refresh_payments(d, frm) {
 		}
 		if (payment) {
 			payment.expected_amount += flt(p.amount);
+<<<<<<< HEAD
+=======
+			if (is_new) payment.closing_amount = payment.expected_amount;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			payment.difference = payment.closing_amount - payment.expected_amount;
 		} else {
 			frm.add_child("payment_reconciliation", {

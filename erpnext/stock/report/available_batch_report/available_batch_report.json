@@ -2,7 +2,10 @@
  "add_total_row": 1,
  "columns": [],
  "creation": "2024-04-11 17:03:32.253275",
+<<<<<<< HEAD
  "disable_prepared_report": 0,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "disabled": 0,
  "docstatus": 0,
  "doctype": "Report",
@@ -11,7 +14,12 @@
  "is_standard": "Yes",
  "json": "{}",
  "letter_head": "",
+<<<<<<< HEAD
  "modified": "2024-04-23 17:09:54.595566",
+=======
+ "letterhead": null,
+ "modified": "2024-04-23 17:18:19.779036",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Available Batch Report",

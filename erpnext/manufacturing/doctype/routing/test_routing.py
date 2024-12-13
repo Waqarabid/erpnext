@@ -1,17 +1,40 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import frappe
+<<<<<<< HEAD
 from frappe.test_runner import make_test_records
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.manufacturing.doctype.job_card.job_card import OperationSequenceError
 from erpnext.manufacturing.doctype.work_order.test_work_order import make_wo_order_test_record
 from erpnext.stock.doctype.item.test_item import make_item
 
+<<<<<<< HEAD
 
 class TestRouting(FrappeTestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["UOM"]
+
+
+class UnitTestRouting(UnitTestCase):
+	"""
+	Unit tests for Routing.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestRouting(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		cls.item_code = "Test Routing Item - A"
 
 	@classmethod
@@ -24,8 +47,11 @@ class TestRouting(FrappeTestCase):
 			{"operation": "Test Operation B", "workstation": "Test Workstation A", "time_in_mins": 20},
 		]
 
+<<<<<<< HEAD
 		make_test_records("UOM")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		setup_operations(operations)
 		routing_doc = create_routing(routing_name="Testing Route", operations=operations)
 		bom_doc = setup_bom(item_code=self.item_code, routing=routing_doc.name)
@@ -38,6 +64,19 @@ class TestRouting(FrappeTestCase):
 			"Job Card", filters={"work_order": wo_doc.name}, order_by="sequence_id desc"
 		):
 			job_card_doc = frappe.get_doc("Job Card", data.name)
+<<<<<<< HEAD
+=======
+			for row in job_card_doc.scheduled_time_logs:
+				job_card_doc.append(
+					"time_logs",
+					{
+						"from_time": row.from_time,
+						"to_time": row.to_time,
+						"time_in_mins": row.time_in_mins,
+					},
+				)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			job_card_doc.time_logs[0].completed_qty = 10
 			if job_card_doc.sequence_id != 1:
 				self.assertRaises(OperationSequenceError, job_card_doc.save)

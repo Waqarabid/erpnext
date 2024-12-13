@@ -292,3 +292,16 @@ def get_message():
 		<span class="indicator red">
 		Expires today / Already Expired
 		</span>"""
+<<<<<<< HEAD
+=======
+
+
+@frappe.whitelist()
+def set_default_supplier(item_code, supplier, company):
+	frappe.db.set_value(
+		"Item Default",
+		{"parent": item_code, "company": company},
+		"default_supplier",
+		supplier,
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -1,10 +1,18 @@
 # Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
 from frappe.utils import flt, nowdate
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import flt, nowdate, nowtime, today
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.assets.doctype.asset.asset import (
 	get_asset_account,
@@ -15,12 +23,29 @@ from erpnext.assets.doctype.asset.test_asset import (
 	create_asset_data,
 	set_depreciation_settings_in_company,
 )
+<<<<<<< HEAD
 from erpnext.stock.doctype.item.test_item import create_item
 
 
 class TestAssetRepair(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
+	get_asset_depr_schedule_doc,
+)
+from erpnext.stock.doctype.item.test_item import create_item
+from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+	get_serial_nos_from_bundle,
+	make_serial_batch_bundle,
+)
+
+
+class TestAssetRepair(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		set_depreciation_settings_in_company()
 		create_asset_data()
 		create_item("_Test Stock Item")
@@ -69,31 +94,52 @@ class TestAssetRepair(unittest.TestCase):
 	def test_warehouse(self):
 		asset_repair = create_asset_repair(stock_consumption=1)
 		self.assertTrue(asset_repair.stock_consumption)
+<<<<<<< HEAD
 		self.assertTrue(asset_repair.warehouse)
+=======
+		self.assertTrue(asset_repair.stock_items[0].warehouse)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_decrease_stock_quantity(self):
 		asset_repair = create_asset_repair(stock_consumption=1, submit=1)
 		stock_entry = frappe.get_last_doc("Stock Entry")
 
 		self.assertEqual(stock_entry.stock_entry_type, "Material Issue")
+<<<<<<< HEAD
 		self.assertEqual(stock_entry.items[0].s_warehouse, asset_repair.warehouse)
+=======
+		self.assertEqual(stock_entry.items[0].s_warehouse, asset_repair.stock_items[0].warehouse)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertEqual(stock_entry.items[0].item_code, asset_repair.stock_items[0].item_code)
 		self.assertEqual(stock_entry.items[0].qty, asset_repair.stock_items[0].consumed_quantity)
 
 	def test_serialized_item_consumption(self):
+<<<<<<< HEAD
 		from erpnext.stock.doctype.serial_no.serial_no import SerialNoRequiredError
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_serialized_item
 
 		stock_entry = make_serialized_item()
 		serial_nos = stock_entry.get("items")[0].serial_no
 		serial_no = serial_nos.split("\n")[0]
+=======
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_serialized_item
+
+		stock_entry = make_serialized_item(self)
+		bundle_id = stock_entry.get("items")[0].serial_and_batch_bundle
+		serial_nos = get_serial_nos_from_bundle(bundle_id)
+		serial_no = serial_nos[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# should not raise any error
 		create_asset_repair(
 			stock_consumption=1,
 			item_code=stock_entry.get("items")[0].item_code,
 			warehouse="_Test Warehouse - _TC",
+<<<<<<< HEAD
 			serial_no=serial_no,
+=======
+			serial_no=[serial_no],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			submit=1,
 		)
 
@@ -105,6 +151,7 @@ class TestAssetRepair(unittest.TestCase):
 		)
 
 		asset_repair.repair_status = "Completed"
+<<<<<<< HEAD
 		self.assertRaises(SerialNoRequiredError, asset_repair.submit)
 
 	def test_increase_in_asset_value_due_to_stock_consumption(self):
@@ -115,25 +162,51 @@ class TestAssetRepair(unittest.TestCase):
 
 		increase_in_asset_value = get_asset_value_after_depreciation(asset.name) - initial_asset_value
 		self.assertEqual(asset_repair.stock_items[0].total_value, increase_in_asset_value)
+=======
+		self.assertRaises(frappe.ValidationError, asset_repair.submit)
+
+	def test_no_increase_in_asset_value_when_not_capitalized(self):
+		asset = create_asset(calculate_depreciation=1, submit=1)
+		initial_asset_value = get_asset_value_after_depreciation(asset.name)
+		create_asset_repair(asset=asset, stock_consumption=1, submit=1)
+		asset.reload()
+
+		increase_in_asset_value = get_asset_value_after_depreciation(asset.name) - initial_asset_value
+		self.assertEqual(increase_in_asset_value, 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_increase_in_asset_value_due_to_repair_cost_capitalisation(self):
 		asset = create_asset(calculate_depreciation=1, submit=1)
 		initial_asset_value = get_asset_value_after_depreciation(asset.name)
+<<<<<<< HEAD
 		asset_repair = create_asset_repair(asset=asset, capitalize_repair_cost=1, submit=1)
+=======
+		asset_repair = create_asset_repair(
+			asset=asset, capitalize_repair_cost=1, item="_Test Non Stock Item", submit=1
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset.reload()
 
 		increase_in_asset_value = get_asset_value_after_depreciation(asset.name) - initial_asset_value
 		self.assertEqual(asset_repair.repair_cost, increase_in_asset_value)
 
 	def test_purchase_invoice(self):
+<<<<<<< HEAD
 		asset_repair = create_asset_repair(capitalize_repair_cost=1, submit=1)
 		self.assertTrue(asset_repair.purchase_invoice)
+=======
+		asset_repair = create_asset_repair(capitalize_repair_cost=1, item="_Test Non Stock Item", submit=1)
+		self.assertTrue(asset_repair.invoices)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_gl_entries_with_perpetual_inventory(self):
 		set_depreciation_settings_in_company(company="_Test Company with perpetual inventory")
 
 		asset_category = frappe.get_doc("Asset Category", "Computers")
+<<<<<<< HEAD
 		asset_category.enable_cwip_accounting = 0
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_category.append(
 			"accounts",
 			{
@@ -141,6 +214,10 @@ class TestAssetRepair(unittest.TestCase):
 				"fixed_asset_account": "_Test Fixed Asset - TCP1",
 				"accumulated_depreciation_account": "_Test Accumulated Depreciations - TCP1",
 				"depreciation_expense_account": "_Test Depreciations - TCP1",
+<<<<<<< HEAD
+=======
+				"capital_work_in_progress_account": "CWIP Account - TCP1",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		)
 		asset_category.save()
@@ -150,6 +227,12 @@ class TestAssetRepair(unittest.TestCase):
 			stock_consumption=1,
 			warehouse="Stores - TCP1",
 			company="_Test Company with perpetual inventory",
+<<<<<<< HEAD
+=======
+			pi_expense_account1="Administrative Expenses - TCP1",
+			pi_expense_account2="Legal Expenses - TCP1",
+			item="_Test Non Stock Item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			submit=1,
 		)
 
@@ -175,16 +258,28 @@ class TestAssetRepair(unittest.TestCase):
 		fixed_asset_account = get_asset_account(
 			"fixed_asset_account", asset=asset_repair.asset, company=asset_repair.company
 		)
+<<<<<<< HEAD
 		pi_expense_account = (
 			frappe.get_doc("Purchase Invoice", asset_repair.purchase_invoice).items[0].expense_account
 		)
 		stock_entry_expense_account = (
 			frappe.get_doc("Stock Entry", asset_repair.stock_entry).get("items")[0].expense_account
+=======
+		pi_expense_accounts = [pi.expense_account for pi in asset_repair.invoices]
+		pi_repair_costs = [pi.repair_cost for pi in asset_repair.invoices]
+		stock_entry_expense_account = (
+			frappe.get_doc("Stock Entry", {"asset_repair": asset_repair.name}).get("items")[0].expense_account
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		expected_values = {
 			fixed_asset_account: [asset_repair.total_repair_cost, 0],
+<<<<<<< HEAD
 			pi_expense_account: [0, asset_repair.repair_cost],
+=======
+			pi_expense_accounts[0]: [0, pi_repair_costs[0]],
+			pi_expense_accounts[1]: [0, pi_repair_costs[1]],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			stock_entry_expense_account: [0, 100],
 		}
 
@@ -197,6 +292,10 @@ class TestAssetRepair(unittest.TestCase):
 		asset_repair = create_asset_repair(
 			capitalize_repair_cost=1,
 			stock_consumption=1,
+<<<<<<< HEAD
+=======
+			item="_Test Non Stock Item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			submit=1,
 		)
 
@@ -225,8 +324,19 @@ class TestAssetRepair(unittest.TestCase):
 		default_expense_account = frappe.get_cached_value(
 			"Company", asset_repair.company, "default_expense_account"
 		)
+<<<<<<< HEAD
 
 		expected_values = {fixed_asset_account: [1100, 0], default_expense_account: [0, 1100]}
+=======
+		pi_expense_accounts = [pi.expense_account for pi in asset_repair.invoices]
+
+		expected_values = {
+			fixed_asset_account: [650, 0],
+			pi_expense_accounts[0]: [0, 250],
+			default_expense_account: [0, 100],
+			pi_expense_accounts[1]: [0, 300],
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for d in gl_entries:
 			self.assertEqual(expected_values[d.account][0], d.debit)
@@ -234,6 +344,7 @@ class TestAssetRepair(unittest.TestCase):
 
 	def test_increase_in_asset_life(self):
 		asset = create_asset(calculate_depreciation=1, submit=1)
+<<<<<<< HEAD
 		initial_num_of_depreciations = num_of_depreciations(asset)
 		create_asset_repair(asset=asset, capitalize_repair_cost=1, submit=1)
 		asset.reload()
@@ -244,6 +355,34 @@ class TestAssetRepair(unittest.TestCase):
 			asset.finance_books[0].value_after_depreciation,
 		)
 
+=======
+
+		first_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Active")
+
+		initial_num_of_depreciations = num_of_depreciations(asset)
+		create_asset_repair(asset=asset, capitalize_repair_cost=1, item="_Test Non Stock Item", submit=1)
+
+		asset.reload()
+		first_asset_depr_schedule.load_from_db()
+
+		second_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(second_asset_depr_schedule.status, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Cancelled")
+
+		self.assertEqual((initial_num_of_depreciations + 1), num_of_depreciations(asset))
+		self.assertEqual(
+			second_asset_depr_schedule.get("depreciation_schedule")[-1].accumulated_depreciation_amount,
+			asset.finance_books[0].value_after_depreciation,
+		)
+
+	def test_asset_repiar_link_in_stock_entry(self):
+		asset = create_asset(calculate_depreciation=1, submit=1)
+		asset_repair = create_asset_repair(asset=asset, stock_consumption=1, submit=1)
+		stock_entry = frappe.get_last_doc("Stock Entry")
+		self.assertEqual(stock_entry.asset_repair, asset_repair.name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def num_of_depreciations(asset):
 	return asset.finance_books[0].total_number_of_depreciations
@@ -266,21 +405,55 @@ def create_asset_repair(**args):
 			"asset_name": asset.asset_name,
 			"failure_date": nowdate(),
 			"description": "Test Description",
+<<<<<<< HEAD
 			"repair_cost": 0,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"company": asset.company,
 		}
 	)
 
 	if args.stock_consumption:
 		asset_repair.stock_consumption = 1
+<<<<<<< HEAD
 		asset_repair.warehouse = args.warehouse or create_warehouse("Test Warehouse", company=asset.company)
+=======
+		warehouse = args.warehouse or create_warehouse("Test Warehouse", company=asset.company)
+
+		bundle = None
+		if args.serial_no:
+			bundle = make_serial_batch_bundle(
+				frappe._dict(
+					{
+						"item_code": args.item_code,
+						"warehouse": warehouse,
+						"company": frappe.get_cached_value("Warehouse", warehouse, "company"),
+						"qty": (flt(args.stock_qty) or 1) * -1,
+						"voucher_type": "Asset Repair",
+						"type_of_transaction": "Asset Repair",
+						"serial_nos": args.serial_no,
+						"posting_date": today(),
+						"posting_time": nowtime(),
+						"do_not_submit": 1,
+					}
+				)
+			).name
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_repair.append(
 			"stock_items",
 			{
 				"item_code": args.item_code or "_Test Stock Item",
+<<<<<<< HEAD
 				"valuation_rate": args.rate if args.get("rate") is not None else 100,
 				"consumed_quantity": args.qty or 1,
 				"serial_no": args.serial_no,
+=======
+				"warehouse": warehouse,
+				"valuation_rate": args.rate if args.get("rate") is not None else 100,
+				"consumed_quantity": args.qty or 1,
+				"serial_and_batch_bundle": bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		)
 
@@ -297,7 +470,11 @@ def create_asset_repair(**args):
 			stock_entry.append(
 				"items",
 				{
+<<<<<<< HEAD
 					"t_warehouse": asset_repair.warehouse,
+=======
+					"t_warehouse": asset_repair.stock_items[0].warehouse,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"item_code": asset_repair.stock_items[0].item_code,
 					"qty": asset_repair.stock_items[0].consumed_quantity,
 					"basic_rate": args.rate if args.get("rate") is not None else 100,
@@ -308,6 +485,7 @@ def create_asset_repair(**args):
 
 		if args.capitalize_repair_cost:
 			asset_repair.capitalize_repair_cost = 1
+<<<<<<< HEAD
 			asset_repair.repair_cost = 1000
 			if asset.calculate_depreciation:
 				asset_repair.increase_in_asset_life = 12
@@ -319,5 +497,40 @@ def create_asset_repair(**args):
 			)
 			asset_repair.purchase_invoice = pi.name
 
+=======
+			if asset.calculate_depreciation:
+				asset_repair.increase_in_asset_life = 12
+			pi1 = make_purchase_invoice(
+				company=asset.company,
+				item=args.item or "_Test Item",
+				expense_account=args.pi_expense_account1 or "Administrative Expenses - _TC",
+				cost_center=asset_repair.cost_center,
+				warehouse=args.warehouse or create_warehouse("Test Warehouse", company=asset.company),
+				rate="50",
+			)
+			pi2 = make_purchase_invoice(
+				company=asset.company,
+				item=args.item or "_Test Item",
+				expense_account=args.pi_expense_account2 or "Legal Expenses - _TC",
+				cost_center=asset_repair.cost_center,
+				warehouse=args.warehouse or create_warehouse("Test Warehouse", company=asset.company),
+				rate="60",
+			)
+			invoices = [
+				{
+					"purchase_invoice": pi1.name,
+					"expense_account": args.pi_expense_account1 or "Administrative Expenses - _TC",
+					"repair_cost": args.pi_repair_cost1 or 250,
+				},
+				{
+					"purchase_invoice": pi2.name,
+					"expense_account": args.pi_expense_account2 or "Legal Expenses - _TC",
+					"repair_cost": args.pi_repair_cost2 or 300,
+				},
+			]
+
+			for invoice in invoices:
+				asset_repair.append("invoices", invoice)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_repair.submit()
 	return asset_repair

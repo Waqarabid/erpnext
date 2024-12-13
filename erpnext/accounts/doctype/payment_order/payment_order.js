@@ -143,7 +143,11 @@ frappe.ui.form.on("Payment Order", {
 			return frappe.call({
 				method: "erpnext.accounts.doctype.payment_order.payment_order.make_payment_records",
 				args: {
+<<<<<<< HEAD
 					name: me.frm.doc.name,
+=======
+					name: frm.doc.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					supplier: args.supplier,
 					mode_of_payment: args.mode_of_payment,
 				},

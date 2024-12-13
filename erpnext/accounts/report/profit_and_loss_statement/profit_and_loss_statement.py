@@ -88,6 +88,7 @@ def get_report_summary(
 	if filters.get("accumulated_in_group_company"):
 		period_list = get_filtered_list_for_consolidated_report(filters, period_list)
 
+<<<<<<< HEAD
 	for period in period_list:
 		key = period if consolidated else period.key
 		if income:
@@ -96,6 +97,27 @@ def get_report_summary(
 			net_expense += expense[-2].get(key)
 		if net_profit_loss:
 			net_profit += net_profit_loss.get(key)
+=======
+	if filters.accumulated_values:
+		# when 'accumulated_values' is enabled, periods have running balance.
+		# so, last period will have the net amount.
+		key = period_list[-1].key
+		if income:
+			net_income = income[-2].get(key)
+		if expense:
+			net_expense = expense[-2].get(key)
+		if net_profit_loss:
+			net_profit = net_profit_loss.get(key)
+	else:
+		for period in period_list:
+			key = period if consolidated else period.key
+			if income:
+				net_income += income[-2].get(key)
+			if expense:
+				net_expense += expense[-2].get(key)
+			if net_profit_loss:
+				net_profit += net_profit_loss.get(key)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if len(period_list) == 1 and periodicity == "Yearly":
 		profit_label = _("Profit This Year")

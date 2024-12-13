@@ -3,8 +3,11 @@
 
 import frappe
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Product Bundle")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def make_product_bundle(parent, items, qty=None):
 	if frappe.db.exists("Product Bundle", parent):

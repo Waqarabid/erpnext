@@ -3,8 +3,11 @@
 
 frappe.ui.form.on("Sales Partner", {
 	refresh: function (frm) {
+<<<<<<< HEAD
 		frappe.dynamic_link = { doc: frm.doc, fieldname: "name", doctype: "Sales Partner" };
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.__islocal) {
 			hide_field(["address_html", "contact_html", "address_contacts"]);
 			frappe.contacts.clear_address_and_contact(frm);

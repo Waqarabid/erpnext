@@ -1,6 +1,10 @@
 {
     "country_code": "ni", 
+<<<<<<< HEAD
     "name": "Nicaragua - Catalogo de Cuentas", 
+=======
+    "name": "Nicaragua - Catálogo de Cuentas", 
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
     "tree": {
         "Activo": {
             "Activo Corriente": {
@@ -491,4 +495,8 @@
             "root_type": "Liability"
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

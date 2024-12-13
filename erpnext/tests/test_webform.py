@@ -1,6 +1,7 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
 
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 
@@ -11,6 +12,26 @@ class TestWebsite(unittest.TestCase):
 		create_user("Supplier 2", "supplier2@gmail.com")
 		create_supplier_with_contact("Supplier1", "All Supplier Groups", "Supplier 1", "supplier1@gmail.com")
 		create_supplier_with_contact("Supplier2", "All Supplier Groups", "Supplier 2", "supplier2@gmail.com")
+=======
+from frappe.tests import IntegrationTestCase
+
+from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
+from erpnext.buying.doctype.supplier.test_supplier import create_supplier
+
+
+class TestWebsite(IntegrationTestCase):
+	def test_permission_for_custom_doctype(self):
+		create_user("Supplier 1", "supplier1@gmail.com")
+		create_user("Supplier 2", "supplier2@gmail.com")
+
+		supplier1 = create_supplier(supplier_name="Supplier1")
+		supplier2 = create_supplier(supplier_name="Supplier2")
+		supplier1.append("portal_users", {"user": "supplier1@gmail.com"})
+		supplier1.save()
+		supplier2.append("portal_users", {"user": "supplier2@gmail.com"})
+		supplier2.save()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		po1 = create_purchase_order(supplier="Supplier1")
 		po2 = create_purchase_order(supplier="Supplier2")
 
@@ -40,7 +61,11 @@ def get_data():
 	webform_list_contexts = frappe.get_hooks("webform_list_context")
 	if webform_list_contexts:
 		context = frappe._dict(frappe.get_attr(webform_list_contexts[0])("Buying") or {})
+<<<<<<< HEAD
 	kwargs = dict(doctype="Order Assignment", order_by="modified desc")
+=======
+	kwargs = dict(doctype="Order Assignment", order_by="creation desc")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return context.get_list(**kwargs)
 
 
@@ -57,6 +82,7 @@ def create_user(name, email):
 	).insert(ignore_if_duplicate=True)
 
 
+<<<<<<< HEAD
 def create_supplier_with_contact(name, group, contact_name, contact_email):
 	supplier = frappe.get_doc({"doctype": "Supplier", "supplier_name": name, "supplier_group": group}).insert(
 		ignore_if_duplicate=True
@@ -72,6 +98,8 @@ def create_supplier_with_contact(name, group, contact_name, contact_email):
 		new_contact.insert(ignore_mandatory=True)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def create_custom_doctype():
 	frappe.get_doc(
 		{

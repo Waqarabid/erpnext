@@ -83,7 +83,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "hidden": 1,
    "label": "Address",
    "read_only": 1
@@ -101,6 +105,10 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Mobile No",
+<<<<<<< HEAD
+=======
+   "options": "Phone",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -108,6 +116,10 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Contact Email",
+<<<<<<< HEAD
+=======
+   "options": "Email",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -293,7 +305,11 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-12-17 03:10:27.608112",
+=======
+ "modified": "2024-03-27 13:10:04.257508",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Maintenance",
  "name": "Maintenance Visit",
@@ -317,8 +333,14 @@
  ],
  "search_fields": "status,maintenance_type,customer,customer_name,mntc_date,company",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "timeline_field": "customer",
  "title_field": "customer_name"
 }

@@ -4,6 +4,10 @@
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
+=======
+from frappe.query_builder import DocType
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import cstr, flt
 
 
@@ -75,11 +79,34 @@ def get_data(filters):
 		asset_data = assets_details.get(d.against_voucher)
 		if asset_data:
 			if not asset_data.get("accumulated_depreciation_amount"):
+<<<<<<< HEAD
 				asset_data.accumulated_depreciation_amount = d.debit + asset_data.get(
 					"opening_accumulated_depreciation"
 				)
 			else:
 				asset_data.accumulated_depreciation_amount += d.debit
+=======
+				AssetDepreciationSchedule = DocType("Asset Depreciation Schedule")
+				DepreciationSchedule = DocType("Depreciation Schedule")
+				query = (
+					frappe.qb.from_(DepreciationSchedule)
+					.join(AssetDepreciationSchedule)
+					.on(DepreciationSchedule.parent == AssetDepreciationSchedule.name)
+					.select(DepreciationSchedule.accumulated_depreciation_amount)
+					.where(
+						(AssetDepreciationSchedule.asset == d.against_voucher)
+						& (DepreciationSchedule.parenttype == "Asset Depreciation Schedule")
+						& (DepreciationSchedule.schedule_date == d.posting_date)
+					)
+				).run(as_dict=True)
+				asset_data.accumulated_depreciation_amount = (
+					query[0]["accumulated_depreciation_amount"] if query else 0
+				)
+
+			else:
+				asset_data.accumulated_depreciation_amount += d.debit
+			asset_data.opening_accumulated_depreciation = asset_data.accumulated_depreciation_amount - d.debit
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			row = frappe._dict(asset_data)
 			row.update(

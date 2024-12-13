@@ -12,6 +12,20 @@ frappe.ui.form.on("Job Card", {
 			};
 		});
 
+<<<<<<< HEAD
+=======
+		frm.set_query("serial_and_batch_bundle", () => {
+			return {
+				filters: {
+					item_code: frm.doc.production_item,
+					voucher_type: frm.doc.doctype,
+					voucher_no: ["in", [frm.doc.name, ""]],
+					is_cancelled: 0,
+				},
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_indicator_formatter("sub_operation", function (doc) {
 			if (doc.status == "Pending") {
 				return "red";
@@ -21,21 +35,77 @@ frappe.ui.form.on("Job Card", {
 		});
 	},
 
+<<<<<<< HEAD
 	refresh: function (frm) {
 		frappe.flags.pause_job = 0;
 		frappe.flags.resume_job = 0;
 		let has_items = frm.doc.items && frm.doc.items.length;
 
 		if (!frm.is_new() && frm.doc.__onload.work_order_closed) {
+=======
+	make_fields_read_only(frm) {
+		if (frm.doc.docstatus === 1) {
+			frm.set_df_property("employee", "read_only", 1);
+			frm.set_df_property("time_logs", "read_only", 1);
+		}
+
+		if (frm.doc.is_subcontracted) {
+			frm.set_df_property("wip_warehouse", "label", __("Supplier Warehouse"));
+		}
+	},
+
+	setup_stock_entry(frm) {
+		if (
+			frm.doc.finished_good &&
+			frm.doc.docstatus === 1 &&
+			!frm.doc.is_subcontracted &&
+			flt(frm.doc.for_quantity) + flt(frm.doc.process_loss_qty) > flt(frm.doc.manufactured_qty)
+		) {
+			frm.add_custom_button(__("Make Stock Entry"), () => {
+				frm.call({
+					method: "make_stock_entry_for_semi_fg_item",
+					args: {
+						auto_submit: 1,
+					},
+					doc: frm.doc,
+					freeze: true,
+					callback() {
+						frm.reload_doc();
+					},
+				});
+			}).addClass("btn-primary");
+		}
+	},
+
+	refresh: function (frm) {
+		frm.trigger("setup_stock_entry");
+
+		let has_items = frm.doc.items && frm.doc.items.length;
+		frm.trigger("make_fields_read_only");
+
+		if (!frm.is_new() && frm.doc.__onload?.work_order_closed) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frm.disable_save();
 			return;
 		}
 
+<<<<<<< HEAD
+=======
+		if (frm.doc.is_subcontracted) {
+			frm.trigger("make_subcontracting_po");
+			return;
+		}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		let has_stock_entry = frm.doc.__onload && frm.doc.__onload.has_stock_entry ? true : false;
 
 		frm.toggle_enable("for_quantity", !has_stock_entry);
 
+<<<<<<< HEAD
 		if (!frm.is_new() && has_items && frm.doc.docstatus < 2) {
+=======
+		if (!frm.is_new() && !frm.doc.skip_material_transfer && has_items && frm.doc.docstatus < 2) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			let to_request = frm.doc.for_quantity > frm.doc.transferred_qty;
 			let excess_transfer_allowed = frm.doc.__onload.job_card_excess_transfer;
 
@@ -52,11 +122,19 @@ frappe.ui.form.on("Job Card", {
 			if (to_transfer || excess_transfer_allowed) {
 				frm.add_custom_button(__("Material Transfer"), () => {
 					frm.trigger("make_stock_entry");
+<<<<<<< HEAD
 				}).addClass("btn-primary");
 			}
 		}
 
 		if (frm.doc.docstatus == 1 && !frm.doc.is_corrective_job_card) {
+=======
+				});
+			}
+		}
+
+		if (frm.doc.docstatus == 1 && !frm.doc.is_corrective_job_card && !frm.doc.finished_good) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frm.trigger("setup_corrective_job_card");
 		}
 
@@ -73,6 +151,7 @@ frappe.ui.form.on("Job Card", {
 		frm.trigger("toggle_operation_number");
 
 		if (
+<<<<<<< HEAD
 			frm.doc.docstatus == 0 &&
 			!frm.is_new() &&
 			(frm.doc.for_quantity > frm.doc.total_completed_qty || !frm.doc.for_quantity) &&
@@ -98,6 +177,69 @@ frappe.ui.form.on("Job Card", {
 				);
 			} else {
 				frm.trigger("prepare_timer_buttons");
+=======
+			frm.doc.for_quantity + frm.doc.process_loss_qty > frm.doc.total_completed_qty &&
+			(frm.doc.skip_material_transfer ||
+				frm.doc.transferred_qty >= frm.doc.for_quantity + frm.doc.process_loss_qty ||
+				!frm.doc.finished_good)
+		) {
+			if (!frm.doc.time_logs?.length) {
+				frm.add_custom_button(__("Start Job"), () => {
+					let from_time = frappe.datetime.now_datetime();
+					if ((frm.doc.employee && !frm.doc.employee.length) || !frm.doc.employee) {
+						frappe.prompt(
+							{
+								fieldtype: "Table MultiSelect",
+								label: __("Select Employees"),
+								options: "Job Card Time Log",
+								fieldname: "employees",
+							},
+							(d) => {
+								frm.events.start_timer(frm, from_time, d.employees);
+							},
+							__("Assign Job to Employee")
+						);
+					} else {
+						frm.events.start_timer(frm, from_time, frm.doc.employee);
+					}
+				});
+			} else if (frm.doc.is_paused) {
+				frm.add_custom_button(__("Resume Job"), () => {
+					frm.call({
+						method: "resume_job",
+						doc: frm.doc,
+						args: {
+							start_time: frappe.datetime.now_datetime(),
+						},
+						callback() {
+							frm.reload_doc();
+						},
+					});
+				});
+			} else {
+				if (frm.doc.for_quantity - frm.doc.manufactured_qty > 0) {
+					if (!frm.doc.is_paused) {
+						frm.add_custom_button(__("Pause Job"), () => {
+							frm.call({
+								method: "pause_job",
+								doc: frm.doc,
+								args: {
+									end_time: frappe.datetime.now_datetime(),
+								},
+								callback() {
+									frm.reload_doc();
+								},
+							});
+						});
+					}
+
+					frm.add_custom_button(__("Complete Job"), () => {
+						frm.trigger("complete_job_card");
+					});
+				}
+
+				frm.trigger("make_dashboard");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 
@@ -105,11 +247,140 @@ frappe.ui.form.on("Job Card", {
 
 		if (frm.doc.work_order) {
 			frappe.db.get_value("Work Order", frm.doc.work_order, "transfer_material_against").then((r) => {
+<<<<<<< HEAD
 				if (r.message.transfer_material_against == "Work Order") {
+=======
+				if (r.message.transfer_material_against == "Work Order" && !frm.doc.operation_row_id) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frm.set_df_property("items", "hidden", 1);
 				}
 			});
 		}
+<<<<<<< HEAD
+=======
+
+		let sbb_field = frm.get_docfield("serial_and_batch_bundle");
+		if (sbb_field) {
+			sbb_field.get_route_options_for_new_doc = () => {
+				return {
+					item_code: frm.doc.production_item,
+					warehouse: frm.doc.wip_warehouse,
+					voucher_type: frm.doc.doctype,
+				};
+			};
+		}
+	},
+
+	complete_job_card(frm) {
+		let fields = [
+			{
+				fieldtype: "Float",
+				label: __("Completed Quantity"),
+				fieldname: "qty",
+				reqd: 1,
+				default: frm.doc.for_quantity - frm.doc.manufactured_qty,
+			},
+			{
+				fieldtype: "Datetime",
+				label: __("End Time"),
+				fieldname: "end_time",
+				default: frappe.datetime.now_datetime(),
+			},
+		];
+
+		frappe.prompt(
+			fields,
+			(data) => {
+				if (data.qty <= 0) {
+					frappe.throw(__("Quantity should be greater than 0"));
+				}
+
+				frm.call({
+					method: "complete_job_card",
+					doc: frm.doc,
+					args: {
+						qty: data.qty,
+						end_time: data.end_time,
+					},
+					callback: function (r) {
+						frm.reload_doc();
+					},
+				});
+			},
+			__("Enter Value"),
+			__("Update"),
+			__("Set Finished Good Quantity")
+		);
+	},
+
+	make_subcontracting_po(frm) {
+		if (frm.doc.docstatus === 1 && frm.doc.for_quantity > frm.doc.manufactured_qty) {
+			frm.add_custom_button(__("Make Subcontracting PO"), () => {
+				frappe.model.open_mapped_doc({
+					method: "erpnext.manufacturing.doctype.job_card.job_card.make_subcontracting_po",
+					frm: frm,
+				});
+			}).addClass("btn-primary");
+		}
+	},
+
+	start_timer(frm, start_time, employees) {
+		frm.call({
+			method: "start_timer",
+			doc: frm.doc,
+			args: {
+				start_time: start_time,
+				employees: employees,
+			},
+			callback: function (r) {
+				frm.reload_doc();
+				frm.trigger("make_dashboard");
+			},
+		});
+	},
+
+	make_finished_good(frm) {
+		let fields = [
+			{
+				fieldtype: "Float",
+				label: __("Completed Quantity"),
+				fieldname: "qty",
+				reqd: 1,
+				default: frm.doc.for_quantity - frm.doc.manufactured_qty,
+			},
+			{
+				fieldtype: "Datetime",
+				label: __("End Time"),
+				fieldname: "end_time",
+				default: frappe.datetime.now_datetime(),
+			},
+		];
+
+		frappe.prompt(
+			fields,
+			(data) => {
+				if (data.qty <= 0) {
+					frappe.throw(__("Quantity should be greater than 0"));
+				}
+
+				frm.call({
+					method: "make_finished_good",
+					doc: frm.doc,
+					args: {
+						qty: data.qty,
+						end_time: data.end_time,
+					},
+					callback: function (r) {
+						var doc = frappe.model.sync(r.message);
+						frappe.set_route("Form", doc[0].doctype, doc[0].name);
+					},
+				});
+			},
+			__("Enter Value"),
+			__("Update"),
+			__("Set Finished Good Quantity")
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	setup_quality_inspection: function (frm) {
@@ -240,6 +511,7 @@ frappe.ui.form.on("Job Card", {
 		frm.toggle_reqd("operation_row_number", !frm.doc.operation_id && frm.doc.operation);
 	},
 
+<<<<<<< HEAD
 	prepare_timer_buttons: function (frm) {
 		frm.trigger("make_dashboard");
 
@@ -324,6 +596,8 @@ frappe.ui.form.on("Job Card", {
 		frm.events.make_time_log(frm, args);
 	},
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	make_time_log: function (frm, args) {
 		frm.events.update_sub_operation(frm, args);
 
@@ -362,10 +636,45 @@ frappe.ui.form.on("Job Card", {
 	make_dashboard: function (frm) {
 		if (frm.doc.__islocal) return;
 
+<<<<<<< HEAD
 		frm.dashboard.refresh();
 		const timer = `
 			<div class="stopwatch" style="font-weight:bold;margin:0px 13px 0px 2px;
 				color:#545454;font-size:18px;display:inline-block;vertical-align:text-bottom;>
+=======
+		function setCurrentIncrement() {
+			currentIncrement += 1;
+			return currentIncrement;
+		}
+
+		function updateStopwatch(increment) {
+			var hours = Math.floor(increment / 3600);
+			var minutes = Math.floor((increment - hours * 3600) / 60);
+			var seconds = flt(increment - hours * 3600 - minutes * 60, 2);
+
+			$(section)
+				.find(".hours")
+				.text(hours < 10 ? "0" + hours.toString() : hours.toString());
+			$(section)
+				.find(".minutes")
+				.text(minutes < 10 ? "0" + minutes.toString() : minutes.toString());
+			$(section)
+				.find(".seconds")
+				.text(seconds < 10 ? "0" + seconds.toString() : seconds.toString());
+		}
+
+		function initialiseTimer() {
+			const interval = setInterval(function () {
+				var current = setCurrentIncrement();
+				updateStopwatch(current);
+			}, 1000);
+		}
+
+		frm.dashboard.refresh();
+		const timer = `
+			<div class="stopwatch" style="font-weight:bold;margin:0px 13px 0px 2px;
+				color:#545454;font-size:18px;display:inline-block;vertical-align:text-bottom;">
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				<span class="hours">00</span>
 				<span class="colon">:</span>
 				<span class="minutes">00</span>
@@ -374,6 +683,7 @@ frappe.ui.form.on("Job Card", {
 			</div>`;
 
 		var section = frm.toolbar.page.add_inner_message(timer);
+<<<<<<< HEAD
 
 		let currentIncrement = frm.doc.current_time || 0;
 		if (frm.doc.started_time || frm.doc.current_time) {
@@ -417,6 +727,36 @@ frappe.ui.form.on("Job Card", {
 		}
 	},
 
+=======
+		let currentIncrement = frm.events.get_current_time(frm);
+		if (frm.doc.time_logs?.length && frm.doc.time_logs[cint(frm.doc.time_logs.length) - 1].to_time) {
+			updateStopwatch(currentIncrement);
+		} else if (frm.doc.status == "On Hold") {
+			updateStopwatch(currentIncrement);
+		} else {
+			initialiseTimer();
+		}
+	},
+
+	get_current_time(frm) {
+		let current_time = 0;
+
+		frm.doc.time_logs.forEach((d) => {
+			if (d.to_time) {
+				if (d.time_in_mins) {
+					current_time += flt(d.time_in_mins, 2) * 60;
+				} else {
+					current_time += get_seconds_diff(d.to_time, d.from_time);
+				}
+			} else {
+				current_time += get_seconds_diff(frappe.datetime.now_datetime(), d.from_time);
+			}
+		});
+
+		return current_time;
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	hide_timer: function (frm) {
 		frm.toolbar.page.inner_toolbar.find(".stopwatch").remove();
 	},
@@ -470,6 +810,17 @@ frappe.ui.form.on("Job Card", {
 
 		refresh_field("total_completed_qty");
 	},
+<<<<<<< HEAD
+=======
+
+	source_warehouse(frm) {
+		if (frm.doc.source_warehouse) {
+			frm.doc.items.forEach((d) => {
+				frappe.model.set_value(d.doctype, d.name, "source_warehouse", frm.doc.source_warehouse);
+			});
+		}
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });
 
 frappe.ui.form.on("Job Card Time Log", {
@@ -481,3 +832,10 @@ frappe.ui.form.on("Job Card Time Log", {
 		frm.set_value("started_time", "");
 	},
 });
+<<<<<<< HEAD
+=======
+
+function get_seconds_diff(d1, d2) {
+	return moment(d1).diff(d2, "seconds");
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

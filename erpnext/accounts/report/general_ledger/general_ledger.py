@@ -2,10 +2,18 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
+=======
+import copy
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from collections import OrderedDict
 
 import frappe
 from frappe import _, _dict
+<<<<<<< HEAD
+=======
+from frappe.query_builder import Criterion
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import cstr, getdate
 
 from erpnext import get_company_currency, get_default_company
@@ -17,9 +25,12 @@ from erpnext.accounts.report.financial_statements import get_cost_centers_with_c
 from erpnext.accounts.report.utils import convert_to_presentation_currency, get_currency
 from erpnext.accounts.utils import get_account_currency
 
+<<<<<<< HEAD
 # to cache translations
 TRANSLATIONS = frappe._dict()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def execute(filters=None):
 	if not filters:
@@ -36,6 +47,12 @@ def execute(filters=None):
 	if filters.get("party"):
 		filters.party = frappe.parse_json(filters.get("party"))
 
+<<<<<<< HEAD
+=======
+	if filters.get("voucher_no") and not filters.get("group_by"):
+		filters.group_by = "Group by Voucher (Consolidated)"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	validate_filters(filters, account_details)
 
 	validate_party(filters)
@@ -44,19 +61,25 @@ def execute(filters=None):
 
 	columns = get_columns(filters)
 
+<<<<<<< HEAD
 	update_translations()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	res = get_result(filters, account_details)
 
 	return columns, res
 
 
+<<<<<<< HEAD
 def update_translations():
 	TRANSLATIONS.update(
 		dict(OPENING=_("Opening"), TOTAL=_("Total"), CLOSING_TOTAL=_("Closing (Opening + Total)"))
 	)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def validate_filters(filters, account_details):
 	if not filters.get("company"):
 		frappe.throw(_("{0} is mandatory").format(_("Company")))
@@ -178,18 +201,38 @@ def get_gl_entries(filters, accounting_dimensions):
 		order_by_statement = "order by account, posting_date, creation"
 
 	if filters.get("include_default_book_entries"):
+<<<<<<< HEAD
 		filters["company_fb"] = frappe.db.get_value("Company", filters.get("company"), "default_finance_book")
+=======
+		filters["company_fb"] = frappe.get_cached_value(
+			"Company", filters.get("company"), "default_finance_book"
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	dimension_fields = ""
 	if accounting_dimensions:
 		dimension_fields = ", ".join(accounting_dimensions) + ","
 
+<<<<<<< HEAD
+=======
+	transaction_currency_fields = ""
+	if filters.get("add_values_in_transaction_currency"):
+		transaction_currency_fields = (
+			"debit_in_transaction_currency, credit_in_transaction_currency, transaction_currency,"
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	gl_entries = frappe.db.sql(
 		f"""
 		select
 			name as gl_entry, posting_date, account, party_type, party,
+<<<<<<< HEAD
 			voucher_type, voucher_no, {dimension_fields}
 			cost_center, project,
+=======
+			voucher_type, voucher_subtype, voucher_no, {dimension_fields}
+			cost_center, project, {transaction_currency_fields}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			against_voucher_type, against_voucher, account_currency,
 			against, is_opening, creation {select_fields}
 		from `tabGL Entry`
@@ -221,6 +264,12 @@ def get_conditions(filters):
 	if filters.get("voucher_no"):
 		conditions.append("voucher_no=%(voucher_no)s")
 
+<<<<<<< HEAD
+=======
+	if filters.get("against_voucher_no"):
+		conditions.append("against_voucher=%(against_voucher_no)s")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if filters.get("ignore_err"):
 		err_journals = frappe.db.get_all(
 			"Journal Entry",
@@ -325,6 +374,7 @@ def get_accounts_with_children(accounts):
 	if not isinstance(accounts, list):
 		accounts = [d.strip() for d in accounts.strip().split(",") if d]
 
+<<<<<<< HEAD
 	all_accounts = []
 	for d in accounts:
 		if frappe.db.exists("Account", d):
@@ -335,6 +385,24 @@ def get_accounts_with_children(accounts):
 			frappe.throw(_("Account: {0} does not exist").format(d))
 
 	return list(set(all_accounts)) if all_accounts else None
+=======
+	if not accounts:
+		return
+
+	doctype = frappe.qb.DocType("Account")
+	accounts_data = (
+		frappe.qb.from_(doctype)
+		.select(doctype.lft, doctype.rgt)
+		.where(doctype.name.isin(accounts))
+		.run(as_dict=True)
+	)
+
+	conditions = []
+	for account in accounts_data:
+		conditions.append((doctype.lft >= account.lft) & (doctype.rgt <= account.rgt))
+
+	return frappe.qb.from_(doctype).select(doctype.name).where(Criterion.any(conditions)).run(pluck=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def set_bill_no(gl_entries):
@@ -345,12 +413,22 @@ def set_bill_no(gl_entries):
 
 def get_data_with_opening_closing(filters, account_details, accounting_dimensions, gl_entries):
 	data = []
+<<<<<<< HEAD
 
 	set_bill_no(gl_entries)
 
 	gle_map = initialize_gle_map(gl_entries, filters)
 
 	totals, entries = get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map)
+=======
+	totals_dict = get_totals_dict()
+
+	set_bill_no(gl_entries)
+
+	gle_map = initialize_gle_map(gl_entries, filters, totals_dict)
+
+	totals, entries = get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map, totals_dict)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# Opening for filtered account
 	data.append(totals.opening)
@@ -360,7 +438,11 @@ def get_data_with_opening_closing(filters, account_details, accounting_dimension
 			# acc
 			if acc_dict.entries:
 				# opening
+<<<<<<< HEAD
 				data.append({})
+=======
+				data.append({"debit_in_transaction_currency": None, "credit_in_transaction_currency": None})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if filters.get("group_by") != "Group by Voucher":
 					data.append(acc_dict.totals.opening)
 
@@ -372,7 +454,12 @@ def get_data_with_opening_closing(filters, account_details, accounting_dimension
 				# closing
 				if filters.get("group_by") != "Group by Voucher":
 					data.append(acc_dict.totals.closing)
+<<<<<<< HEAD
 		data.append({})
+=======
+
+		data.append({"debit_in_transaction_currency": None, "credit_in_transaction_currency": None})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		data += entries
 
@@ -393,12 +480,23 @@ def get_totals_dict():
 			credit=0.0,
 			debit_in_account_currency=0.0,
 			credit_in_account_currency=0.0,
+<<<<<<< HEAD
 		)
 
 	return _dict(
 		opening=_get_debit_credit_dict(TRANSLATIONS.OPENING),
 		total=_get_debit_credit_dict(TRANSLATIONS.TOTAL),
 		closing=_get_debit_credit_dict(TRANSLATIONS.CLOSING_TOTAL),
+=======
+			debit_in_transaction_currency=None,
+			credit_in_transaction_currency=None,
+		)
+
+	return _dict(
+		opening=_get_debit_credit_dict(_("Opening")),
+		total=_get_debit_credit_dict(_("Total")),
+		closing=_get_debit_credit_dict(_("Closing (Opening + Total)")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
@@ -411,17 +509,29 @@ def group_by_field(group_by):
 		return "voucher_no"
 
 
+<<<<<<< HEAD
 def initialize_gle_map(gl_entries, filters):
+=======
+def initialize_gle_map(gl_entries, filters, totals_dict):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	gle_map = OrderedDict()
 	group_by = group_by_field(filters.get("group_by"))
 
 	for gle in gl_entries:
+<<<<<<< HEAD
 		gle_map.setdefault(gle.get(group_by), _dict(totals=get_totals_dict(), entries=[]))
 	return gle_map
 
 
 def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map):
 	totals = get_totals_dict()
+=======
+		gle_map.setdefault(gle.get(group_by), _dict(totals=copy.deepcopy(totals_dict), entries=[]))
+	return gle_map
+
+
+def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map, totals):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	entries = []
 	consolidated_gle = OrderedDict()
 	group_by = group_by_field(filters.get("group_by"))
@@ -430,6 +540,11 @@ def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map):
 	if filters.get("show_net_values_in_party_account"):
 		account_type_map = get_account_type_map(filters.get("company"))
 
+<<<<<<< HEAD
+=======
+	immutable_ledger = frappe.db.get_single_value("Accounts Settings", "enable_immutable_ledger")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_value_in_dict(data, key, gle):
 		data[key].debit += gle.debit
 		data[key].credit += gle.credit
@@ -437,6 +552,13 @@ def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map):
 		data[key].debit_in_account_currency += gle.debit_in_account_currency
 		data[key].credit_in_account_currency += gle.credit_in_account_currency
 
+<<<<<<< HEAD
+=======
+		if filters.get("add_values_in_transaction_currency") and key not in ["opening", "closing", "total"]:
+			data[key].debit_in_transaction_currency += gle.debit_in_transaction_currency
+			data[key].credit_in_transaction_currency += gle.credit_in_transaction_currency
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if filters.get("show_net_values_in_party_account") and account_type_map.get(data[key].account) in (
 			"Receivable",
 			"Payable",
@@ -466,6 +588,13 @@ def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map):
 
 	for gle in gl_entries:
 		group_by_value = gle.get(group_by)
+<<<<<<< HEAD
+=======
+		gle.voucher_subtype = _(gle.voucher_subtype)
+		gle.against_voucher_type = _(gle.against_voucher_type)
+		gle.remarks = _(gle.remarks)
+		gle.party_type = _(gle.party_type)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if gle.posting_date < from_date or (cstr(gle.is_opening) == "Yes" and not show_opening_entries):
 			if not group_by_voucher_consolidated:
@@ -486,12 +615,23 @@ def get_accountwise_gle(filters, accounting_dimensions, gl_entries, gle_map):
 
 			elif group_by_voucher_consolidated:
 				keylist = [
+<<<<<<< HEAD
+=======
+					gle.get("posting_date"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					gle.get("voucher_type"),
 					gle.get("voucher_no"),
 					gle.get("account"),
 					gle.get("party_type"),
 					gle.get("party"),
 				]
+<<<<<<< HEAD
+=======
+
+				if immutable_ledger:
+					keylist.append(gle.get("creation"))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if filters.get("include_dimensions"):
 					for dim in accounting_dimensions:
 						keylist.append(gle.get(dim))
@@ -596,8 +736,47 @@ def get_columns(filters):
 			"fieldtype": "Float",
 			"width": 130,
 		},
+<<<<<<< HEAD
 		{"label": _("Voucher Type"), "fieldname": "voucher_type", "width": 120},
 		{
+=======
+	]
+
+	if filters.get("add_values_in_transaction_currency"):
+		columns += [
+			{
+				"label": _("Debit (Transaction)"),
+				"fieldname": "debit_in_transaction_currency",
+				"fieldtype": "Currency",
+				"width": 130,
+				"options": "transaction_currency",
+			},
+			{
+				"label": _("Credit (Transaction)"),
+				"fieldname": "credit_in_transaction_currency",
+				"fieldtype": "Currency",
+				"width": 130,
+				"options": "transaction_currency",
+			},
+			{
+				"label": "Transaction Currency",
+				"fieldname": "transaction_currency",
+				"fieldtype": "Link",
+				"options": "Currency",
+				"width": 70,
+			},
+		]
+
+	columns += [
+		{"label": _("Voucher Type"), "fieldname": "voucher_type", "width": 120},
+		{
+			"label": _("Voucher Subtype"),
+			"fieldname": "voucher_subtype",
+			"fieldtype": "Data",
+			"width": 180,
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"label": _("Voucher No"),
 			"fieldname": "voucher_no",
 			"fieldtype": "Dynamic Link",

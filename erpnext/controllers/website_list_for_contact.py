@@ -35,7 +35,11 @@ def get_webform_list_context(module):
 
 
 def get_webform_transaction_list(
+<<<<<<< HEAD
 	doctype, txt=None, filters=None, limit_start=0, limit_page_length=20, order_by="modified"
+=======
+	doctype, txt=None, filters=None, limit_start=0, limit_page_length=20, order_by="creation"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 ):
 	"""Get List of transactions for custom doctypes"""
 	from frappe.www.list import get_list
@@ -59,7 +63,11 @@ def get_webform_transaction_list(
 		limit_page_length,
 		ignore_permissions=False,
 		fields=None,
+<<<<<<< HEAD
 		order_by="modified",
+=======
+		order_by="creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
@@ -69,7 +77,11 @@ def get_transaction_list(
 	filters=None,
 	limit_start=0,
 	limit_page_length=20,
+<<<<<<< HEAD
 	order_by="modified",
+=======
+	order_by="creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	custom=False,
 ):
 	user = frappe.session.user
@@ -115,7 +127,11 @@ def get_transaction_list(
 		limit_page_length,
 		fields="name",
 		ignore_permissions=ignore_permissions,
+<<<<<<< HEAD
 		order_by="modified desc",
+=======
+		order_by="creation desc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if custom:
@@ -149,7 +165,11 @@ def get_list_for_transactions(
 		limit_start=limit_start,
 		limit_page_length=limit_page_length,
 		ignore_permissions=ignore_permissions,
+<<<<<<< HEAD
 		order_by="modified desc",
+=======
+		order_by="creation desc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	):
 		data.append(d)
 
@@ -180,7 +200,11 @@ def get_list_for_transactions(
 def rfq_transaction_list(parties_doctype, doctype, parties, limit_start, limit_page_length):
 	data = frappe.db.sql(
 		"""select distinct parent as name, supplier from `tab{doctype}`
+<<<<<<< HEAD
 			where supplier = '{supplier}' and docstatus=1  order by modified desc limit {start}, {len}""".format(
+=======
+			where supplier = '{supplier}' and docstatus=1  order by creation desc limit {start}, {len}""".format(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			doctype=parties_doctype, supplier=parties[0], start=limit_start, len=limit_page_length
 		),
 		as_dict=1,
@@ -204,9 +228,17 @@ def post_process(doctype, data):
 			)
 
 		if doc.get("per_delivered"):
+<<<<<<< HEAD
 			doc.status_percent += flt(doc.per_delivered)
 			doc.status_display.append(
 				_("Delivered") if doc.per_delivered == 100 else _("{0}% Delivered").format(doc.per_delivered)
+=======
+			doc.status_percent += flt(doc.per_delivered, 2)
+			doc.status_display.append(
+				_("Delivered")
+				if flt(doc.per_delivered, 2) == 100
+				else _("{0}% Delivered").format(doc.per_delivered)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 		if hasattr(doc, "set_indicator"):
@@ -230,6 +262,7 @@ def get_customers_suppliers(doctype, user):
 	has_supplier_field = meta.has_field("supplier")
 
 	if has_common(["Supplier", "Customer"], frappe.get_roles(user)):
+<<<<<<< HEAD
 		contacts = frappe.db.sql(
 			"""
 			select
@@ -246,6 +279,10 @@ def get_customers_suppliers(doctype, user):
 		)
 		customers = [c.link_name for c in contacts if c.link_doctype == "Customer"]
 		suppliers = [c.link_name for c in contacts if c.link_doctype == "Supplier"]
+=======
+		suppliers = get_parents_for_user("Supplier")
+		customers = get_parents_for_user("Customer")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	elif frappe.has_permission(doctype, "read", user=user):
 		customer_list = frappe.get_list("Customer")
 		customers = suppliers = [customer.name for customer in customer_list]
@@ -253,6 +290,20 @@ def get_customers_suppliers(doctype, user):
 	return customers if has_customer_field else None, suppliers if has_supplier_field else None
 
 
+<<<<<<< HEAD
+=======
+def get_parents_for_user(parenttype: str) -> list[str]:
+	portal_user = frappe.qb.DocType("Portal User")
+
+	return (
+		frappe.qb.from_(portal_user)
+		.select(portal_user.parent)
+		.where(portal_user.user == frappe.session.user)
+		.where(portal_user.parenttype == parenttype)
+	).run(pluck="name")
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def has_website_permission(doc, ptype, user, verbose=False):
 	doctype = doc.doctype
 	customers, suppliers = get_customers_suppliers(doctype, user)
@@ -280,3 +331,29 @@ def get_customer_field_name(doctype):
 		return "party_name"
 	else:
 		return "customer"
+<<<<<<< HEAD
+=======
+
+
+def add_role_for_portal_user(portal_user, role):
+	"""When a new portal user is added, give appropriate roles to user if
+	posssible, else warn user to add roles."""
+	if not portal_user.is_new():
+		return
+
+	user_doc = frappe.get_doc("User", portal_user.user)
+	roles = {r.role for r in user_doc.roles}
+
+	if role in roles:
+		return
+
+	if "System Manager" not in frappe.get_roles():
+		frappe.msgprint(
+			_("Please add {1} role to user {0}.").format(portal_user.user, role),
+			alert=True,
+		)
+		return
+
+	user_doc.add_roles(role)
+	frappe.msgprint(_("Added {1} Role to User {0}.").format(frappe.bold(user_doc.name), role), alert=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

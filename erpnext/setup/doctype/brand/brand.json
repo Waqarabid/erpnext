@@ -56,10 +56,18 @@
  "idx": 1,
  "image_field": "image",
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-03-01 15:57:30.005783",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Brand",
+=======
+ "modified": "2024-08-20 14:10:21.377962",
+ "modified_by": "Administrator",
+ "module": "Setup",
+ "name": "Brand",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -106,6 +114,12 @@
  ],
  "quick_entry": 1,
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC"
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

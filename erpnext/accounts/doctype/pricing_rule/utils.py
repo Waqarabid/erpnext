@@ -127,6 +127,13 @@ def _get_pricing_rules(apply_on, args, values):
 				values["variant_of"] = args.variant_of
 	elif apply_on_field == "item_group":
 		item_conditions = _get_tree_conditions(args, "Item Group", child_doc, False)
+<<<<<<< HEAD
+=======
+		if args.get("uom", None):
+			item_conditions += " and ({child_doc}.uom='{item_uom}' or IFNULL({child_doc}.uom, '')='')".format(
+				child_doc=child_doc, item_uom=args.get("uom")
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	conditions += get_other_conditions(conditions, values, args)
 	warehouse_conditions = _get_tree_conditions(args, "Warehouse", "`tabPricing Rule`")
@@ -170,12 +177,18 @@ def _get_pricing_rules(apply_on, args, values):
 
 
 def apply_multiple_pricing_rules(pricing_rules):
+<<<<<<< HEAD
 	apply_multiple_rule = [
 		d.apply_multiple_pricing_rules for d in pricing_rules if d.apply_multiple_pricing_rules
 	]
 
 	if not apply_multiple_rule:
 		return False
+=======
+	for d in pricing_rules:
+		if not d.apply_multiple_pricing_rules:
+			return False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return True
 
@@ -560,6 +573,10 @@ def apply_pricing_rule_on_transaction(doc):
 
 	if pricing_rules:
 		pricing_rules = filter_pricing_rules_for_qty_amount(doc.total_qty, doc.total, pricing_rules)
+<<<<<<< HEAD
+=======
+		pricing_rules = filter_pricing_rule_based_on_condition(pricing_rules, doc)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not pricing_rules:
 			remove_free_item(doc)
@@ -568,6 +585,11 @@ def apply_pricing_rule_on_transaction(doc):
 			if d.price_or_product_discount == "Price":
 				if d.apply_discount_on:
 					doc.set("apply_discount_on", d.apply_discount_on)
+<<<<<<< HEAD
+=======
+				# Variable to track whether the condition has been met
+				condition_met = False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				for field in ["additional_discount_percentage", "discount_amount"]:
 					pr_field = "discount_percentage" if field == "additional_discount_percentage" else field
@@ -592,6 +614,14 @@ def apply_pricing_rule_on_transaction(doc):
 							if coupon_code_pricing_rule == d.name:
 								# if selected coupon code is linked with pricing rule
 								doc.set(field, d.get(pr_field))
+<<<<<<< HEAD
+=======
+
+								# Set the condition_met variable to True and break out of the loop
+								condition_met = True
+								break
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							else:
 								# reset discount if not linked
 								doc.set(field, 0)
@@ -600,6 +630,13 @@ def apply_pricing_rule_on_transaction(doc):
 							doc.set(field, 0)
 
 				doc.calculate_taxes_and_totals()
+<<<<<<< HEAD
+=======
+
+				# Break out of the main loop if the condition is met
+				if condition_met:
+					break
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			elif d.price_or_product_discount == "Product":
 				item_details = frappe._dict({"parenttype": doc.doctype, "free_item_data": []})
 				get_product_discount_rule(d, item_details, doc=doc)
@@ -727,7 +764,14 @@ def update_coupon_code_count(coupon_name, transaction_type):
 	coupon = frappe.get_doc("Coupon Code", coupon_name)
 	if coupon:
 		if transaction_type == "used":
+<<<<<<< HEAD
 			if coupon.used < coupon.maximum_use:
+=======
+			if not coupon.maximum_use:
+				coupon.used = coupon.used + 1
+				coupon.save(ignore_permissions=True)
+			elif coupon.used < coupon.maximum_use:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				coupon.used = coupon.used + 1
 				coupon.save(ignore_permissions=True)
 			else:

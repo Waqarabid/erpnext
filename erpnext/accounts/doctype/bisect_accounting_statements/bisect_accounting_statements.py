@@ -14,6 +14,29 @@ from frappe.utils.data import guess_date_format
 
 
 class BisectAccountingStatements(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		algorithm: DF.Literal["BFS", "DFS"]
+		b_s_summary: DF.Float
+		company: DF.Link | None
+		current_from_date: DF.Datetime | None
+		current_node: DF.Link | None
+		current_to_date: DF.Datetime | None
+		difference: DF.Float
+		from_date: DF.Datetime | None
+		p_l_summary: DF.Float
+		to_date: DF.Datetime | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_dates()
 
@@ -118,10 +141,18 @@ class BisectAccountingStatements(Document):
 
 		# set root as current node
 		root = frappe.db.get_all("Bisect Nodes", filters={"root": ["is", "not set"]})[0]
+<<<<<<< HEAD
 		self.get_report_summary()
 		self.current_node = root.name
 		self.current_from_date = self.from_date
 		self.current_to_date = self.to_date
+=======
+		self.current_node = root.name
+		self.current_from_date = self.from_date
+		self.current_to_date = self.to_date
+
+		self.get_report_summary()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.save()
 
 	def get_report_summary(self):

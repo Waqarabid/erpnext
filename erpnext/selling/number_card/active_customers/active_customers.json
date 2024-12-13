@@ -3,7 +3,10 @@
  "docstatus": 0,
  "doctype": "Number Card",
  "document_type": "Customer",
+<<<<<<< HEAD
  "dynamic_filters_json": "",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "filters_json": "[[\"Customer\",\"disabled\",\"=\",\"0\"]]",
  "function": "Count",
  "idx": 0,

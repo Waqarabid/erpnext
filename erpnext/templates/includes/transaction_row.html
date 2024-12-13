@@ -8,17 +8,32 @@
 			</div>
 		</div>
 		<div class="col-sm-3">
+<<<<<<< HEAD
 			<span class="indicator-pill {{ doc.indicator_color or ("blue" if doc.docstatus==1 else "gray") }} list-item-status">{{ _(doc.status) }}</span>
+=======
+			<span class="indicator-pill {{ doc.indicator_color or ("blue" if doc.docstatus==1 else "gray") }} list-item-status">{{doc.status}}</span>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		</div>
 		<div class="col-sm-2">
 			<div class="small text-muted items-preview ellipsis ellipsis-width">
 				{{ doc.items_preview }}
 			</div>
 		</div>
+<<<<<<< HEAD
 		{% if doc.get('grand_total') %}
 			<div class="col-sm-3 text-right font-weight-bold item-total">
 				{{ doc.get_formatted("grand_total") }}
 			</div>
+=======
+		{% if doc.is_rounded_total_disabled() and doc.get('grand_total') %}
+			<div class="col-sm-3 text-right font-weight-bold item-total">
+				{{ doc.get_formatted("grand_total") }}
+			</div>
+		{% elif doc.get('rounded_total') %}
+			<div class="col-sm-3 text-right font-weight-bold item-total">
+				{{ doc.get_formatted("rounded_total") }}
+			</div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{% endif %}
 	</div>
 	<a class="transaction-item-link" href="/{{ pathname }}/{{ doc.name }}">Link</a>

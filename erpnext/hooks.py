@@ -8,15 +8,35 @@ app_email = "info@erpnext.com"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/frappe/erpnext"
 app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
+<<<<<<< HEAD
 
 
 develop_version = "14.x.x-develop"
+=======
+app_home = "/app/home"
+
+add_to_apps_screen = [
+	{
+		"name": "erpnext",
+		"logo": "/assets/erpnext/images/erpnext-logo-blue.png",
+		"title": "ERPNext",
+		"route": "/app/home",
+		"has_permission": "erpnext.check_app_permission",
+	}
+]
+
+develop_version = "15.x.x-develop"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 app_include_js = "erpnext.bundle.js"
 app_include_css = "erpnext.bundle.css"
 web_include_js = "erpnext-web.bundle.js"
 web_include_css = "erpnext-web.bundle.css"
+<<<<<<< HEAD
 email_css = "erpnext_email.bundle.scss"
+=======
+email_css = "email_erpnext.bundle.css"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 doctype_js = {
 	"Address": "public/js/address.js",
@@ -36,14 +56,28 @@ doctype_list_js = {
 
 override_doctype_class = {"Address": "erpnext.accounts.custom.address.ERPNextAddress"}
 
+<<<<<<< HEAD
+=======
+override_whitelisted_methods = {"frappe.www.contact.send_message": "erpnext.templates.utils.send_message"}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 welcome_email = "erpnext.setup.utils.welcome_email"
 
 # setup wizard
 setup_wizard_requires = "assets/erpnext/js/setup_wizard.js"
 setup_wizard_stages = "erpnext.setup.setup_wizard.setup_wizard.get_setup_stages"
+<<<<<<< HEAD
 setup_wizard_test = "erpnext.setup.setup_wizard.test_setup_wizard.run_setup_wizard_test"
 
 before_install = "erpnext.setup.install.check_setup_wizard_not_completed"
+=======
+setup_wizard_complete = "erpnext.setup.setup_wizard.setup_wizard.setup_demo"
+setup_wizard_test = "erpnext.setup.setup_wizard.test_setup_wizard.run_setup_wizard_test"
+
+before_install = [
+	"erpnext.setup.install.check_setup_wizard_not_completed",
+]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 after_install = "erpnext.setup.install.after_install"
 
 boot_session = "erpnext.startup.boot.boot_session"
@@ -53,11 +87,15 @@ leaderboards = "erpnext.startup.leaderboard.get_leaderboards"
 filters_config = "erpnext.startup.filters.get_filters_config"
 additional_print_settings = "erpnext.controllers.print_settings.get_print_settings"
 
+<<<<<<< HEAD
 on_session_creation = [
 	"erpnext.portal.utils.create_customer_or_supplier",
 	"erpnext.e_commerce.shopping_cart.utils.set_cart_count",
 ]
 on_logout = "erpnext.e_commerce.shopping_cart.utils.clear_cart_count"
+=======
+on_session_creation = "erpnext.portal.utils.create_customer_or_supplier"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 treeviews = [
 	"Account",
@@ -71,6 +109,7 @@ treeviews = [
 	"Department",
 ]
 
+<<<<<<< HEAD
 # website
 update_website_context = [
 	"erpnext.e_commerce.shopping_cart.utils.update_website_context",
@@ -86,6 +125,33 @@ calendars = [
 ]
 
 website_generators = ["Item Group", "Website Item", "BOM", "Sales Partner"]
+=======
+demo_master_doctypes = [
+	"item_group",
+	"item",
+	"customer_group",
+	"supplier_group",
+	"customer",
+	"supplier",
+]
+demo_transaction_doctypes = [
+	"purchase_order",
+	"sales_order",
+]
+
+jinja = {
+	"methods": [
+		"erpnext.stock.serial_batch_bundle.get_serial_or_batch_nos",
+	],
+}
+
+# website
+webform_list_context = "erpnext.controllers.website_list_for_contact.get_webform_list_context"
+
+calendars = ["Task", "Work Order", "Sales Order", "Holiday List", "ToDo"]
+
+website_generators = ["BOM", "Sales Partner"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 website_context = {
 	"favicon": "/assets/erpnext/images/erpnext-favicon.svg",
@@ -181,10 +247,18 @@ website_route_rules = [
 		},
 	},
 	{"from_route": "/project", "to_route": "Project"},
+<<<<<<< HEAD
 ]
 
 standard_portal_menu_items = [
 	{"title": "Projects", "route": "/project", "reference_doctype": "Project"},
+=======
+	{"from_route": "/tasks", "to_route": "Task"},
+]
+
+standard_portal_menu_items = [
+	{"title": "Projects", "route": "/project", "reference_doctype": "Project", "role": "Customer"},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	{
 		"title": "Request for Quotations",
 		"route": "/rfq",
@@ -251,11 +325,14 @@ standard_portal_menu_items = [
 	{"title": "Appointment Booking", "route": "/book_appointment"},
 ]
 
+<<<<<<< HEAD
 default_roles = [
 	{"role": "Customer", "doctype": "Contact", "email_field": "email_id"},
 	{"role": "Supplier", "doctype": "Contact", "email_field": "email_id"},
 ]
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 sounds = [
 	{"name": "incoming-call", "src": "/assets/erpnext/sounds/incoming-call.mp3", "volume": 0.2},
 	{"name": "call-disconnect", "src": "/assets/erpnext/sounds/call-disconnect.mp3", "volume": 0.2},
@@ -274,13 +351,20 @@ has_website_permission = {
 	"Delivery Note": "erpnext.controllers.website_list_for_contact.has_website_permission",
 	"Issue": "erpnext.support.doctype.issue.issue.has_website_permission",
 	"Timesheet": "erpnext.controllers.website_list_for_contact.has_website_permission",
+<<<<<<< HEAD
+=======
+	"Project": "erpnext.controllers.website_list_for_contact.has_website_permission",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }
 
 before_tests = "erpnext.setup.utils.before_tests"
 
+<<<<<<< HEAD
 standard_queries = {
 	"Customer": "erpnext.controllers.queries.customer_query",
 }
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 period_closing_doctypes = [
 	"Sales Invoice",
@@ -335,13 +419,17 @@ doc_events = {
 	"Event": {
 		"after_insert": "erpnext.crm.utils.link_events_with_prospect",
 	},
+<<<<<<< HEAD
 	"Sales Taxes and Charges Template": {
 		"on_update": "erpnext.e_commerce.doctype.e_commerce_settings.e_commerce_settings.validate_cart_settings"
 	},
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"Sales Invoice": {
 		"on_submit": [
 			"erpnext.regional.create_transaction_log",
 			"erpnext.regional.italy.utils.sales_invoice_on_submit",
+<<<<<<< HEAD
 			"erpnext.regional.saudi_arabia.utils.create_qr_code",
 			"erpnext.erpnext_integrations.taxjar_integration.create_transaction",
 		],
@@ -353,6 +441,12 @@ doc_events = {
 		"on_trash": "erpnext.regional.check_deletion_permission",
 	},
 	"POS Invoice": {"on_submit": ["erpnext.regional.saudi_arabia.utils.create_qr_code"]},
+=======
+		],
+		"on_cancel": ["erpnext.regional.italy.utils.sales_invoice_on_cancel"],
+		"on_trash": "erpnext.regional.check_deletion_permission",
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"Purchase Invoice": {
 		"validate": [
 			"erpnext.regional.united_arab_emirates.utils.update_grand_total_for_rcm",
@@ -364,6 +458,10 @@ doc_events = {
 			"erpnext.regional.create_transaction_log",
 			"erpnext.accounts.doctype.dunning.dunning.resolve_dunning",
 		],
+<<<<<<< HEAD
+=======
+		"on_cancel": ["erpnext.accounts.doctype.dunning.dunning.resolve_dunning"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"on_trash": "erpnext.regional.check_deletion_permission",
 	},
 	"Address": {
@@ -379,10 +477,13 @@ doc_events = {
 	"Email Unsubscribe": {
 		"after_insert": "erpnext.crm.doctype.email_campaign.email_campaign.unsubscribe_recipient"
 	},
+<<<<<<< HEAD
 	("Quotation", "Sales Order", "Sales Invoice"): {
 		"validate": ["erpnext.erpnext_integrations.taxjar_integration.set_sales_tax"]
 	},
 	"Company": {"on_trash": ["erpnext.regional.saudi_arabia.utils.delete_vat_settings_for_company"]},
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"Integration Request": {
 		"validate": "erpnext.accounts.doctype.payment_request.payment_request.validate_payment"
 	},
@@ -391,6 +492,10 @@ doc_events = {
 # function should expect the variable and doc as arguments
 naming_series_variables = {
 	"FY": "erpnext.accounts.utils.parse_naming_series_variable",
+<<<<<<< HEAD
+=======
+	"ABBR": "erpnext.accounts.utils.parse_naming_series_variable",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }
 
 # On cancel event Payment Entry will be exempted and all linked submittable doctype will get cancelled.
@@ -418,9 +523,12 @@ scheduler_events = {
 			"erpnext.stock.reorder_item.reorder_item",
 		],
 	},
+<<<<<<< HEAD
 	"all": [
 		"erpnext.crm.doctype.social_media_post.social_media_post.process_scheduled_social_media_posts",
 	],
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"hourly": [
 		"erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings.automatic_synchronization",
 		"erpnext.projects.doctype.project.project.project_status_update_reminder",
@@ -428,7 +536,10 @@ scheduler_events = {
 		"erpnext.projects.doctype.project.project.collect_project_status",
 	],
 	"hourly_long": [
+<<<<<<< HEAD
 		"erpnext.accounts.doctype.subscription.subscription.process_all",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"erpnext.stock.doctype.repost_item_valuation.repost_item_valuation.repost_entries",
 		"erpnext.utilities.bulk_transaction.retry",
 	],
@@ -455,21 +566,34 @@ scheduler_events = {
 		"erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_auto_email",
 		"erpnext.accounts.utils.auto_create_exchange_rate_revaluation_daily",
 		"erpnext.accounts.utils.run_ledger_health_checks",
+<<<<<<< HEAD
+=======
+		"erpnext.assets.doctype.asset_maintenance_log.asset_maintenance_log.update_asset_maintenance_log_status",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 	"weekly": [
 		"erpnext.accounts.utils.auto_create_exchange_rate_revaluation_weekly",
 	],
 	"daily_long": [
+<<<<<<< HEAD
 		"erpnext.setup.doctype.email_digest.email_digest.send",
 		"erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool.auto_update_latest_price_in_all_boms",
 		"erpnext.loan_management.doctype.process_loan_security_shortfall.process_loan_security_shortfall.create_process_loan_security_shortfall",
 		"erpnext.loan_management.doctype.process_loan_interest_accrual.process_loan_interest_accrual.process_loan_interest_accrual_for_term_loans",
+=======
+		"erpnext.accounts.doctype.process_subscription.process_subscription.create_subscription_process",
+		"erpnext.setup.doctype.email_digest.email_digest.send",
+		"erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool.auto_update_latest_price_in_all_boms",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"erpnext.crm.utils.open_leads_opportunities_based_on_todays_event",
 		"erpnext.assets.doctype.asset.depreciation.post_depreciation_entries",
 	],
 	"monthly_long": [
 		"erpnext.accounts.deferred_revenue.process_deferred_accounting",
+<<<<<<< HEAD
 		"erpnext.loan_management.doctype.process_loan_interest_accrual.process_loan_interest_accrual.process_loan_interest_accrual_for_demand_loans",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"erpnext.accounts.utils.auto_create_exchange_rate_revaluation_monthly",
 	],
 }
@@ -497,7 +621,12 @@ payment_gateway_enabled = "erpnext.accounts.utils.create_payment_gateway_account
 
 communication_doctypes = ["Customer", "Supplier"]
 
+<<<<<<< HEAD
 advance_payment_doctypes = ["Sales Order", "Purchase Order"]
+=======
+advance_payment_receivable_doctypes = ["Sales Order"]
+advance_payment_payable_doctypes = ["Purchase Order"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 invoice_doctypes = ["Sales Invoice", "Purchase Invoice"]
 
@@ -506,8 +635,11 @@ bank_reconciliation_doctypes = [
 	"Journal Entry",
 	"Purchase Invoice",
 	"Sales Invoice",
+<<<<<<< HEAD
 	"Loan Repayment",
 	"Loan Disbursement",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 ]
 
 accounting_dimension_doctypes = [
@@ -558,13 +690,34 @@ accounting_dimension_doctypes = [
 	"Supplier Quotation Item",
 	"Payment Reconciliation",
 	"Payment Reconciliation Allocation",
+<<<<<<< HEAD
 ]
 
 # get matching queries for Bank Reconciliation
+=======
+	"Payment Request",
+	"Asset Movement Item",
+	"Asset Depreciation Schedule",
+]
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 get_matching_queries = (
 	"erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool.get_matching_queries"
 )
 
+<<<<<<< HEAD
+=======
+get_amounts_not_reflected_in_system_for_bank_reconciliation_statement = "erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_statement.get_amounts_not_reflected_in_system_for_bank_reconciliation_statement"
+
+get_payment_entries_for_bank_clearance = (
+	"erpnext.accounts.doctype.bank_clearance.bank_clearance.get_payment_entries_for_bank_clearance"
+)
+
+get_entries_for_bank_clearance_summary = "erpnext.accounts.report.bank_clearance_summary.bank_clearance_summary.get_entries_for_bank_clearance_summary"
+
+get_entries_for_bank_reconciliation_statement = "erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_statement.get_entries_for_bank_reconciliation_statement"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 regional_overrides = {
 	"France": {"erpnext.tests.test_regional.test_method": "erpnext.regional.france.utils.test_method"},
 	"United Arab Emirates": {
@@ -630,7 +783,10 @@ global_search_doctypes = {
 		{"doctype": "Branch", "index": 35},
 		{"doctype": "Department", "index": 36},
 		{"doctype": "Designation", "index": 38},
+<<<<<<< HEAD
 		{"doctype": "Loan", "index": 44},
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{"doctype": "Maintenance Schedule", "index": 45},
 		{"doctype": "Maintenance Visit", "index": 46},
 		{"doctype": "Warranty Claim", "index": 47},
@@ -645,4 +801,14 @@ extend_bootinfo = [
 	"erpnext.startup.boot.bootinfo",
 ]
 
+<<<<<<< HEAD
+=======
+
+default_log_clearing_doctypes = {
+	"Repost Item Valuation": 60,
+}
+
+export_python_type_annotations = True
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 fields_for_group_similar_items = ["qty", "amount"]

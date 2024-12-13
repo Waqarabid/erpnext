@@ -40,13 +40,22 @@ frappe.ui.form.on("Asset", {
 	},
 
 	setup: function (frm) {
+<<<<<<< HEAD
+=======
+		frm.ignore_doctypes_on_cancel_all = ["Journal Entry"];
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.make_methods = {
 			"Asset Movement": () => {
 				frappe.call({
 					method: "erpnext.assets.doctype.asset.asset.make_asset_movement",
 					freeze: true,
 					args: {
+<<<<<<< HEAD
 						assets: [{ name: cur_frm.doc.name }],
+=======
+						assets: [{ name: frm.doc.name }],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					},
 					callback: function (r) {
 						if (r.message) {
@@ -75,7 +84,10 @@ frappe.ui.form.on("Asset", {
 	refresh: function (frm) {
 		frappe.ui.form.trigger("Asset", "is_existing_asset");
 		frm.toggle_display("next_depreciation_date", frm.doc.docstatus < 1);
+<<<<<<< HEAD
 		frm.events.make_schedules_editable(frm);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if (frm.doc.docstatus == 1) {
 			if (["Submitted", "Partially Depreciated", "Fully Depreciated"].includes(frm.doc.status)) {
@@ -178,7 +190,11 @@ frappe.ui.form.on("Asset", {
 				frm.trigger("set_depr_posting_failure_alert");
 			}
 
+<<<<<<< HEAD
 			frm.trigger("setup_chart");
+=======
+			frm.trigger("setup_chart_and_depr_schedule_view");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		frm.trigger("toggle_reference_doc");
@@ -186,12 +202,31 @@ frappe.ui.form.on("Asset", {
 		if (frm.doc.docstatus == 0) {
 			frm.toggle_reqd("finance_books", frm.doc.calculate_depreciation);
 
+<<<<<<< HEAD
 			if (frm.doc.is_composite_asset && !frm.doc.capitalized_in) {
 				$(".primary-action").prop("hidden", true);
 				$(".form-message").text("Capitalize this asset to confirm");
 
 				frm.add_custom_button(__("Capitalize Asset"), function () {
 					frm.trigger("create_asset_capitalization");
+=======
+			if (frm.doc.is_composite_asset) {
+				frappe.call({
+					method: "erpnext.assets.doctype.asset.asset.has_active_capitalization",
+					args: {
+						asset: frm.doc.name,
+					},
+					callback: function (r) {
+						if (!r.message) {
+							$(".primary-action").prop("hidden", true);
+							$(".form-message").text("Capitalize this asset to confirm");
+
+							frm.add_custom_button(__("Capitalize Asset"), function () {
+								frm.trigger("create_asset_capitalization");
+							});
+						}
+					},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				});
 			}
 		}
@@ -248,7 +283,84 @@ frappe.ui.form.on("Asset", {
 		});
 	},
 
+<<<<<<< HEAD
 	setup_chart: async function (frm) {
+=======
+	render_depreciation_schedule_view: function (frm, asset_depr_schedule_doc) {
+		let wrapper = $(frm.fields_dict["depreciation_schedule_view"].wrapper).empty();
+
+		let data = [];
+
+		asset_depr_schedule_doc.depreciation_schedule.forEach((sch) => {
+			const row = [
+				sch["idx"],
+				frappe.format(sch["schedule_date"], { fieldtype: "Date" }),
+				frappe.format(sch["depreciation_amount"], { fieldtype: "Currency" }),
+				frappe.format(sch["accumulated_depreciation_amount"], { fieldtype: "Currency" }),
+				sch["journal_entry"] || "",
+			];
+
+			if (asset_depr_schedule_doc.shift_based) {
+				row.push(sch["shift"]);
+			}
+
+			data.push(row);
+		});
+
+		let columns = [
+			{ name: __("No."), editable: false, resizable: false, format: (value) => value, width: 60 },
+			{ name: __("Schedule Date"), editable: false, resizable: false, width: 270 },
+			{ name: __("Depreciation Amount"), editable: false, resizable: false, width: 164 },
+			{ name: __("Accumulated Depreciation Amount"), editable: false, resizable: false, width: 164 },
+		];
+
+		if (asset_depr_schedule_doc.shift_based) {
+			columns.push({
+				name: __("Journal Entry"),
+				editable: false,
+				resizable: false,
+				format: (value) => `<a href="/app/journal-entry/${value}">${value}</a>`,
+				width: 245,
+			});
+			columns.push({ name: __("Shift"), editable: false, resizable: false, width: 59 });
+		} else {
+			columns.push({
+				name: __("Journal Entry"),
+				editable: false,
+				resizable: false,
+				format: (value) => `<a href="/app/journal-entry/${value}">${value}</a>`,
+				width: 304,
+			});
+		}
+
+		let datatable = new frappe.DataTable(wrapper.get(0), {
+			columns: columns,
+			data: data,
+			layout: "fluid",
+			serialNoColumn: false,
+			checkboxColumn: true,
+			cellHeight: 35,
+		});
+
+		datatable.style.setStyle(`.dt-scrollable`, {
+			"font-size": "0.75rem",
+			"margin-bottom": "1rem",
+			"margin-left": "0.35rem",
+			"margin-right": "0.35rem",
+		});
+		datatable.style.setStyle(`.dt-header`, { "margin-left": "0.35rem", "margin-right": "0.35rem" });
+		datatable.style.setStyle(`.dt-cell--header .dt-cell__content`, {
+			color: "var(--gray-600)",
+			"font-size": "var(--text-sm)",
+		});
+		datatable.style.setStyle(`.dt-cell`, { color: "var(--text-color)" });
+		datatable.style.setStyle(`.dt-cell--col-1`, { "text-align": "center" });
+		datatable.style.setStyle(`.dt-cell--col-2`, { "font-weight": 600 });
+		datatable.style.setStyle(`.dt-cell--col-3`, { "font-weight": 600 });
+	},
+
+	setup_chart_and_depr_schedule_view: async function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.finance_books.length > 1) {
 			return;
 		}
@@ -271,7 +383,22 @@ frappe.ui.form.on("Asset", {
 				);
 			}
 
+<<<<<<< HEAD
 			$.each(frm.doc.schedules || [], function (i, v) {
+=======
+			let asset_depr_schedule_doc = (
+				await frappe.call(
+					"erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule.get_asset_depr_schedule_doc",
+					{
+						asset_name: frm.doc.name,
+						status: "Active",
+						finance_book: frm.doc.finance_books[0].finance_book || null,
+					}
+				)
+			).message;
+
+			$.each(asset_depr_schedule_doc.depreciation_schedule || [], function (i, v) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				x_intervals.push(frappe.format(v.schedule_date, { fieldtype: "Date" }));
 				var asset_value = flt(
 					frm.doc.gross_purchase_amount - v.accumulated_depreciation_amount,
@@ -287,6 +414,12 @@ frappe.ui.form.on("Asset", {
 					}
 				}
 			});
+<<<<<<< HEAD
+=======
+
+			frm.toggle_display(["depreciation_schedule_view"], 1);
+			frm.events.render_depreciation_schedule_view(frm, asset_depr_schedule_doc);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		} else {
 			if (frm.doc.opening_accumulated_depreciation) {
 				x_intervals.push(frappe.format(frm.doc.creation.split(" ")[0], { fieldtype: "Date" }));
@@ -318,7 +451,11 @@ frappe.ui.form.on("Asset", {
 		}
 
 		frm.dashboard.render_graph({
+<<<<<<< HEAD
 			title: __("Asset Value"),
+=======
+			title: "Asset Value",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			data: {
 				labels: x_intervals,
 				datasets: [
@@ -372,6 +509,7 @@ frappe.ui.form.on("Asset", {
 		frm.trigger("toggle_reference_doc");
 	},
 
+<<<<<<< HEAD
 	make_schedules_editable: function (frm) {
 		if (frm.doc.finance_books && frm.doc.finance_books.length) {
 			var is_manual_hence_editable =
@@ -388,6 +526,8 @@ frappe.ui.form.on("Asset", {
 		}
 	},
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	make_sales_invoice: function (frm) {
 		frappe.call({
 			args: {
@@ -424,6 +564,10 @@ frappe.ui.form.on("Asset", {
 	create_asset_repair: function (frm) {
 		frappe.call({
 			args: {
+<<<<<<< HEAD
+=======
+				company: frm.doc.company,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				asset: frm.doc.name,
 				asset_name: frm.doc.asset_name,
 			},
@@ -438,12 +582,23 @@ frappe.ui.form.on("Asset", {
 	create_asset_capitalization: function (frm) {
 		frappe.call({
 			args: {
+<<<<<<< HEAD
 				asset: frm.doc.name,
+=======
+				company: frm.doc.company,
+				asset: frm.doc.name,
+				asset_name: frm.doc.asset_name,
+				item_code: frm.doc.item_code,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 			method: "erpnext.assets.doctype.asset.asset.create_asset_capitalization",
 			callback: function (r) {
 				var doclist = frappe.model.sync(r.message);
 				frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
+<<<<<<< HEAD
+=======
+				$(".primary-action").prop("hidden", false);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		});
 	},
@@ -564,7 +719,11 @@ frappe.ui.form.on("Asset", {
 		}
 		const item = purchase_doc.items.find((item) => item.item_code === frm.doc.item_code);
 		if (!item) {
+<<<<<<< HEAD
 			doctype_field = frappe.scrub(doctype);
+=======
+			let doctype_field = frappe.scrub(doctype);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frm.set_value(doctype_field, "");
 			frappe.msgprint({
 				title: __("Invalid {0}", [__(doctype)]),
@@ -580,12 +739,24 @@ frappe.ui.form.on("Asset", {
 			);
 
 			frm.set_value("gross_purchase_amount", purchase_amount);
+<<<<<<< HEAD
 			frm.set_value("purchase_receipt_amount", purchase_amount);
+=======
+			frm.set_value("purchase_amount", purchase_amount);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frm.set_value("asset_quantity", asset_quantity);
 			frm.set_value("cost_center", item.cost_center || purchase_doc.cost_center);
 			if (item.asset_location) {
 				frm.set_value("location", item.asset_location);
 			}
+<<<<<<< HEAD
+=======
+			if (doctype === "Purchase Receipt") {
+				frm.set_value("purchase_receipt_item", item.name);
+			} else if (doctype === "Purchase Invoice") {
+				frm.set_value("purchase_invoice_item", item.name);
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	},
 
@@ -654,7 +825,10 @@ frappe.ui.form.on("Asset Finance Book", {
 	depreciation_method: function (frm, cdt, cdn) {
 		const row = locals[cdt][cdn];
 		frm.events.set_depreciation_rate(frm, row);
+<<<<<<< HEAD
 		frm.events.make_schedules_editable(frm);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	expected_value_after_useful_life: function (frm, cdt, cdn) {
@@ -702,17 +876,23 @@ frappe.ui.form.on("Asset Finance Book", {
 
 	depreciation_start_date: function (frm, cdt, cdn) {
 		const book = locals[cdt][cdn];
+<<<<<<< HEAD
 		if (
 			frm.doc.available_for_use_date &&
 			book.depreciation_start_date == frm.doc.available_for_use_date
 		) {
 			frappe.msgprint(__("Depreciation Posting Date should not be equal to Available for Use Date."));
+=======
+		if (frm.doc.available_for_use_date && book.depreciation_start_date < frm.doc.available_for_use_date) {
+			frappe.msgprint(__("Depreciation Posting Date cannot be before Available-for-use Date"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			book.depreciation_start_date = "";
 			frm.refresh_field("finance_books");
 		}
 	},
 });
 
+<<<<<<< HEAD
 frappe.ui.form.on("Depreciation Schedule", {
 	make_depreciation_entry: function (frm, cdt, cdn) {
 		var row = locals[cdt][cdn];
@@ -768,6 +948,36 @@ erpnext.asset.scrap_asset = function (frm) {
 			},
 		});
 	});
+=======
+erpnext.asset.scrap_asset = function (frm) {
+	var scrap_dialog = new frappe.ui.Dialog({
+		title: __("Enter date to scrap asset"),
+		fields: [
+			{
+				label: __("Select the date"),
+				fieldname: "scrap_date",
+				fieldtype: "Date",
+				reqd: 1,
+			},
+		],
+		size: "medium",
+		primary_action_label: "Submit",
+		primary_action(values) {
+			frappe.call({
+				args: {
+					asset_name: frm.doc.name,
+					scrap_date: values.scrap_date,
+				},
+				method: "erpnext.assets.doctype.asset.depreciation.scrap_asset",
+				callback: function (r) {
+					frm.reload_doc();
+					scrap_dialog.hide();
+				},
+			});
+		},
+	});
+	scrap_dialog.show();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 };
 
 erpnext.asset.restore_asset = function (frm) {
@@ -777,19 +987,31 @@ erpnext.asset.restore_asset = function (frm) {
 				asset_name: frm.doc.name,
 			},
 			method: "erpnext.assets.doctype.asset.depreciation.restore_asset",
+<<<<<<< HEAD
 			callback: function (r) {
 				cur_frm.reload_doc();
 			},
+=======
+			callback: (r) => frm.reload_doc(),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	});
 };
 
+<<<<<<< HEAD
 erpnext.asset.transfer_asset = function () {
+=======
+erpnext.asset.transfer_asset = function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.call({
 		method: "erpnext.assets.doctype.asset.asset.make_asset_movement",
 		freeze: true,
 		args: {
+<<<<<<< HEAD
 			assets: [{ name: cur_frm.doc.name }],
+=======
+			assets: [{ name: frm.doc.name }],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			purpose: "Transfer",
 		},
 		callback: function (r) {

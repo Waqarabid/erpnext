@@ -5,12 +5,49 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+<<<<<<< HEAD
 from frappe.utils import getdate, nowdate
+=======
+from frappe.query_builder import DocType
+from frappe.utils import getdate, nowdate, today
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.assets.doctype.asset_maintenance.asset_maintenance import calculate_next_due_date
 
 
 class AssetMaintenanceLog(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		actions_performed: DF.TextEditor | None
+		amended_from: DF.Link | None
+		asset_maintenance: DF.Link | None
+		asset_name: DF.ReadOnly | None
+		assign_to_name: DF.ReadOnly | None
+		certificate_attachement: DF.Attach | None
+		completion_date: DF.Date | None
+		description: DF.ReadOnly | None
+		due_date: DF.Date | None
+		has_certificate: DF.Check
+		item_code: DF.ReadOnly | None
+		item_name: DF.ReadOnly | None
+		maintenance_status: DF.Literal["Planned", "Completed", "Cancelled", "Overdue"]
+		maintenance_type: DF.ReadOnly | None
+		naming_series: DF.Literal["ACC-AML-.YYYY.-"]
+		periodicity: DF.Data | None
+		task: DF.Link | None
+		task_assignee_email: DF.Data | None
+		task_name: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if getdate(self.due_date) < getdate(nowdate()) and self.maintenance_status not in [
 			"Completed",
@@ -47,6 +84,20 @@ class AssetMaintenanceLog(Document):
 		asset_maintenance_doc.save()
 
 
+<<<<<<< HEAD
+=======
+def update_asset_maintenance_log_status():
+	AssetMaintenanceLog = DocType("Asset Maintenance Log")
+	(
+		frappe.qb.update(AssetMaintenanceLog)
+		.set(AssetMaintenanceLog.maintenance_status, "Overdue")
+		.where(
+			(AssetMaintenanceLog.maintenance_status == "Planned") & (AssetMaintenanceLog.due_date < today())
+		)
+	).run()
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_maintenance_tasks(doctype, txt, searchfield, start, page_len, filters):

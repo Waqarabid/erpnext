@@ -27,7 +27,11 @@ frappe.ui.form.on("Item Variant Settings", {
 		frappe.model.with_doctype("Item", () => {
 			const field_label_map = {};
 			frappe.get_meta("Item").fields.forEach((d) => {
+<<<<<<< HEAD
 				field_label_map[d.fieldname] = __(d.label) + ` (${d.fieldname})`;
+=======
+				field_label_map[d.fieldname] = __(d.label, null, d.parent) + ` (${d.fieldname})`;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				if (
 					!in_list(exclude_field_types, d.fieldtype) &&

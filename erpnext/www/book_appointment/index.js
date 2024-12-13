@@ -70,7 +70,11 @@ function on_date_or_timezone_select() {
 	window.selected_timezone = timezone.value;
 	update_time_slots(date_picker.value, timezone.value);
 	let lead_text = document.getElementById("lead-text");
+<<<<<<< HEAD
 	lead_text.innerHTML = "Select Time";
+=======
+	lead_text.innerHTML = __("Select Time");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }
 
 async function get_time_slots(date, timezone) {
@@ -92,7 +96,11 @@ async function update_time_slots(selected_date, selected_timezone) {
 	clear_time_slots();
 	if (window.slots.length <= 0) {
 		let message_div = document.createElement("p");
+<<<<<<< HEAD
 		message_div.innerHTML = "There are no slots available on this date";
+=======
+		message_div.innerHTML = __("There are no slots available on this date");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		timeslot_container.appendChild(message_div);
 		return;
 	}
@@ -131,7 +139,13 @@ function get_slot_layout(time) {
 	let start_time_string = moment(time).tz(timezone).format("LT");
 	let end_time = moment(time).tz(timezone).add(window.appointment_settings.appointment_duration, "minutes");
 	let end_time_string = end_time.format("LT");
+<<<<<<< HEAD
 	return `<span style="font-size: 1.2em;">${start_time_string}</span><br><span class="text-muted small">to ${end_time_string}</span>`;
+=======
+	return `<span style="font-size: 1.2em;">${start_time_string}</span><br><span class="text-muted small">${__(
+		"to"
+	)} ${end_time_string}</span>`;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }
 
 function select_time() {
@@ -230,9 +244,15 @@ async function submit() {
 		},
 		callback: (response) => {
 			if (response.message.status == "Unverified") {
+<<<<<<< HEAD
 				frappe.show_alert("Please check your email to confirm the appointment");
 			} else {
 				frappe.show_alert("Appointment Created Successfully");
+=======
+				frappe.show_alert(__("Please check your email to confirm the appointment"));
+			} else {
+				frappe.show_alert(__("Appointment Created Successfully"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 			setTimeout(() => {
 				let redirect_url = "/";
@@ -243,14 +263,22 @@ async function submit() {
 			}, 5000);
 		},
 		error: (err) => {
+<<<<<<< HEAD
 			frappe.show_alert("Something went wrong please try again");
+=======
+			frappe.show_alert(__("Something went wrong please try again"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			button.disabled = false;
 		},
 	});
 }
 
 function get_form_data() {
+<<<<<<< HEAD
 	contact = {};
+=======
+	let contact = {};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	let inputs = ["name", "skype", "number", "notes", "email"];
 	inputs.forEach((id) => (contact[id] = document.getElementById(`customer_${id}`).value));
 	return contact;

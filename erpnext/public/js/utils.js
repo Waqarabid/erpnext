@@ -8,7 +8,11 @@ $.extend(erpnext, {
 	get_currency: function (company) {
 		if (!company && cur_frm) company = cur_frm.doc.company;
 		if (company)
+<<<<<<< HEAD
 			return frappe.get_doc(":Company", company).default_currency || frappe.boot.sysdefaults.currency;
+=======
+			return frappe.get_doc(":Company", company)?.default_currency || frappe.boot.sysdefaults.currency;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else return frappe.boot.sysdefaults.currency;
 	},
 
@@ -20,11 +24,20 @@ $.extend(erpnext, {
 	},
 
 	toggle_naming_series: function () {
+<<<<<<< HEAD
 		if (cur_frm && cur_frm.fields_dict.naming_series) {
+=======
+		if (
+			cur_frm &&
+			cur_frm.fields_dict.naming_series &&
+			cur_frm.meta.naming_rule == 'By "Naming Series" field'
+		) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			cur_frm.toggle_display("naming_series", cur_frm.doc.__islocal ? true : false);
 		}
 	},
 
+<<<<<<< HEAD
 	hide_company: function () {
 		if (cur_frm.fields_dict.company) {
 			var companies = Object.keys(locals[":Company"] || {});
@@ -33,6 +46,16 @@ $.extend(erpnext, {
 				cur_frm.toggle_display("company", false);
 			} else if (erpnext.last_selected_company) {
 				if (!cur_frm.doc.company) cur_frm.set_value("company", erpnext.last_selected_company);
+=======
+	hide_company: function (frm) {
+		if (frm?.fields_dict.company) {
+			var companies = Object.keys(locals[":Company"] || {});
+			if (companies.length === 1) {
+				if (!frm.doc.company) frm.set_value("company", companies[0]);
+				frm.toggle_display("company", false);
+			} else if (erpnext.last_selected_company) {
+				if (!frm.doc.company) frm.set_value("company", erpnext.last_selected_company);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 	},
@@ -51,6 +74,7 @@ $.extend(erpnext, {
 	},
 
 	setup_serial_or_batch_no: function () {
+<<<<<<< HEAD
 		let grid_row = cur_frm.open_grid_row();
 		if (
 			!grid_row ||
@@ -83,6 +107,9 @@ $.extend(erpnext, {
 				}
 			}
 		);
+=======
+		// Deprecated in v15
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	route_to_adjustment_jv: (args) => {
@@ -141,6 +168,34 @@ $.extend(erpnext.utils, {
 		}
 	},
 
+<<<<<<< HEAD
+=======
+	view_serial_batch_nos: function (frm) {
+		if (!frm.doc?.items) {
+			return;
+		}
+
+		let bundle_ids = frm.doc.items.filter((d) => d.serial_and_batch_bundle);
+
+		if (bundle_ids?.length) {
+			frm.add_custom_button(
+				__("Serial / Batch Nos"),
+				() => {
+					frappe.route_options = {
+						voucher_no: frm.doc.name,
+						voucher_type: frm.doc.doctype,
+						from_date: frm.doc.posting_date || frm.doc.transaction_date,
+						to_date: frm.doc.posting_date || frm.doc.transaction_date,
+						company: frm.doc.company,
+					};
+					frappe.set_route("query-report", "Serial and Batch Summary");
+				},
+				__("View")
+			);
+		}
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	add_indicator_for_multicompany: function (frm, info) {
 		frm.dashboard.stats_area.show();
 		frm.dashboard.stats_area_row.addClass("flex");
@@ -397,7 +452,40 @@ $.extend(erpnext.utils, {
 		}
 	},
 
+<<<<<<< HEAD
 	get_fiscal_year: function (date, with_dates = false, boolean = false) {
+=======
+	pick_serial_and_batch_bundle(frm, cdt, cdn, type_of_transaction, warehouse_field) {
+		let item_row = frappe.get_doc(cdt, cdn);
+		item_row.type_of_transaction = type_of_transaction;
+
+		frappe.db.get_value("Item", item_row.item_code, ["has_batch_no", "has_serial_no"]).then((r) => {
+			item_row.has_batch_no = r.message.has_batch_no;
+			item_row.has_serial_no = r.message.has_serial_no;
+
+			new erpnext.SerialBatchPackageSelector(frm, item_row, (r) => {
+				if (r) {
+					let update_values = {
+						serial_and_batch_bundle: r.name,
+						qty: Math.abs(r.total_qty),
+					};
+
+					if (!warehouse_field) {
+						warehouse_field = "warehouse";
+					}
+
+					if (r.warehouse) {
+						update_values[warehouse_field] = r.warehouse;
+					}
+
+					frappe.model.set_value(item_row.doctype, item_row.name, update_values);
+				}
+			});
+		});
+	},
+
+	get_fiscal_year: function (date, with_dates = false, raise_on_missing = true) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (!frappe.boot.setup_complete) {
 			return;
 		}
@@ -406,6 +494,7 @@ $.extend(erpnext.utils, {
 		}
 
 		let fiscal_year = "";
+<<<<<<< HEAD
 		frappe.call({
 			method: "erpnext.accounts.utils.get_fiscal_year",
 			args: {
@@ -420,6 +509,32 @@ $.extend(erpnext.utils, {
 				}
 			},
 		});
+=======
+		if (
+			frappe.boot.current_fiscal_year &&
+			date >= frappe.boot.current_fiscal_year[1] &&
+			date <= frappe.boot.current_fiscal_year[2]
+		) {
+			if (with_dates) fiscal_year = frappe.boot.current_fiscal_year;
+			else fiscal_year = frappe.boot.current_fiscal_year[0];
+		} else {
+			frappe.call({
+				method: "erpnext.accounts.utils.get_fiscal_year",
+				type: "GET", // make it cacheable
+				args: {
+					date: date,
+					raise_on_missing: raise_on_missing,
+				},
+				async: false,
+				callback: function (r) {
+					if (r.message) {
+						if (with_dates) fiscal_year = r.message;
+						else fiscal_year = r.message[0];
+					}
+				},
+			});
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return fiscal_year;
 	},
 });
@@ -577,6 +692,10 @@ erpnext.utils.update_child_items = function (opts) {
 	const cannot_add_row = typeof opts.cannot_add_row === "undefined" ? true : opts.cannot_add_row;
 	const child_docname = typeof opts.cannot_add_row === "undefined" ? "items" : opts.child_docname;
 	const child_meta = frappe.get_meta(`${frm.doc.doctype} Item`);
+<<<<<<< HEAD
+=======
+	const has_reserved_stock = opts.has_reserved_stock ? true : false;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	const get_precision = (fieldname) => child_meta.fields.find((f) => f.fieldname == fieldname).precision;
 
 	this.data = frm.doc[opts.child_docname].map((d) => {
@@ -590,6 +709,11 @@ erpnext.utils.update_child_items = function (opts) {
 			qty: d.qty,
 			rate: d.rate,
 			uom: d.uom,
+<<<<<<< HEAD
+=======
+			fg_item: d.fg_item,
+			fg_item_qty: d.fg_item_qty,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		};
 	});
 
@@ -684,6 +808,10 @@ erpnext.utils.update_child_items = function (opts) {
 			fieldname: frm.doc.doctype == "Sales Order" ? "delivery_date" : "schedule_date",
 			in_list_view: 1,
 			label: frm.doc.doctype == "Sales Order" ? __("Delivery Date") : __("Reqd by date"),
+<<<<<<< HEAD
+=======
+			default: frm.doc.doctype == "Sales Order" ? frm.doc.delivery_date : frm.doc.schedule_date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 		});
 		fields.splice(3, 0, {
@@ -694,7 +822,49 @@ erpnext.utils.update_child_items = function (opts) {
 		});
 	}
 
+<<<<<<< HEAD
 	new frappe.ui.Dialog({
+=======
+	if (
+		frm.doc.doctype == "Purchase Order" &&
+		frm.doc.is_subcontracted &&
+		!frm.doc.is_old_subcontracting_flow
+	) {
+		fields.push(
+			{
+				fieldtype: "Link",
+				fieldname: "fg_item",
+				options: "Item",
+				reqd: 1,
+				in_list_view: 0,
+				read_only: 0,
+				disabled: 0,
+				label: __("Finished Good Item"),
+				get_query: () => {
+					return {
+						filters: {
+							is_stock_item: 1,
+							is_sub_contracted_item: 1,
+							default_bom: ["!=", ""],
+						},
+					};
+				},
+			},
+			{
+				fieldtype: "Float",
+				fieldname: "fg_item_qty",
+				reqd: 1,
+				default: 0,
+				read_only: 0,
+				in_list_view: 0,
+				label: __("Finished Good Item Qty"),
+				precision: get_precision("fg_item_qty"),
+			}
+		);
+	}
+
+	let dialog = new frappe.ui.Dialog({
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		title: __("Update Items"),
 		size: "extra-large",
 		fields: [
@@ -713,6 +883,22 @@ erpnext.utils.update_child_items = function (opts) {
 			},
 		],
 		primary_action: function () {
+<<<<<<< HEAD
+=======
+			if (frm.doctype == "Sales Order" && has_reserved_stock) {
+				this.hide();
+				frappe.confirm(
+					__(
+						"The reserved stock will be released when you update items. Are you certain you wish to proceed?"
+					),
+					() => this.update_items()
+				);
+			} else {
+				this.update_items();
+			}
+		},
+		update_items: function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			const trans_items = this.get_values()["trans_items"].filter((item) => !!item.item_code);
 			frappe.call({
 				method: "erpnext.controllers.accounts_controller.update_child_qty_rate",
@@ -731,7 +917,13 @@ erpnext.utils.update_child_items = function (opts) {
 			refresh_field("items");
 		},
 		primary_action_label: __("Update"),
+<<<<<<< HEAD
 	}).show();
+=======
+	});
+
+	dialog.show();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 };
 
 erpnext.utils.map_current_doc = function (opts) {
@@ -799,6 +991,11 @@ erpnext.utils.map_current_doc = function (opts) {
 				target_doc: cur_frm.doc,
 				args: opts.args,
 			},
+<<<<<<< HEAD
+=======
+			freeze: true,
+			freeze_message: __("Mapping {0} ...", [opts.source_doctype]),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			callback: function (r) {
 				if (!r.exc) {
 					frappe.model.sync(r.message);
@@ -839,6 +1036,10 @@ erpnext.utils.map_current_doc = function (opts) {
 			target: opts.target,
 			date_field: opts.date_field || undefined,
 			setters: opts.setters,
+<<<<<<< HEAD
+=======
+			read_only_setters: opts.read_only_setters,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			data_fields: data_fields,
 			get_query: opts.get_query,
 			add_filters_group: 1,
@@ -852,7 +1053,17 @@ erpnext.utils.map_current_doc = function (opts) {
 					frappe.msgprint(__("Please select {0}", [opts.source_doctype]));
 					return;
 				}
+<<<<<<< HEAD
 				opts.source_name = values;
+=======
+
+				if (values.constructor === Array) {
+					opts.source_name = [...new Set(values)];
+				} else {
+					opts.source_name = values;
+				}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if (
 					opts.allow_child_item_selection ||
 					["Purchase Receipt", "Delivery Note"].includes(opts.source_doctype)
@@ -874,6 +1085,7 @@ erpnext.utils.map_current_doc = function (opts) {
 	}
 };
 
+<<<<<<< HEAD
 frappe.form.link_formatters["Item"] = function (value, doc) {
 	if (doc && value && doc.item_name && doc.item_name !== value && doc.item_code === value) {
 		return value + ": " + doc.item_name;
@@ -909,6 +1121,38 @@ frappe.form.link_formatters["Project"] = function (value, doc) {
 		return value;
 	}
 };
+=======
+frappe.form.link_formatters["Item"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "item_name");
+};
+
+frappe.form.link_formatters["Employee"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "employee_name");
+};
+
+frappe.form.link_formatters["Project"] = function (value, doc, df) {
+	return add_link_title(value, doc, df, "project_name");
+};
+
+/**
+ * Add a title to a link value based on the provided document and field information.
+ *
+ * @param {string} value - The value to add a link title to.
+ * @param {Object} doc - The document object.
+ * @param {Object} df - The field object.
+ * @param {string} title_field - The field name for the title.
+ * @returns {string} - The link value with the added title.
+ */
+function add_link_title(value, doc, df, title_field) {
+	if (doc && value && doc[title_field] && doc[title_field] !== value && doc[df.fieldname] === value) {
+		return value + ": " + doc[title_field];
+	} else if (!value && doc.doctype && doc[title_field]) {
+		return doc[title_field];
+	} else {
+		return value;
+	}
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 // add description on posting time
 $(document).on("app_ready", function () {
@@ -1102,4 +1346,42 @@ $.extend(erpnext.stock.utils, {
 		const barcode_scanner = new erpnext.utils.BarcodeScanner({ frm: frm });
 		barcode_scanner.scan_api_call(child_row.barcode, callback);
 	},
+<<<<<<< HEAD
+=======
+
+	get_serial_range(range_string, separator) {
+		/* Return an array of serial numbers generated from a range string.
+
+		Examples (using separator "::"):
+			- "1::5" => ["1", "2", "3", "4", "5"]
+			- "SN0009::12" => ["SN0009", "SN0010", "SN0011", "SN0012"]
+			- "ABC//05::8" => ["ABC//05", "ABC//06", "ABC//07", "ABC//08"]
+		*/
+		if (!range_string) {
+			return;
+		}
+
+		const [start_str, end_str] = range_string.trim().split(separator);
+
+		if (!start_str || !end_str) {
+			return;
+		}
+
+		const end_int = parseInt(end_str);
+		const length_difference = start_str.length - end_str.length;
+		const start_int = parseInt(start_str.substring(length_difference));
+
+		if (isNaN(start_int) || isNaN(end_int)) {
+			return;
+		}
+
+		const serial_numbers = Array(end_int - start_int + 1)
+			.fill(1)
+			.map((x, y) => x + y)
+			.map((x) => x + start_int - 1);
+		return serial_numbers.map((val) => {
+			return start_str.substring(0, length_difference) + val.toString().padStart(end_str.length, "0");
+		});
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });

@@ -160,8 +160,14 @@ def prepare_chart_data(data, filters):
 	if filters.filter_based_on not in ("Date Range", "Fiscal Year"):
 		filters_filter_based_on = "Date Range"
 		date_field = "purchase_date"
+<<<<<<< HEAD
 		filters_from_date = min(data, key=lambda a: a.get(date_field)).get(date_field)
 		filters_to_date = max(data, key=lambda a: a.get(date_field)).get(date_field)
+=======
+		filtered_data = [d for d in data if d.get(date_field)]
+		filters_from_date = min(filtered_data, key=lambda a: a.get(date_field)).get(date_field)
+		filters_to_date = max(filtered_data, key=lambda a: a.get(date_field)).get(date_field)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		filters_filter_based_on = filters.filter_based_on
 		date_field = frappe.scrub(filters.date_based_on)
@@ -185,11 +191,20 @@ def prepare_chart_data(data, filters):
 		)
 
 	for d in data:
+<<<<<<< HEAD
 		date = d.get(date_field)
 		belongs_to_month = formatdate(date, "MMM YYYY")
 
 		labels_values_map[belongs_to_month].asset_value += d.get("asset_value")
 		labels_values_map[belongs_to_month].depreciated_amount += d.get("depreciated_amount")
+=======
+		if d.get(date_field):
+			date = d.get(date_field)
+			belongs_to_month = formatdate(date, "MMM YYYY")
+
+			labels_values_map[belongs_to_month].asset_value += d.get("asset_value")
+			labels_values_map[belongs_to_month].depreciated_amount += d.get("depreciated_amount")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return {
 		"data": {
@@ -200,7 +215,11 @@ def prepare_chart_data(data, filters):
 					"values": [flt(d.get("asset_value"), 2) for d in labels_values_map.values()],
 				},
 				{
+<<<<<<< HEAD
 					"name": _("Depreciatied Amount"),
+=======
+					"name": _("Depreciated Amount"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"values": [flt(d.get("depreciated_amount"), 2) for d in labels_values_map.values()],
 				},
 			],

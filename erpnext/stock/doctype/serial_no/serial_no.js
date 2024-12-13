@@ -33,6 +33,10 @@ frappe.ui.form.on("Serial No", {
 				posting_time: frappe.datetime.now_time(),
 			};
 			frappe.set_route("query-report", "Serial No Ledger");
+<<<<<<< HEAD
 		});
+=======
+		}).addClass("btn-primary");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 });

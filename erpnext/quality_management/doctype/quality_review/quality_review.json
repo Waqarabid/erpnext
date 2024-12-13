@@ -84,7 +84,11 @@
    "link_fieldname": "review"
   }
  ],
+<<<<<<< HEAD
  "modified": "2020-10-21 12:56:47.046172",
+=======
+ "modified": "2024-03-27 13:10:30.167995",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Quality Management",
  "name": "Quality Review",
@@ -110,7 +114,11 @@
    "print": 1,
    "read": 1,
    "report": 1,
+<<<<<<< HEAD
    "role": "All",
+=======
+   "role": "Desk User",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "share": 1,
    "write": 1
   },
@@ -127,8 +135,14 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "title_field": "goal",
  "track_changes": 1
 }

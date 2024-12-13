@@ -17,12 +17,41 @@ from erpnext.setup.utils import get_exchange_rate
 
 
 class ExchangeRateRevaluation(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.exchange_rate_revaluation_account.exchange_rate_revaluation_account import (
+			ExchangeRateRevaluationAccount,
+		)
+
+		accounts: DF.Table[ExchangeRateRevaluationAccount]
+		amended_from: DF.Link | None
+		company: DF.Link
+		gain_loss_booked: DF.Currency
+		gain_loss_unbooked: DF.Currency
+		posting_date: DF.Date
+		rounding_loss_allowance: DF.Float
+		total_gain_loss: DF.Currency
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_rounding_loss_allowance()
 		self.set_total_gain_loss()
 
 	def validate_rounding_loss_allowance(self):
+<<<<<<< HEAD
 		if not (self.rounding_loss_allowance >= 0 and self.rounding_loss_allowance < 1):
+=======
+		if self.rounding_loss_allowance < 0 or self.rounding_loss_allowance >= 1:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.throw(_("Rounding Loss Allowance should be between 0 and 1"))
 
 	def set_total_gain_loss(self):

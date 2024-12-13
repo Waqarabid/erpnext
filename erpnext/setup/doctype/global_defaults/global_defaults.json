@@ -12,7 +12,12 @@
   "default_currency",
   "hide_currency_symbol",
   "disable_rounded_total",
+<<<<<<< HEAD
   "disable_in_words"
+=======
+  "disable_in_words",
+  "demo_company"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -71,6 +76,17 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Disable In Words"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "demo_company",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Demo Company",
+   "options": "Company",
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-cog",
@@ -78,7 +94,11 @@
  "in_create": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-07-01 19:45:00.323953",
+=======
+ "modified": "2024-03-27 13:09:45.400219",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Global Defaults",
@@ -93,7 +113,11 @@
   }
  ],
  "read_only": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

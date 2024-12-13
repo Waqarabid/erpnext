@@ -51,7 +51,11 @@ frappe.ui.form.on("BOM Operation", {
 
 	workstation: function (frm, cdt, cdn) {
 		const d = locals[cdt][cdn];
+<<<<<<< HEAD
 
+=======
+		if (!d.workstation) return;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.call({
 			method: "frappe.client.get",
 			args: {

@@ -35,7 +35,11 @@
    "link_fieldname": "quality_inspection_template"
   }
  ],
+<<<<<<< HEAD
  "modified": "2020-04-26 20:13:02.810132",
+=======
+ "modified": "2024-03-27 13:10:29.303619",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Quality Inspection Template",
@@ -90,7 +94,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

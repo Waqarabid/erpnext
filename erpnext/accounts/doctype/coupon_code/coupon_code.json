@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "allow_import": 1,
  "autoname": "field:coupon_name",
  "creation": "2018-01-22 14:34:39.701832",
@@ -12,6 +16,10 @@
   "customer",
   "column_break_4",
   "coupon_code",
+<<<<<<< HEAD
+=======
+  "from_external_ecomm_platform",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "pricing_rule",
   "uses",
   "valid_from",
@@ -60,11 +68,20 @@
    "unique": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "pricing_rule",
    "fieldtype": "Link",
    "label": "Pricing Rule",
    "options": "Pricing Rule",
    "reqd": 1
+=======
+   "depends_on": "eval: !doc.from_external_ecomm_platform",
+   "fieldname": "pricing_rule",
+   "fieldtype": "Link",
+   "label": "Pricing Rule",
+   "mandatory_depends_on": "eval: !doc.from_external_ecomm_platform",
+   "options": "Pricing Rule"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "uses",
@@ -80,7 +97,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "depends_on": "eval: doc.coupon_type == \"Promotional\"",
@@ -113,12 +134,29 @@
    "options": "Coupon Code",
    "print_hide": 1,
    "read_only": 1
+<<<<<<< HEAD
   }
  ],
  "modified": "2019-10-19 14:48:14.602481",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Coupon Code",
+=======
+  },
+  {
+   "default": "0",
+   "fieldname": "from_external_ecomm_platform",
+   "fieldtype": "Check",
+   "label": "From External Ecomm Platform"
+  }
+ ],
+ "links": [],
+ "modified": "2024-11-19 16:35:11.836441",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Coupon Code",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -170,8 +208,14 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "title_field": "coupon_name",
  "track_changes": 1
 }

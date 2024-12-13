@@ -2,6 +2,10 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
+=======
+from collections.abc import Iterator
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from operator import itemgetter
 
 import frappe
@@ -15,6 +19,10 @@ Filters = frappe._dict
 
 def execute(filters: Filters = None) -> tuple:
 	to_date = filters["to_date"]
+<<<<<<< HEAD
+=======
+	filters.ranges = [num.strip() for num in filters.range.split(",") if num.strip().isdigit()]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	columns = get_columns(filters)
 
 	item_details = FIFOSlots(filters).generate()
@@ -47,7 +55,11 @@ def format_report_data(filters: Filters, item_details: dict, to_date: str) -> li
 		average_age = get_average_age(fifo_queue, to_date)
 		earliest_age = date_diff(to_date, fifo_queue[0][1])
 		latest_age = date_diff(to_date, fifo_queue[-1][1])
+<<<<<<< HEAD
 		range1, range2, range3, above_range3 = get_range_age(filters, fifo_queue, to_date, item_dict)
+=======
+		range_values = get_range_age(filters, fifo_queue, to_date, item_dict)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		row = [details.name, details.item_name, details.description, details.item_group, details.brand]
 
@@ -58,10 +70,14 @@ def format_report_data(filters: Filters, item_details: dict, to_date: str) -> li
 			[
 				flt(item_dict.get("total_qty"), precision),
 				average_age,
+<<<<<<< HEAD
 				range1,
 				range2,
 				range3,
 				above_range3,
+=======
+				*range_values,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				earliest_age,
 				latest_age,
 				details.stock_uom,
@@ -88,15 +104,22 @@ def get_average_age(fifo_queue: list, to_date: str) -> float:
 	return flt(age_qty / total_qty, 2) if total_qty else 0.0
 
 
+<<<<<<< HEAD
 def get_range_age(filters: Filters, fifo_queue: list, to_date: str, item_dict: dict) -> tuple:
 	precision = cint(frappe.db.get_single_value("System Settings", "float_precision", cache=True))
 
 	range1 = range2 = range3 = above_range3 = 0.0
+=======
+def get_range_age(filters: Filters, fifo_queue: list, to_date: str, item_dict: dict) -> list:
+	precision = cint(frappe.db.get_single_value("System Settings", "float_precision", cache=True))
+	range_values = [0.0] * (len(filters.ranges) + 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	for item in fifo_queue:
 		age = flt(date_diff(to_date, item[1]))
 		qty = flt(item[0]) if not item_dict["has_serial_no"] else 1.0
 
+<<<<<<< HEAD
 		if age <= flt(filters.range1):
 			range1 = flt(range1 + qty, precision)
 		elif age <= flt(filters.range2):
@@ -107,6 +130,16 @@ def get_range_age(filters: Filters, fifo_queue: list, to_date: str, item_dict: d
 			above_range3 = flt(above_range3 + qty, precision)
 
 	return range1, range2, range3, above_range3
+=======
+		for i, age_limit in enumerate(filters.ranges):
+			if age <= flt(age_limit):
+				range_values[i] = flt(range_values[i] + qty, precision)
+				break
+		else:
+			range_values[-1] = flt(range_values[-1] + qty, precision)
+
+	return range_values
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_columns(filters: Filters) -> list[dict]:
@@ -192,12 +225,23 @@ def get_chart_data(data: list, filters: Filters) -> dict:
 
 
 def setup_ageing_columns(filters: Filters, range_columns: list):
+<<<<<<< HEAD
 	ranges = [
 		f"0 - {filters['range1']}",
 		f"{cint(filters['range1']) + 1} - {cint(filters['range2'])}",
 		f"{cint(filters['range2']) + 1} - {cint(filters['range3'])}",
 		_("{0} - Above").format(cint(filters["range3"]) + 1),
 	]
+=======
+	prev_range_value = 0
+	ranges = []
+	for range in filters.ranges:
+		ranges.append(f"{prev_range_value} - {range}")
+		prev_range_value = cint(range) + 1
+
+	ranges.append(f"{prev_range_value} - Above")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	for i, label in enumerate(ranges):
 		fieldname = "range" + str(i + 1)
 		add_column(range_columns, label=_("Age ({0})").format(label), fieldname=fieldname)
@@ -227,9 +271,23 @@ class FIFOSlots:
 		                consumed/updated and maintained via FIFO. **
 		}
 		"""
+<<<<<<< HEAD
 		stock_ledger_entries = self.sle
 
 		_system_settings = frappe.get_cached_doc("System Settings")
+=======
+
+		from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+			get_serial_nos_from_bundle,
+		)
+
+		stock_ledger_entries = self.sle
+
+		bundle_wise_serial_nos = frappe._dict({})
+		if stock_ledger_entries is None:
+			bundle_wise_serial_nos = self.__get_bundle_wise_serial_nos()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		with frappe.db.unbuffered_cursor():
 			if stock_ledger_entries is None:
 				stock_ledger_entries = self.__get_stock_ledger_entries()
@@ -243,6 +301,14 @@ class FIFOSlots:
 					d.actual_qty = flt(d.qty_after_transaction) - flt(prev_balance_qty)
 
 				serial_nos = get_serial_nos(d.serial_no) if d.serial_no else []
+<<<<<<< HEAD
+=======
+				if d.serial_and_batch_bundle and d.has_serial_no:
+					if bundle_wise_serial_nos:
+						serial_nos = bundle_wise_serial_nos.get(d.serial_and_batch_bundle) or []
+					else:
+						serial_nos = get_serial_nos_from_bundle(d.serial_and_batch_bundle) or []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				if d.actual_qty > 0:
 					self.__compute_incoming_stock(d, fifo_queue, transferred_item_key, serial_nos)
@@ -251,7 +317,12 @@ class FIFOSlots:
 
 				self.__update_balances(d, key)
 
+<<<<<<< HEAD
 		del stock_ledger_entries
+=======
+			# Note that stock_ledger_entries is an iterator, you can not reuse it  like a list
+			del stock_ledger_entries
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.filters.get("show_warehouse_wise_stock"):
 			# (Item 1, WH 1), (Item 1, WH 2) => (Item 1)
@@ -384,7 +455,11 @@ class FIFOSlots:
 
 		return item_aggregated_data
 
+<<<<<<< HEAD
 	def __get_stock_ledger_entries(self) -> list[dict]:
+=======
+	def __get_stock_ledger_entries(self) -> Iterator[dict]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		sle = frappe.qb.DocType("Stock Ledger Entry")
 		item = self.__get_item_query()  # used as derived table in sle query
 
@@ -406,6 +481,10 @@ class FIFOSlots:
 				sle.serial_no,
 				sle.batch_no,
 				sle.qty_after_transaction,
+<<<<<<< HEAD
+=======
+				sle.serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				sle.warehouse,
 			)
 			.where(
@@ -432,6 +511,39 @@ class FIFOSlots:
 
 		return sle_query.run(as_dict=True, as_iterator=True)
 
+<<<<<<< HEAD
+=======
+	def __get_bundle_wise_serial_nos(self) -> dict:
+		bundle = frappe.qb.DocType("Serial and Batch Bundle")
+		entry = frappe.qb.DocType("Serial and Batch Entry")
+
+		query = (
+			frappe.qb.from_(bundle)
+			.join(entry)
+			.on(bundle.name == entry.parent)
+			.select(bundle.name, entry.serial_no)
+			.where(
+				(bundle.docstatus == 1)
+				& (entry.serial_no.isnotnull())
+				& (bundle.company == self.filters.get("company"))
+				& (bundle.posting_date <= self.filters.get("to_date"))
+			)
+		)
+
+		for field in ["item_code"]:
+			if self.filters.get(field):
+				query = query.where(bundle[field] == self.filters.get(field))
+
+		if self.filters.get("warehouse"):
+			query = self.__get_warehouse_conditions(bundle, query)
+
+		bundle_wise_serial_nos = frappe._dict({})
+		for bundle_name, serial_no in query.run():
+			bundle_wise_serial_nos.setdefault(bundle_name, []).append(serial_no)
+
+		return bundle_wise_serial_nos
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __get_item_query(self) -> str:
 		item_table = frappe.qb.DocType("Item")
 

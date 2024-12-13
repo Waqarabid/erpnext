@@ -1,9 +1,16 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import (
 	add_days,
 	add_months,
@@ -12,8 +19,15 @@ from frappe.utils import (
 	get_first_day,
 	get_last_day,
 	getdate,
+<<<<<<< HEAD
 	nowdate,
 )
+=======
+	is_last_day_of_the_month,
+	nowdate,
+)
+from frappe.utils.data import add_to_date
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
@@ -23,20 +37,40 @@ from erpnext.assets.doctype.asset.asset import (
 	update_maintenance_status,
 )
 from erpnext.assets.doctype.asset.depreciation import (
+<<<<<<< HEAD
 	is_last_day_of_the_month,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	post_depreciation_entries,
 	restore_asset,
 	scrap_asset,
 )
+<<<<<<< HEAD
+=======
+from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
+	_check_is_pro_rata,
+	_get_pro_rata_amt,
+	get_asset_depr_schedule_doc,
+	get_depr_schedule,
+	get_depreciation_amount,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.purchase_receipt.purchase_receipt import (
 	make_purchase_invoice as make_invoice,
 )
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
 
 
+<<<<<<< HEAD
 class AssetSetup(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+class AssetSetup(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		set_depreciation_settings_in_company()
 		create_asset_data()
 		enable_cwip_accounting("Computers")
@@ -200,6 +234,12 @@ class TestAsset(AssetSetup):
 			submit=1,
 		)
 
+<<<<<<< HEAD
+=======
+		first_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Active")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		post_depreciation_entries(date=add_months(purchase_date, 2))
 		asset.load_from_db()
 
@@ -209,17 +249,59 @@ class TestAsset(AssetSetup):
 		)
 		self.assertEqual(accumulated_depr_amount, 18000.0)
 
+<<<<<<< HEAD
 		scrap_asset(asset.name)
 		asset.load_from_db()
+=======
+		asset_depreciation = frappe.db.get_value(
+			"Asset Depreciation Schedule", {"asset": asset.name, "docstatus": 1}, "name"
+		)
+		last_booked_depreciation_date = frappe.db.get_value(
+			"Depreciation Schedule",
+			{
+				"parent": asset_depreciation,
+				"docstatus": 1,
+				"journal_entry": ["!=", ""],
+			},
+			"schedule_date",
+			order_by="schedule_date desc",
+		)
+
+		before_purchase_date = add_to_date(asset.purchase_date, days=-1)
+		future_date = add_to_date(nowdate(), days=1)
+		if last_booked_depreciation_date:
+			before_last_booked_depreciation_date = add_to_date(last_booked_depreciation_date, days=-1)
+
+		self.assertRaises(frappe.ValidationError, scrap_asset, asset.name, scrap_date=before_purchase_date)
+		self.assertRaises(frappe.ValidationError, scrap_asset, asset.name, scrap_date=future_date)
+		self.assertRaises(
+			frappe.ValidationError, scrap_asset, asset.name, scrap_date=before_last_booked_depreciation_date
+		)
+
+		scrap_asset(asset.name)
+		asset.load_from_db()
+		first_asset_depr_schedule.load_from_db()
+
+		second_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(second_asset_depr_schedule.status, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Cancelled")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		accumulated_depr_amount = flt(
 			asset.gross_purchase_amount - asset.finance_books[0].value_after_depreciation,
 			asset.precision("gross_purchase_amount"),
 		)
+<<<<<<< HEAD
 		pro_rata_amount, _, _ = asset.get_pro_rata_amt(
 			asset.finance_books[0],
 			9000,
 			get_last_day(add_months(purchase_date, 1)),
+=======
+		pro_rata_amount, _, _ = _get_pro_rata_amt(
+			asset.finance_books[0],
+			9000,
+			add_days(get_last_day(add_months(purchase_date, 1)), 1),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			date,
 			original_schedule_date=get_last_day(nowdate()),
 		)
@@ -250,6 +332,14 @@ class TestAsset(AssetSetup):
 		self.assertSequenceEqual(gle, expected_gle)
 
 		restore_asset(asset.name)
+<<<<<<< HEAD
+=======
+		second_asset_depr_schedule.load_from_db()
+
+		third_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(third_asset_depr_schedule.status, "Active")
+		self.assertEqual(second_asset_depr_schedule.status, "Cancelled")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		asset.load_from_db()
 		self.assertFalse(asset.journal_entry_for_scrap)
@@ -277,6 +367,12 @@ class TestAsset(AssetSetup):
 			submit=1,
 		)
 
+<<<<<<< HEAD
+=======
+		first_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Active")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		post_depreciation_entries(date=add_months(purchase_date, 2))
 
 		si = make_sales_invoice(asset=asset.name, item_code="Macbook Pro", company="_Test Company")
@@ -288,10 +384,23 @@ class TestAsset(AssetSetup):
 
 		self.assertEqual(frappe.db.get_value("Asset", asset.name, "status"), "Sold")
 
+<<<<<<< HEAD
 		pro_rata_amount, _, _ = asset.get_pro_rata_amt(
 			asset.finance_books[0],
 			9000,
 			get_last_day(add_months(purchase_date, 1)),
+=======
+		first_asset_depr_schedule.load_from_db()
+
+		second_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(second_asset_depr_schedule.status, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Cancelled")
+
+		pro_rata_amount, _, _ = _get_pro_rata_amt(
+			asset.finance_books[0],
+			9000,
+			add_days(get_last_day(add_months(purchase_date, 1)), 1),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			date,
 			original_schedule_date=get_last_day(nowdate()),
 		)
@@ -311,7 +420,10 @@ class TestAsset(AssetSetup):
 			),
 			("Debtors - _TC", 25000.0, 0.0),
 		)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		gle = get_gl_entries("Sales Invoice", si.name)
 		self.assertSequenceEqual(gle, expected_gle)
 
@@ -327,7 +439,11 @@ class TestAsset(AssetSetup):
 			purchase_date="2020-04-01",
 			expected_value_after_useful_life=0,
 			total_number_of_depreciations=5,
+<<<<<<< HEAD
 			number_of_depreciations_booked=2,
+=======
+			opening_number_of_booked_depreciations=2,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frequency_of_depreciation=12,
 			depreciation_start_date="2023-03-31",
 			opening_accumulated_depreciation=24000,
@@ -341,7 +457,13 @@ class TestAsset(AssetSetup):
 			["2025-03-31", 12000, 60000],
 		]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		first_asset_depr_schedule = get_depr_schedule(asset.name, "Active")
+
+		for i, schedule in enumerate(first_asset_depr_schedule):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_depr_values[i][0]), schedule.schedule_date)
 			self.assertEqual(expected_depr_values[i][1], schedule.depreciation_amount)
 			self.assertEqual(expected_depr_values[i][2], schedule.accumulated_depreciation_amount)
@@ -357,7 +479,13 @@ class TestAsset(AssetSetup):
 
 		expected_values = [["2023-03-31", 12000, 36000], ["2023-05-23", 1737.7, 37737.7]]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		second_asset_depr_schedule = get_depr_schedule(asset.name, "Active")
+
+		for i, schedule in enumerate(second_asset_depr_schedule):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_values[i][0]), schedule.schedule_date)
 			self.assertEqual(expected_values[i][1], schedule.depreciation_amount)
 			self.assertEqual(expected_values[i][2], schedule.accumulated_depreciation_amount)
@@ -421,7 +549,11 @@ class TestAsset(AssetSetup):
 			purchase_date="2020-01-01",
 			expected_value_after_useful_life=0,
 			total_number_of_depreciations=6,
+<<<<<<< HEAD
 			number_of_depreciations_booked=1,
+=======
+			opening_number_of_booked_depreciations=1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frequency_of_depreciation=10,
 			depreciation_start_date="2021-01-01",
 			opening_accumulated_depreciation=20000,
@@ -429,6 +561,12 @@ class TestAsset(AssetSetup):
 			submit=1,
 		)
 
+<<<<<<< HEAD
+=======
+		first_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Active")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		post_depreciation_entries(date="2021-01-01")
 
 		self.assertEqual(asset.asset_quantity, 10)
@@ -437,21 +575,46 @@ class TestAsset(AssetSetup):
 
 		new_asset = split_asset(asset.name, 2)
 		asset.load_from_db()
+<<<<<<< HEAD
+=======
+		first_asset_depr_schedule.load_from_db()
+
+		second_asset_depr_schedule = get_asset_depr_schedule_doc(asset.name, "Active")
+		first_asset_depr_schedule_of_new_asset = get_asset_depr_schedule_doc(new_asset.name, "Active")
+		self.assertEqual(second_asset_depr_schedule.status, "Active")
+		self.assertEqual(first_asset_depr_schedule_of_new_asset.status, "Active")
+		self.assertEqual(first_asset_depr_schedule.status, "Cancelled")
+
+		depr_schedule_of_asset = second_asset_depr_schedule.get("depreciation_schedule")
+		depr_schedule_of_new_asset = first_asset_depr_schedule_of_new_asset.get("depreciation_schedule")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.assertEqual(new_asset.asset_quantity, 2)
 		self.assertEqual(new_asset.gross_purchase_amount, 24000)
 		self.assertEqual(new_asset.opening_accumulated_depreciation, 4000)
 		self.assertEqual(new_asset.split_from, asset.name)
+<<<<<<< HEAD
 		self.assertEqual(new_asset.schedules[0].depreciation_amount, 4000)
 		self.assertEqual(new_asset.schedules[1].depreciation_amount, 4000)
+=======
+		self.assertEqual(depr_schedule_of_new_asset[0].depreciation_amount, 4000)
+		self.assertEqual(depr_schedule_of_new_asset[1].depreciation_amount, 4000)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.assertEqual(asset.asset_quantity, 8)
 		self.assertEqual(asset.gross_purchase_amount, 96000)
 		self.assertEqual(asset.opening_accumulated_depreciation, 16000)
+<<<<<<< HEAD
 		self.assertEqual(asset.schedules[0].depreciation_amount, 16000)
 		self.assertEqual(asset.schedules[1].depreciation_amount, 16000)
 
 		journal_entry = asset.schedules[0].journal_entry
+=======
+		self.assertEqual(depr_schedule_of_asset[0].depreciation_amount, 16000)
+		self.assertEqual(depr_schedule_of_asset[1].depreciation_amount, 16000)
+
+		journal_entry = depr_schedule_of_asset[0].journal_entry
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		jv = frappe.get_doc("Journal Entry", journal_entry)
 		self.assertEqual(jv.accounts[0].credit_in_account_currency, 16000)
@@ -649,6 +812,7 @@ class TestDepreciationMethods(AssetSetup):
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
 		]
 
@@ -672,6 +836,9 @@ class TestDepreciationMethods(AssetSetup):
 		schedules = [
 			[cstr(d.schedule_date), flt(d.depreciation_amount, 2), d.accumulated_depreciation_amount]
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -707,7 +874,32 @@ class TestDepreciationMethods(AssetSetup):
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+		]
+		self.assertEqual(schedules, expected_schedules)
+
+	def test_schedule_for_straight_line_method_for_existing_asset(self):
+		asset = create_asset(
+			calculate_depreciation=1,
+			available_for_use_date="2030-06-06",
+			is_existing_asset=1,
+			opening_number_of_booked_depreciations=2,
+			opening_accumulated_depreciation=47178.08,
+			expected_value_after_useful_life=10000,
+			depreciation_start_date="2032-12-31",
+			total_number_of_depreciations=3,
+			frequency_of_depreciation=12,
+		)
+
+		self.assertEqual(asset.status, "Draft")
+		expected_schedules = [["2032-12-31", 30000.0, 77178.08], ["2033-06-06", 12821.92, 90000.0]]
+		schedules = [
+			[cstr(d.schedule_date), flt(d.depreciation_amount, 2), d.accumulated_depreciation_amount]
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -734,7 +926,11 @@ class TestDepreciationMethods(AssetSetup):
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -745,7 +941,11 @@ class TestDepreciationMethods(AssetSetup):
 			available_for_use_date="2030-01-01",
 			is_existing_asset=1,
 			depreciation_method="Double Declining Balance",
+<<<<<<< HEAD
 			number_of_depreciations_booked=1,
+=======
+			opening_number_of_booked_depreciations=1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			opening_accumulated_depreciation=50000,
 			expected_value_after_useful_life=10000,
 			depreciation_start_date="2031-12-31",
@@ -759,7 +959,11 @@ class TestDepreciationMethods(AssetSetup):
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -789,7 +993,11 @@ class TestDepreciationMethods(AssetSetup):
 				flt(d.depreciation_amount, 2),
 				flt(d.accumulated_depreciation_amount, 2),
 			]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -821,7 +1029,11 @@ class TestDepreciationMethods(AssetSetup):
 				flt(d.depreciation_amount, 2),
 				flt(d.accumulated_depreciation_amount, 2),
 			]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -844,8 +1056,13 @@ class TestDepreciationMethods(AssetSetup):
 		expected_schedules = [
 			["2030-12-31", 28630.14, 28630.14],
 			["2031-12-31", 35684.93, 64315.07],
+<<<<<<< HEAD
 			["2032-12-31", 17842.47, 82157.54],
 			["2033-06-06", 5342.47, 87500.01],
+=======
+			["2032-12-31", 17842.46, 82157.53],
+			["2033-06-06", 5342.46, 87499.99],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		schedules = [
@@ -854,7 +1071,11 @@ class TestDepreciationMethods(AssetSetup):
 				flt(d.depreciation_amount, 2),
 				flt(d.accumulated_depreciation_amount, 2),
 			]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -887,7 +1108,11 @@ class TestDepreciationMethods(AssetSetup):
 				flt(d.depreciation_amount, 2),
 				flt(d.accumulated_depreciation_amount, 2),
 			]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 		self.assertEqual(schedules, expected_schedules)
 
@@ -910,7 +1135,11 @@ class TestDepreciationBasics(AssetSetup):
 			["2022-12-31", 30000, 90000],
 		]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		for i, schedule in enumerate(get_depr_schedule(asset.name, "Active")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_values[i][0]), schedule.schedule_date)
 			self.assertEqual(expected_values[i][1], schedule.depreciation_amount)
 			self.assertEqual(expected_values[i][2], schedule.accumulated_depreciation_amount)
@@ -933,16 +1162,23 @@ class TestDepreciationBasics(AssetSetup):
 			["2023-01-01", 15000, 90000],
 		]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		for i, schedule in enumerate(get_depr_schedule(asset.name, "Active")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_values[i][0]), schedule.schedule_date)
 			self.assertEqual(expected_values[i][1], schedule.depreciation_amount)
 			self.assertEqual(expected_values[i][2], schedule.accumulated_depreciation_amount)
 
 	def test_get_depreciation_amount(self):
 		"""Tests if get_depreciation_amount() returns the right value."""
+<<<<<<< HEAD
 
 		from erpnext.assets.doctype.asset.asset import get_depreciation_amount
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset = create_asset(item_code="Macbook Pro", available_for_use_date="2019-12-31")
 
 		asset.calculate_depreciation = 1
@@ -957,11 +1193,23 @@ class TestDepreciationBasics(AssetSetup):
 			},
 		)
 
+<<<<<<< HEAD
 		depreciation_amount = get_depreciation_amount(asset, 100000, 100000, asset.finance_books[0])
 		self.assertEqual(depreciation_amount, 30000)
 
 	def test_make_depreciation_schedule(self):
 		"""Tests if make_depreciation_schedule() returns the right values."""
+=======
+		asset_depr_schedule_doc = get_asset_depr_schedule_doc(asset.name, "Active")
+
+		depreciation_amount, prev_per_day_depr = get_depreciation_amount(
+			asset_depr_schedule_doc, asset, 100000, 100000, asset.finance_books[0]
+		)
+		self.assertEqual(depreciation_amount, 30000)
+
+	def test_make_depr_schedule(self):
+		"""Tests if make_depr_schedule() returns the right values."""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		asset = create_asset(
 			item_code="Macbook Pro",
@@ -976,7 +1224,11 @@ class TestDepreciationBasics(AssetSetup):
 
 		expected_values = [["2020-12-31", 30000.0], ["2021-12-31", 30000.0], ["2022-12-31", 30000.0]]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		for i, schedule in enumerate(get_depr_schedule(asset.name, "Draft")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_values[i][0]), schedule.schedule_date)
 			self.assertEqual(expected_values[i][1], schedule.depreciation_amount)
 
@@ -996,7 +1248,11 @@ class TestDepreciationBasics(AssetSetup):
 
 		expected_values = [30000.0, 60000.0, 90000.0]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		for i, schedule in enumerate(get_depr_schedule(asset.name, "Draft")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(expected_values[i], schedule.accumulated_depreciation_amount)
 
 	def test_check_is_pro_rata(self):
@@ -1016,7 +1272,11 @@ class TestDepreciationBasics(AssetSetup):
 			},
 		)
 
+<<<<<<< HEAD
 		has_pro_rata = asset.check_is_pro_rata(asset.finance_books[0])
+=======
+		has_pro_rata = _check_is_pro_rata(asset, asset.finance_books[0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertFalse(has_pro_rata)
 
 		asset.finance_books = []
@@ -1031,7 +1291,11 @@ class TestDepreciationBasics(AssetSetup):
 			},
 		)
 
+<<<<<<< HEAD
 		has_pro_rata = asset.check_is_pro_rata(asset.finance_books[0])
+=======
+		has_pro_rata = _check_is_pro_rata(asset, asset.finance_books[0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertTrue(has_pro_rata)
 
 	def test_expected_value_after_useful_life_greater_than_purchase_amount(self):
@@ -1078,8 +1342,13 @@ class TestDepreciationBasics(AssetSetup):
 
 		self.assertRaises(frappe.ValidationError, asset.save)
 
+<<<<<<< HEAD
 	def test_number_of_depreciations_booked(self):
 		"""Tests if an error is raised when number_of_depreciations_booked is not specified when opening_accumulated_depreciation is."""
+=======
+	def test_opening_booked_depreciations(self):
+		"""Tests if an error is raised when opening_number_of_booked_depreciations is not specified when opening_accumulated_depreciation is."""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		asset = create_asset(
 			item_code="Macbook Pro",
@@ -1095,9 +1364,15 @@ class TestDepreciationBasics(AssetSetup):
 		self.assertRaises(frappe.ValidationError, asset.save)
 
 	def test_number_of_depreciations(self):
+<<<<<<< HEAD
 		"""Tests if an error is raised when number_of_depreciations_booked >= total_number_of_depreciations."""
 
 		# number_of_depreciations_booked > total_number_of_depreciations
+=======
+		"""Tests if an error is raised when opening_number_of_booked_depreciations >= total_number_of_depreciations."""
+
+		# opening_number_of_booked_depreciations > total_number_of_depreciations
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset = create_asset(
 			item_code="Macbook Pro",
 			calculate_depreciation=1,
@@ -1106,13 +1381,21 @@ class TestDepreciationBasics(AssetSetup):
 			expected_value_after_useful_life=10000,
 			depreciation_start_date="2020-07-01",
 			opening_accumulated_depreciation=10000,
+<<<<<<< HEAD
 			number_of_depreciations_booked=5,
+=======
+			opening_number_of_booked_depreciations=5,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			do_not_save=1,
 		)
 
 		self.assertRaises(frappe.ValidationError, asset.save)
 
+<<<<<<< HEAD
 		# number_of_depreciations_booked = total_number_of_depreciations
+=======
+		# opening_number_of_booked_depreciations = total_number_of_depreciations
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset_2 = create_asset(
 			item_code="Macbook Pro",
 			calculate_depreciation=1,
@@ -1121,7 +1404,11 @@ class TestDepreciationBasics(AssetSetup):
 			expected_value_after_useful_life=10000,
 			depreciation_start_date="2020-07-01",
 			opening_accumulated_depreciation=10000,
+<<<<<<< HEAD
 			number_of_depreciations_booked=5,
+=======
+			opening_number_of_booked_depreciations=5,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			do_not_save=1,
 		)
 
@@ -1176,9 +1463,17 @@ class TestDepreciationBasics(AssetSetup):
 		post_depreciation_entries(date="2021-06-01")
 		asset.load_from_db()
 
+<<<<<<< HEAD
 		self.assertTrue(asset.schedules[0].journal_entry)
 		self.assertFalse(asset.schedules[1].journal_entry)
 		self.assertFalse(asset.schedules[2].journal_entry)
+=======
+		depr_schedule = get_depr_schedule(asset.name, "Active")
+
+		self.assertTrue(depr_schedule[0].journal_entry)
+		self.assertFalse(depr_schedule[1].journal_entry)
+		self.assertFalse(depr_schedule[2].journal_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_depr_entry_posting_when_depr_expense_account_is_an_expense_account(self):
 		"""Tests if the Depreciation Expense Account gets debited and the Accumulated Depreciation Account gets credited when the former's an Expense Account."""
@@ -1197,7 +1492,11 @@ class TestDepreciationBasics(AssetSetup):
 		post_depreciation_entries(date="2021-06-01")
 		asset.load_from_db()
 
+<<<<<<< HEAD
 		je = frappe.get_doc("Journal Entry", asset.schedules[0].journal_entry)
+=======
+		je = frappe.get_doc("Journal Entry", get_depr_schedule(asset.name, "Active")[0].journal_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		accounting_entries = [
 			{"account": entry.account, "debit": entry.debit, "credit": entry.credit} for entry in je.accounts
 		]
@@ -1232,7 +1531,11 @@ class TestDepreciationBasics(AssetSetup):
 		post_depreciation_entries(date="2021-06-01")
 		asset.load_from_db()
 
+<<<<<<< HEAD
 		je = frappe.get_doc("Journal Entry", asset.schedules[0].journal_entry)
+=======
+		je = frappe.get_doc("Journal Entry", get_depr_schedule(asset.name, "Active")[0].journal_entry)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		accounting_entries = [
 			{"account": entry.account, "debit": entry.debit, "credit": entry.credit} for entry in je.accounts
 		]
@@ -1250,8 +1553,13 @@ class TestDepreciationBasics(AssetSetup):
 		depr_expense_account.parent_account = "Expenses - _TC"
 		depr_expense_account.save()
 
+<<<<<<< HEAD
 	def test_clear_depreciation_schedule(self):
 		"""Tests if clear_depreciation_schedule() works as expected."""
+=======
+	def test_clear_depr_schedule(self):
+		"""Tests if clear_depr_schedule() works as expected."""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		asset = create_asset(
 			item_code="Macbook Pro",
@@ -1267,11 +1575,21 @@ class TestDepreciationBasics(AssetSetup):
 		post_depreciation_entries(date="2021-06-01")
 		asset.load_from_db()
 
+<<<<<<< HEAD
 		asset.clear_depreciation_schedule()
 
 		self.assertEqual(len(asset.schedules), 1)
 
 	def test_clear_depreciation_schedule_for_multiple_finance_books(self):
+=======
+		asset_depr_schedule_doc = get_asset_depr_schedule_doc(asset.name, "Active")
+
+		asset_depr_schedule_doc.clear_depr_schedule()
+
+		self.assertEqual(len(asset_depr_schedule_doc.get("depreciation_schedule")), 1)
+
+	def test_clear_depr_schedule_for_multiple_finance_books(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		asset = create_asset(item_code="Macbook Pro", available_for_use_date="2019-12-31", do_not_save=1)
 
 		asset.calculate_depreciation = 1
@@ -1313,6 +1631,7 @@ class TestDepreciationBasics(AssetSetup):
 		post_depreciation_entries(date="2020-04-01")
 		asset.load_from_db()
 
+<<<<<<< HEAD
 		asset.clear_depreciation_schedule()
 
 		self.assertEqual(len(asset.schedules), 6)
@@ -1322,6 +1641,19 @@ class TestDepreciationBasics(AssetSetup):
 				self.assertEqual(schedule.finance_book_id, "1")
 			else:
 				self.assertEqual(schedule.finance_book_id, "2")
+=======
+		asset_depr_schedule_doc_1 = get_asset_depr_schedule_doc(asset.name, "Active", "Test Finance Book 1")
+		asset_depr_schedule_doc_1.clear_depr_schedule()
+		self.assertEqual(len(asset_depr_schedule_doc_1.get("depreciation_schedule")), 3)
+
+		asset_depr_schedule_doc_2 = get_asset_depr_schedule_doc(asset.name, "Active", "Test Finance Book 2")
+		asset_depr_schedule_doc_2.clear_depr_schedule()
+		self.assertEqual(len(asset_depr_schedule_doc_2.get("depreciation_schedule")), 3)
+
+		asset_depr_schedule_doc_3 = get_asset_depr_schedule_doc(asset.name, "Active", "Test Finance Book 3")
+		asset_depr_schedule_doc_3.clear_depr_schedule()
+		self.assertEqual(len(asset_depr_schedule_doc_3.get("depreciation_schedule")), 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_depreciation_schedules_are_set_up_for_multiple_finance_books(self):
 		asset = create_asset(item_code="Macbook Pro", available_for_use_date="2019-12-31", do_not_save=1)
@@ -1351,6 +1683,7 @@ class TestDepreciationBasics(AssetSetup):
 		)
 		asset.save()
 
+<<<<<<< HEAD
 		self.assertEqual(len(asset.schedules), 9)
 
 		for schedule in asset.schedules:
@@ -1358,6 +1691,13 @@ class TestDepreciationBasics(AssetSetup):
 				self.assertEqual(schedule.finance_book_id, "1")
 			else:
 				self.assertEqual(schedule.finance_book_id, "2")
+=======
+		asset_depr_schedule_doc_1 = get_asset_depr_schedule_doc(asset.name, "Draft", "Test Finance Book 1")
+		self.assertEqual(len(asset_depr_schedule_doc_1.get("depreciation_schedule")), 3)
+
+		asset_depr_schedule_doc_2 = get_asset_depr_schedule_doc(asset.name, "Draft", "Test Finance Book 2")
+		self.assertEqual(len(asset_depr_schedule_doc_2.get("depreciation_schedule")), 6)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_depreciation_entry_cancellation(self):
 		asset = create_asset(
@@ -1377,12 +1717,21 @@ class TestDepreciationBasics(AssetSetup):
 		asset.load_from_db()
 
 		# cancel depreciation entry
+<<<<<<< HEAD
 		depr_entry = asset.get("schedules")[0].journal_entry
 		self.assertTrue(depr_entry)
 		frappe.get_doc("Journal Entry", depr_entry).cancel()
 
 		asset.load_from_db()
 		depr_entry = asset.get("schedules")[0].journal_entry
+=======
+		depr_entry = get_depr_schedule(asset.name, "Active")[0].journal_entry
+		self.assertTrue(depr_entry)
+
+		frappe.get_doc("Journal Entry", depr_entry).cancel()
+
+		depr_entry = get_depr_schedule(asset.name, "Active")[0].journal_entry
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertFalse(depr_entry)
 
 	def test_asset_expected_value_after_useful_life(self):
@@ -1397,7 +1746,11 @@ class TestDepreciationBasics(AssetSetup):
 		)
 
 		accumulated_depreciation_after_full_schedule = max(
+<<<<<<< HEAD
 			d.accumulated_depreciation_amount for d in asset.get("schedules")
+=======
+			d.accumulated_depreciation_amount for d in get_depr_schedule(asset.name, "Draft")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		asset_value_after_full_schedule = flt(asset.gross_purchase_amount) - flt(
@@ -1428,7 +1781,11 @@ class TestDepreciationBasics(AssetSetup):
 		asset.load_from_db()
 
 		# check depreciation entry series
+<<<<<<< HEAD
 		self.assertEqual(asset.get("schedules")[0].journal_entry[:4], "DEPR")
+=======
+		self.assertEqual(get_depr_schedule(asset.name, "Active")[0].journal_entry[:4], "DEPR")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		expected_gle = (
 			("_Test Accumulated Depreciations - _TC", 0.0, 30000.0),
@@ -1452,19 +1809,30 @@ class TestDepreciationBasics(AssetSetup):
 		"""
 
 		asset = create_asset(calculate_depreciation=1)
+<<<<<<< HEAD
 		asset.opening_accumulated_depreciation = 2000
 		asset.number_of_depreciations_booked = 1
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		asset.finance_books[0].expected_value_after_useful_life = 100
 		asset.save()
 		asset.reload()
+<<<<<<< HEAD
 		self.assertEqual(asset.finance_books[0].value_after_depreciation, 98000.0)
+=======
+		self.assertEqual(asset.finance_books[0].value_after_depreciation, 100000.0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# changing expected_value_after_useful_life shouldn't affect value_after_depreciation
 		asset.finance_books[0].expected_value_after_useful_life = 200
 		asset.save()
 		asset.reload()
+<<<<<<< HEAD
 		self.assertEqual(asset.finance_books[0].value_after_depreciation, 98000.0)
+=======
+		self.assertEqual(asset.finance_books[0].value_after_depreciation, 100000.0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_asset_cost_center(self):
 		asset = create_asset(is_existing_asset=1, do_not_save=1)
@@ -1498,7 +1866,11 @@ class TestDepreciationBasics(AssetSetup):
 			"2020-07-15",
 		]
 
+<<<<<<< HEAD
 		for i, schedule in enumerate(asset.schedules):
+=======
+		for i, schedule in enumerate(get_depr_schedule(asset.name, "Active")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.assertEqual(getdate(expected_dates[i]), getdate(schedule.schedule_date))
 
 	def test_manual_depreciation_for_existing_asset(self):
@@ -1647,9 +2019,15 @@ def create_asset(**args):
 			"purchase_date": args.purchase_date or "2015-01-01",
 			"calculate_depreciation": args.calculate_depreciation or 0,
 			"opening_accumulated_depreciation": args.opening_accumulated_depreciation or 0,
+<<<<<<< HEAD
 			"number_of_depreciations_booked": args.number_of_depreciations_booked or 0,
 			"gross_purchase_amount": args.gross_purchase_amount or 100000,
 			"purchase_receipt_amount": args.purchase_receipt_amount or 100000,
+=======
+			"opening_number_of_booked_depreciations": args.opening_number_of_booked_depreciations or 0,
+			"gross_purchase_amount": args.gross_purchase_amount or 100000,
+			"purchase_amount": args.purchase_amount or 100000,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"maintenance_required": args.maintenance_required or 0,
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
 			"available_for_use_date": args.available_for_use_date or "2020-06-06",
@@ -1674,6 +2052,10 @@ def create_asset(**args):
 				"depreciation_start_date": args.depreciation_start_date,
 				"daily_prorata_based": args.daily_prorata_based or 0,
 				"shift_based": args.shift_based or 0,
+<<<<<<< HEAD
+=======
+				"rate_of_depreciation": args.rate_of_depreciation or 0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 		)
 
@@ -1755,7 +2137,11 @@ def set_depreciation_settings_in_company(company=None):
 	company.save()
 
 	# Enable booking asset depreciation entry automatically
+<<<<<<< HEAD
 	frappe.db.set_value("Accounts Settings", None, "book_asset_depreciation_entry_automatically", 1)
+=======
+	frappe.db.set_single_value("Accounts Settings", "book_asset_depreciation_entry_automatically", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def enable_cwip_accounting(asset_category, enable=1):

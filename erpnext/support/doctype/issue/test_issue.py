@@ -1,11 +1,18 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import unittest
 
 import frappe
 from frappe import _
 from frappe.core.doctype.user_permission.test_user_permission import create_user
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt, get_datetime
 
 from erpnext.support.doctype.service_level_agreement.test_service_level_agreement import (
@@ -13,14 +20,22 @@ from erpnext.support.doctype.service_level_agreement.test_service_level_agreemen
 )
 
 
+<<<<<<< HEAD
 class TestSetUp(unittest.TestCase):
+=======
+class TestSetUp(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		frappe.db.sql("delete from `tabService Level Agreement`")
 		frappe.db.sql("delete from `tabService Level Priority`")
 		frappe.db.sql("delete from `tabSLA Fulfilled On Status`")
 		frappe.db.sql("delete from `tabPause SLA On Status`")
 		frappe.db.sql("delete from `tabService Day`")
+<<<<<<< HEAD
 		frappe.db.set_value("Support Settings", None, "track_service_level_agreement", 1)
+=======
+		frappe.db.set_single_value("Support Settings", "track_service_level_agreement", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		create_service_level_agreements_for_issues()
 
 

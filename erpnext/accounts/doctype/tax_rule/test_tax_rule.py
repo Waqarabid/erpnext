@@ -1,14 +1,22 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.tax_rule.tax_rule import ConflictingTaxRule, get_tax_template
 from erpnext.crm.doctype.opportunity.opportunity import make_quotation
 from erpnext.crm.doctype.opportunity.test_opportunity import make_opportunity
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Tax Rule")
 
 
@@ -16,6 +24,14 @@ class TestTaxRule(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		frappe.db.set_value("Shopping Cart Settings", None, "enabled", 0)
+=======
+
+class TestTaxRule(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+		frappe.db.set_single_value("Shopping Cart Settings", "enabled", 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	@classmethod
 	def tearDownClass(cls):

@@ -3,13 +3,21 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.selling.report.sales_analytics.sales_analytics import execute
 
 
+<<<<<<< HEAD
 class TestAnalytics(FrappeTestCase):
+=======
+class TestAnalytics(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_sales_analytics(self):
 		frappe.db.sql("delete from `tabSales Order` where company='_Test Company 2'")
 

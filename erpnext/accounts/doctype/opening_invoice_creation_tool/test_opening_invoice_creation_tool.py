@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.accounting_dimension.test_accounting_dimension import (
 	create_dimension,
@@ -12,12 +16,30 @@ from erpnext.accounts.doctype.opening_invoice_creation_tool.opening_invoice_crea
 	get_temporary_opening_account,
 )
 
+<<<<<<< HEAD
 test_dependencies = ["Customer", "Supplier", "Accounting Dimension"]
 
 
 class TestOpeningInvoiceCreationTool(FrappeTestCase):
 	@classmethod
 	def setUpClass(self):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Customer", "Supplier", "Accounting Dimension"]
+
+
+class UnitTestOpeningInvoiceCreationTool(UnitTestCase):
+	"""
+	Unit tests for OpeningInvoiceCreationTool.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestOpeningInvoiceCreationTool(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not frappe.db.exists("Company", "_Test Opening Invoice Company"):
 			make_company()
 		create_dimension()
@@ -214,6 +236,10 @@ def make_customer(customer=None):
 			"territory": "All Territories",
 		}
 	)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not frappe.db.exists("Customer", customer_name):
 		customer.insert(ignore_permissions=True)
 		return customer.name

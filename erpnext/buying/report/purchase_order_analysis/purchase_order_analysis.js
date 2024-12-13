@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Purchase Order Analysis"] = {
 	filters: [
@@ -54,7 +57,11 @@ frappe.query_reports["Purchase Order Analysis"] = {
 			fieldtype: "MultiSelectList",
 			width: "80",
 			get_data: function (txt) {
+<<<<<<< HEAD
 				let status = ["To Bill", "To Receive", "To Receive and Bill", "Completed"];
+=======
+				let status = ["To Pay", "To Bill", "To Receive", "To Receive and Bill", "Completed"];
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				let options = [];
 				for (let option of status) {
 					options.push({

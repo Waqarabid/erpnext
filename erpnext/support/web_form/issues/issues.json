@@ -1,14 +1,24 @@
 {
+<<<<<<< HEAD
  "accept_payment": 0,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "allow_comments": 1,
  "allow_delete": 1,
  "allow_edit": 1,
  "allow_incomplete": 0,
  "allow_multiple": 1,
  "allow_print": 0,
+<<<<<<< HEAD
  "amount": 0.0,
  "amount_based_on_field": 0,
  "breadcrumbs": "[{\"label\":_(\"Issues\"), \"route\":\"issues\"}]",
+=======
+ "anonymous": 0,
+ "apply_document_permissions": 0,
+ "breadcrumbs": "[{\"label\":_(\"Issues\"), \"route\":\"issues\"}]",
+ "condition_json": "[]",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "creation": "2016-06-24 15:50:33.186483",
  "doc_type": "Issue",
  "docstatus": 0,
@@ -16,20 +26,33 @@
  "idx": 0,
  "introduction_text": "",
  "is_standard": 1,
+<<<<<<< HEAD
  "login_required": 1,
  "max_attachment_size": 0,
  "modified": "2020-05-19 13:01:10.729088",
+=======
+ "list_columns": [],
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2024-03-27 16:16:03.621730",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Support",
  "name": "issues",
  "owner": "Administrator",
  "published": 1,
  "route": "issues",
+<<<<<<< HEAD
  "route_to_success_link": 0,
  "show_attachments": 0,
  "show_in_grid": 0,
  "show_sidebar": 1,
  "sidebar_items": [],
+=======
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "success_message": "",
  "success_url": "/issues",
  "title": "Issue",

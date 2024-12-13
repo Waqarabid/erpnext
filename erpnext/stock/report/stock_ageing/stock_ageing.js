@@ -32,8 +32,12 @@ frappe.query_reports["Stock Ageing"] = {
 			options: "Warehouse",
 			get_query: () => {
 				let warehouse_type = frappe.query_report.get_filter_value("warehouse_type");
+<<<<<<< HEAD
 				const company = frappe.query_report.get_filter_value("company");
 
+=======
+				let company = frappe.query_report.get_filter_value("company");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				return {
 					filters: {
 						...(warehouse_type && { warehouse_type }),
@@ -55,6 +59,7 @@ frappe.query_reports["Stock Ageing"] = {
 			options: "Brand",
 		},
 		{
+<<<<<<< HEAD
 			fieldname: "range1",
 			label: __("Ageing Range 1"),
 			fieldtype: "Int",
@@ -74,6 +79,12 @@ frappe.query_reports["Stock Ageing"] = {
 			fieldtype: "Int",
 			default: "90",
 			reqd: 1,
+=======
+			fieldname: "range",
+			label: __("Ageing Range"),
+			fieldtype: "Data",
+			default: "30, 60, 90",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "show_warehouse_wise_stock",

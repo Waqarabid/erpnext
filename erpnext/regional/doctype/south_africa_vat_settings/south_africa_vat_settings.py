@@ -6,4 +6,23 @@ from frappe.model.document import Document
 
 
 class SouthAfricaVATSettings(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.south_africa_vat_account.south_africa_vat_account import (
+			SouthAfricaVATAccount,
+		)
+
+		company: DF.Link
+		vat_accounts: DF.Table[SouthAfricaVATAccount]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass

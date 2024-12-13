@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 // rename this file from _test_[name] to test_[name] to activate
 // and remove above this line
 

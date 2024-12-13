@@ -19,6 +19,10 @@
   "fg_item",
   "column_break_12",
   "fg_item_qty",
+<<<<<<< HEAD
+=======
+  "purchase_order_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_kphn",
   "material_request",
   "column_break_piqi",
@@ -118,6 +122,18 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "purchase_order_item",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Purchase Order Item",
+   "no_copy": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "collapsible": 1,
    "fieldname": "section_break_kphn",
    "fieldtype": "Section Break",
@@ -145,7 +161,11 @@
  ],
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-30 13:29:31.017440",
+=======
+ "modified": "2024-03-27 13:10:46.534662",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Subcontracting",
  "name": "Subcontracting Order Service Item",
@@ -154,7 +174,14 @@
  "permissions": [],
  "quick_entry": 1,
  "search_fields": "item_name",
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

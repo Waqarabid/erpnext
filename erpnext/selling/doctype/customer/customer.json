@@ -21,6 +21,7 @@
   "gender",
   "lead_name",
   "opportunity_name",
+<<<<<<< HEAD
   "account_manager",
   "image",
   "defaults_tab",
@@ -28,6 +29,16 @@
   "default_bank_account",
   "column_break_14",
   "default_currency",
+=======
+  "prospect_name",
+  "account_manager",
+  "image",
+  "defaults_tab",
+  "default_currency",
+  "default_bank_account",
+  "column_break_14",
+  "default_price_list",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "internal_customer_section",
   "is_internal_customer",
   "represents_company",
@@ -48,12 +59,22 @@
   "column_break1",
   "contact_html",
   "primary_address_and_contact_detail",
+<<<<<<< HEAD
   "customer_primary_contact",
   "mobile_no",
   "email_id",
   "column_break_26",
   "customer_primary_address",
   "primary_address",
+=======
+  "column_break_26",
+  "customer_primary_address",
+  "primary_address",
+  "column_break_nwor",
+  "customer_primary_contact",
+  "mobile_no",
+  "email_id",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "tax_tab",
   "taxation_section",
   "tax_id",
@@ -81,7 +102,13 @@
   "dn_required",
   "column_break_53",
   "is_frozen",
+<<<<<<< HEAD
   "disabled"
+=======
+  "disabled",
+  "portal_users_tab",
+  "portal_users"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -178,7 +205,10 @@
    "oldfieldname": "customer_group",
    "oldfieldtype": "Link",
    "options": "Customer Group",
+<<<<<<< HEAD
    "reqd": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "search_index": 1
   },
   {
@@ -190,8 +220,12 @@
    "oldfieldname": "territory",
    "oldfieldtype": "Link",
    "options": "Territory",
+<<<<<<< HEAD
    "print_hide": 1,
    "reqd": 1
+=======
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "tax_id",
@@ -306,13 +340,23 @@
    "fetch_from": "customer_primary_contact.mobile_no",
    "fieldname": "mobile_no",
    "fieldtype": "Read Only",
+<<<<<<< HEAD
    "label": "Mobile No"
+=======
+   "label": "Mobile No",
+   "options": "Mobile"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fetch_from": "customer_primary_contact.email_id",
    "fieldname": "email_id",
    "fieldtype": "Read Only",
+<<<<<<< HEAD
    "label": "Email Id"
+=======
+   "label": "Email Id",
+   "options": "Email"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_26",
@@ -334,6 +378,7 @@
   {
    "fieldname": "default_receivable_accounts",
    "fieldtype": "Section Break",
+<<<<<<< HEAD
    "label": "Default Receivable Accounts"
   },
   {
@@ -341,6 +386,15 @@
    "fieldname": "accounts",
    "fieldtype": "Table",
    "label": "Receivable Accounts",
+=======
+   "label": "Default Accounts"
+  },
+  {
+   "description": "Mention if non-standard Receivable account",
+   "fieldname": "accounts",
+   "fieldtype": "Table",
+   "label": "Accounts",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Party Account"
   },
   {
@@ -554,6 +608,32 @@
   {
    "fieldname": "column_break_54",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "portal_users_tab",
+   "fieldtype": "Tab Break",
+   "label": "Portal Users"
+  },
+  {
+   "fieldname": "portal_users",
+   "fieldtype": "Table",
+   "label": "Customer Portal Users",
+   "options": "Portal User"
+  },
+  {
+   "fieldname": "column_break_nwor",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "prospect_name",
+   "fieldtype": "Link",
+   "label": "From Prospect",
+   "no_copy": 1,
+   "options": "Prospect",
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-user",
@@ -567,11 +647,18 @@
    "link_fieldname": "party"
   }
  ],
+<<<<<<< HEAD
  "modified": "2024-05-08 18:03:20.716169",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
  "name_case": "Title Case",
+=======
+ "modified": "2024-06-17 03:24:59.612974",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Customer",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
@@ -607,7 +694,10 @@
    "read": 1,
    "report": 1,
    "role": "Sales Master Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "share": 1,
    "write": 1
   },
@@ -647,9 +737,15 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "search_fields": "customer_name,customer_group,territory, mobile_no,primary_address",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
+=======
+ "search_fields": "customer_group,territory, mobile_no,primary_address",
+ "show_name_in_global_search": 1,
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "customer_name",

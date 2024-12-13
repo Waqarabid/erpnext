@@ -11,7 +11,11 @@ on:
   workflow_dispatch:
 
 concurrency:
+<<<<<<< HEAD
   group: patch-develop-${{ github.event.number }}
+=======
+  group: patch-develop-${{ github.event_name }}-${{ github.event.number || github.event_name == 'workflow_dispatch' && github.run_id || '' }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   cancel-in-progress: true
 
 jobs:
@@ -23,6 +27,7 @@ jobs:
 
     services:
       mysql:
+<<<<<<< HEAD
         image: mariadb:10.3
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: YES
@@ -33,6 +38,18 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v2
+=======
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: 'root'
+        ports:
+          - 3306:3306
+        options: --health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
       - name: Check for valid Python & Merge Conflicts
         run: |
@@ -43,6 +60,7 @@ jobs:
           fi
 
       - name: Setup Python
+<<<<<<< HEAD
         uses: "actions/setup-python@v4"
         with:
           python-version: |
@@ -53,13 +71,27 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+=======
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
           check-latest: true
 
       - name: Add to Hosts
         run: echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
 
       - name: Cache pip
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/*requirements.txt', '**/pyproject.toml') }}
@@ -68,7 +100,11 @@ jobs:
             ${{ runner.os }}-
 
       - name: Cache node modules
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         env:
           cache-name: cache-node-modules
         with:
@@ -83,7 +119,11 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+<<<<<<< HEAD
       - uses: actions/cache@v2
+=======
+      - uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -102,12 +142,22 @@ jobs:
       - name: Run Patch Tests
         run: |
           cd ~/frappe-bench/
+<<<<<<< HEAD
           wget https://erpnext.com/files/v10-erpnext.sql.gz
           bench --site test_site --force restore ~/frappe-bench/v10-erpnext.sql.gz
+=======
+          bench remove-app payments --force
+          jq 'del(.install_apps)' ~/frappe-bench/sites/test_site/site_config.json > tmp.json
+          mv tmp.json ~/frappe-bench/sites/test_site/site_config.json
+
+          wget https://erpnext.com/files/v13-erpnext.sql.gz
+          bench --site test_site --force restore ~/frappe-bench/v13-erpnext.sql.gz
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
           git -C "apps/frappe" remote set-url upstream https://github.com/frappe/frappe.git
           git -C "apps/erpnext" remote set-url upstream https://github.com/frappe/erpnext.git
 
+<<<<<<< HEAD
           for version in $(seq 12 13)
           do
               echo "Updating to v$version"
@@ -139,3 +189,54 @@ jobs:
 
           bench --site test_site migrate
           bench --site test_site install-app payments
+=======
+
+          function update_to_version() {
+            version=$1
+
+            branch_name="version-$version-hotfix"
+            echo "Updating to v$version"
+
+            # Fetch and checkout branches
+            git -C "apps/frappe" fetch --depth 1 upstream $branch_name:$branch_name
+            git -C "apps/erpnext" fetch --depth 1 upstream $branch_name:$branch_name
+            git -C "apps/frappe" checkout -q -f $branch_name
+            git -C "apps/erpnext" checkout -q -f $branch_name
+
+            # Resetup env and install apps
+            pgrep honcho | xargs kill
+            rm -rf ~/frappe-bench/env
+            bench -v setup env
+            bench pip install -e ./apps/erpnext
+            bench start &>> ~/frappe-bench/bench_start.log &
+
+            bench --site test_site migrate
+          }
+
+          update_to_version 14
+          update_to_version 15
+
+          echo "Updating to latest version"
+          git -C "apps/frappe" fetch --depth 1 upstream "${GITHUB_BASE_REF:-${GITHUB_REF##*/}}"
+          git -C "apps/frappe" checkout -q -f FETCH_HEAD
+          git -C "apps/erpnext" checkout -q -f "$GITHUB_SHA"
+
+          pgrep honcho | xargs kill
+          rm -rf ~/frappe-bench/env
+          bench -v setup env
+          bench pip install -e ./apps/erpnext
+          bench start &>> ~/frappe-bench/bench_start.log &
+
+          bench --site test_site migrate
+
+      - name: Show bench output
+        if: ${{ always() }}
+        run: |
+          cd ~/frappe-bench
+          cat bench_start.log || true
+          cd logs
+          for f in ./*.log*; do
+            echo "Printing log: $f";
+            cat $f
+          done
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

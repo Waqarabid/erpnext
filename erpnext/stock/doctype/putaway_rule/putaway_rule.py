@@ -11,11 +11,38 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, cstr, floor, flt, nowdate
 
+<<<<<<< HEAD
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.utils import get_stock_balance
 
 
 class PutawayRule(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		capacity: DF.Float
+		company: DF.Link
+		conversion_factor: DF.Float
+		disable: DF.Check
+		item_code: DF.Link
+		item_name: DF.Data | None
+		priority: DF.Int
+		stock_capacity: DF.Float
+		stock_uom: DF.Link | None
+		uom: DF.Link | None
+		warehouse: DF.Link
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_duplicate_rule()
 		self.validate_warehouse_and_company()
@@ -99,7 +126,10 @@ def apply_putaway_rule(doctype, items, company, sync=None, purpose=None):
 			item = frappe._dict(item)
 
 		source_warehouse = item.get("s_warehouse")
+<<<<<<< HEAD
 		serial_nos = get_serial_nos(item.get("serial_no"))
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		item.conversion_factor = flt(item.conversion_factor) or 1.0
 		pending_qty, item_code = flt(item.qty), item.item_code
 		pending_stock_qty = flt(item.transfer_qty) if doctype == "Stock Entry" else flt(item.stock_qty)
@@ -143,15 +173,23 @@ def apply_putaway_rule(doctype, items, company, sync=None, purpose=None):
 				if not qty_to_allocate:
 					break
 
+<<<<<<< HEAD
 				updated_table = add_row(
 					item, qty_to_allocate, rule.warehouse, updated_table, rule.name, serial_nos=serial_nos
 				)
+=======
+				updated_table = add_row(item, qty_to_allocate, rule.warehouse, updated_table, rule.name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				pending_stock_qty -= stock_qty_to_allocate
 				pending_qty -= qty_to_allocate
 				rule["free_space"] -= stock_qty_to_allocate
 
+<<<<<<< HEAD
 				if not pending_stock_qty > 0:
+=======
+				if pending_stock_qty <= 0:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					break
 
 		# if pending qty after applying all rules, add row without warehouse
@@ -243,7 +281,11 @@ def get_ordered_putaway_rules(item_code, company, source_warehouse=None):
 	return False, vacant_rules
 
 
+<<<<<<< HEAD
 def add_row(item, to_allocate, warehouse, updated_table, rule=None, serial_nos=None):
+=======
+def add_row(item, to_allocate, warehouse, updated_table, rule=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	new_updated_table_row = copy.deepcopy(item)
 	new_updated_table_row.idx = 1 if not updated_table else cint(updated_table[-1].idx) + 1
 	new_updated_table_row.name = None
@@ -260,8 +302,13 @@ def add_row(item, to_allocate, warehouse, updated_table, rule=None, serial_nos=N
 
 	if rule:
 		new_updated_table_row.putaway_rule = rule
+<<<<<<< HEAD
 	if serial_nos:
 		new_updated_table_row.serial_no = get_serial_nos_to_allocate(serial_nos, to_allocate)
+=======
+
+	new_updated_table_row.serial_and_batch_bundle = ""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	updated_table.append(new_updated_table_row)
 	return updated_table
@@ -289,6 +336,7 @@ def show_unassigned_items_message(items_not_accomodated):
 	""".format(_("Item"), _("Unassigned Qty"), formatted_item_rows)
 
 	frappe.msgprint(msg, title=_("Insufficient Capacity"), is_minimizable=True, wide=True)
+<<<<<<< HEAD
 
 
 def get_serial_nos_to_allocate(serial_nos, to_allocate):
@@ -298,3 +346,5 @@ def get_serial_nos_to_allocate(serial_nos, to_allocate):
 		return "\n".join(allocated_serial_nos) if allocated_serial_nos else ""
 	else:
 		return ""
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

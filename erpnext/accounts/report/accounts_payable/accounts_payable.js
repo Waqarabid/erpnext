@@ -61,6 +61,7 @@ frappe.query_reports["Accounts Payable"] = {
 			default: "Due Date",
 		},
 		{
+<<<<<<< HEAD
 			fieldname: "range1",
 			label: __("Ageing Range 1"),
 			fieldtype: "Int",
@@ -87,6 +88,12 @@ frappe.query_reports["Accounts Payable"] = {
 			fieldtype: "Int",
 			default: "120",
 			reqd: 1,
+=======
+			fieldname: "range",
+			label: __("Ageing Range"),
+			fieldtype: "Data",
+			default: "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "payment_terms_template",
@@ -148,6 +155,7 @@ frappe.query_reports["Accounts Payable"] = {
 			fieldtype: "Check",
 		},
 		{
+<<<<<<< HEAD
 			fieldname: "for_revaluation_journals",
 			label: __("Revaluation Journals"),
 			fieldtype: "Check",
@@ -155,6 +163,15 @@ frappe.query_reports["Accounts Payable"] = {
 		{
 			fieldname: "in_party_currency",
 			label: __("In Party Currency"),
+=======
+			fieldname: "in_party_currency",
+			label: __("In Party Currency"),
+			fieldtype: "Check",
+		},
+		{
+			fieldname: "for_revaluation_journals",
+			label: __("Revaluation Journals"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldtype: "Check",
 		},
 		{

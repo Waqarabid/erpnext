@@ -52,7 +52,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-09-28 12:51:00.320421",
+=======
+ "modified": "2024-03-27 13:10:41.521126",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Shipment Parcel Template",
@@ -72,7 +76,13 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

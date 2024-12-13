@@ -16,6 +16,37 @@ ONGOING_CALL_STATUSES = ["Ringing", "In Progress"]
 
 
 class CallLog(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.core.doctype.dynamic_link.dynamic_link import DynamicLink
+		from frappe.types import DF
+
+		call_received_by: DF.Link | None
+		customer: DF.Link | None
+		duration: DF.Duration | None
+		employee_user_id: DF.Link | None
+		end_time: DF.Datetime | None
+		id: DF.Data | None
+		links: DF.Table[DynamicLink]
+		medium: DF.Data | None
+		recording_url: DF.Data | None
+		start_time: DF.Datetime | None
+		status: DF.Literal[
+			"Ringing", "In Progress", "Completed", "Failed", "Busy", "No Answer", "Queued", "Canceled"
+		]
+		summary: DF.SmallText | None
+		to: DF.Data | None
+		type: DF.Literal["Incoming", "Outgoing"]
+		type_of_call: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		deduplicate_dynamic_links(self)
 
@@ -24,12 +55,19 @@ class CallLog(Document):
 		lead_number = self.get("from") if self.is_incoming_call() else self.get("to")
 		lead_number = strip_number(lead_number)
 
+<<<<<<< HEAD
 		contact = get_contact_with_phone_number(strip_number(lead_number))
 		if contact:
 			self.add_link(link_type="Contact", link_name=contact)
 
 		lead = get_lead_with_phone_number(lead_number)
 		if lead:
+=======
+		if contact := get_contact_with_phone_number(strip_number(lead_number)):
+			self.add_link(link_type="Contact", link_name=contact)
+
+		if lead := get_lead_with_phone_number(lead_number):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.add_link(link_type="Lead", link_name=lead)
 
 		# Add Employee Name
@@ -68,6 +106,7 @@ class CallLog(Document):
 		self.append("links", {"link_doctype": link_type, "link_name": link_name})
 
 	def trigger_call_popup(self):
+<<<<<<< HEAD
 		if self.is_incoming_call():
 			scheduled_employees = get_scheduled_employees_for_popup(self.medium)
 			employees = get_employees_with_number(self.to)
@@ -79,10 +118,26 @@ class CallLog(Document):
 			if frappe.conf.developer_mode:
 				self.add_comment(
 					text=f"""
+=======
+		if not self.is_incoming_call():
+			return
+
+		scheduled_employees = get_scheduled_employees_for_popup(self.medium)
+		employees = get_employees_with_number(self.to)
+		employee_emails = [employee.get("user_id") for employee in employees]
+
+		# check if employees with matched number are scheduled to receive popup
+		emails = set(scheduled_employees).intersection(employee_emails)
+
+		if frappe.conf.developer_mode:
+			self.add_comment(
+				text=f"""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					Scheduled Employees: {scheduled_employees}
 					Matching Employee: {employee_emails}
 					Show Popup To: {emails}
 				"""
+<<<<<<< HEAD
 				)
 
 			if employee_emails and not emails:
@@ -90,6 +145,15 @@ class CallLog(Document):
 
 			for email in emails:
 				frappe.publish_realtime("show_call_popup", self, user=email)
+=======
+			)
+
+		if employee_emails and not emails:
+			self.add_comment(text=_("No employee was scheduled for call popup"))
+
+		for email in emails:
+			frappe.publish_realtime("show_call_popup", self, user=email)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_received_by(self):
 		if employees := get_employees_with_number(self.get("to")):
@@ -152,7 +216,11 @@ def link_existing_conversations(doc, state):
 						ELSE 0
 					END
 				)=0
+<<<<<<< HEAD
 			""",
+=======
+				""",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				dict(phone_number=f"%{number}", docname=doc.name, doctype=doc.doctype),
 			)
 
@@ -173,7 +241,11 @@ def get_linked_call_logs(doctype, docname):
 		filters={"parenttype": "Call Log", "link_doctype": doctype, "link_name": docname},
 	)
 
+<<<<<<< HEAD
 	logs = set([log.parent for log in logs])
+=======
+	logs = {log.parent for log in logs}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	logs = frappe.get_all("Call Log", fields=["*"], filters={"name": ["in", logs]})
 

@@ -55,7 +55,11 @@ def create_charts(
 							"account_number": account_number,
 							"account_type": child.get("account_type"),
 							"account_currency": child.get("account_currency")
+<<<<<<< HEAD
 							or frappe.db.get_value("Company", company, "default_currency"),
+=======
+							or frappe.get_cached_value("Company", company, "default_currency"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							"tax_rate": child.get("tax_rate"),
 						}
 					)
@@ -75,7 +79,11 @@ def create_charts(
 		# after all accounts are already inserted.
 		frappe.local.flags.ignore_update_nsm = True
 		_import_accounts(chart, None, None, root_account=True)
+<<<<<<< HEAD
 		rebuild_tree("Account", "parent_account")
+=======
+		rebuild_tree("Account")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.local.flags.ignore_update_nsm = False
 
 
@@ -160,7 +168,11 @@ def get_charts_for_country(country, with_standard=False):
 			) or frappe.local.flags.allow_unverified_charts:
 				charts.append(content["name"])
 
+<<<<<<< HEAD
 	country_code = frappe.db.get_value("Country", country, "code")
+=======
+	country_code = frappe.get_cached_value("Country", country, "code")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if country_code:
 		folders = ("verified",)
 		if frappe.local.flags.allow_unverified_charts:
@@ -232,6 +244,11 @@ def build_account_tree(tree, parent, all_accounts):
 			tree[child.account_name]["account_type"] = child.account_type
 		if child.tax_rate:
 			tree[child.account_name]["tax_rate"] = child.tax_rate
+<<<<<<< HEAD
+=======
+		if child.account_currency:
+			tree[child.account_name]["account_currency"] = child.account_currency
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not parent:
 			tree[child.account_name]["root_type"] = child.root_type
 

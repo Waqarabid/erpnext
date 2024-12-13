@@ -3,18 +3,31 @@
 
 
 import json
+<<<<<<< HEAD
 from collections import defaultdict
+=======
+from collections import OrderedDict, defaultdict
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import frappe
 from frappe import qb, scrub
 from frappe.desk.reportview import get_filters_cond, get_match_cond
 from frappe.query_builder import Criterion, CustomFunction
+<<<<<<< HEAD
 from frappe.query_builder.functions import Locate
 from frappe.utils import nowdate, unique
 from pypika import Order
 
 import erpnext
 from erpnext.stock.get_item_details import _get_item_tax_template
+=======
+from frappe.query_builder.functions import Concat, Locate, Sum
+from frappe.utils import nowdate, today, unique
+from pypika import Order
+
+import erpnext
+from erpnext.stock.get_item_details import ItemDetailsCtx, _get_item_tax_template
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 # searches for active employees
@@ -56,13 +69,24 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
 	doctype = "Lead"
 	fields = get_fields(doctype, ["name", "lead_name", "company_name"])
 
+<<<<<<< HEAD
+=======
+	searchfields = frappe.get_meta(doctype).get_search_fields()
+	searchfields = " or ".join(field + " like %(txt)s" for field in searchfields)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return frappe.db.sql(
 		"""select {fields} from `tabLead`
 		where docstatus < 2
 			and ifnull(status, '') != 'Converted'
 			and ({key} like %(txt)s
 				or lead_name like %(txt)s
+<<<<<<< HEAD
 				or company_name like %(txt)s)
+=======
+				or company_name like %(txt)s
+				or {scond})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{mcond}
 		order by
 			(case when locate(%(_txt)s, name) > 0 then locate(%(_txt)s, name) else 99999 end),
@@ -71,6 +95,7 @@ def lead_query(doctype, txt, searchfield, start, page_len, filters):
 			idx desc,
 			name, lead_name
 		limit %(page_len)s offset %(start)s""".format(
+<<<<<<< HEAD
 			**{"fields": ", ".join(fields), "key": searchfield, "mcond": get_match_cond(doctype)}
 		),
 		{"txt": "%%%s%%" % txt, "_txt": txt.replace("%", ""), "start": start, "page_len": page_len},
@@ -147,6 +172,16 @@ def supplier_query(doctype, txt, searchfield, start, page_len, filters, as_dict=
 		),
 		{"txt": "%%%s%%" % txt, "_txt": txt.replace("%", ""), "start": start, "page_len": page_len},
 		as_dict=as_dict,
+=======
+			**{
+				"fields": ", ".join(fields),
+				"key": searchfield,
+				"scond": searchfields,
+				"mcond": get_match_cond(doctype),
+			}
+		),
+		{"txt": "%%%s%%" % txt, "_txt": txt.replace("%", ""), "start": start, "page_len": page_len},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
@@ -222,7 +257,16 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 
 	searchfields = searchfields + [
 		field
+<<<<<<< HEAD
 		for field in [searchfield or "name", "item_code", "item_group", "item_name"]
+=======
+		for field in [
+			searchfield or "name",
+			"item_code",
+			"item_group",
+			"item_name",
+		]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if field not in searchfields
 	]
 	searchfields = " or ".join([field + " like %(txt)s" for field in searchfields])
@@ -414,6 +458,7 @@ def get_delivery_notes_to_be_billed(doctype, txt, searchfield, start, page_len, 
 @frappe.validate_and_sanitize_search_inputs
 def get_batch_no(doctype, txt, searchfield, start, page_len, filters):
 	doctype = "Batch"
+<<<<<<< HEAD
 	cond = ""
 	if filters.get("posting_date"):
 		cond = "and (batch.expiry_date is null or batch.expiry_date >= %(posting_date)s)"
@@ -492,6 +537,162 @@ def get_batch_no(doctype, txt, searchfield, start, page_len, filters):
 			limit %(page_len)s offset %(start)s""",
 			args,
 		)
+=======
+	meta = frappe.get_meta(doctype, cached=True)
+	searchfields = meta.get_search_fields()
+	page_len = 30
+
+	batches = get_batches_from_stock_ledger_entries(searchfields, txt, filters, start, page_len)
+	batches.extend(get_batches_from_serial_and_batch_bundle(searchfields, txt, filters, start, page_len))
+
+	filtered_batches = get_filterd_batches(batches)
+
+	if filters.get("is_inward"):
+		filtered_batches.extend(get_empty_batches(filters, start, page_len, filtered_batches, txt))
+
+	return filtered_batches
+
+
+def get_empty_batches(filters, start, page_len, filtered_batches=None, txt=None):
+	query_filter = {"item": filters.get("item_code"), "disabled": 0}
+	if txt:
+		query_filter["name"] = ("like", f"%{txt}%")
+
+	exclude_batches = [batch[0] for batch in filtered_batches] if filtered_batches else []
+	if exclude_batches:
+		query_filter["name"] = ("not in", exclude_batches)
+
+	return frappe.get_all(
+		"Batch",
+		fields=["name", "batch_qty"],
+		filters=query_filter,
+		limit_start=start,
+		limit_page_length=page_len,
+		as_list=1,
+	)
+
+
+def get_filterd_batches(data):
+	batches = OrderedDict()
+
+	for batch_data in data:
+		if batch_data[0] not in batches:
+			batches[batch_data[0]] = list(batch_data)
+		else:
+			batches[batch_data[0]][1] += batch_data[1]
+
+	filterd_batch = []
+	for _batch, batch_data in batches.items():
+		if batch_data[1] > 0:
+			filterd_batch.append(tuple(batch_data))
+
+	return filterd_batch
+
+
+def get_batches_from_stock_ledger_entries(searchfields, txt, filters, start=0, page_len=100):
+	stock_ledger_entry = frappe.qb.DocType("Stock Ledger Entry")
+	batch_table = frappe.qb.DocType("Batch")
+
+	expiry_date = filters.get("posting_date") or today()
+
+	query = (
+		frappe.qb.from_(stock_ledger_entry)
+		.inner_join(batch_table)
+		.on(batch_table.name == stock_ledger_entry.batch_no)
+		.select(
+			stock_ledger_entry.batch_no,
+			Sum(stock_ledger_entry.actual_qty).as_("qty"),
+		)
+		.where(stock_ledger_entry.is_cancelled == 0)
+		.where(
+			(stock_ledger_entry.item_code == filters.get("item_code"))
+			& (batch_table.disabled == 0)
+			& (stock_ledger_entry.batch_no.isnotnull())
+		)
+		.groupby(stock_ledger_entry.batch_no, stock_ledger_entry.warehouse)
+		.having(Sum(stock_ledger_entry.actual_qty) != 0)
+		.offset(start)
+		.limit(page_len)
+	)
+
+	if not filters.get("include_expired_batches"):
+		query = query.where((batch_table.expiry_date >= expiry_date) | (batch_table.expiry_date.isnull()))
+
+	query = query.select(
+		Concat("MFG-", batch_table.manufacturing_date).as_("manufacturing_date"),
+		Concat("EXP-", batch_table.expiry_date).as_("expiry_date"),
+	)
+
+	if filters.get("warehouse"):
+		query = query.where(stock_ledger_entry.warehouse == filters.get("warehouse"))
+
+	for field in searchfields:
+		query = query.select(batch_table[field])
+
+	if txt:
+		txt_condition = batch_table.name.like(f"%{txt}%")
+		for field in [*searchfields, "name"]:
+			txt_condition |= batch_table[field].like(f"%{txt}%")
+
+		query = query.where(txt_condition)
+
+	return query.run(as_list=1) or []
+
+
+def get_batches_from_serial_and_batch_bundle(searchfields, txt, filters, start=0, page_len=100):
+	bundle = frappe.qb.DocType("Serial and Batch Entry")
+	stock_ledger_entry = frappe.qb.DocType("Stock Ledger Entry")
+	batch_table = frappe.qb.DocType("Batch")
+
+	expiry_date = filters.get("posting_date") or today()
+
+	bundle_query = (
+		frappe.qb.from_(bundle)
+		.inner_join(stock_ledger_entry)
+		.on(bundle.parent == stock_ledger_entry.serial_and_batch_bundle)
+		.inner_join(batch_table)
+		.on(batch_table.name == bundle.batch_no)
+		.select(
+			bundle.batch_no,
+			Sum(bundle.qty).as_("qty"),
+		)
+		.where(stock_ledger_entry.is_cancelled == 0)
+		.where(
+			(stock_ledger_entry.item_code == filters.get("item_code"))
+			& (batch_table.disabled == 0)
+			& (stock_ledger_entry.serial_and_batch_bundle.isnotnull())
+		)
+		.groupby(bundle.batch_no, bundle.warehouse)
+		.having(Sum(bundle.qty) != 0)
+		.offset(start)
+		.limit(page_len)
+	)
+
+	if not filters.get("include_expired_batches"):
+		bundle_query = bundle_query.where(
+			(batch_table.expiry_date >= expiry_date) | (batch_table.expiry_date.isnull())
+		)
+
+	bundle_query = bundle_query.select(
+		Concat("MFG-", batch_table.manufacturing_date),
+		Concat("EXP-", batch_table.expiry_date),
+	)
+
+	if filters.get("warehouse"):
+		bundle_query = bundle_query.where(stock_ledger_entry.warehouse == filters.get("warehouse"))
+
+	for field in searchfields:
+		bundle_query = bundle_query.select(batch_table[field])
+
+	if txt:
+		txt_condition = batch_table.name.like(f"%{txt}%")
+		for field in [*searchfields, "name"]:
+			txt_condition |= batch_table[field].like(f"%{txt}%")
+
+		bundle_query = bundle_query.where(txt_condition)
+
+	return bundle_query.run(as_list=1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -796,6 +997,7 @@ def get_tax_template(doctype, txt, searchfield, start, page_len, filters):
 		valid_from = filters.get("valid_from")
 		valid_from = valid_from[1] if isinstance(valid_from, list) else valid_from
 
+<<<<<<< HEAD
 		args = {
 			"item_code": filters.get("item_code"),
 			"posting_date": valid_from,
@@ -804,6 +1006,18 @@ def get_tax_template(doctype, txt, searchfield, start, page_len, filters):
 		}
 
 		taxes = _get_item_tax_template(args, taxes, for_validate=True)
+=======
+		ctx = ItemDetailsCtx(
+			{
+				"item_code": filters.get("item_code"),
+				"posting_date": valid_from,
+				"tax_category": filters.get("tax_category"),
+				"company": company,
+			}
+		)
+
+		taxes = _get_item_tax_template(ctx, taxes, for_validate=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return [(d,) for d in set(taxes)]
 
 
@@ -832,3 +1046,34 @@ def get_payment_terms_for_references(doctype, txt, searchfield, start, page_len,
 			as_list=1,
 		)
 	return terms
+<<<<<<< HEAD
+=======
+
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_filtered_child_rows(doctype, txt, searchfield, start, page_len, filters) -> list:
+	table = frappe.qb.DocType(doctype)
+	query = (
+		frappe.qb.from_(table)
+		.select(
+			table.name,
+			Concat("#", table.idx, ", ", table.item_code),
+		)
+		.orderby(table.idx)
+		.offset(start)
+		.limit(page_len)
+	)
+
+	if filters:
+		for field, value in filters.items():
+			query = query.where(table[field] == value)
+
+	if txt:
+		txt += "%"
+		query = query.where(
+			((table.idx.like(txt.replace("#", ""))) | (table.item_code.like(txt))) | (table.name.like(txt))
+		)
+
+	return query.run(as_dict=False)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

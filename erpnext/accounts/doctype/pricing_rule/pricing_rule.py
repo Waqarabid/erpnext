@@ -10,7 +10,11 @@ import re
 import frappe
 from frappe import _, throw
 from frappe.model.document import Document
+<<<<<<< HEAD
 from frappe.utils import cint, flt, getdate
+=======
+from frappe.utils import cint, flt
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 apply_on_dict = {"Item Code": "items", "Item Group": "item_groups", "Brand": "brands"}
 
@@ -18,6 +22,117 @@ other_fields = ["other_item_code", "other_item_group", "other_brand"]
 
 
 class PricingRule(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.pricing_rule_brand.pricing_rule_brand import PricingRuleBrand
+		from erpnext.accounts.doctype.pricing_rule_item_code.pricing_rule_item_code import PricingRuleItemCode
+		from erpnext.accounts.doctype.pricing_rule_item_group.pricing_rule_item_group import (
+			PricingRuleItemGroup,
+		)
+
+		applicable_for: DF.Literal[
+			"",
+			"Customer",
+			"Customer Group",
+			"Territory",
+			"Sales Partner",
+			"Campaign",
+			"Supplier",
+			"Supplier Group",
+		]
+		apply_discount_on: DF.Literal["Grand Total", "Net Total"]
+		apply_discount_on_rate: DF.Check
+		apply_multiple_pricing_rules: DF.Check
+		apply_on: DF.Literal["", "Item Code", "Item Group", "Brand", "Transaction"]
+		apply_recursion_over: DF.Float
+		apply_rule_on_other: DF.Literal["", "Item Code", "Item Group", "Brand"]
+		brands: DF.Table[PricingRuleBrand]
+		buying: DF.Check
+		campaign: DF.Link | None
+		company: DF.Link | None
+		condition: DF.Code | None
+		coupon_code_based: DF.Check
+		currency: DF.Link
+		customer: DF.Link | None
+		customer_group: DF.Link | None
+		disable: DF.Check
+		discount_amount: DF.Currency
+		discount_percentage: DF.Float
+		for_price_list: DF.Link | None
+		free_item: DF.Link | None
+		free_item_rate: DF.Currency
+		free_item_uom: DF.Link | None
+		free_qty: DF.Float
+		has_priority: DF.Check
+		is_cumulative: DF.Check
+		is_recursive: DF.Check
+		item_groups: DF.Table[PricingRuleItemGroup]
+		items: DF.Table[PricingRuleItemCode]
+		margin_rate_or_amount: DF.Float
+		margin_type: DF.Literal["", "Percentage", "Amount"]
+		max_amt: DF.Currency
+		max_qty: DF.Float
+		min_amt: DF.Currency
+		min_qty: DF.Float
+		mixed_conditions: DF.Check
+		naming_series: DF.Literal["PRLE-.####"]
+		other_brand: DF.Link | None
+		other_item_code: DF.Link | None
+		other_item_group: DF.Link | None
+		price_or_product_discount: DF.Literal["Price", "Product"]
+		priority: DF.Literal[
+			"",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"10",
+			"11",
+			"12",
+			"13",
+			"14",
+			"15",
+			"16",
+			"17",
+			"18",
+			"19",
+			"20",
+		]
+		promotional_scheme: DF.Link | None
+		promotional_scheme_id: DF.Data | None
+		rate: DF.Currency
+		rate_or_discount: DF.Literal["", "Rate", "Discount Percentage", "Discount Amount"]
+		recurse_for: DF.Float
+		round_free_qty: DF.Check
+		rule_description: DF.SmallText | None
+		sales_partner: DF.Link | None
+		same_item: DF.Check
+		selling: DF.Check
+		supplier: DF.Link | None
+		supplier_group: DF.Link | None
+		territory: DF.Link | None
+		threshold_percentage: DF.Percent
+		title: DF.Data
+		valid_from: DF.Date | None
+		valid_upto: DF.Date | None
+		validate_applied_rule: DF.Check
+		warehouse: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_mandatory()
 		self.validate_duplicate_apply_on()
@@ -78,7 +193,12 @@ class PricingRule(Document):
 			if not self.priority:
 				throw(
 					_("As the field {0} is enabled, the field {1} is mandatory.").format(
+<<<<<<< HEAD
 						frappe.bold("Apply Discount on Discounted Rate"), frappe.bold("Priority")
+=======
+						frappe.bold(_("Apply Discount on Discounted Rate")),
+						frappe.bold(_("Priority")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					)
 				)
 
@@ -86,12 +206,20 @@ class PricingRule(Document):
 				throw(
 					_(
 						"As the field {0} is enabled, the value of the field {1} should be more than 1."
+<<<<<<< HEAD
 					).format(frappe.bold("Apply Discount on Discounted Rate"), frappe.bold("Priority"))
+=======
+					).format(frappe.bold(_("Apply Discount on Discounted Rate")), frappe.bold(_("Priority")))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				)
 
 	def validate_applicable_for_selling_or_buying(self):
 		if not self.selling and not self.buying:
+<<<<<<< HEAD
 			throw(_("Atleast one of the Selling or Buying must be selected"))
+=======
+			throw(_("At least one of the Selling or Buying must be selected"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.selling and self.applicable_for in [
 			"Customer",
@@ -184,15 +312,23 @@ class PricingRule(Document):
 	def validate_price_list_with_currency(self):
 		if self.currency and self.for_price_list:
 			price_list_currency = frappe.db.get_value("Price List", self.for_price_list, "currency", True)
+<<<<<<< HEAD
 			if not self.currency == price_list_currency:
+=======
+			if self.currency != price_list_currency:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				throw(_("Currency should be same as Price List Currency: {0}").format(price_list_currency))
 
 	def validate_dates(self):
 		if self.is_cumulative and not (self.valid_from and self.valid_upto):
 			frappe.throw(_("Valid from and valid upto fields are mandatory for the cumulative"))
 
+<<<<<<< HEAD
 		if self.valid_from and self.valid_upto and getdate(self.valid_from) > getdate(self.valid_upto):
 			frappe.throw(_("Valid from date must be less than valid upto date"))
+=======
+		self.validate_from_to_dates("valid_from", "valid_upto")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_condition(self):
 		if (
@@ -249,10 +385,13 @@ def apply_pricing_rule(args, doc=None):
 	item_list = args.get("items")
 	args.pop("items")
 
+<<<<<<< HEAD
 	set_serial_nos_based_on_fifo = frappe.db.get_single_value(
 		"Stock Settings", "automatically_set_serial_nos_based_on_fifo"
 	)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	item_code_list = tuple(item.get("item_code") for item in item_list)
 	query_items = frappe.get_all(
 		"Item",
@@ -270,6 +409,7 @@ def apply_pricing_rule(args, doc=None):
 		data = get_pricing_rule_for_item(args_copy, doc=doc)
 		out.append(data)
 
+<<<<<<< HEAD
 		if (
 			serialized_items.get(item.get("item_code"))
 			and not item.get("serial_no")
@@ -290,6 +430,11 @@ def get_serial_no_for_item(args):
 	return item_details
 
 
+=======
+	return out
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def update_pricing_rule_uom(pricing_rule, args):
 	child_doc = {"Item Code": "items", "Item Group": "item_groups", "Brand": "brands"}.get(
 		pricing_rule.apply_on
@@ -530,12 +675,23 @@ def apply_price_discount_rule(pricing_rule, item_details, args):
 			item_details[field] += pricing_rule.get(field, 0) if pricing_rule else args.get(field, 0)
 
 
+<<<<<<< HEAD
+=======
+@frappe.whitelist()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def remove_pricing_rule_for_item(pricing_rules, item_details, item_code=None, rate=None):
 	from erpnext.accounts.doctype.pricing_rule.utils import (
 		get_applied_pricing_rules,
 		get_pricing_rule_items,
 	)
 
+<<<<<<< HEAD
+=======
+	if isinstance(item_details, str):
+		item_details = json.loads(item_details)
+		item_details = frappe._dict(item_details)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	for d in get_applied_pricing_rules(pricing_rules):
 		if not d or not frappe.db.exists("Pricing Rule", d):
 			continue

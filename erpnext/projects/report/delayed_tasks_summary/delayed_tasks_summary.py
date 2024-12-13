@@ -46,6 +46,12 @@ def get_data(filters):
 			# task has no end date, hence no delay
 			task.delay = 0
 
+<<<<<<< HEAD
+=======
+		task.status = _(task.status)
+		task.priority = _(task.priority)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	# Sort by descending order of delay
 	tasks.sort(key=lambda x: x["delay"], reverse=True)
 	return tasks
@@ -74,7 +80,11 @@ def get_chart_data(data):
 	charts = {
 		"data": {
 			"labels": [_("On Track"), _("Delayed")],
+<<<<<<< HEAD
 			"datasets": [{"name": _("Delayed"), "values": [on_track, delay]}],
+=======
+			"datasets": [{"name": "Delayed", "values": [on_track, delay]}],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		"type": "percentage",
 		"colors": ["#84D5BA", "#CB4B5F"],

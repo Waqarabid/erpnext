@@ -38,6 +38,10 @@
   "column_break_30",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "sec_break2",
   "rate",
@@ -57,11 +61,16 @@
   "base_net_rate",
   "base_net_amount",
   "valuation_rate",
+<<<<<<< HEAD
+=======
+  "sales_incoming_rate",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "item_tax_amount",
   "landed_cost_voucher_amount",
   "rm_supp_cost",
   "warehouse_section",
   "warehouse",
+<<<<<<< HEAD
   "from_warehouse",
   "quality_inspection",
   "serial_no",
@@ -69,6 +78,21 @@
   "rejected_warehouse",
   "batch_no",
   "rejected_serial_no",
+=======
+  "add_serial_batch_bundle",
+  "serial_and_batch_bundle",
+  "use_serial_batch_fields",
+  "col_br_wh",
+  "from_warehouse",
+  "quality_inspection",
+  "rejected_warehouse",
+  "rejected_serial_and_batch_bundle",
+  "section_break_rqbe",
+  "serial_no",
+  "rejected_serial_no",
+  "column_break_vbbb",
+  "batch_no",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "manufacture_details",
   "manufacturer",
   "column_break_13",
@@ -99,6 +123,11 @@
   "purchase_receipt",
   "pr_detail",
   "sales_invoice_item",
+<<<<<<< HEAD
+=======
+  "material_request",
+  "material_request_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "item_weight_details",
   "weight_per_unit",
   "total_weight",
@@ -437,18 +466,28 @@
    "print_hide": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:!doc.is_fixed_asset",
    "fieldname": "batch_no",
    "fieldtype": "Link",
    "label": "Batch No",
    "no_copy": 1,
    "options": "Batch"
+=======
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1 && parent.update_stock === 1",
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch No",
+   "options": "Batch",
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "col_br_wh",
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:!doc.is_fixed_asset",
    "fieldname": "serial_no",
    "fieldtype": "Text",
@@ -457,6 +496,15 @@
   },
   {
    "depends_on": "eval:!doc.is_fixed_asset",
+=======
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1 && parent.update_stock === 1",
+   "fieldname": "serial_no",
+   "fieldtype": "Text",
+   "label": "Serial No"
+  },
+  {
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1 && parent.update_stock === 1",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "rejected_serial_no",
    "fieldtype": "Text",
    "label": "Rejected Serial No",
@@ -497,7 +545,12 @@
    "fieldtype": "Link",
    "label": "Project",
    "options": "Project",
+<<<<<<< HEAD
    "print_hide": 1
+=======
+   "print_hide": 1,
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "allow_on_submit": 1,
@@ -830,7 +883,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_26",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -885,23 +942,118 @@
    "label": "Apply TDS"
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:parent.update_stock == 1 && (doc.use_serial_batch_fields === 0 || doc.docstatus === 1)",
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1,
+   "search_index": 1
+  },
+  {
+   "depends_on": "eval:parent.update_stock == 1 && (doc.use_serial_batch_fields === 0 || doc.docstatus === 1)",
+   "fieldname": "rejected_serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Rejected Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "wip_composite_asset",
    "fieldtype": "Link",
    "label": "WIP Composite Asset",
    "options": "Asset"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "depends_on": "eval:parent.update_stock === 1 && (doc.use_serial_batch_fields === 0 || doc.docstatus === 1)",
+   "fieldname": "add_serial_batch_bundle",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch No"
+  },
+  {
+   "default": "0",
+   "fieldname": "use_serial_batch_fields",
+   "fieldtype": "Check",
+   "label": "Use Serial No / Batch Fields"
+  },
+  {
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1 && parent.update_stock === 1",
+   "fieldname": "section_break_rqbe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_vbbb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "material_request",
+   "fieldtype": "Link",
+   "label": "Material Request",
+   "no_copy": 1,
+   "options": "Material Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "material_request_item",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Material Request Item",
+   "no_copy": 1,
+   "oldfieldname": "pr_detail",
+   "oldfieldtype": "Data",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "description": "Valuation rate for the item as per Sales Invoice (Only for Internal Transfers)",
+   "fieldname": "sales_incoming_rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Sales Incoming Rate",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-19 19:09:47.210965",
+=======
+ "modified": "2024-10-28 15:06:19.246141",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Purchase Invoice Item",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

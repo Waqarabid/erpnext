@@ -6,4 +6,25 @@ from frappe.model.document import Document
 
 
 class BulkTransactionLogDetail(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		date: DF.Date | None
+		error_description: DF.LongText | None
+		from_doctype: DF.Link | None
+		retried: DF.Int
+		time: DF.Time | None
+		to_doctype: DF.Link | None
+		transaction_name: DF.DynamicLink | None
+		transaction_status: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass

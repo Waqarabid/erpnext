@@ -46,7 +46,11 @@ def set_priorities_service_level():
 
 		frappe.reload_doc("support", "doctype", "service_level")
 		frappe.reload_doc("support", "doctype", "support_settings")
+<<<<<<< HEAD
 		frappe.db.set_value("Support Settings", None, "track_service_level_agreement", 1)
+=======
+		frappe.db.set_single_value("Support Settings", "track_service_level_agreement", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for service_level in service_level_priorities:
 			if service_level:

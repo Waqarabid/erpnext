@@ -53,6 +53,12 @@ def get_conditions(filters):
 	if filters.get("status"):
 		conditions += " and so.status in %(status)s"
 
+<<<<<<< HEAD
+=======
+	if filters.get("warehouse"):
+		conditions += " and soi.warehouse = %(warehouse)s"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return conditions
 
 
@@ -170,7 +176,15 @@ def prepare_data(data, so_elapsed_time, filters):
 				# update existing entry
 				so_row = sales_order_map[so_name]
 				so_row["required_date"] = max(getdate(so_row["delivery_date"]), getdate(row["delivery_date"]))
+<<<<<<< HEAD
 				so_row["delay"] = min(so_row["delay"], row["delay"])
+=======
+				so_row["delay"] = (
+					min(so_row["delay"], row["delay"])
+					if row["delay"] and so_row["delay"]
+					else so_row["delay"]
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				# sum numeric columns
 				fields = [
@@ -199,7 +213,11 @@ def prepare_data(data, so_elapsed_time, filters):
 
 
 def prepare_chart_data(pending, completed):
+<<<<<<< HEAD
 	labels = [_("Amount to Bill"), _("Billed Amount")]
+=======
+	labels = ["Amount to Bill", "Billed Amount"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return {
 		"data": {"labels": labels, "datasets": [{"values": [pending, completed]}]},

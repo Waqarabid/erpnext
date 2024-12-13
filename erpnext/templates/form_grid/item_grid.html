@@ -17,7 +17,11 @@
 					title = "Warehouse",
 					actual_qty = (frm.doc.doctype==="Sales Order"
 						? doc.projected_qty : doc.actual_qty);
+<<<<<<< HEAD
                 if(flt(frm.doc.per_delivered) < 100
+=======
+                if(flt(frm.doc.per_delivered, 2) < 100
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                     && ["Sales Order Item", "Delivery Note Item"].includes(doc.doctype)) {
     				if(actual_qty != undefined) {
     					if(actual_qty >= doc.qty) {

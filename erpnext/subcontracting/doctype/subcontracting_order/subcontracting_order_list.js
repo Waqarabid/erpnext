@@ -10,7 +10,11 @@ frappe.listview_settings["Subcontracting Order"] = {
 			Completed: "green",
 			"Partial Material Transferred": "purple",
 			"Material Transferred": "blue",
+<<<<<<< HEAD
 			Closed: "red",
+=======
+			Closed: "green",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			Cancelled: "red",
 		};
 		return [__(doc.status), status_colors[doc.status], "status,=," + doc.status];

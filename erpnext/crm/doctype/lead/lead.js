@@ -7,9 +7,15 @@ cur_frm.email_field = "email_id";
 erpnext.LeadController = class LeadController extends frappe.ui.form.Controller {
 	setup() {
 		this.frm.make_methods = {
+<<<<<<< HEAD
 			Customer: this.make_customer,
 			Quotation: this.make_quotation,
 			Opportunity: this.make_opportunity,
+=======
+			Customer: this.make_customer.bind(this),
+			Quotation: this.make_quotation.bind(this),
+			Opportunity: this.make_opportunity.bind(this),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		};
 
 		// For avoiding integration issues.
@@ -17,10 +23,13 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 	}
 
 	onload() {
+<<<<<<< HEAD
 		this.frm.set_query("customer", function (doc, cdt, cdn) {
 			return { query: "erpnext.controllers.queries.customer_query" };
 		});
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.frm.set_query("lead_owner", function (doc, cdt, cdn) {
 			return { query: "frappe.core.doctype.user.user.user_query" };
 		});
@@ -30,6 +39,7 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 		var me = this;
 		let doc = this.frm.doc;
 		erpnext.toggle_naming_series();
+<<<<<<< HEAD
 		frappe.dynamic_link = {
 			doc: doc,
 			fieldname: "name",
@@ -49,6 +59,22 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 			if (!doc.__onload.linked_prospects.length) {
 				this.frm.add_custom_button(__("Prospect"), this.make_prospect, __("Create"));
 				this.frm.add_custom_button(__("Add to Prospect"), this.add_lead_to_prospect, __("Action"));
+=======
+
+		if (!this.frm.is_new() && doc.__onload && !doc.__onload.is_customer) {
+			this.frm.add_custom_button(__("Customer"), this.make_customer.bind(this), __("Create"));
+			this.frm.add_custom_button(__("Opportunity"), this.make_opportunity.bind(this), __("Create"));
+			this.frm.add_custom_button(__("Quotation"), this.make_quotation.bind(this), __("Create"));
+			if (!doc.__onload.linked_prospects.length) {
+				this.frm.add_custom_button(__("Prospect"), this.make_prospect.bind(this), __("Create"));
+				this.frm.add_custom_button(
+					__("Add to Prospect"),
+					() => {
+						this.add_lead_to_prospect(this.frm);
+					},
+					__("Action")
+				);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		}
 
@@ -62,7 +88,11 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 		this.show_activities();
 	}
 
+<<<<<<< HEAD
 	add_lead_to_prospect() {
+=======
+	add_lead_to_prospect(frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.prompt(
 			[
 				{
@@ -77,7 +107,11 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 				frappe.call({
 					method: "erpnext.crm.doctype.lead.lead.add_lead_to_prospect",
 					args: {
+<<<<<<< HEAD
 						lead: cur_frm.doc.name,
+=======
+						lead: frm.doc.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						prospect: data.prospect,
 					},
 					callback: function (r) {
@@ -97,13 +131,18 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 	make_customer() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.crm.doctype.lead.lead.make_customer",
+<<<<<<< HEAD
 			frm: cur_frm,
+=======
+			frm: this.frm,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 	}
 
 	make_quotation() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.crm.doctype.lead.lead.make_quotation",
+<<<<<<< HEAD
 			frm: cur_frm,
 		});
 	}
@@ -123,6 +162,118 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 
 			let leads_row = frappe.model.add_child(prospect, "leads");
 			leads_row.lead = cur_frm.doc.name;
+=======
+			frm: this.frm,
+		});
+	}
+
+	async make_opportunity() {
+		const frm = this.frm;
+		let existing_prospect = (
+			await frappe.db.get_value(
+				"Prospect Lead",
+				{
+					lead: frm.doc.name,
+				},
+				"name",
+				null,
+				"Prospect"
+			)
+		).message?.name;
+
+		let fields = [];
+		if (!existing_prospect) {
+			fields.push(
+				{
+					label: "Create Prospect",
+					fieldname: "create_prospect",
+					fieldtype: "Check",
+					default: 1,
+				},
+				{
+					label: "Prospect Name",
+					fieldname: "prospect_name",
+					fieldtype: "Data",
+					default: frm.doc.company_name,
+					depends_on: "create_prospect",
+					mandatory_depends_on: "create_prospect",
+				}
+			);
+		}
+
+		await frm.reload_doc();
+
+		let existing_contact = (
+			await frappe.db.get_value(
+				"Contact",
+				{
+					first_name: frm.doc.first_name || frm.doc.lead_name,
+					last_name: frm.doc.last_name,
+				},
+				"name"
+			)
+		).message?.name;
+
+		if (!existing_contact) {
+			fields.push({
+				label: "Create Contact",
+				fieldname: "create_contact",
+				fieldtype: "Check",
+				default: "1",
+			});
+		}
+
+		if (fields.length) {
+			const d = new frappe.ui.Dialog({
+				title: __("Create Opportunity"),
+				fields: fields,
+				primary_action: function (data) {
+					frappe.call({
+						method: "create_prospect_and_contact",
+						doc: frm.doc,
+						args: {
+							data: data,
+						},
+						freeze: true,
+						callback: function (r) {
+							if (!r.exc) {
+								frappe.model.open_mapped_doc({
+									method: "erpnext.crm.doctype.lead.lead.make_opportunity",
+									frm: frm,
+								});
+							}
+							d.hide();
+						},
+					});
+				},
+				primary_action_label: __("Create"),
+			});
+			d.show();
+		} else {
+			frappe.model.open_mapped_doc({
+				method: "erpnext.crm.doctype.lead.lead.make_opportunity",
+				frm: frm,
+			});
+		}
+	}
+
+	make_prospect() {
+		const me = this;
+		frappe.model.with_doctype("Prospect", function () {
+			let prospect = frappe.model.get_new_doc("Prospect");
+			prospect.company_name = me.frm.doc.company_name;
+			prospect.no_of_employees = me.frm.doc.no_of_employees;
+			prospect.industry = me.frm.doc.industry;
+			prospect.market_segment = me.frm.doc.market_segment;
+			prospect.territory = me.frm.doc.territory;
+			prospect.fax = me.frm.doc.fax;
+			prospect.website = me.frm.doc.website;
+			prospect.prospect_owner = me.frm.doc.lead_owner;
+			prospect.notes = me.frm.doc.notes;
+
+			let leads_row = frappe.model.add_child(prospect, "leads");
+			leads_row.lead = me.frm.doc.name;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			frappe.set_route("Form", "Prospect", prospect.name);
 		});
@@ -158,6 +309,7 @@ erpnext.LeadController = class LeadController extends frappe.ui.form.Controller 
 };
 
 extend_cscript(cur_frm.cscript, new erpnext.LeadController({ frm: cur_frm }));
+<<<<<<< HEAD
 
 frappe.ui.form.on("Lead", {
 	make_opportunity: async function (frm) {
@@ -245,3 +397,5 @@ frappe.ui.form.on("Lead", {
 		}
 	},
 });
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

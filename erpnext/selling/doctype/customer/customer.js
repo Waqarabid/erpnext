@@ -3,17 +3,42 @@
 
 frappe.ui.form.on("Customer", {
 	setup: function (frm) {
+<<<<<<< HEAD
+=======
+		frm.custom_make_buttons = {
+			Opportunity: "Opportunity",
+			Quotation: "Quotation",
+			"Sales Order": "Sales Order",
+			"Pricing Rule": "Pricing Rule",
+		};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.make_methods = {
 			Quotation: () =>
 				frappe.model.open_mapped_doc({
 					method: "erpnext.selling.doctype.customer.customer.make_quotation",
+<<<<<<< HEAD
 					frm: cur_frm,
+=======
+					frm: frm,
+				}),
+			"Sales Order": () =>
+				frappe.model.with_doctype("Sales Order", function () {
+					var so = frappe.model.get_new_doc("Sales Order");
+					so.customer = frm.doc.name; // Set the current customer as the SO customer
+					frappe.set_route("Form", "Sales Order", so.name);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}),
 			Opportunity: () =>
 				frappe.model.open_mapped_doc({
 					method: "erpnext.selling.doctype.customer.customer.make_opportunity",
+<<<<<<< HEAD
 					frm: cur_frm,
 				}),
+=======
+					frm: frm,
+				}),
+			"Pricing Rule": () => erpnext.utils.make_pricing_rule(frm.doc.doctype, frm.doc.name),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		};
 
 		frm.add_fetch("lead_name", "company_name", "customer_name");
@@ -21,9 +46,16 @@ frappe.ui.form.on("Customer", {
 		frm.set_query("customer_group", { is_group: 0 });
 		frm.set_query("default_price_list", { selling: 1 });
 		frm.set_query("account", "accounts", function (doc, cdt, cdn) {
+<<<<<<< HEAD
 			var d = locals[cdt][cdn];
 			var filters = {
 				account_type: "Receivable",
+=======
+			let d = locals[cdt][cdn];
+			let filters = {
+				account_type: "Receivable",
+				root_type: "Asset",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				company: d.company,
 				is_group: 0,
 			};
@@ -36,6 +68,21 @@ frappe.ui.form.on("Customer", {
 			};
 		});
 
+<<<<<<< HEAD
+=======
+		frm.set_query("advance_account", "accounts", function (doc, cdt, cdn) {
+			let d = locals[cdt][cdn];
+			return {
+				filters: {
+					account_type: "Receivable",
+					root_type: "Liability",
+					company: d.company,
+					is_group: 0,
+				},
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.__islocal == 1) {
 			frm.set_value("represents_company", "");
 		}
@@ -64,6 +111,17 @@ frappe.ui.form.on("Customer", {
 				},
 			};
 		});
+<<<<<<< HEAD
+=======
+
+		frm.set_query("user", "portal_users", function () {
+			return {
+				filters: {
+					ignore_user_type: true,
+				},
+			};
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 	customer_primary_address: function (frm) {
 		if (frm.doc.customer_primary_address) {
@@ -110,8 +168,11 @@ frappe.ui.form.on("Customer", {
 			erpnext.toggle_naming_series();
 		}
 
+<<<<<<< HEAD
 		frappe.dynamic_link = { doc: frm.doc, fieldname: "name", doctype: "Customer" };
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (!frm.doc.__islocal) {
 			frappe.contacts.render_address_and_contact(frm);
 
@@ -140,6 +201,7 @@ frappe.ui.form.on("Customer", {
 				__("View")
 			);
 
+<<<<<<< HEAD
 			frm.add_custom_button(
 				__("Pricing Rule"),
 				function () {
@@ -147,6 +209,11 @@ frappe.ui.form.on("Customer", {
 				},
 				__("Create")
 			);
+=======
+			for (const doctype in frm.make_methods) {
+				frm.add_custom_button(__(doctype), frm.make_methods[doctype], __("Create"));
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			frm.add_custom_button(
 				__("Get Customer Group Details"),

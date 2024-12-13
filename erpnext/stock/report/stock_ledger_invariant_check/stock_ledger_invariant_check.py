@@ -5,7 +5,11 @@ import json
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
 from frappe.utils import get_link_to_form, parse_json
+=======
+from frappe.utils import cint, flt, get_link_to_form, parse_json
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 SLE_FIELDS = (
 	"name",
@@ -24,6 +28,10 @@ SLE_FIELDS = (
 	"stock_value_difference",
 	"valuation_rate",
 	"voucher_detail_no",
+<<<<<<< HEAD
+=======
+	"serial_and_batch_bundle",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 
 
@@ -35,7 +43,11 @@ def execute(filters=None):
 
 def get_data(filters):
 	sles = get_stock_ledger_entries(filters)
+<<<<<<< HEAD
 	return add_invariant_check_fields(sles)
+=======
+	return add_invariant_check_fields(sles, filters)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_stock_ledger_entries(filters):
@@ -47,9 +59,18 @@ def get_stock_ledger_entries(filters):
 	)
 
 
+<<<<<<< HEAD
 def add_invariant_check_fields(sles):
 	balance_qty = 0.0
 	balance_stock_value = 0.0
+=======
+def add_invariant_check_fields(sles, filters):
+	balance_qty = 0.0
+	balance_stock_value = 0.0
+
+	incorrect_idx = 0
+	precision = frappe.get_precision("Stock Ledger Entry", "actual_qty")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	for idx, sle in enumerate(sles):
 		queue = json.loads(sle.stock_queue) if sle.stock_queue else []
 
@@ -64,7 +85,15 @@ def add_invariant_check_fields(sles):
 
 		balance_qty += sle.actual_qty
 		balance_stock_value += sle.stock_value_difference
+<<<<<<< HEAD
 		if sle.voucher_type == "Stock Reconciliation" and not sle.batch_no:
+=======
+		if (
+			sle.voucher_type == "Stock Reconciliation"
+			and not sle.batch_no
+			and not sle.serial_and_batch_bundle
+		):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			balance_qty = frappe.db.get_value("Stock Reconciliation Item", sle.voucher_detail_no, "qty")
 			if balance_qty is None:
 				balance_qty = sle.qty_after_transaction
@@ -90,6 +119,15 @@ def add_invariant_check_fields(sles):
 		)
 		sle.diff_value_diff = sle.stock_value_from_diff - sle.stock_value
 
+<<<<<<< HEAD
+=======
+		if not incorrect_idx and filters.get("show_incorrect_entries"):
+			if is_sle_has_correct_data(sle, precision):
+				continue
+			else:
+				incorrect_idx = idx
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if idx > 0:
 			sle.fifo_stock_diff = sle.fifo_stock_value - sles[idx - 1].fifo_stock_value
 			sle.fifo_difference_diff = sle.fifo_stock_diff - sle.stock_value_difference
@@ -99,9 +137,29 @@ def add_invariant_check_fields(sles):
 				"Batch", sle.batch_no, "use_batchwise_valuation", cache=True
 			)
 
+<<<<<<< HEAD
 	return sles
 
 
+=======
+	if filters.get("show_incorrect_entries"):
+		if incorrect_idx > 0:
+			sles = sles[cint(incorrect_idx) - 1 :]
+
+		return []
+
+	return sles
+
+
+def is_sle_has_correct_data(sle, precision):
+	if flt(sle.difference_in_qty, precision) != 0.0 or flt(sle.diff_value_diff, precision) != 0:
+		print(flt(sle.difference_in_qty, precision), flt(sle.diff_value_diff, precision))
+		return False
+
+	return True
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_columns():
 	return [
 		{
@@ -144,6 +202,15 @@ def get_columns():
 			"options": "Batch",
 		},
 		{
+<<<<<<< HEAD
+=======
+			"fieldname": "serial_and_batch_bundle",
+			"fieldtype": "Link",
+			"label": _("Serial and Batch Bundle"),
+			"options": "Serial and Batch Bundle",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"fieldname": "use_batchwise_valuation",
 			"fieldtype": "Check",
 			"label": _("Batchwise Valuation"),

@@ -189,7 +189,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-10-05 12:52:18.705431",
+=======
+ "modified": "2024-07-08 08:58:50.228211",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Inventory Dimension",
@@ -221,6 +225,7 @@
    "write": 1
   },
   {
+<<<<<<< HEAD
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -234,6 +239,13 @@
   }
  ],
  "sort_field": "modified",
+=======
+   "read": 1,
+   "role": "Stock User"
+  }
+ ],
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

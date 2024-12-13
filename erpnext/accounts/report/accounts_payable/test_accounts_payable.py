@@ -1,5 +1,9 @@
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import today
 
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
@@ -7,7 +11,11 @@ from erpnext.accounts.report.accounts_payable.accounts_payable import execute
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 
 
+<<<<<<< HEAD
 class TestAccountsPayable(AccountsTestMixin, FrappeTestCase):
+=======
+class TestAccountsPayable(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_customer()
@@ -30,10 +38,14 @@ class TestAccountsPayable(AccountsTestMixin, FrappeTestCase):
 			"party_type": "Supplier",
 			"party": [self.supplier],
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"in_party_currency": 1,
 		}
 

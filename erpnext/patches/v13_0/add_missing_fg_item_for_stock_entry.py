@@ -59,7 +59,10 @@ def execute():
 		doc.load_items_from_bom()
 		doc.calculate_rate_and_amount()
 		set_expense_account(doc)
+<<<<<<< HEAD
 		doc.make_batches("t_warehouse")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if doc.docstatus == 0:
 			doc.save()

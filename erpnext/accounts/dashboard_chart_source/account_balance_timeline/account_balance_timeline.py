@@ -76,7 +76,11 @@ def get(
 
 def build_result(account, dates, gl_entries):
 	result = [[getdate(date), 0.0] for date in dates]
+<<<<<<< HEAD
 	root_type = frappe.db.get_value("Account", account, "root_type")
+=======
+	root_type = frappe.get_cached_value("Account", account, "root_type")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# start with the first date
 	date_index = 0

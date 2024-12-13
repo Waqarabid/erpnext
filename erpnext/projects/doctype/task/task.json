@@ -57,6 +57,10 @@
  ],
  "fields": [
   {
+<<<<<<< HEAD
+=======
+   "allow_in_quick_entry": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "subject",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -66,6 +70,10 @@
    "search_index": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_in_quick_entry": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "bold": 1,
    "fieldname": "project",
    "fieldtype": "Link",
@@ -145,14 +153,24 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval:doc.__islocal",
+=======
+   "collapsible_depends_on": "exp_start_date",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "sb_timeline",
    "fieldtype": "Section Break",
    "label": "Timeline"
   },
   {
+<<<<<<< HEAD
    "fieldname": "exp_start_date",
    "fieldtype": "Date",
+=======
+   "bold": 1,
+   "fieldname": "exp_start_date",
+   "fieldtype": "Datetime",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Expected Start Date",
    "oldfieldname": "exp_start_date",
    "oldfieldtype": "Date"
@@ -178,7 +196,11 @@
   {
    "bold": 1,
    "fieldname": "exp_end_date",
+<<<<<<< HEAD
    "fieldtype": "Date",
+=======
+   "fieldtype": "Datetime",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Expected End Date",
    "oldfieldname": "exp_end_date",
    "oldfieldtype": "Date",
@@ -241,7 +263,11 @@
   {
    "fieldname": "act_start_date",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Actual Start Date (via Time Sheet)",
+=======
+   "label": "Actual Start Date (via Timesheet)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "oldfieldname": "act_start_date",
    "oldfieldtype": "Date",
    "read_only": 1
@@ -249,7 +275,11 @@
   {
    "fieldname": "actual_time",
    "fieldtype": "Float",
+<<<<<<< HEAD
    "label": "Actual Time (in Hours via Time Sheet)",
+=======
+   "label": "Actual Time in Hours (via Timesheet)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -259,7 +289,11 @@
   {
    "fieldname": "act_end_date",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Actual End Date (via Time Sheet)",
+=======
+   "label": "Actual End Date (via Timesheet)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "oldfieldname": "act_end_date",
    "oldfieldtype": "Date",
    "read_only": 1
@@ -273,7 +307,11 @@
   {
    "fieldname": "total_costing_amount",
    "fieldtype": "Currency",
+<<<<<<< HEAD
    "label": "Total Costing Amount (via Time Sheet)",
+=======
+   "label": "Total Costing Amount (via Timesheet)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "oldfieldname": "actual_budget",
    "oldfieldtype": "Currency",
    "options": "Company:company:default_currency",
@@ -286,7 +324,11 @@
   {
    "fieldname": "total_billing_amount",
    "fieldtype": "Currency",
+<<<<<<< HEAD
    "label": "Total Billing Amount (via Time Sheet)",
+=======
+   "label": "Total Billable Amount (via Timesheet)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -396,7 +438,11 @@
  "is_tree": 1,
  "links": [],
  "max_attachments": 5,
+<<<<<<< HEAD
  "modified": "2023-09-28 13:52:05.861175",
+=======
+ "modified": "2024-05-24 12:36:12.214577",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Projects",
  "name": "Task",
@@ -416,10 +462,18 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "search_fields": "subject",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
  "sort_field": "modified",
+=======
+ "quick_entry": 1,
+ "search_fields": "subject",
+ "show_name_in_global_search": 1,
+ "show_preview_popup": 1,
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "project",

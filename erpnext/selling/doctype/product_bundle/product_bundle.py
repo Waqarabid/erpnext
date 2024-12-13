@@ -5,10 +5,33 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+<<<<<<< HEAD
+=======
+from frappe.query_builder import Criterion
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import get_link_to_form
 
 
 class ProductBundle(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.selling.doctype.product_bundle_item.product_bundle_item import ProductBundleItem
+
+		description: DF.Data | None
+		disabled: DF.Check
+		items: DF.Table[ProductBundleItem]
+		new_item_code: DF.Link
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def autoname(self):
 		self.name = self.new_item_code
 
@@ -77,15 +100,35 @@ class ProductBundle(Document):
 def get_new_item_code(doctype, txt, searchfield, start, page_len, filters):
 	product_bundles = frappe.db.get_list("Product Bundle", {"disabled": 0}, pluck="name")
 
+<<<<<<< HEAD
 	item = frappe.qb.DocType("Item")
 	query = (
 		frappe.qb.from_(item)
 		.select(item.item_code, item.item_name)
 		.where((item.is_stock_item == 0) & (item.is_fixed_asset == 0) & (item[searchfield].like(f"%{txt}%")))
+=======
+	if not searchfield or searchfield == "name":
+		searchfield = frappe.get_meta("Item").get("search_fields")
+
+	searchfield = searchfield.split(",")
+	searchfield.append("name")
+
+	item = frappe.qb.DocType("Item")
+	query = (
+		frappe.qb.from_(item)
+		.select(item.name, item.item_name)
+		.where((item.is_stock_item == 0) & (item.is_fixed_asset == 0))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		.limit(page_len)
 		.offset(start)
 	)
 
+<<<<<<< HEAD
+=======
+	if searchfield:
+		query = query.where(Criterion.any([item[fieldname].like(f"%{txt}%") for fieldname in searchfield]))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if product_bundles:
 		query = query.where(item.name.notin(product_bundles))
 

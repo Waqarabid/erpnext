@@ -11,6 +11,10 @@ def get_data():
 			"Payment Request": "reference_name",
 			"Auto Repeat": "reference_document",
 			"Maintenance Visit": "prevdoc_docname",
+<<<<<<< HEAD
+=======
+			"Stock Reservation Entry": "voucher_no",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		"internal_links": {
 			"Quotation": ["items", "prevdoc_docname"],
@@ -24,8 +28,13 @@ def get_data():
 			},
 			{"label": _("Purchasing"), "items": ["Material Request", "Purchase Order"]},
 			{"label": _("Projects"), "items": ["Project"]},
+<<<<<<< HEAD
 			{"label": _("Reference"), "items": ["Quotation", "Auto Repeat"]},
 			{"label": _("Manufacturing"), "items": ["Work Order", "BOM", "Blanket Order"]},
+=======
+			{"label": _("Manufacturing"), "items": ["Work Order", "BOM", "Blanket Order"]},
+			{"label": _("Reference"), "items": ["Quotation", "Auto Repeat", "Stock Reservation Entry"]},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{"label": _("Payment"), "items": ["Payment Entry", "Payment Request", "Journal Entry"]},
 		],
 	}

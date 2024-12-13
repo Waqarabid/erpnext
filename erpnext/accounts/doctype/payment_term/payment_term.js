@@ -16,7 +16,11 @@ frappe.ui.form.on("Payment Term", {
 				frm.doc.discount,
 			]);
 			if (frm.doc.discount_type == "Amount") {
+<<<<<<< HEAD
 				description = __("{0} will be given as discount.", [fmt_money(frm.doc.discount)]);
+=======
+				description = __("{0} will be given as discount.", [frm.doc.discount]);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 			frm.set_df_property("discount", "description", description);
 		}

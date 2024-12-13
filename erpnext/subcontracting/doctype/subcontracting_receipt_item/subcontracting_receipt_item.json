@@ -10,6 +10,10 @@
   "item_code",
   "column_break_2",
   "item_name",
+<<<<<<< HEAD
+=======
+  "is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_4",
   "description",
   "brand",
@@ -24,8 +28,11 @@
   "col_break2",
   "stock_uom",
   "conversion_factor",
+<<<<<<< HEAD
   "tracking_section",
   "col_break_tracking_section",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "rate_and_amount",
   "rate",
   "amount",
@@ -33,6 +40,7 @@
   "rm_cost_per_qty",
   "service_cost_per_qty",
   "additional_cost_per_qty",
+<<<<<<< HEAD
   "rm_supp_cost",
   "warehouse_and_reference",
   "warehouse",
@@ -50,6 +58,35 @@
   "col_break5",
   "batch_no",
   "rejected_serial_no",
+=======
+  "scrap_cost_per_qty",
+  "rm_supp_cost",
+  "warehouse_and_reference",
+  "warehouse",
+  "subcontracting_order",
+  "subcontracting_order_item",
+  "subcontracting_receipt_item",
+  "job_card",
+  "column_break_40",
+  "rejected_warehouse",
+  "bom",
+  "include_exploded_items",
+  "quality_inspection",
+  "schedule_date",
+  "reference_name",
+  "section_break_45",
+  "add_serial_batch_bundle",
+  "serial_and_batch_bundle",
+  "use_serial_batch_fields",
+  "col_break5",
+  "add_serial_batch_for_rejected_qty",
+  "rejected_serial_and_batch_bundle",
+  "section_break_jshh",
+  "serial_no",
+  "rejected_serial_no",
+  "column_break_henr",
+  "batch_no",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "manufacture_details",
   "manufacturer",
   "column_break_16",
@@ -61,7 +98,13 @@
   "dimension_col_break",
   "project",
   "section_break_80",
+<<<<<<< HEAD
   "page_break"
+=======
+  "page_break",
+  "purchase_order",
+  "purchase_order_item"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -83,12 +126,21 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "item_code.item_name",
+   "fetch_if_empty": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "item_name",
    "fieldtype": "Data",
    "in_global_search": 1,
    "label": "Item Name",
+<<<<<<< HEAD
    "print_hide": 1,
    "reqd": 1
+=======
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "collapsible": 1,
@@ -97,11 +149,19 @@
    "label": "Description"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "item_code.description",
+   "fetch_if_empty": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description",
    "print_width": "300px",
+<<<<<<< HEAD
    "reqd": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "300px"
   },
   {
@@ -156,6 +216,10 @@
    "no_copy": 1,
    "print_hide": 1,
    "print_width": "100px",
+<<<<<<< HEAD
+=======
+   "read_only_depends_on": "eval: doc.is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "100px"
   },
   {
@@ -212,6 +276,11 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "0",
+   "depends_on": "eval: !doc.is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "rm_cost_per_qty",
    "fieldtype": "Currency",
    "label": "Raw Material Cost Per Qty",
@@ -219,6 +288,11 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "0",
+   "depends_on": "eval: !doc.is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "service_cost_per_qty",
    "fieldtype": "Currency",
    "label": "Service Cost Per Qty",
@@ -227,6 +301,10 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
+=======
+   "depends_on": "eval: !doc.is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "additional_cost_per_qty",
    "fieldtype": "Currency",
    "label": "Additional Cost Per Qty",
@@ -258,6 +336,10 @@
    "options": "Warehouse",
    "print_hide": 1,
    "print_width": "100px",
+<<<<<<< HEAD
+=======
+   "read_only_depends_on": "eval: doc.is_scrap_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "100px"
   },
   {
@@ -293,6 +375,7 @@
   },
   {
    "fieldname": "section_break_45",
+<<<<<<< HEAD
    "fieldtype": "Section Break"
   },
   {
@@ -300,14 +383,29 @@
    "fieldname": "serial_no",
    "fieldtype": "Small Text",
    "in_list_view": 1,
+=======
+   "fieldtype": "Section Break",
+   "label": "Serial and Batch Details"
+  },
+  {
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1",
+   "fieldname": "serial_no",
+   "fieldtype": "Small Text",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Serial No",
    "no_copy": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:!doc.is_fixed_asset",
    "fieldname": "batch_no",
    "fieldtype": "Link",
    "in_list_view": 1,
+=======
+   "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1",
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Batch No",
    "no_copy": 1,
    "options": "Batch",
@@ -343,7 +441,12 @@
    "label": "BOM",
    "no_copy": 1,
    "options": "BOM",
+<<<<<<< HEAD
    "print_hide": 1
+=======
+   "print_hide": 1,
+   "read_only_depends_on": "eval: doc.is_scrap_item"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fetch_from": "item_code.brand",
@@ -409,6 +512,7 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "tracking_section",
    "fieldtype": "Section Break"
   },
@@ -417,6 +521,8 @@
    "fieldtype": "Column Break"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
    "label": "Accounting Dimensions"
@@ -454,6 +560,10 @@
    "print_hide": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "0",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "depends_on": "returned_qty",
    "fieldname": "returned_qty",
    "fieldtype": "Float",
@@ -468,17 +578,127 @@
    "label": "Accounting Details"
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:doc.use_serial_batch_fields === 0 || doc.docstatus === 1",
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0 || doc.docstatus === 1",
+   "fieldname": "rejected_serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Rejected Serial and Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: !doc.bom",
+   "fieldname": "is_scrap_item",
+   "fieldtype": "Check",
+   "label": "Is Scrap Item",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only_depends_on": "eval: doc.bom"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: !doc.is_scrap_item",
+   "fieldname": "scrap_cost_per_qty",
+   "fieldtype": "Float",
+   "label": "Scrap Cost Per Qty",
+   "no_copy": 1,
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reference Name",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_order_item",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Purchase Order Item",
+   "no_copy": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Purchase Order",
+   "no_copy": 1,
+   "options": "Purchase Order",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "fieldname": "include_exploded_items",
    "fieldtype": "Check",
    "label": "Include Exploded Items",
    "print_hide": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "fieldname": "use_serial_batch_fields",
+   "fieldtype": "Check",
+   "label": "Use Serial No / Batch Fields"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 1",
+   "fieldname": "section_break_jshh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_henr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0",
+   "fieldname": "add_serial_batch_bundle",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch Bundle"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0",
+   "fieldname": "add_serial_batch_for_rejected_qty",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch No (Rejected Qty)"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "read_only": 1,
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-30 12:05:51.920705",
+=======
+ "modified": "2024-03-29 15:43:43.425544",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Subcontracting",
  "name": "Subcontracting Receipt Item",
@@ -489,4 +709,8 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

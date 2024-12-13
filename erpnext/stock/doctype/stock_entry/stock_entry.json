@@ -14,12 +14,20 @@
   "purpose",
   "add_to_transit",
   "work_order",
+<<<<<<< HEAD
+=======
+  "job_card",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "purchase_order",
   "subcontracting_order",
   "delivery_note_no",
   "sales_invoice_no",
   "pick_list",
   "purchase_receipt_no",
+<<<<<<< HEAD
+=======
+  "asset_repair",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "col2",
   "company",
   "posting_date",
@@ -79,10 +87,17 @@
   "col5",
   "per_transferred",
   "total_amount",
+<<<<<<< HEAD
   "job_card",
   "amended_from",
   "credit_note",
   "is_return"
+=======
+  "amended_from",
+  "credit_note",
+  "is_return",
+  "tab_connections"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -125,7 +140,11 @@
    "label": "Purpose",
    "oldfieldname": "purpose",
    "oldfieldtype": "Select",
+<<<<<<< HEAD
    "options": "Material Issue\nMaterial Receipt\nMaterial Transfer\nMaterial Transfer for Manufacture\nMaterial Consumption for Manufacture\nManufacture\nRepack\nSend to Subcontractor",
+=======
+   "options": "Material Issue\nMaterial Receipt\nMaterial Transfer\nMaterial Transfer for Manufacture\nMaterial Consumption for Manufacture\nManufacture\nRepack\nSend to Subcontractor\nDisassemble",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1,
    "search_index": 1
   },
@@ -141,7 +160,11 @@
    "reqd": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:in_list([\"Material Transfer for Manufacture\", \"Manufacture\", \"Material Consumption for Manufacture\"], doc.purpose)",
+=======
+   "depends_on": "eval:in_list([\"Material Transfer for Manufacture\", \"Manufacture\", \"Material Consumption for Manufacture\", \"Disassemble\"], doc.purpose)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "work_order",
    "fieldtype": "Link",
    "label": "Work Order",
@@ -152,14 +175,22 @@
    "search_index": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose==\"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "purchase_order",
    "fieldtype": "Link",
    "label": "Purchase Order",
    "options": "Purchase Order"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose==\"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "subcontracting_order",
    "fieldtype": "Link",
    "label": "Subcontracting Order",
@@ -240,7 +271,11 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
    "depends_on": "eval:in_list([\"Material Issue\", \"Material Transfer\", \"Manufacture\", \"Repack\", \"Send to Subcontractor\", \"Material Transfer for Manufacture\", \"Material Consumption for Manufacture\"], doc.purpose)",
+=======
+   "depends_on": "eval:in_list([\"Material Issue\", \"Material Transfer\", \"Manufacture\", \"Repack\", \"Send to Subcontractor\", \"Material Transfer for Manufacture\", \"Material Consumption for Manufacture\", \"Disassemble\"], doc.purpose)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "from_bom",
    "fieldtype": "Check",
    "label": "From BOM",
@@ -301,12 +336,20 @@
    "depends_on": "from_warehouse",
    "fieldname": "source_warehouse_address",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "label": "Source Warehouse Address",
+=======
+   "label": "Source Warehouse Address Link",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Address"
   },
   {
    "fieldname": "source_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Source Warehouse Address",
    "read_only": 1
   },
@@ -331,12 +374,20 @@
    "depends_on": "to_warehouse",
    "fieldname": "target_warehouse_address",
    "fieldtype": "Link",
+<<<<<<< HEAD
    "label": "Target Warehouse Address",
+=======
+   "label": "Target Warehouse Address Link",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "Address"
   },
   {
    "fieldname": "target_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Target Warehouse Address",
    "read_only": 1
   },
@@ -425,13 +476,21 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose === \"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "contact_section",
    "fieldtype": "Section Break",
    "label": "Supplier Details"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose === \"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "supplier",
    "fieldtype": "Link",
    "label": "Supplier",
@@ -443,7 +502,11 @@
   },
   {
    "bold": 1,
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose === \"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "supplier_name",
    "fieldtype": "Data",
    "label": "Supplier Name",
@@ -453,7 +516,11 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.purpose === \"Send to Subcontractor\"",
+=======
+   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "supplier_address",
    "fieldtype": "Link",
    "label": "Supplier Address",
@@ -464,7 +531,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address"
   },
   {
@@ -674,6 +745,23 @@
   {
    "fieldname": "column_break_eaoa",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "depends_on": "eval:doc.asset_repair",
+   "fieldname": "asset_repair",
+   "fieldtype": "Link",
+   "label": "Asset Repair",
+   "options": "Asset Repair",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tab_connections",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-file-text",
@@ -681,7 +769,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-01-12 11:56:58.644882",
+=======
+ "modified": "2024-08-13 19:05:42.386955",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry",
@@ -749,7 +841,11 @@
  ],
  "search_fields": "posting_date, from_warehouse, to_warehouse, purpose, remarks",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "stock_entry_type",

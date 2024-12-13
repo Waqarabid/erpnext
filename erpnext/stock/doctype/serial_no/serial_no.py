@@ -8,10 +8,16 @@ import frappe
 from frappe import ValidationError, _
 from frappe.model.naming import make_autoname
 from frappe.query_builder.functions import Coalesce
+<<<<<<< HEAD
 from frappe.utils import add_days, cint, cstr, flt, get_link_to_form, getdate, now, nowdate, safe_json_loads
 
 from erpnext.controllers.stock_controller import StockController
 from erpnext.stock.get_item_details import get_reserved_qty_for_so
+=======
+from frappe.utils import cint, cstr, getdate, nowdate, safe_json_loads
+
+from erpnext.controllers.stock_controller import StockController
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 class SerialNoCannotCreateDirectError(ValidationError):
@@ -22,6 +28,7 @@ class SerialNoCannotCannotChangeError(ValidationError):
 	pass
 
 
+<<<<<<< HEAD
 class SerialNoNotRequiredError(ValidationError):
 	pass
 
@@ -38,10 +45,13 @@ class SerialNoItemError(ValidationError):
 	pass
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 class SerialNoWarehouseError(ValidationError):
 	pass
 
 
+<<<<<<< HEAD
 class SerialNoBatchError(ValidationError):
 	pass
 
@@ -55,6 +65,40 @@ class SerialNoDuplicateError(ValidationError):
 
 
 class SerialNo(StockController):
+=======
+class SerialNo(StockController):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		amc_expiry_date: DF.Date | None
+		asset: DF.Link | None
+		asset_status: DF.Literal["", "Issue", "Receipt", "Transfer"]
+		batch_no: DF.Link | None
+		brand: DF.Link | None
+		company: DF.Link
+		description: DF.Text | None
+		employee: DF.Link | None
+		item_code: DF.Link
+		item_group: DF.Link | None
+		item_name: DF.Data | None
+		location: DF.Link | None
+		maintenance_status: DF.Literal["", "Under Warranty", "Out of Warranty", "Under AMC", "Out of AMC"]
+		purchase_document_no: DF.Data | None
+		purchase_rate: DF.Float
+		serial_no: DF.Data
+		status: DF.Literal["", "Active", "Inactive", "Delivered", "Expired"]
+		warehouse: DF.Link | None
+		warranty_expiry_date: DF.Date | None
+		warranty_period: DF.Int
+		work_order: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.via_stock_ledger = False
@@ -70,6 +114,7 @@ class SerialNo(StockController):
 
 		self.set_maintenance_status()
 		self.validate_warehouse()
+<<<<<<< HEAD
 		self.validate_item()
 		self.set_status()
 
@@ -82,6 +127,16 @@ class SerialNo(StockController):
 			self.status = "Inactive"
 		else:
 			self.status = "Active"
+=======
+
+	def validate_warehouse(self):
+		if not self.get("__islocal"):
+			item_code, warehouse = frappe.db.get_value("Serial No", self.name, ["item_code", "warehouse"])
+			if not self.via_stock_ledger and item_code != self.item_code:
+				frappe.throw(_("Item Code cannot be changed for Serial No."), SerialNoCannotCannotChangeError)
+			if not self.via_stock_ledger and warehouse != self.warehouse:
+				frappe.throw(_("Warehouse cannot be changed for Serial No."), SerialNoCannotCannotChangeError)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def set_maintenance_status(self):
 		if not self.warranty_expiry_date and not self.amc_expiry_date:
@@ -99,6 +154,7 @@ class SerialNo(StockController):
 		if self.warranty_expiry_date and getdate(self.warranty_expiry_date) >= getdate(nowdate()):
 			self.maintenance_status = "Under Warranty"
 
+<<<<<<< HEAD
 	def validate_warehouse(self):
 		if not self.get("__islocal"):
 			item_code, warehouse = frappe.db.get_value("Serial No", self.name, ["item_code", "warehouse"])
@@ -228,6 +284,8 @@ class SerialNo(StockController):
 
 		return sle_dict
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_trash(self):
 		sl_entries = frappe.db.sql(
 			"""select serial_no from `tabStock Ledger Entry`
@@ -248,6 +306,7 @@ class SerialNo(StockController):
 				_("Cannot delete Serial No {0}, as it is used in stock transactions").format(self.name)
 			)
 
+<<<<<<< HEAD
 	def update_serial_no_reference(self, serial_no=None):
 		last_sle = self.get_last_sle(serial_no)
 		self.set_purchase_details(last_sle.get("purchase_sle"))
@@ -594,11 +653,19 @@ def update_serial_nos(sle, item_det):
 
 
 def get_auto_serial_nos(serial_no_series, qty):
+=======
+
+def get_available_serial_nos(serial_no_series, qty) -> list[str]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	serial_nos = []
 	for _i in range(cint(qty)):
 		serial_nos.append(get_new_serial_number(serial_no_series))
 
+<<<<<<< HEAD
 	return "\n".join(serial_nos)
+=======
+	return serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_new_serial_number(series):
@@ -608,6 +675,7 @@ def get_new_serial_number(series):
 	return sr_no
 
 
+<<<<<<< HEAD
 def auto_make_serial_nos(args):
 	serial_nos = get_serial_nos(args.get("serial_no"))
 	created_numbers = []
@@ -707,6 +775,8 @@ def make_bulk_serial_nos(args, serial_nos):
 		frappe.db.bulk_insert("Serial No", fields=fields, values=set(serial_nos_details))
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_items_html(serial_nos, item_code):
 	body = ", ".join(serial_nos)
 	return f"""<details><summary>
@@ -716,6 +786,7 @@ def get_items_html(serial_nos, item_code):
 	"""
 
 
+<<<<<<< HEAD
 def get_item_details(item_code):
 	return frappe.db.sql(
 		"""select name, has_batch_no, docstatus,
@@ -726,11 +797,17 @@ def get_item_details(item_code):
 	)[0]
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_serial_nos(serial_no):
 	if isinstance(serial_no, list):
 		return serial_no
 
+<<<<<<< HEAD
 	return [s.strip() for s in cstr(serial_no).strip().upper().replace(",", "\n").split("\n") if s.strip()]
+=======
+	return [s.strip() for s in cstr(serial_no).strip().replace(",", "\n").split("\n") if s.strip()]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def clean_serial_no_string(serial_no: str) -> str:
@@ -741,6 +818,7 @@ def clean_serial_no_string(serial_no: str) -> str:
 	return "\n".join(serial_no_list)
 
 
+<<<<<<< HEAD
 def update_args_for_serial_no(serial_no_doc, serial_no, args, is_new=False):
 	for field in ["item_code", "work_order", "company", "batch_no", "supplier", "location"]:
 		if args.get(field):
@@ -835,6 +913,8 @@ def update_serial_nos_after_submit(controller, parentfield):
 						break
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def update_maintenance_status():
 	serial_nos = frappe.db.sql(
 		"""select name from `tabSerial No` where (amc_expiry_date<%s or
@@ -899,6 +979,7 @@ def auto_fetch_serial_number(
 	return sorted([d.get("name") for d in serial_numbers])
 
 
+<<<<<<< HEAD
 def get_delivered_serial_nos(serial_nos):
 	"""
 	Returns serial numbers that delivered from the list of serial numbers
@@ -919,6 +1000,8 @@ def get_delivered_serial_nos(serial_nos):
 		return delivered_serial_nos
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 @frappe.whitelist()
 def get_pos_reserved_serial_nos(filters):
 	if isinstance(filters, str):
@@ -993,3 +1076,19 @@ def fetch_serial_numbers(filters, qty, do_not_include=None):
 
 	serial_numbers = query.run(as_dict=True)
 	return serial_numbers
+<<<<<<< HEAD
+=======
+
+
+def get_serial_nos_for_outward(kwargs):
+	from erpnext.stock.doctype.serial_and_batch_bundle.serial_and_batch_bundle import (
+		get_available_serial_nos,
+	)
+
+	serial_nos = get_available_serial_nos(kwargs)
+
+	if not serial_nos:
+		return []
+
+	return [d.serial_no for d in serial_nos]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

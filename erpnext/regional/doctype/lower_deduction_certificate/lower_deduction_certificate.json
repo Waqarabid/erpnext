@@ -64,7 +64,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto",
+=======
+   "label": "Valid Up To",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "reqd": 1
   },
   {

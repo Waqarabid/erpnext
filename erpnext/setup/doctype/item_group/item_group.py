@@ -2,6 +2,7 @@
 # License: GNU General Public License v3. See license.txt
 
 import copy
+<<<<<<< HEAD
 from urllib.parse import quote
 
 import frappe
@@ -35,6 +36,43 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 		self.validate_item_group_defaults()
 		self.check_item_tax()
 		ECommerceSettings.validate_field_filters(self.filter_fields, enable_field_filters=True)
+=======
+
+import frappe
+from frappe import _
+from frappe.utils.nestedset import NestedSet
+
+
+class ItemGroup(NestedSet):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.stock.doctype.item_default.item_default import ItemDefault
+		from erpnext.stock.doctype.item_tax.item_tax import ItemTax
+
+		image: DF.AttachImage | None
+		is_group: DF.Check
+		item_group_defaults: DF.Table[ItemDefault]
+		item_group_name: DF.Data
+		lft: DF.Int
+		old_parent: DF.Link | None
+		parent_item_group: DF.Link | None
+		rgt: DF.Int
+		taxes: DF.Table[ItemTax]
+	# end: auto-generated types
+
+	def validate(self):
+		if not self.parent_item_group and not frappe.flags.in_test:
+			if frappe.db.exists("Item Group", _("All Item Groups")):
+				self.parent_item_group = _("All Item Groups")
+		self.validate_item_group_defaults()
+		self.check_item_tax()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def check_item_tax(self):
 		"""Check whether Tax Rate is not entered twice for same Tax Type"""
@@ -53,6 +91,7 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 
 	def on_update(self):
 		NestedSet.on_update(self)
+<<<<<<< HEAD
 		invalidate_cache_for(self)
 		self.validate_one_root()
 		self.delete_child_item_groups_key()
@@ -113,6 +152,15 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 
 		return context
 
+=======
+		self.validate_one_root()
+		self.delete_child_item_groups_key()
+
+	def on_trash(self):
+		NestedSet.on_trash(self, allow_root_deletion=True)
+		self.delete_child_item_groups_key()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def delete_child_item_groups_key(self):
 		frappe.cache().hdel("child_item_groups", self.name)
 
@@ -122,6 +170,7 @@ class ItemGroup(NestedSet, WebsiteGenerator):
 		validate_item_default_company_links(self.item_group_defaults)
 
 
+<<<<<<< HEAD
 def get_child_groups_for_website(item_group_name, immediate=False, include_self=False):
 	"""Returns child item groups *excluding* passed group."""
 	item_group = frappe.get_cached_value("Item Group", item_group_name, ["lft", "rgt"], as_dict=1)
@@ -136,6 +185,8 @@ def get_child_groups_for_website(item_group_name, immediate=False, include_self=
 	return frappe.get_all("Item Group", filters=filters, fields=["name", "route"], order_by="name")
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_child_item_groups(item_group_name):
 	item_group = frappe.get_cached_value("Item Group", item_group_name, ["lft", "rgt"], as_dict=1)
 
@@ -149,6 +200,7 @@ def get_child_item_groups(item_group_name):
 	return child_item_groups or {}
 
 
+<<<<<<< HEAD
 def get_item_for_list_in_html(context):
 	# add missing absolute link in files
 	# user may forget it during upload
@@ -206,6 +258,8 @@ def invalidate_cache_for(doc, item_group=None):
 			clear_cache(frappe.db.get_value("Item Group", item_group_name, "route"))
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_item_group_defaults(item, company):
 	item = frappe.get_cached_doc("Item", item)
 	item_group = frappe.get_cached_doc("Item Group", item.item_group)

@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Exponential Smoothing Forecasting"] = {
 	filters: [
@@ -30,7 +33,11 @@ frappe.query_reports["Exponential Smoothing Forecasting"] = {
 			fieldname: "based_on_document",
 			label: __("Based On Document"),
 			fieldtype: "Select",
+<<<<<<< HEAD
 			options: ["Sales Order", "Delivery Note", "Quotation"],
+=======
+			options: ["Sales Order", "Sales Invoice", "Delivery Note", "Quotation"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			default: "Sales Order",
 			reqd: 1,
 		},
@@ -94,4 +101,14 @@ frappe.query_reports["Exponential Smoothing Forecasting"] = {
 			},
 		},
 	],
+<<<<<<< HEAD
+=======
+	formatter: function (value, row, column, data, default_formatter) {
+		value = default_formatter(value, row, column, data);
+		if (column.fieldname === "item_code" && value.includes("Total Quantity")) {
+			value = "<strong>" + value + "</strong>";
+		}
+		return value;
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 };

@@ -11,12 +11,21 @@
   "bill_no",
   "payment_term",
   "payment_term_outstanding",
+<<<<<<< HEAD
+=======
+  "account_type",
+  "payment_type",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_4",
   "total_amount",
   "outstanding_amount",
   "allocated_amount",
   "exchange_rate",
   "exchange_gain_loss",
+<<<<<<< HEAD
+=======
+  "account",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "payment_request",
   "payment_request_outstanding"
  ],
@@ -106,6 +115,25 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "label": "Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Data",
+   "label": "Account Type"
+  },
+  {
+   "fieldname": "payment_type",
+   "fieldtype": "Data",
+   "label": "Payment Type"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "payment_request",
    "fieldtype": "Link",
    "label": "Payment Request",
@@ -137,7 +165,11 @@
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

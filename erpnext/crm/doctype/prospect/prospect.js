@@ -3,8 +3,11 @@
 
 frappe.ui.form.on("Prospect", {
 	refresh(frm) {
+<<<<<<< HEAD
 		frappe.dynamic_link = { doc: frm.doc, fieldname: "name", doctype: frm.doctype };
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (!frm.is_new() && frappe.boot.user.can_create.includes("Customer")) {
 			frm.add_custom_button(
 				__("Customer"),

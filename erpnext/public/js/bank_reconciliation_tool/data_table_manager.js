@@ -39,8 +39,13 @@ erpnext.accounts.bank_reconciliation.DataTableManager = class DataTableManager {
 				name: __("Date"),
 				editable: false,
 				width: 100,
+<<<<<<< HEAD
 			},
 
+=======
+				format: frappe.form.formatters.Date,
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				name: __("Party Type"),
 				editable: false,
@@ -112,17 +117,27 @@ erpnext.accounts.bank_reconciliation.DataTableManager = class DataTableManager {
 		return [
 			row["date"],
 			row["party_type"],
+<<<<<<< HEAD
 			row["party"],
+=======
+			frappe.form.formatters.Link(row["party"], { options: row["party_type"] }),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			row["description"],
 			row["deposit"],
 			row["withdrawal"],
 			row["unallocated_amount"],
 			row["reference_number"],
+<<<<<<< HEAD
 			`
 			<Button class="btn btn-primary btn-xs center"  data-name = ${row["name"]} >
 				${__("Actions")}
 			</a>
 			`,
+=======
+			`<button class="btn btn-primary btn-xs center" data-name="${row["name"]}">${__(
+				"Actions"
+			)}</button>`,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		];
 	}
 

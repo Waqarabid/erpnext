@@ -23,6 +23,10 @@ from frappe.utils import (
 	get_link_to_form,
 	getdate,
 	nowdate,
+<<<<<<< HEAD
+=======
+	parse_json,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	today,
 )
 
@@ -61,11 +65,19 @@ from erpnext.setup.utils import get_exchange_rate
 from erpnext.stock.doctype.item.item import get_uom_conv_factor
 from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
 from erpnext.stock.get_item_details import (
+<<<<<<< HEAD
+=======
+	ItemDetailsCtx,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	_get_item_tax_template,
 	get_conversion_factor,
 	get_item_details,
 	get_item_tax_map,
+<<<<<<< HEAD
 	get_item_warehouse,
+=======
+	get_item_warehouse_,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 )
 from erpnext.utilities.regional import temporary_flag
 from erpnext.utilities.transaction_base import TransactionBase
@@ -133,6 +145,7 @@ class AccountsController(TransactionBase):
 			if self.doctype in relevant_docs:
 				self.set_payment_schedule()
 
+<<<<<<< HEAD
 	def ensure_supplier_is_not_blocked(self):
 		is_supplier_payment = self.doctype == "Payment Entry" and self.party_type == "Supplier"
 		is_buying_invoice = self.doctype in ["Purchase Invoice", "Purchase Order"]
@@ -144,6 +157,32 @@ class AccountsController(TransactionBase):
 			supplier = frappe.get_doc("Supplier", supplier_name)
 
 		if supplier and supplier_name and supplier.on_hold:
+=======
+	def remove_bundle_for_non_stock_invoices(self):
+		has_sabb = False
+		if self.doctype in ("Sales Invoice", "Purchase Invoice") and not self.update_stock:
+			for item in self.get("items"):
+				if item.serial_and_batch_bundle:
+					item.serial_and_batch_bundle = None
+					has_sabb = True
+
+		if has_sabb:
+			self.remove_serial_and_batch_bundle()
+
+	def ensure_supplier_is_not_blocked(self):
+		is_supplier_payment = self.doctype == "Payment Entry" and self.party_type == "Supplier"
+		is_buying_invoice = self.doctype in ["Purchase Invoice", "Purchase Order"]
+		supplier_name = self.supplier if is_buying_invoice else self.party if is_supplier_payment else None
+		supplier = None
+
+		if supplier_name:
+			supplier = frappe.get_doc(
+				"Supplier",
+				supplier_name,
+			)
+
+		if supplier and supplier.on_hold:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if (is_buying_invoice and supplier.hold_type in ["All", "Invoices"]) or (
 				is_supplier_payment and supplier.hold_type in ["All", "Payments"]
 			):
@@ -167,6 +206,12 @@ class AccountsController(TransactionBase):
 		if self.get("_action") and self._action != "update_after_submit":
 			self.set_missing_values(for_validate=True)
 
+<<<<<<< HEAD
+=======
+		if self.get("_action") == "submit":
+			self.remove_bundle_for_non_stock_invoices()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.ensure_supplier_is_not_blocked()
 
 		self.validate_date_with_fiscal_year()
@@ -218,8 +263,13 @@ class AccountsController(TransactionBase):
 						).format(
 							frappe.bold(document_type),
 							get_link_to_form(self.doctype, self.get("return_against")),
+<<<<<<< HEAD
 							frappe.bold("Update Outstanding for Self"),
 							get_link_to_form("Payment Reconciliation", "Payment Reconciliation"),
+=======
+							frappe.bold(_("Update Outstanding for Self")),
+							get_link_to_form("Payment Reconciliation"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						)
 					)
 
@@ -250,6 +300,14 @@ class AccountsController(TransactionBase):
 			apply_pricing_rule_on_transaction(self)
 
 		self.set_total_in_words()
+<<<<<<< HEAD
+=======
+		self.set_default_letter_head()
+
+	def set_default_letter_head(self):
+		if hasattr(self, "letter_head") and not self.letter_head:
+			self.letter_head = frappe.db.get_value("Company", self.company, "default_letter_head")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def init_internal_values(self):
 		# init all the internal values as 0 on sa
@@ -325,11 +383,33 @@ class AccountsController(TransactionBase):
 					repost_doc.flags.ignore_links = True
 					repost_doc.save(ignore_permissions=True)
 
+<<<<<<< HEAD
 	def on_trash(self):
 		from erpnext.accounts.utils import delete_exchange_gain_loss_journal
 
 		self._remove_references_in_repost_doctypes()
 		self._remove_references_in_unreconcile()
+=======
+	def _remove_advance_payment_ledger_entries(self):
+		adv = qb.DocType("Advance Payment Ledger Entry")
+		qb.from_(adv).delete().where(adv.voucher_type.eq(self.doctype) & adv.voucher_no.eq(self.name)).run()
+
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		if self.doctype in advance_payment_doctypes:
+			qb.from_(adv).delete().where(
+				adv.against_voucher_type.eq(self.doctype) & adv.against_voucher_no.eq(self.name)
+			).run()
+
+	def on_trash(self):
+		from erpnext.accounts.utils import delete_exchange_gain_loss_journal
+
+		self._remove_advance_payment_ledger_entries()
+		self._remove_references_in_repost_doctypes()
+		self._remove_references_in_unreconcile()
+		self.remove_serial_and_batch_bundle()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# delete sl and gl entries on deletion of transaction
 		if frappe.db.get_single_value("Accounts Settings", "delete_linked_ledger_entries"):
@@ -354,6 +434,24 @@ class AccountsController(TransactionBase):
 				(self.doctype, self.name),
 			)
 
+<<<<<<< HEAD
+=======
+	def remove_serial_and_batch_bundle(self):
+		bundles = frappe.get_all(
+			"Serial and Batch Bundle",
+			filters={"voucher_type": self.doctype, "voucher_no": self.name, "docstatus": ("!=", 1)},
+		)
+
+		for bundle in bundles:
+			frappe.delete_doc("Serial and Batch Bundle", bundle.name)
+
+		batches = frappe.get_all(
+			"Batch", filters={"reference_doctype": self.doctype, "reference_name": self.name}
+		)
+		for row in batches:
+			frappe.delete_doc("Batch", row.name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_return_against_account(self):
 		if self.doctype in ["Sales Invoice", "Purchase Invoice"] and self.is_return and self.return_against:
 			cr_dr_account_field = "debit_to" if self.doctype == "Sales Invoice" else "credit_to"
@@ -598,30 +696,56 @@ class AccountsController(TransactionBase):
 				)
 
 	def validate_due_date(self):
+<<<<<<< HEAD
 		if self.get("is_pos"):
+=======
+		if self.get("is_pos") or self.doctype not in ["Sales Invoice", "Purchase Invoice"]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		from erpnext.accounts.party import validate_due_date
 
+<<<<<<< HEAD
 		if self.doctype == "Sales Invoice":
+=======
+		posting_date = (
+			self.posting_date if self.doctype == "Sales Invoice" else (self.bill_date or self.posting_date)
+		)
+
+		# skip due date validation for records via Data Import
+		if frappe.flags.in_import and getdate(self.due_date) < getdate(posting_date):
+			self.due_date = posting_date
+
+		elif self.doctype == "Sales Invoice":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if not self.due_date:
 				frappe.throw(_("Due Date is mandatory"))
 
 			validate_due_date(
+<<<<<<< HEAD
 				self.posting_date,
 				self.due_date,
 				"Customer",
 				self.customer,
 				self.company,
+=======
+				posting_date,
+				self.due_date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				self.payment_terms_template,
 			)
 		elif self.doctype == "Purchase Invoice":
 			validate_due_date(
+<<<<<<< HEAD
 				self.bill_date or self.posting_date,
 				self.due_date,
 				"Supplier",
 				self.supplier,
 				self.company,
+=======
+				posting_date,
+				self.due_date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				self.bill_date,
 				self.payment_terms_template,
 			)
@@ -697,6 +821,7 @@ class AccountsController(TransactionBase):
 
 			self.pricing_rules = []
 
+<<<<<<< HEAD
 			selected_serial_nos_map = {}
 			for item in self.get("items"):
 				if item.get("item_code"):
@@ -719,6 +844,32 @@ class AccountsController(TransactionBase):
 						args["is_subcontracted"] = self.is_subcontracted
 
 					ret = get_item_details(args, self, for_validate=for_validate, overwrite_warehouse=False)
+=======
+			for item in self.get("items"):
+				if item.get("item_code"):
+					ctx: ItemDetailsCtx = ItemDetailsCtx(parent_dict.copy())
+					ctx.update(item.as_dict())
+
+					ctx.update(
+						{
+							"doctype": self.doctype,
+							"name": self.name,
+							"child_doctype": item.doctype,
+							"child_docname": item.name,
+							"ignore_pricing_rule": (
+								self.ignore_pricing_rule if hasattr(self, "ignore_pricing_rule") else 0
+							),
+						}
+					)
+
+					if not ctx.transaction_date:
+						ctx.transaction_date = ctx.posting_date
+
+					if self.get("is_subcontracted"):
+						ctx.is_subcontracted = self.is_subcontracted
+
+					ret = get_item_details(ctx, self, for_validate=for_validate, overwrite_warehouse=False)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					for fieldname, value in ret.items():
 						if item.meta.get_field(fieldname) and value is not None:
 							if item.get(fieldname) is None or fieldname in force_item_fields:
@@ -775,11 +926,14 @@ class AccountsController(TransactionBase):
 					if ret.get("pricing_rules"):
 						self.apply_pricing_rule_on_items(item, ret)
 						self.set_pricing_rule_details(item, ret)
+<<<<<<< HEAD
 
 					if ret.get("serial_no"):
 						selected_serial_nos_map.setdefault(item.get("item_code"), []).extend(
 							ret.get("serial_no").split("\n")
 						)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				else:
 					# Transactions line item without item code
 
@@ -887,6 +1041,41 @@ class AccountsController(TransactionBase):
 
 			self.extend("taxes", get_taxes_and_charges(tax_master_doctype, self.get("taxes_and_charges")))
 
+<<<<<<< HEAD
+=======
+	def append_taxes_from_item_tax_template(self):
+		if not frappe.db.get_single_value("Accounts Settings", "add_taxes_from_item_tax_template"):
+			return
+
+		for row in self.items:
+			item_tax_rate = row.get("item_tax_rate")
+			if not item_tax_rate:
+				continue
+
+			if isinstance(item_tax_rate, str):
+				item_tax_rate = parse_json(item_tax_rate)
+
+			for account_head, _rate in item_tax_rate.items():
+				row = self.get_tax_row(account_head)
+
+				if not row:
+					self.append(
+						"taxes",
+						{
+							"charge_type": "On Net Total",
+							"account_head": account_head,
+							"rate": 0,
+							"description": account_head,
+							"set_by_item_tax_template": 1,
+						},
+					)
+
+	def get_tax_row(self, account_head):
+		for row in self.taxes:
+			if row.account_head == account_head:
+				return row
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def set_other_charges(self):
 		self.set("taxes", [])
 		self.set_taxes()
@@ -940,6 +1129,11 @@ class AccountsController(TransactionBase):
 				"party": None,
 				"project": self.get("project"),
 				"post_net_value": args.get("post_net_value"),
+<<<<<<< HEAD
+=======
+				"voucher_detail_no": args.get("voucher_detail_no"),
+				"voucher_subtype": self.get_voucher_subtype(),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 
@@ -979,8 +1173,70 @@ class AccountsController(TransactionBase):
 				gl_dict, account_currency, self.get("conversion_rate"), self.company_currency
 			)
 
+<<<<<<< HEAD
 		return gl_dict
 
+=======
+		# Update details in transaction currency
+		gl_dict.update(
+			{
+				"transaction_currency": self.get("currency") or self.company_currency,
+				"transaction_exchange_rate": item.get("exchange_rate", 1)
+				if self.doctype == "Journal Entry" and item
+				else self.get("conversion_rate", 1),
+				"debit_in_transaction_currency": self.get_value_in_transaction_currency(
+					account_currency, gl_dict, "debit"
+				),
+				"credit_in_transaction_currency": self.get_value_in_transaction_currency(
+					account_currency, gl_dict, "credit"
+				),
+			}
+		)
+
+		if not args.get("against_voucher_type") and self.get("against_voucher_type"):
+			gl_dict.update({"against_voucher_type": self.get("against_voucher_type")})
+
+		if not args.get("against_voucher") and self.get("against_voucher"):
+			gl_dict.update({"against_voucher": self.get("against_voucher")})
+
+		return gl_dict
+
+	def get_voucher_subtype(self):
+		voucher_subtypes = {
+			"Journal Entry": "voucher_type",
+			"Payment Entry": "payment_type",
+			"Stock Entry": "stock_entry_type",
+			"Asset Capitalization": "entry_type",
+		}
+
+		for method_name in frappe.get_hooks("voucher_subtypes"):
+			voucher_subtype = frappe.get_attr(method_name)(self)
+
+			if voucher_subtype:
+				return voucher_subtype
+
+		if self.doctype in voucher_subtypes:
+			return self.get(voucher_subtypes[self.doctype])
+		elif self.doctype == "Purchase Receipt" and self.is_return:
+			return "Purchase Return"
+		elif self.doctype == "Delivery Note" and self.is_return:
+			return "Sales Return"
+		elif self.doctype == "Sales Invoice" and self.is_return:
+			return "Credit Note"
+		elif self.doctype == "Sales Invoice" and self.is_debit_note:
+			return "Debit Note"
+		elif self.doctype == "Purchase Invoice" and self.is_return:
+			return "Debit Note"
+
+		return self.doctype
+
+	def get_value_in_transaction_currency(self, account_currency, gl_dict, field):
+		if account_currency == self.get("currency"):
+			return gl_dict.get(field + "_in_account_currency")
+		else:
+			return flt(gl_dict.get(field, 0) / self.get("conversion_rate", 1))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_zero_qty_for_return_invoices_with_stock(self):
 		rows = []
 		for item in self.items:
@@ -994,6 +1250,7 @@ class AccountsController(TransactionBase):
 			)
 
 	def validate_qty_is_not_zero(self):
+<<<<<<< HEAD
 		if self.doctype == "Purchase Receipt":
 			return
 
@@ -1001,6 +1258,17 @@ class AccountsController(TransactionBase):
 			if not flt(item.qty):
 				frappe.throw(
 					msg=_("Row #{0}: Item quantity cannot be zero").format(item.idx),
+=======
+		for item in self.items:
+			if self.doctype == "Purchase Receipt" and item.rejected_qty:
+				continue
+
+			if not flt(item.qty):
+				frappe.throw(
+					msg=_("Row #{0}: Quantity for Item {1} cannot be zero.").format(
+						item.idx, frappe.bold(item.item_code)
+					),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					title=_("Invalid Quantity"),
 					exc=InvalidQtyError,
 				)
@@ -1062,7 +1330,10 @@ class AccountsController(TransactionBase):
 				amount = self.get("base_rounded_total") or self.base_grand_total
 			else:
 				amount = self.get("rounded_total") or self.grand_total
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			allocated_amount = min(amount - advance_allocated, d.amount)
 			advance_allocated += flt(allocated_amount)
 
@@ -1076,24 +1347,49 @@ class AccountsController(TransactionBase):
 				"allocated_amount": allocated_amount,
 				"ref_exchange_rate": flt(d.exchange_rate),  # exchange_rate of advance entry
 			}
+<<<<<<< HEAD
+=======
+			if d.get("paid_from"):
+				advance_row["account"] = d.paid_from
+			if d.get("paid_to"):
+				advance_row["account"] = d.paid_to
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			self.append("advances", advance_row)
 
 	def get_advance_entries(self, include_unallocated=True):
+<<<<<<< HEAD
 		if self.doctype == "Sales Invoice":
 			party_account = self.debit_to
+=======
+		party_account = []
+		if self.doctype == "Sales Invoice":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			party_type = "Customer"
 			party = self.customer
 			amount_field = "credit_in_account_currency"
 			order_field = "sales_order"
 			order_doctype = "Sales Order"
+<<<<<<< HEAD
 		else:
 			party_account = self.credit_to
+=======
+			party_account.append(self.debit_to)
+		else:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			party_type = "Supplier"
 			party = self.supplier
 			amount_field = "debit_in_account_currency"
 			order_field = "purchase_order"
 			order_doctype = "Purchase Order"
+<<<<<<< HEAD
+=======
+			party_account.append(self.credit_to)
+
+		party_account.extend(
+			get_party_account(party_type, party=party, company=self.company, include_advance=True)
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		order_list = list(set(d.get(order_field) for d in self.get("items") if d.get(order_field)))
 
@@ -1159,6 +1455,40 @@ class AccountsController(TransactionBase):
 
 				d.exchange_gain_loss = difference
 
+<<<<<<< HEAD
+=======
+	def make_precision_loss_gl_entry(self, gl_entries):
+		(
+			round_off_account,
+			round_off_cost_center,
+			round_off_for_opening,
+		) = get_round_off_account_and_cost_center(
+			self.company, "Purchase Invoice", self.name, self.use_company_roundoff_cost_center
+		)
+
+		precision_loss = self.get("base_net_total") - flt(
+			self.get("net_total") * self.conversion_rate, self.precision("net_total")
+		)
+
+		credit_or_debit = "credit" if self.doctype == "Purchase Invoice" else "debit"
+		against = self.supplier if self.doctype == "Purchase Invoice" else self.customer
+
+		if precision_loss:
+			gl_entries.append(
+				self.get_gl_dict(
+					{
+						"account": round_off_account,
+						"against": against,
+						credit_or_debit: precision_loss,
+						"cost_center": round_off_cost_center
+						if self.use_company_roundoff_cost_center
+						else self.cost_center or round_off_cost_center,
+						"remarks": _("Net total calculation precision loss"),
+					}
+				)
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def gain_loss_journal_already_booked(
 		self,
 		gain_loss_account,
@@ -1309,10 +1639,20 @@ class AccountsController(TransactionBase):
 					if d.exchange_gain_loss and (
 						(d.reference_doctype, d.reference_name, str(d.idx)) not in booked
 					):
+<<<<<<< HEAD
 						if self.payment_type == "Receive":
 							party_account = self.paid_from
 						elif self.payment_type == "Pay":
 							party_account = self.paid_to
+=======
+						if self.book_advance_payments_in_separate_party_account:
+							party_account = d.account
+						else:
+							if self.payment_type == "Receive":
+								party_account = self.paid_from
+							elif self.payment_type == "Pay":
+								party_account = self.paid_to
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 						dr_or_cr = "debit" if d.exchange_gain_loss > 0 else "credit"
 
@@ -1359,6 +1699,7 @@ class AccountsController(TransactionBase):
 			return True
 		return False
 
+<<<<<<< HEAD
 	def make_precision_loss_gl_entry(self, gl_entries):
 		round_off_account, round_off_cost_center = get_round_off_account_and_cost_center(
 			self.company, "Purchase Invoice", self.name, self.use_company_roundoff_cost_center
@@ -1386,6 +1727,8 @@ class AccountsController(TransactionBase):
 				)
 			)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_against_document_in_jv(self):
 		"""
 		Links invoice and advance voucher:
@@ -1547,8 +1890,16 @@ class AccountsController(TransactionBase):
 			and self.get("discount_amount")
 			and self.get("additional_discount_account")
 		):
+<<<<<<< HEAD
 			amount = item.amount
 			base_amount = item.base_amount
+=======
+			amount += item.distributed_discount_amount
+			base_amount += flt(
+				item.distributed_discount_amount * self.get("conversion_rate"),
+				item.precision("distributed_discount_amount"),
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		return amount, base_amount
 
@@ -1568,6 +1919,7 @@ class AccountsController(TransactionBase):
 		return amount, base_amount
 
 	def make_discount_gl_entries(self, gl_entries):
+<<<<<<< HEAD
 		if self.doctype == "Purchase Invoice":
 			enable_discount_accounting = cint(
 				frappe.db.get_single_value("Buying Settings", "enable_discount_accounting")
@@ -1586,11 +1938,17 @@ class AccountsController(TransactionBase):
 			dr_or_cr = "debit"
 			rev_dr_cr = "credit"
 			supplier_or_customer = self.customer
+=======
+		enable_discount_accounting = cint(
+			frappe.db.get_single_value("Selling Settings", "enable_discount_accounting")
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if enable_discount_accounting:
 			for item in self.get("items"):
 				if item.get("discount_amount") and item.get("discount_account"):
 					discount_amount = item.discount_amount * item.qty
+<<<<<<< HEAD
 					if self.doctype == "Purchase Invoice":
 						income_or_expense_account = (
 							item.expense_account
@@ -1603,18 +1961,34 @@ class AccountsController(TransactionBase):
 							if (not item.enable_deferred_revenue or self.is_return)
 							else item.deferred_revenue_account
 						)
+=======
+					income_account = (
+						item.income_account
+						if (not item.enable_deferred_revenue or self.is_return)
+						else item.deferred_revenue_account
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 					account_currency = get_account_currency(item.discount_account)
 					gl_entries.append(
 						self.get_gl_dict(
 							{
 								"account": item.discount_account,
+<<<<<<< HEAD
 								"against": supplier_or_customer,
 								dr_or_cr: flt(
 									discount_amount * self.get("conversion_rate"),
 									item.precision("discount_amount"),
 								),
 								dr_or_cr + "_in_account_currency": flt(
+=======
+								"against": self.customer,
+								"debit": flt(
+									discount_amount * self.get("conversion_rate"),
+									item.precision("discount_amount"),
+								),
+								"debit_in_account_currency": flt(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
@@ -1625,6 +1999,7 @@ class AccountsController(TransactionBase):
 						)
 					)
 
+<<<<<<< HEAD
 					account_currency = get_account_currency(income_or_expense_account)
 					gl_entries.append(
 						self.get_gl_dict(
@@ -1636,6 +2011,19 @@ class AccountsController(TransactionBase):
 									item.precision("discount_amount"),
 								),
 								rev_dr_cr + "_in_account_currency": flt(
+=======
+					account_currency = get_account_currency(income_account)
+					gl_entries.append(
+						self.get_gl_dict(
+							{
+								"account": income_account,
+								"against": self.customer,
+								"credit": flt(
+									discount_amount * self.get("conversion_rate"),
+									item.precision("discount_amount"),
+								),
+								"credit_in_account_currency": flt(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
@@ -1655,8 +2043,13 @@ class AccountsController(TransactionBase):
 				self.get_gl_dict(
 					{
 						"account": self.additional_discount_account,
+<<<<<<< HEAD
 						"against": supplier_or_customer,
 						dr_or_cr: self.base_discount_amount,
+=======
+						"against": self.customer,
+						"debit": self.base_discount_amount,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"cost_center": self.cost_center or erpnext.get_default_cost_center(self.company),
 					},
 					item=self,
@@ -1808,6 +2201,7 @@ class AccountsController(TransactionBase):
 
 		return stock_items
 
+<<<<<<< HEAD
 	def set_total_advance_paid(self):
 		ple = frappe.qb.DocType("Payment Ledger Entry")
 		party = self.customer if self.doctype == "Sales Order" else self.supplier
@@ -1823,6 +2217,25 @@ class AccountsController(TransactionBase):
 			)
 			.run(as_dict=True)
 		)
+=======
+	def calculate_total_advance_from_ledger(self):
+		adv = frappe.qb.DocType("Advance Payment Ledger Entry")
+		advance = (
+			frappe.qb.from_(adv)
+			.select(adv.currency.as_("account_currency"), Abs(Sum(adv.amount)).as_("amount"))
+			.where(
+				(adv.against_voucher_type == self.doctype)
+				& (adv.against_voucher_no == self.name)
+				& (adv.company == self.company)
+			)
+			.run(as_dict=True)
+		)
+		return advance
+
+	def set_total_advance_paid(self):
+		advance = self.calculate_total_advance_from_ledger()
+		advance_paid, order_total = None, None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if advance:
 			advance = advance[0]
@@ -1832,7 +2245,14 @@ class AccountsController(TransactionBase):
 				advance_paid, precision=self.precision("advance_paid"), currency=advance.account_currency
 			)
 
+<<<<<<< HEAD
 			frappe.db.set_value(self.doctype, self.name, "party_account_currency", advance.account_currency)
+=======
+			if advance.account_currency:
+				frappe.db.set_value(
+					self.doctype, self.name, "party_account_currency", advance.account_currency
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if advance.account_currency == self.currency:
 				order_total = self.get("rounded_total") or self.grand_total
@@ -1854,6 +2274,40 @@ class AccountsController(TransactionBase):
 
 			self.db_set("advance_paid", advance_paid)
 
+<<<<<<< HEAD
+=======
+		self.set_advance_payment_status()
+
+	def set_advance_payment_status(self):
+		new_status = None
+
+		paid_amount = frappe.get_value(
+			doctype="Payment Request",
+			filters={
+				"reference_doctype": self.doctype,
+				"reference_name": self.name,
+				"docstatus": 1,
+			},
+			fieldname="sum(grand_total - outstanding_amount)",
+		)
+
+		if not paid_amount:
+			if self.doctype in frappe.get_hooks("advance_payment_receivable_doctypes"):
+				new_status = "Not Requested" if paid_amount is None else "Requested"
+			elif self.doctype in frappe.get_hooks("advance_payment_payable_doctypes"):
+				new_status = "Not Initiated" if paid_amount is None else "Initiated"
+		else:
+			total_amount = self.get("rounded_total") or self.get("grand_total")
+			new_status = "Fully Paid" if paid_amount == total_amount else "Partially Paid"
+
+		if new_status == self.advance_payment_status:
+			return
+
+		self.db_set("advance_payment_status", new_status, update_modified=False)
+		self.set_status(update=True)
+		self.notify_update()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@property
 	def company_abbr(self):
 		if not hasattr(self, "_abbr"):
@@ -1863,7 +2317,13 @@ class AccountsController(TransactionBase):
 
 	def raise_missing_debit_credit_account_error(self, party_type, party):
 		"""Raise an error if debit to/credit to account does not exist."""
+<<<<<<< HEAD
 		db_or_cr = frappe.bold("Debit To") if self.doctype == "Sales Invoice" else frappe.bold("Credit To")
+=======
+		db_or_cr = (
+			frappe.bold(_("Debit To")) if self.doctype == "Sales Invoice" else frappe.bold(_("Credit To"))
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		rec_or_pay = "Receivable" if self.doctype == "Sales Invoice" else "Payable"
 
 		link_to_party = frappe.utils.get_link_to_form(party_type, party)
@@ -2013,7 +2473,11 @@ class AccountsController(TransactionBase):
 			self.remove(item)
 
 	def set_payment_schedule(self):
+<<<<<<< HEAD
 		if self.doctype == "Sales Invoice" and self.is_pos:
+=======
+		if (self.doctype == "Sales Invoice" and self.is_pos) or self.get("is_opening") == "Yes":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.payment_terms_template = ""
 			return
 
@@ -2028,8 +2492,13 @@ class AccountsController(TransactionBase):
 		date = self.get("due_date")
 		due_date = date or posting_date
 
+<<<<<<< HEAD
 		base_grand_total = self.get("base_rounded_total") or self.base_grand_total
 		grand_total = self.get("rounded_total") or self.grand_total
+=======
+		base_grand_total = flt(self.get("base_rounded_total") or self.base_grand_total)
+		grand_total = flt(self.get("rounded_total") or self.grand_total)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		automatically_fetch_payment_terms = 0
 
 		if self.doctype in ("Sales Invoice", "Purchase Invoice"):
@@ -2088,10 +2557,17 @@ class AccountsController(TransactionBase):
 			for d in self.get("payment_schedule"):
 				if d.invoice_portion:
 					d.payment_amount = flt(
+<<<<<<< HEAD
 						grand_total * flt(d.invoice_portion / 100), d.precision("payment_amount")
 					)
 					d.base_payment_amount = flt(
 						base_grand_total * flt(d.invoice_portion / 100), d.precision("base_payment_amount")
+=======
+						grand_total * flt(d.invoice_portion) / 100, d.precision("payment_amount")
+					)
+					d.base_payment_amount = flt(
+						base_grand_total * flt(d.invoice_portion) / 100, d.precision("base_payment_amount")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					)
 					d.outstanding = d.payment_amount
 				elif not d.invoice_portion:
@@ -2103,6 +2579,11 @@ class AccountsController(TransactionBase):
 			self.ignore_default_payment_terms_template = 1
 
 	def get_order_details(self):
+<<<<<<< HEAD
+=======
+		if not self.get("items"):
+			return None, None, None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.doctype == "Sales Invoice":
 			po_or_so = self.get("items")[0].get("sales_order")
 			po_or_so_doctype = "Sales Order"
@@ -2196,7 +2677,11 @@ class AccountsController(TransactionBase):
 			frappe.throw(_("Rows with duplicate due dates in other rows were found: {0}").format(duplicates))
 
 	def validate_payment_schedule_amount(self):
+<<<<<<< HEAD
 		if self.doctype == "Sales Invoice" and self.is_pos:
+=======
+		if (self.doctype == "Sales Invoice" and self.is_pos) or self.get("is_opening") == "Yes":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return
 
 		party_account_currency = self.get("party_account_currency")
@@ -2213,8 +2698,13 @@ class AccountsController(TransactionBase):
 				total += flt(d.payment_amount, d.precision("payment_amount"))
 				base_total += flt(d.base_payment_amount, d.precision("base_payment_amount"))
 
+<<<<<<< HEAD
 			base_grand_total = self.get("base_rounded_total") or self.base_grand_total
 			grand_total = self.get("rounded_total") or self.grand_total
+=======
+			base_grand_total = flt(self.get("base_rounded_total") or self.base_grand_total)
+			grand_total = flt(self.get("rounded_total") or self.grand_total)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if self.doctype in ("Sales Invoice", "Purchase Invoice"):
 				base_grand_total = base_grand_total - flt(self.base_write_off_amount)
@@ -2437,6 +2927,7 @@ class AccountsController(TransactionBase):
 		doc_before_update = self.get_doc_before_save()
 		accounting_dimensions = [*get_accounting_dimensions(), "cost_center", "project"]
 
+<<<<<<< HEAD
 		# Check if opening entry check updated
 		needs_repost = doc_before_update.get("is_opening") != self.is_opening
 
@@ -2458,6 +2949,22 @@ class AccountsController(TransactionBase):
 						break
 
 		return needs_repost
+=======
+		# Parent Level Accounts excluding party account
+		fields_to_check += accounting_dimensions
+		for field in fields_to_check:
+			if doc_before_update.get(field) != self.get(field):
+				return True
+
+		# Check for child tables
+		for table in child_tables:
+			if check_if_child_table_updated(
+				doc_before_update.get(table), self.get(table), child_tables[table]
+			):
+				return True
+
+		return False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	@frappe.whitelist()
 	def repost_accounting_entries(self):
@@ -2468,6 +2975,72 @@ class AccountsController(TransactionBase):
 		repost_ledger.insert()
 		repost_ledger.submit()
 
+<<<<<<< HEAD
+=======
+	def get_advance_payment_doctypes(self) -> list:
+		return frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+
+	def make_advance_payment_ledger_for_journal(self):
+		advance_payment_doctypes = self.get_advance_payment_doctypes()
+		advance_doctype_references = [
+			x for x in self.accounts if x.reference_type in advance_payment_doctypes
+		]
+
+		for x in advance_doctype_references:
+			# Looking for payments
+			dr_or_cr = (
+				"credit_in_account_currency"
+				if x.account_type == "Receivable"
+				else "debit_in_account_currency"
+			)
+
+			amount = x.get(dr_or_cr)
+			if amount > 0:
+				doc = frappe.new_doc("Advance Payment Ledger Entry")
+				doc.company = self.company
+				doc.voucher_type = self.doctype
+				doc.voucher_no = self.name
+				doc.against_voucher_type = x.reference_type
+				doc.against_voucher_no = x.reference_name
+				doc.amount = amount if self.docstatus == 1 else -1 * amount
+				doc.event = "Submit" if self.docstatus == 1 else "Cancel"
+				doc.currency = x.account_currency
+				doc.flags.ignore_permissions = 1
+				doc.save()
+
+	def make_advance_payment_ledger_for_payment(self):
+		advance_payment_doctypes = self.get_advance_payment_doctypes()
+		advance_doctype_references = [
+			x for x in self.references if x.reference_doctype in advance_payment_doctypes
+		]
+		currency = (
+			self.paid_from_account_currency
+			if self.payment_type == "Receive"
+			else self.paid_to_account_currency
+		)
+		for x in advance_doctype_references:
+			doc = frappe.new_doc("Advance Payment Ledger Entry")
+			doc.company = self.company
+			doc.voucher_type = self.doctype
+			doc.voucher_no = self.name
+			doc.against_voucher_type = x.reference_doctype
+			doc.against_voucher_no = x.reference_name
+			doc.amount = x.allocated_amount if self.docstatus == 1 else -1 * x.allocated_amount
+			doc.currency = currency
+			doc.event = "Submit" if self.docstatus == 1 else "Cancel"
+			doc.flags.ignore_permissions = 1
+			doc.save()
+
+	def make_advance_payment_ledger_entries(self):
+		if self.docstatus != 0:
+			if self.doctype == "Journal Entry":
+				self.make_advance_payment_ledger_for_journal()
+			elif self.doctype == "Payment Entry":
+				self.make_advance_payment_ledger_for_payment()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.whitelist()
 def get_tax_rate(account_head):
@@ -2551,6 +3124,7 @@ def validate_taxes_and_charges(tax):
 		tax.rate = None
 
 
+<<<<<<< HEAD
 def validate_account_head(idx, account, company, context=""):
 	account_company = frappe.get_cached_value("Account", account, "company")
 	is_group = frappe.get_cached_value("Account", account, "is_group")
@@ -2559,13 +3133,29 @@ def validate_account_head(idx, account, company, context=""):
 		frappe.throw(
 			_("Row {0}: {3} Account {1} does not belong to Company {2}").format(
 				idx, frappe.bold(account), frappe.bold(company), context
+=======
+def validate_account_head(idx: int, account: str, company: str, context: str | None = None) -> None:
+	"""Throw a ValidationError if the account belongs to a different company or is a group account."""
+	if company != frappe.get_cached_value("Account", account, "company"):
+		frappe.throw(
+			_("Row {0}: The {3} Account {1} does not belong to the company {2}").format(
+				idx, frappe.bold(account), frappe.bold(company), context or ""
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			),
 			title=_("Invalid Account"),
 		)
 
+<<<<<<< HEAD
 	if is_group:
 		frappe.throw(
 			_("Row {0}: Account {1} is a Group Account").format(idx, frappe.bold(account)),
+=======
+	if frappe.get_cached_value("Account", account, "is_group"):
+		frappe.throw(
+			_(
+				"You selected the account group {1} as {2} Account in row {0}. Please select a single account."
+			).format(idx, frappe.bold(account), context or ""),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			title=_("Invalid Account"),
 		)
 
@@ -2650,6 +3240,7 @@ def get_advance_journal_entries(
 	order_list,
 	include_unallocated=True,
 ):
+<<<<<<< HEAD
 	dr_or_cr = "credit_in_account_currency" if party_type == "Customer" else "debit_in_account_currency"
 
 	conditions = []
@@ -2685,6 +3276,54 @@ def get_advance_journal_entries(
 		as_dict=1,
 	)
 
+=======
+	journal_entry = frappe.qb.DocType("Journal Entry")
+	journal_acc = frappe.qb.DocType("Journal Entry Account")
+	q = (
+		frappe.qb.from_(journal_entry)
+		.inner_join(journal_acc)
+		.on(journal_entry.name == journal_acc.parent)
+		.select(
+			ConstantColumn("Journal Entry").as_("reference_type"),
+			(journal_entry.name).as_("reference_name"),
+			(journal_entry.remark).as_("remarks"),
+			(journal_acc[amount_field]).as_("amount"),
+			(journal_acc.name).as_("reference_row"),
+			(journal_acc.reference_name).as_("against_order"),
+			(journal_acc.exchange_rate),
+		)
+		.where(
+			journal_acc.account.isin(party_account)
+			& (journal_acc.party_type == party_type)
+			& (journal_acc.party == party)
+			& (journal_acc.is_advance == "Yes")
+			& (journal_entry.docstatus == 1)
+		)
+	)
+	if party_type == "Customer":
+		q = q.where(journal_acc.credit_in_account_currency > 0)
+
+	else:
+		q = q.where(journal_acc.debit_in_account_currency > 0)
+
+	reference_or_condition = []
+
+	if include_unallocated:
+		reference_or_condition.append(journal_acc.reference_name.isnull())
+		reference_or_condition.append(journal_acc.reference_name == "")
+
+	if order_list:
+		reference_or_condition.append(
+			(journal_acc.reference_type == order_doctype) & ((journal_acc.reference_name).isin(order_list))
+		)
+
+	if reference_or_condition:
+		q = q.where(Criterion.any(reference_or_condition))
+
+	q = q.orderby(journal_entry.posting_date)
+
+	journal_entries = q.run(as_dict=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return list(journal_entries)
 
 
@@ -2703,6 +3342,7 @@ def get_advance_payment_entries(
 	against_all_orders=False,
 	limit=None,
 	condition=None,
+<<<<<<< HEAD
 	payment_name=None,
 ):
 	pe = qb.DocType("Payment Entry")
@@ -2788,6 +3428,127 @@ def get_advance_payment_entries(
 		unallocated_payment_entries = unallocated_payment_query.run(as_dict=1)
 
 	return list(payment_entries_against_order) + list(unallocated_payment_entries)
+=======
+):
+	payment_entries = []
+	payment_entry = frappe.qb.DocType("Payment Entry")
+
+	if order_list or against_all_orders:
+		q = get_common_query(
+			party_type,
+			party,
+			party_account,
+			limit,
+			condition,
+		)
+		payment_ref = frappe.qb.DocType("Payment Entry Reference")
+
+		q = q.inner_join(payment_ref).on(payment_entry.name == payment_ref.parent)
+		q = q.select(
+			(payment_ref.allocated_amount).as_("amount"),
+			(payment_ref.name).as_("reference_row"),
+			(payment_ref.reference_name).as_("against_order"),
+		)
+
+		q = q.where(payment_ref.reference_doctype == order_doctype)
+		if order_list:
+			q = q.where(payment_ref.reference_name.isin(order_list))
+
+		allocated = list(q.run(as_dict=True))
+		payment_entries += allocated
+	if include_unallocated:
+		q = get_common_query(
+			party_type,
+			party,
+			party_account,
+			limit,
+			condition,
+		)
+		q = q.select((payment_entry.unallocated_amount).as_("amount"))
+		q = q.where(payment_entry.unallocated_amount > 0)
+
+		unallocated = list(q.run(as_dict=True))
+		payment_entries += unallocated
+	return payment_entries
+
+
+def get_common_query(
+	party_type,
+	party,
+	party_account,
+	limit,
+	condition,
+):
+	account_type = frappe.db.get_value("Party Type", party_type, "account_type")
+	payment_type = "Receive" if account_type == "Receivable" else "Pay"
+	payment_entry = frappe.qb.DocType("Payment Entry")
+
+	q = (
+		frappe.qb.from_(payment_entry)
+		.select(
+			ConstantColumn("Payment Entry").as_("reference_type"),
+			(payment_entry.name).as_("reference_name"),
+			payment_entry.posting_date,
+			(payment_entry.remarks).as_("remarks"),
+		)
+		.where(payment_entry.payment_type == payment_type)
+		.where(payment_entry.party_type == party_type)
+		.where(payment_entry.party == party)
+		.where(payment_entry.docstatus == 1)
+	)
+
+	if payment_type == "Receive":
+		q = q.select((payment_entry.paid_from_account_currency).as_("currency"))
+		q = q.select(payment_entry.paid_from)
+		q = q.where(payment_entry.paid_from.isin(party_account))
+	else:
+		q = q.select((payment_entry.paid_to_account_currency).as_("currency"))
+		q = q.select(payment_entry.paid_to)
+		q = q.where(payment_entry.paid_to.isin(party_account))
+
+	if payment_type == "Receive":
+		q = q.select((payment_entry.source_exchange_rate).as_("exchange_rate"))
+	else:
+		q = q.select((payment_entry.target_exchange_rate).as_("exchange_rate"))
+
+	if condition:
+		# conditions should be built as an array and passed as Criterion
+		common_filter_conditions = []
+
+		common_filter_conditions.append(payment_entry.company == condition["company"])
+		if condition.get("name", None):
+			common_filter_conditions.append(payment_entry.name.like(f"%{condition.get('name')}%"))
+
+		if condition.get("from_payment_date"):
+			common_filter_conditions.append(payment_entry.posting_date.gte(condition["from_payment_date"]))
+
+		if condition.get("to_payment_date"):
+			common_filter_conditions.append(payment_entry.posting_date.lte(condition["to_payment_date"]))
+
+		if condition.get("get_payments") is True:
+			if condition.get("cost_center"):
+				common_filter_conditions.append(payment_entry.cost_center == condition["cost_center"])
+
+			if condition.get("accounting_dimensions"):
+				for field, val in condition.get("accounting_dimensions").items():
+					common_filter_conditions.append(payment_entry[field] == val)
+
+			if condition.get("minimum_payment_amount"):
+				common_filter_conditions.append(
+					payment_entry.unallocated_amount.gte(condition["minimum_payment_amount"])
+				)
+
+			if condition.get("maximum_payment_amount"):
+				common_filter_conditions.append(
+					payment_entry.unallocated_amount.lte(condition["maximum_payment_amount"])
+				)
+		q = q.where(Criterion.all(common_filter_conditions))
+
+	q = q.orderby(payment_entry.posting_date)
+	q = q.limit(limit) if limit else q
+
+	return q
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def update_invoice_status():
@@ -2933,6 +3694,7 @@ def get_supplier_block_status(party_name):
 
 
 def set_child_tax_template_and_map(item, child_item, parent_doc):
+<<<<<<< HEAD
 	args = {
 		"item_code": item.item_code,
 		"posting_date": parent_doc.transaction_date,
@@ -2945,6 +3707,23 @@ def set_child_tax_template_and_map(item, child_item, parent_doc):
 		child_item.item_tax_rate = get_item_tax_map(
 			parent_doc.get("company"), child_item.item_tax_template, as_json=True
 		)
+=======
+	ctx = ItemDetailsCtx(
+		{
+			"item_code": item.item_code,
+			"posting_date": parent_doc.transaction_date,
+			"tax_category": parent_doc.get("tax_category"),
+			"company": parent_doc.get("company"),
+		}
+	)
+
+	child_item.item_tax_template = _get_item_tax_template(ctx, item.taxes)
+	child_item.item_tax_rate = get_item_tax_map(
+		doc=parent_doc,
+		tax_template=child_item.item_tax_template,
+		as_json=True,
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def add_taxes_from_tax_template(child_item, parent_doc, db_insert=True):
@@ -2967,6 +3746,10 @@ def add_taxes_from_tax_template(child_item, parent_doc, db_insert=True):
 						"charge_type": "On Net Total",
 						"account_head": tax_type,
 						"rate": tax_rate,
+<<<<<<< HEAD
+=======
+						"set_by_item_tax_template": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					}
 				)
 				if parent_doc.doctype == "Purchase Order":
@@ -2980,7 +3763,11 @@ def set_order_defaults(parent_doctype, parent_doctype_name, child_doctype, child
 	Returns a Sales/Purchase Order Item child item containing the default values
 	"""
 	p_doc = frappe.get_doc(parent_doctype, parent_doctype_name)
+<<<<<<< HEAD
 	child_item = frappe.new_doc(child_doctype, p_doc, child_docname)
+=======
+	child_item = frappe.new_doc(child_doctype, parent_doc=p_doc, parentfield=child_docname)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	item = frappe.get_doc("Item", trans_item.get("item_code"))
 
 	for field in ("item_code", "item_name", "description", "item_group"):
@@ -2990,7 +3777,11 @@ def set_order_defaults(parent_doctype, parent_doctype_name, child_doctype, child
 	child_item.update({date_fieldname: trans_item.get(date_fieldname) or p_doc.get(date_fieldname)})
 	child_item.stock_uom = item.stock_uom
 	child_item.uom = trans_item.get("uom") or item.stock_uom
+<<<<<<< HEAD
 	child_item.warehouse = get_item_warehouse(item, p_doc, overwrite_warehouse=True)
+=======
+	child_item.warehouse = get_item_warehouse_(p_doc, item, overwrite_warehouse=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	conversion_factor = flt(get_conversion_factor(item.item_code, child_item.uom).get("conversion_factor"))
 	child_item.conversion_factor = flt(trans_item.get("conversion_factor")) or conversion_factor
 
@@ -2999,12 +3790,21 @@ def set_order_defaults(parent_doctype, parent_doctype_name, child_doctype, child
 		child_item.base_rate = 1
 		child_item.base_amount = 1
 	if child_doctype == "Sales Order Item":
+<<<<<<< HEAD
 		child_item.warehouse = get_item_warehouse(item, p_doc, overwrite_warehouse=True)
 		if not child_item.warehouse:
 			frappe.throw(
 				_("Cannot find {} for item {}. Please set the same in Item Master or Stock Settings.").format(
 					frappe.bold("default warehouse"), frappe.bold(item.item_code)
 				)
+=======
+		child_item.warehouse = get_item_warehouse_(p_doc, item, overwrite_warehouse=True)
+		if not child_item.warehouse:
+			frappe.throw(
+				_(
+					"Cannot find a default warehouse for item {0}. Please set one in the Item Master or in Stock Settings."
+				).format(frappe.bold(item.item_code))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 	set_child_tax_template_and_map(item, child_item, p_doc)
@@ -3143,7 +3943,11 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 	def validate_quantity(child_item, new_data):
 		if not flt(new_data.get("qty")):
 			frappe.throw(
+<<<<<<< HEAD
 				_("Row # {0}: Quantity for Item {1} cannot be zero").format(
+=======
+				_("Row #{0}: Quantity for Item {1} cannot be zero.").format(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					new_data.get("idx"), frappe.bold(new_data.get("item_code"))
 				),
 				title=_("Invalid Qty"),
@@ -3173,6 +3977,32 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 
 		return update_supplied_items
 
+<<<<<<< HEAD
+=======
+	def validate_fg_item_for_subcontracting(new_data, is_new):
+		if is_new:
+			if not new_data.get("fg_item"):
+				frappe.throw(
+					_("Finished Good Item is not specified for service item {0}").format(
+						new_data["item_code"]
+					)
+				)
+			else:
+				is_sub_contracted_item, default_bom = frappe.db.get_value(
+					"Item", new_data["fg_item"], ["is_sub_contracted_item", "default_bom"]
+				)
+
+				if not is_sub_contracted_item:
+					frappe.throw(
+						_("Finished Good Item {0} must be a sub-contracted item").format(new_data["fg_item"])
+					)
+				elif not default_bom:
+					frappe.throw(_("Default BOM not found for FG Item {0}").format(new_data["fg_item"]))
+
+		if not new_data.get("fg_item_qty"):
+			frappe.throw(_("Finished Good Item {0} Qty can not be zero").format(new_data["fg_item"]))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	data = json.loads(trans_items)
 
 	any_qty_changed = False  # updated to true if any item's qty changes
@@ -3203,6 +4033,10 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 
 			prev_rate, new_rate = flt(child_item.get("rate")), flt(d.get("rate"))
 			prev_qty, new_qty = flt(child_item.get("qty")), flt(d.get("qty"))
+<<<<<<< HEAD
+=======
+			prev_fg_qty, new_fg_qty = flt(child_item.get("fg_item_qty")), flt(d.get("fg_item_qty"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			prev_con_fac, new_con_fac = (
 				flt(child_item.get("conversion_factor")),
 				flt(d.get("conversion_factor")),
@@ -3216,6 +4050,10 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 
 			rate_unchanged = prev_rate == new_rate
 			qty_unchanged = prev_qty == new_qty
+<<<<<<< HEAD
+=======
+			fg_qty_unchanged = prev_fg_qty == new_fg_qty
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			uom_unchanged = prev_uom == new_uom
 			conversion_factor_unchanged = prev_con_fac == new_con_fac
 			any_conversion_factor_changed |= not conversion_factor_unchanged
@@ -3225,6 +4063,10 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 			if (
 				rate_unchanged
 				and qty_unchanged
+<<<<<<< HEAD
+=======
+				and fg_qty_unchanged
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				and conversion_factor_unchanged
 				and uom_unchanged
 				and date_unchanged
@@ -3235,6 +4077,20 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 		if flt(child_item.get("qty")) != flt(d.get("qty")):
 			any_qty_changed = True
 
+<<<<<<< HEAD
+=======
+		if (
+			parent.doctype == "Purchase Order"
+			and parent.is_subcontracted
+			and not parent.is_old_subcontracting_flow
+		):
+			validate_fg_item_for_subcontracting(d, new_child_flag)
+			child_item.fg_item_qty = flt(d["fg_item_qty"])
+
+			if new_child_flag:
+				child_item.fg_item = d["fg_item"]
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		child_item.qty = flt(d.get("qty"))
 		rate_precision = child_item.precision("rate") or 2
 		conv_fac_precision = child_item.precision("conversion_factor") or 2
@@ -3341,11 +4197,28 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 		parent.update_ordered_qty()
 		parent.update_ordered_and_reserved_qty()
 		parent.update_receiving_percentage()
+<<<<<<< HEAD
 		if parent.is_old_subcontracting_flow:
 			if should_update_supplied_items(parent):
 				parent.update_reserved_qty_for_subcontract()
 				parent.create_raw_materials_supplied()
 			parent.save()
+=======
+
+		if parent.is_subcontracted:
+			if parent.is_old_subcontracting_flow:
+				if should_update_supplied_items(parent):
+					parent.update_reserved_qty_for_subcontract()
+					parent.create_raw_materials_supplied()
+				parent.save()
+			else:
+				if not parent.can_update_items():
+					frappe.throw(
+						_(
+							"Items cannot be updated as Subcontracting Order is created against the Purchase Order {0}."
+						).format(frappe.bold(parent.name))
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:  # Sales Order
 		parent.validate_warehouse()
 		parent.update_reserved_qty()
@@ -3363,6 +4236,7 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 	parent.validate_uom_is_integer("uom", "qty")
 	parent.validate_uom_is_integer("stock_uom", "stock_qty")
 
+<<<<<<< HEAD
 
 def check_if_child_table_updated(child_table_before_update, child_table_after_update, fields_to_check):
 	accounting_dimensions = [*get_accounting_dimensions(), "cost_center", "project"]
@@ -3374,6 +4248,29 @@ def check_if_child_table_updated(child_table_before_update, child_table_after_up
 
 		for dimension in accounting_dimensions:
 			if child_table_before_update[index].get(dimension) != item.get(dimension):
+=======
+	# Cancel and Recreate Stock Reservation Entries.
+	if parent_doctype == "Sales Order":
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			cancel_stock_reservation_entries,
+			has_reserved_stock,
+		)
+
+		if has_reserved_stock(parent.doctype, parent.name):
+			cancel_stock_reservation_entries(parent.doctype, parent.name)
+
+			if parent.per_picked == 0:
+				parent.create_stock_reservation_entries()
+
+
+def check_if_child_table_updated(child_table_before_update, child_table_after_update, fields_to_check):
+	fields_to_check = list(fields_to_check) + get_accounting_dimensions() + ["cost_center", "project"]
+
+	# Check if any field affecting accounting entry is altered
+	for index, item in enumerate(child_table_before_update):
+		for field in fields_to_check:
+			if child_table_after_update[index].get(field) != item.get(field):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				return True
 
 	return False

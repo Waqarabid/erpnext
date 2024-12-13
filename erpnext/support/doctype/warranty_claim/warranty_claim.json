@@ -1,9 +1,17 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-01-10 16:34:30",
  "doctype": "DocType",
  "document_type": "Setup",
+<<<<<<< HEAD
+=======
+ "engine": "InnoDB",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "field_order": [
   "naming_series",
   "status",
@@ -262,6 +270,10 @@
    "fieldname": "contact_mobile",
    "fieldtype": "Data",
    "label": "Mobile No",
+<<<<<<< HEAD
+=======
+   "options": "Phone",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -308,7 +320,11 @@
   {
    "depends_on": "customer",
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
@@ -376,10 +392,18 @@
  "icon": "fa fa-bug",
  "idx": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-28 17:30:35.676410",
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Warranty Claim",
+=======
+ "modified": "2024-03-27 13:10:59.601423",
+ "modified_by": "Administrator",
+ "module": "Support",
+ "name": "Warranty Claim",
+ "naming_rule": "By \"Naming Series\" field",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -396,8 +420,17 @@
  ],
  "search_fields": "status,customer,customer_name,territory",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "timeline_field": "customer",
  "title_field": "customer_name"
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "timeline_field": "customer",
+ "title_field": "customer_name"
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

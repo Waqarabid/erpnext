@@ -25,6 +25,7 @@
   "consumed_qty",
   "current_stock",
   "secbreak_3",
+<<<<<<< HEAD
   "batch_no",
   "col_break4",
   "serial_no",
@@ -32,6 +33,21 @@
  ],
  "fields": [
   {
+=======
+  "add_serial_batch_bundle",
+  "serial_and_batch_bundle",
+  "use_serial_batch_fields",
+  "col_break4",
+  "subcontracting_order",
+  "section_break_zwnh",
+  "serial_no",
+  "column_break_qibi",
+  "batch_no"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "main_item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -40,6 +56,10 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "columns": 2,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "rm_item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -57,6 +77,10 @@
    "width": "300px"
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:doc.use_serial_batch_fields === 1",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "batch_no",
    "fieldtype": "Link",
    "label": "Batch No",
@@ -64,6 +88,10 @@
    "options": "Batch"
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:doc.use_serial_batch_fields === 1",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "serial_no",
    "fieldtype": "Text",
    "label": "Serial No",
@@ -74,14 +102,25 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "required_qty",
    "fieldtype": "Float",
+=======
+   "columns": 1,
+   "fieldname": "required_qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Required Qty",
    "print_hide": 1,
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "columns": 2,
+=======
+   "columns": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "consumed_qty",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -99,6 +138,10 @@
   {
    "fieldname": "rate",
    "fieldtype": "Currency",
+<<<<<<< HEAD
+=======
+   "in_list_view": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Rate",
    "options": "Company:company:default_currency",
    "read_only": 1
@@ -121,7 +164,10 @@
   {
    "fieldname": "current_stock",
    "fieldtype": "Float",
+<<<<<<< HEAD
    "in_list_view": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Current Stock",
    "read_only": 1
   },
@@ -185,16 +231,58 @@
    "default": "0",
    "fieldname": "available_qty_for_consumption",
    "fieldtype": "Float",
+<<<<<<< HEAD
    "in_list_view": 1,
    "label": "Available Qty For Consumption",
    "print_hide": 1,
    "read_only": 1
+=======
+   "label": "Available Qty For Consumption",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "depends_on": "eval:doc.use_serial_batch_fields === 0 || doc.docstatus === 1",
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Serial / Batch Bundle",
+   "no_copy": 1,
+   "options": "Serial and Batch Bundle",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "use_serial_batch_fields",
+   "fieldtype": "Check",
+   "label": "Use Serial No / Batch Fields"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 1",
+   "fieldname": "section_break_zwnh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_qibi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.use_serial_batch_fields === 0",
+   "fieldname": "add_serial_batch_bundle",
+   "fieldtype": "Button",
+   "label": "Add Serial / Batch Bundle"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2022-11-07 17:17:21.670761",
+=======
+ "modified": "2024-03-30 10:26:27.237371",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Subcontracting",
  "name": "Subcontracting Receipt Supplied Item",

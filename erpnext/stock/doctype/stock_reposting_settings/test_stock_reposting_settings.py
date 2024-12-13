@@ -1,14 +1,25 @@
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import get_recipients
 
 
+<<<<<<< HEAD
 class TestStockRepostingSettings(unittest.TestCase):
+=======
+class TestStockRepostingSettings(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_notify_reposting_error_to_role(self):
 		role = "Notify Reposting Role"
 

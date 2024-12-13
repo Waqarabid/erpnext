@@ -12,7 +12,11 @@ from erpnext.accounts.doctype.accounting_dimension.test_accounting_dimension imp
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.exceptions import InvalidAccountDimensionError, MandatoryAccountDimensionError
 
+<<<<<<< HEAD
 test_dependencies = ["Location", "Cost Center", "Department"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Location", "Cost Center", "Department"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 class TestAccountingDimensionFilter(unittest.TestCase):
@@ -64,6 +68,10 @@ def create_accounting_dimension_filter():
 				"accounting_dimension": "Cost Center",
 				"allow_or_restrict": "Allow",
 				"company": "_Test Company",
+<<<<<<< HEAD
+=======
+				"apply_restriction_on_values": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"accounts": [
 					{
 						"applicable_on_account": "Sales - _TC",
@@ -85,6 +93,10 @@ def create_accounting_dimension_filter():
 				"doctype": "Accounting Dimension Filter",
 				"accounting_dimension": "Department",
 				"allow_or_restrict": "Allow",
+<<<<<<< HEAD
+=======
+				"apply_restriction_on_values": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"company": "_Test Company",
 				"accounts": [{"applicable_on_account": "Sales - _TC", "is_mandatory": 1}],
 				"dimensions": [{"accounting_dimension": "Department", "dimension_value": "Accounts - _TC"}],

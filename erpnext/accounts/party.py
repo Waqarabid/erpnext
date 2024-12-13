@@ -279,9 +279,13 @@ def get_regional_address_details(party_details, doctype, company):
 	pass
 
 
+<<<<<<< HEAD
 def set_contact_details(party_details, party, party_type):
 	party_details.contact_person = get_default_contact(party_type, party.name)
 
+=======
+def complete_contact_details(party_details):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not party_details.contact_person:
 		party_details.update(
 			{
@@ -297,9 +301,13 @@ def set_contact_details(party_details, party, party_type):
 	else:
 		fields = [
 			"name as contact_person",
+<<<<<<< HEAD
 			"salutation",
 			"first_name",
 			"last_name",
+=======
+			"full_name as contact_display",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"email_id as contact_email",
 			"mobile_no as contact_mobile",
 			"phone as contact_phone",
@@ -309,6 +317,7 @@ def set_contact_details(party_details, party, party_type):
 
 		contact_details = frappe.db.get_value("Contact", party_details.contact_person, fields, as_dict=True)
 
+<<<<<<< HEAD
 		contact_details.contact_display = " ".join(
 			filter(
 				None,
@@ -323,6 +332,16 @@ def set_contact_details(party_details, party, party_type):
 		party_details.update(contact_details)
 
 
+=======
+		party_details.update(contact_details)
+
+
+def set_contact_details(party_details, party, party_type):
+	party_details.contact_person = get_default_contact(party_type, party.name)
+	complete_contact_details(party_details)
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def set_other_values(party_details, party, party_type):
 	# copy
 	if party_type == "Customer":
@@ -344,7 +363,11 @@ def get_default_price_list(party):
 		return party.default_price_list
 
 	if party.doctype == "Customer":
+<<<<<<< HEAD
 		return frappe.db.get_value("Customer Group", party.customer_group, "default_price_list")
+=======
+		return frappe.get_cached_value("Customer Group", party.customer_group, "default_price_list")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def set_price_list(party_details, party, party_type, given_price_list, pos=None):
@@ -392,7 +415,11 @@ def set_account_and_due_date(party, account, party_type, company, posting_date, 
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_party_account(party_type, party=None, company=None):
+=======
+def get_party_account(party_type, party=None, company=None, include_advance=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"""Returns the account for the given `party`.
 	Will first search in party (Customer / Supplier) record, if not found,
 	will search in group (Customer Group / Supplier Group),
@@ -429,10 +456,49 @@ def get_party_account(party_type, party=None, company=None):
 	existing_gle_currency = get_party_gle_currency(party_type, party, company)
 	if existing_gle_currency:
 		if account:
+<<<<<<< HEAD
 			account_currency = frappe.db.get_value("Account", account, "account_currency", cache=True)
 		if (account and account_currency != existing_gle_currency) or not account:
 			account = get_party_gle_account(party_type, party, company)
 
+=======
+			account_currency = frappe.get_cached_value("Account", account, "account_currency")
+		if (account and account_currency != existing_gle_currency) or not account:
+			account = get_party_gle_account(party_type, party, company)
+
+	if include_advance and party_type in ["Customer", "Supplier", "Student"]:
+		advance_account = get_party_advance_account(party_type, party, company)
+		if advance_account:
+			return [account, advance_account]
+		else:
+			return [account]
+
+	return account
+
+
+def get_party_advance_account(party_type, party, company):
+	account = frappe.db.get_value(
+		"Party Account",
+		{"parenttype": party_type, "parent": party, "company": company},
+		"advance_account",
+	)
+
+	if not account:
+		party_group_doctype = "Customer Group" if party_type == "Customer" else "Supplier Group"
+		group = frappe.get_cached_value(party_type, party, scrub(party_group_doctype))
+		account = frappe.db.get_value(
+			"Party Account",
+			{"parenttype": party_group_doctype, "parent": group, "company": company},
+			"advance_account",
+		)
+
+	if not account:
+		account_name = (
+			"default_advance_received_account" if party_type == "Customer" else "default_advance_paid_account"
+		)
+		account = frappe.get_cached_value("Company", company, account_name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return account
 
 
@@ -444,7 +510,11 @@ def get_party_bank_account(party_type, party):
 def get_party_account_currency(party_type, party, company):
 	def generator():
 		party_account = get_party_account(party_type, party, company)
+<<<<<<< HEAD
 		return frappe.db.get_value("Account", party_account, "account_currency", cache=True)
+=======
+		return frappe.get_cached_value("Account", party_account, "account_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return frappe.local_cache("party_account_currency", (party_type, party, company), generator)
 
@@ -524,15 +594,23 @@ def validate_party_accounts(doc):
 		else:
 			companies.append(account.company)
 
+<<<<<<< HEAD
 		party_account_currency = frappe.db.get_value(
 			"Account", account.account, "account_currency", cache=True
 		)
+=======
+		party_account_currency = frappe.get_cached_value("Account", account.account, "account_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if frappe.db.get_default("Company"):
 			company_default_currency = frappe.get_cached_value(
 				"Company", frappe.db.get_default("Company"), "default_currency"
 			)
 		else:
+<<<<<<< HEAD
 			company_default_currency = frappe.db.get_value("Company", account.company, "default_currency")
+=======
+			company_default_currency = frappe.get_cached_value("Company", account.company, "default_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		validate_party_gle_currency(doc.doctype, doc.name, account.company, party_account_currency)
 
@@ -548,7 +626,16 @@ def validate_party_accounts(doc):
 				)
 
 		# validate if account is mapped for same company
+<<<<<<< HEAD
 		validate_account_head(account.idx, account.account, account.company)
+=======
+		if account.account:
+			validate_account_head(account.idx, account.account, account.company, _("Debtor/Creditor"))
+		if account.advance_account:
+			validate_account_head(
+				account.idx, account.advance_account, account.company, _("Debtor/Creditor Advance")
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -596,9 +683,13 @@ def get_due_date_from_template(template_name, posting_date, bill_date):
 	return due_date
 
 
+<<<<<<< HEAD
 def validate_due_date(
 	posting_date, due_date, party_type, party, company=None, bill_date=None, template_name=None
 ):
+=======
+def validate_due_date(posting_date, due_date, bill_date=None, template_name=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if getdate(due_date) < getdate(posting_date):
 		frappe.throw(_("Due Date cannot be before Posting / Supplier Invoice Date"))
 	else:
@@ -698,6 +789,10 @@ def get_payment_terms_template(party_name, party_type, company=None):
 	if party_type not in ("Customer", "Supplier"):
 		return
 	template = None
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if party_type == "Customer":
 		customer = frappe.get_cached_value(
 			"Customer", party_name, fieldname=["payment_terms", "customer_group"], as_dict=1
@@ -740,6 +835,7 @@ def validate_party_frozen_disabled(party_type, party_name):
 				frappe.msgprint(_("{0} {1} is not active").format(party_type, party_name), alert=True)
 
 
+<<<<<<< HEAD
 def get_timeline_data(doctype, name):
 	"""returns timeline data for the past one year"""
 	from frappe.desk.form.load import get_communication_data
@@ -786,6 +882,8 @@ def get_timeline_data(doctype, name):
 	return out
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_dashboard_info(party_type, party, loyalty_program=None):
 	current_fiscal_year = get_fiscal_year(nowdate(), as_dict=True)
 
@@ -851,7 +949,11 @@ def get_dashboard_info(party_type, party, loyalty_program=None):
 	)
 
 	for d in companies:
+<<<<<<< HEAD
 		company_default_currency = frappe.db.get_value("Company", d.company, "default_currency")
+=======
+		company_default_currency = frappe.get_cached_value("Company", d.company, "default_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		party_account_currency = get_party_account_currency(party_type, party, d.company)
 
 		if party_account_currency == company_default_currency:
@@ -914,6 +1016,7 @@ def get_party_shipping_address(doctype: str, name: str) -> str | None:
 def get_partywise_advanced_payment_amount(
 	party_type, posting_date=None, future_payment=0, company=None, party=None
 ):
+<<<<<<< HEAD
 	ple = frappe.qb.DocType("Payment Ledger Entry")
 	query = (
 		frappe.qb.from_(ple)
@@ -924,6 +1027,19 @@ def get_partywise_advanced_payment_amount(
 			& (ple.against_voucher_no == ple.voucher_no)
 			& (ple.delinked == 0)
 		)
+=======
+	account_type = frappe.get_cached_value("Party Type", party_type, "account_type")
+
+	ple = frappe.qb.DocType("Payment Ledger Entry")
+	acc = frappe.qb.DocType("Account")
+
+	query = (
+		frappe.qb.from_(ple)
+		.inner_join(acc)
+		.on(ple.account == acc.name)
+		.select(ple.party)
+		.where((ple.party_type.isin(party_type)) & (acc.account_type == account_type) & (ple.delinked == 0))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		.groupby(ple.party)
 	)
 
@@ -942,9 +1058,38 @@ def get_partywise_advanced_payment_amount(
 	if invoice_doctypes := frappe.get_hooks("invoice_doctypes"):
 		query = query.where(ple.voucher_type.notin(invoice_doctypes))
 
+<<<<<<< HEAD
 	data = query.run()
 	if data:
 		return frappe._dict(data)
+=======
+	# Get advance amount from Receivable / Payable Account
+	party_ledger = query.select(Abs(Sum(ple.amount).as_("amount")))
+	party_ledger = party_ledger.where(ple.amount < 0)
+	party_ledger = party_ledger.where(ple.against_voucher_no == ple.voucher_no)
+	party_ledger = party_ledger.where(
+		acc.root_type == ("Liability" if account_type == "Payable" else "Asset")
+	)
+
+	data = party_ledger.run()
+	data = frappe._dict(data or {})
+
+	# Get advance amount from Advance Account
+	advance_ledger = query.select(Sum(ple.amount).as_("amount"), ple.account)
+	advance_ledger = advance_ledger.where(
+		acc.root_type == ("Asset" if account_type == "Payable" else "Liability")
+	)
+	advance_ledger = advance_ledger.groupby(ple.account)
+	advance_ledger = advance_ledger.having(Sum(ple.amount) < 0)
+
+	advance_data = advance_ledger.run()
+
+	for row in advance_data:
+		data.setdefault(row[0], 0)
+		data[row[0]] += abs(row[1])
+
+	return data
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_default_contact(doctype: str, name: str) -> str | None:

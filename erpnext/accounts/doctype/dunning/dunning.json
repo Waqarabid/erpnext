@@ -2,10 +2,15 @@
  "actions": [],
  "allow_events_in_timeline": 1,
  "autoname": "naming_series:",
+<<<<<<< HEAD
+=======
+ "beta": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "creation": "2019-07-05 16:34:31.013238",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+<<<<<<< HEAD
   "title",
   "naming_series",
   "sales_invoice",
@@ -14,10 +19,16 @@
   "outstanding_amount",
   "currency",
   "conversion_rate",
+=======
+  "naming_series",
+  "customer",
+  "customer_name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_3",
   "company",
   "posting_date",
   "posting_time",
+<<<<<<< HEAD
   "due_date",
   "overdue_days",
   "address_and_contact_section",
@@ -40,12 +51,59 @@
   "column_break_17",
   "status",
   "printing_setting_section",
+=======
+  "status",
+  "section_break_9",
+  "currency",
+  "column_break_11",
+  "conversion_rate",
+  "section_break_6",
+  "dunning_type",
+  "column_break_8",
+  "rate_of_interest",
+  "section_break_12",
+  "overdue_payments",
+  "section_break_28",
+  "total_interest",
+  "dunning_fee",
+  "column_break_17",
+  "dunning_amount",
+  "base_dunning_amount",
+  "section_break_32",
+  "spacer",
+  "column_break_33",
+  "total_outstanding",
+  "grand_total",
+  "printing_settings_section",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "language",
   "body_text",
   "column_break_22",
   "letter_head",
   "closing_text",
+<<<<<<< HEAD
   "amended_from"
+=======
+  "accounting_details_section",
+  "income_account",
+  "column_break_48",
+  "cost_center",
+  "amended_from",
+  "address_and_contact_tab",
+  "address_and_contact_section",
+  "customer_address",
+  "address_display",
+  "column_break_vodj",
+  "contact_person",
+  "contact_display",
+  "contact_mobile",
+  "contact_email",
+  "section_break_xban",
+  "column_break_16",
+  "company_address",
+  "company_address_display",
+  "column_break_lqmf"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -60,6 +118,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Series",
+<<<<<<< HEAD
    "options": "DUNN-.MM.-.YY.-"
   },
   {
@@ -73,6 +132,13 @@
   },
   {
    "fetch_from": "sales_invoice.customer_name",
+=======
+   "options": "DUNN-.MM.-.YY.-",
+   "print_hide": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "customer_name",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -80,6 +146,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.outstanding_amount",
    "fieldname": "outstanding_amount",
    "fieldtype": "Currency",
@@ -87,6 +154,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
@@ -94,6 +163,7 @@
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Date"
   },
   {
@@ -101,6 +171,10 @@
    "fieldtype": "Int",
    "label": "Overdue Days",
    "read_only": 1
+=======
+   "label": "Date",
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "section_break_6",
@@ -112,6 +186,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Dunning Type",
+<<<<<<< HEAD
    "options": "Dunning Type",
    "reqd": 1
   },
@@ -122,6 +197,9 @@
    "label": "Interest Amount",
    "precision": "2",
    "read_only": 1
+=======
+   "options": "Dunning Type"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_8",
@@ -134,6 +212,10 @@
    "fieldname": "dunning_fee",
    "fieldtype": "Currency",
    "label": "Dunning Fee",
+<<<<<<< HEAD
+=======
+   "options": "currency",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "precision": "2"
   },
   {
@@ -145,6 +227,7 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "printing_setting_section",
    "fieldtype": "Section Break",
    "label": "Printing Setting"
@@ -154,18 +237,31 @@
    "fieldtype": "Link",
    "label": "Print Language",
    "options": "Language"
+=======
+   "fieldname": "language",
+   "fieldtype": "Link",
+   "label": "Print Language",
+   "options": "Language",
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "letter_head",
    "fieldtype": "Link",
    "label": "Letter Head",
+<<<<<<< HEAD
    "options": "Letter Head"
+=======
+   "options": "Letter Head",
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_22",
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.currency",
    "fieldname": "currency",
    "fieldtype": "Link",
@@ -175,6 +271,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -184,6 +282,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "allow_on_submit": 1,
    "default": "{customer_name}",
    "fieldname": "title",
@@ -192,6 +291,8 @@
    "label": "Title"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "body_text",
    "fieldtype": "Text Editor",
    "label": "Body Text"
@@ -202,6 +303,7 @@
    "label": "Closing Text"
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.due_date",
    "fieldname": "due_date",
    "fieldtype": "Date",
@@ -209,6 +311,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "posting_time",
    "fieldtype": "Time",
    "label": "Posting Time"
@@ -223,6 +327,7 @@
   },
   {
    "fieldname": "address_and_contact_section",
+<<<<<<< HEAD
    "fieldtype": "Section Break",
    "label": "Address and Contact"
   },
@@ -230,17 +335,28 @@
    "fetch_from": "sales_invoice.address_display",
    "fieldname": "address_display",
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "address_display",
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.contact_display",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "contact_display",
    "fieldtype": "Small Text",
    "label": "Contact",
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.contact_mobile",
    "fieldname": "contact_mobile",
    "fieldtype": "Small Text",
@@ -260,6 +376,21 @@
   },
   {
    "fetch_from": "sales_invoice.contact_email",
+=======
+   "fieldname": "contact_mobile",
+   "fieldtype": "Small Text",
+   "label": "Mobile No",
+   "options": "Phone",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company_address_display",
+   "fieldtype": "Text Editor",
+   "label": "Company Address Display",
+   "read_only": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "contact_email",
    "fieldtype": "Data",
    "label": "Contact Email",
@@ -267,18 +398,29 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fetch_from": "sales_invoice.customer",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer",
+<<<<<<< HEAD
    "read_only": 1
+=======
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "default": "0",
    "fieldname": "grand_total",
    "fieldtype": "Currency",
    "label": "Grand Total",
+<<<<<<< HEAD
+=======
+   "options": "currency",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "precision": "2",
    "read_only": 1
   },
@@ -289,6 +431,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Status",
+<<<<<<< HEAD
    "options": "Draft\nResolved\nUnresolved\nCancelled"
   },
   {
@@ -311,14 +454,180 @@
    "hidden": 1,
    "label": "Conversion Rate",
    "read_only": 1
+=======
+   "options": "Draft\nResolved\nUnresolved\nCancelled",
+   "read_only": 1
+  },
+  {
+   "description": "For dunning fee and interest",
+   "fetch_from": "dunning_type.income_account",
+   "fieldname": "income_account",
+   "fieldtype": "Link",
+   "label": "Income Account",
+   "options": "Account",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "overdue_payments",
+   "fieldtype": "Table",
+   "label": "Overdue Payments",
+   "options": "Overdue Payment"
+  },
+  {
+   "fieldname": "section_break_28",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_interest",
+   "fieldtype": "Currency",
+   "label": "Total Interest",
+   "options": "currency",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_outstanding",
+   "fieldtype": "Currency",
+   "label": "Total Outstanding",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "customer_address",
+   "fieldtype": "Link",
+   "label": "Customer Address",
+   "options": "Address",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Link",
+   "label": "Contact Person",
+   "options": "Contact",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "dunning_amount",
+   "fieldtype": "Currency",
+   "label": "Dunning Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounting_details_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Details"
+  },
+  {
+   "fetch_from": "dunning_type.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "print_hide": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "printing_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Printing Settings"
+  },
+  {
+   "fieldname": "section_break_32",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "spacer",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Spacer",
+   "print_hide": 1,
+   "read_only": 1,
+   "report_hide": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company_address",
+   "fieldtype": "Link",
+   "label": "Company Address",
+   "options": "Address",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break",
+   "label": "Currency"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Conversion Rate"
+  },
+  {
+   "default": "0",
+   "fieldname": "base_dunning_amount",
+   "fieldtype": "Currency",
+   "label": "Dunning Amount (Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_48",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address_and_contact_tab",
+   "fieldtype": "Tab Break",
+   "label": "Address & Contact"
+  },
+  {
+   "fieldname": "column_break_vodj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_xban",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_lqmf",
+   "fieldtype": "Column Break"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-08-03 18:55:43.683053",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Dunning",
+=======
+ "modified": "2024-11-26 13:46:07.760867",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Dunning",
+ "naming_rule": "By \"Naming Series\" field",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -363,8 +672,14 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "title_field": "customer_name",
  "track_changes": 1
 }

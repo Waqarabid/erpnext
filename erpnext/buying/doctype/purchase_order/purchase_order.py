@@ -8,7 +8,11 @@ import frappe
 from frappe import _, msgprint
 from frappe.desk.notifications import clear_doctype_notifications
 from frappe.model.mapper import get_mapped_doc
+<<<<<<< HEAD
 from frappe.utils import cint, cstr, flt
+=======
+from frappe.utils import cint, cstr, flt, get_link_to_form
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.sales_invoice.sales_invoice import (
 	unlink_inter_company_doc,
@@ -28,11 +32,152 @@ from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock.doctype.item.item import get_item_defaults, get_last_purchase_details
 from erpnext.stock.stock_balance import get_ordered_qty, update_bin_qty
 from erpnext.stock.utils import get_bin
+<<<<<<< HEAD
+=======
+from erpnext.subcontracting.doctype.subcontracting_bom.subcontracting_bom import (
+	get_subcontracting_boms_for_finished_goods,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 
 class PurchaseOrder(BuyingController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.payment_schedule.payment_schedule import PaymentSchedule
+		from erpnext.accounts.doctype.pricing_rule_detail.pricing_rule_detail import PricingRuleDetail
+		from erpnext.accounts.doctype.purchase_taxes_and_charges.purchase_taxes_and_charges import (
+			PurchaseTaxesandCharges,
+		)
+		from erpnext.buying.doctype.purchase_order_item.purchase_order_item import PurchaseOrderItem
+		from erpnext.buying.doctype.purchase_order_item_supplied.purchase_order_item_supplied import (
+			PurchaseOrderItemSupplied,
+		)
+
+		additional_discount_percentage: DF.Float
+		address_display: DF.TextEditor | None
+		advance_paid: DF.Currency
+		advance_payment_status: DF.Literal["Not Initiated", "Initiated", "Partially Paid", "Fully Paid"]
+		amended_from: DF.Link | None
+		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
+		apply_tds: DF.Check
+		auto_repeat: DF.Link | None
+		base_discount_amount: DF.Currency
+		base_grand_total: DF.Currency
+		base_in_words: DF.Data | None
+		base_net_total: DF.Currency
+		base_rounded_total: DF.Currency
+		base_rounding_adjustment: DF.Currency
+		base_tax_withholding_net_total: DF.Currency
+		base_taxes_and_charges_added: DF.Currency
+		base_taxes_and_charges_deducted: DF.Currency
+		base_total: DF.Currency
+		base_total_taxes_and_charges: DF.Currency
+		billing_address: DF.Link | None
+		billing_address_display: DF.TextEditor | None
+		buying_price_list: DF.Link | None
+		company: DF.Link
+		contact_display: DF.SmallText | None
+		contact_email: DF.SmallText | None
+		contact_mobile: DF.SmallText | None
+		contact_person: DF.Link | None
+		conversion_rate: DF.Float
+		cost_center: DF.Link | None
+		currency: DF.Link
+		customer: DF.Link | None
+		customer_contact_display: DF.SmallText | None
+		customer_contact_email: DF.Code | None
+		customer_contact_mobile: DF.SmallText | None
+		customer_contact_person: DF.Link | None
+		customer_name: DF.Data | None
+		disable_rounded_total: DF.Check
+		discount_amount: DF.Currency
+		from_date: DF.Date | None
+		grand_total: DF.Currency
+		group_same_items: DF.Check
+		ignore_pricing_rule: DF.Check
+		in_words: DF.Data | None
+		incoterm: DF.Link | None
+		inter_company_order_reference: DF.Link | None
+		is_internal_supplier: DF.Check
+		is_old_subcontracting_flow: DF.Check
+		is_subcontracted: DF.Check
+		items: DF.Table[PurchaseOrderItem]
+		language: DF.Data | None
+		letter_head: DF.Link | None
+		named_place: DF.Data | None
+		naming_series: DF.Literal["PUR-ORD-.YYYY.-"]
+		net_total: DF.Currency
+		order_confirmation_date: DF.Date | None
+		order_confirmation_no: DF.Data | None
+		other_charges_calculation: DF.TextEditor | None
+		party_account_currency: DF.Link | None
+		payment_schedule: DF.Table[PaymentSchedule]
+		payment_terms_template: DF.Link | None
+		per_billed: DF.Percent
+		per_received: DF.Percent
+		plc_conversion_rate: DF.Float
+		price_list_currency: DF.Link | None
+		pricing_rules: DF.Table[PricingRuleDetail]
+		project: DF.Link | None
+		ref_sq: DF.Link | None
+		represents_company: DF.Link | None
+		rounded_total: DF.Currency
+		rounding_adjustment: DF.Currency
+		scan_barcode: DF.Data | None
+		schedule_date: DF.Date | None
+		select_print_heading: DF.Link | None
+		set_from_warehouse: DF.Link | None
+		set_reserve_warehouse: DF.Link | None
+		set_warehouse: DF.Link | None
+		shipping_address: DF.Link | None
+		shipping_address_display: DF.TextEditor | None
+		shipping_rule: DF.Link | None
+		status: DF.Literal[
+			"",
+			"Draft",
+			"On Hold",
+			"To Receive and Bill",
+			"To Bill",
+			"To Receive",
+			"Completed",
+			"Cancelled",
+			"Closed",
+			"Delivered",
+		]
+		supplied_items: DF.Table[PurchaseOrderItemSupplied]
+		supplier: DF.Link
+		supplier_address: DF.Link | None
+		supplier_name: DF.Data | None
+		supplier_warehouse: DF.Link | None
+		tax_category: DF.Link | None
+		tax_withholding_category: DF.Link | None
+		tax_withholding_net_total: DF.Currency
+		taxes: DF.Table[PurchaseTaxesandCharges]
+		taxes_and_charges: DF.Link | None
+		taxes_and_charges_added: DF.Currency
+		taxes_and_charges_deducted: DF.Currency
+		tc_name: DF.Link | None
+		terms: DF.TextEditor | None
+		title: DF.Data
+		to_date: DF.Date | None
+		total: DF.Currency
+		total_net_weight: DF.Float
+		total_qty: DF.Float
+		total_taxes_and_charges: DF.Currency
+		transaction_date: DF.Date
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.status_updater = [
@@ -52,6 +197,10 @@ class PurchaseOrder(BuyingController):
 	def onload(self):
 		supplier_tds = frappe.db.get_value("Supplier", self.supplier, "tax_withholding_category")
 		self.set_onload("supplier_tds", supplier_tds)
+<<<<<<< HEAD
+=======
+		self.set_onload("can_update_items", self.can_update_items())
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate(self):
 		super().validate()
@@ -80,6 +229,13 @@ class PurchaseOrder(BuyingController):
 
 		self.validate_fg_item_for_subcontracting()
 		self.set_received_qty_for_drop_ship_items()
+<<<<<<< HEAD
+=======
+
+		if not self.advance_payment_status:
+			self.advance_payment_status = "Not Initiated"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		validate_inter_company_party(
 			self.doctype, self.supplier, self.company, self.inter_company_order_reference
 		)
@@ -229,7 +385,11 @@ class PurchaseOrder(BuyingController):
 									item.idx, item.fg_item
 								)
 							)
+<<<<<<< HEAD
 						elif not frappe.get_value("Item", item.fg_item, "default_bom"):
+=======
+						elif not item.bom and not frappe.get_value("Item", item.fg_item, "default_bom"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							frappe.throw(
 								_("Row #{0}: Default BOM not found for FG Item {1}").format(
 									item.idx, item.fg_item
@@ -318,6 +478,10 @@ class PurchaseOrder(BuyingController):
 		self.update_requested_qty()
 		self.update_ordered_qty()
 		self.update_reserved_qty_for_subcontract()
+<<<<<<< HEAD
+=======
+		self.update_subcontracting_order_status()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_blanket_order()
 		self.notify_update()
 		clear_doctype_notifications(self)
@@ -344,6 +508,11 @@ class PurchaseOrder(BuyingController):
 
 		update_linked_doc(self.doctype, self.name, self.inter_company_order_reference)
 
+<<<<<<< HEAD
+=======
+		self.auto_create_subcontracting_order()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_cancel(self):
 		self.ignore_linked_doctypes = (
 			"GL Entry",
@@ -442,13 +611,50 @@ class PurchaseOrder(BuyingController):
 	def update_receiving_percentage(self):
 		total_qty, received_qty = 0.0, 0.0
 		for item in self.items:
+<<<<<<< HEAD
 			received_qty += item.received_qty
+=======
+			received_qty += min(item.received_qty, item.qty)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			total_qty += item.qty
 		if total_qty:
 			self.db_set("per_received", flt(received_qty / total_qty) * 100, update_modified=False)
 		else:
 			self.db_set("per_received", 0, update_modified=False)
 
+<<<<<<< HEAD
+=======
+	def set_service_items_for_finished_goods(self):
+		if not self.is_subcontracted or self.is_old_subcontracting_flow:
+			return
+
+		finished_goods_without_service_item = {
+			d.fg_item for d in self.items if (not d.item_code and d.fg_item)
+		}
+
+		if subcontracting_boms := get_subcontracting_boms_for_finished_goods(
+			finished_goods_without_service_item
+		):
+			for item in self.items:
+				if not item.item_code and item.fg_item in subcontracting_boms:
+					subcontracting_bom = subcontracting_boms[item.fg_item]
+
+					item.item_code = subcontracting_bom.service_item
+					item.qty = flt(item.fg_item_qty) * flt(subcontracting_bom.conversion_factor)
+					item.uom = subcontracting_bom.service_item_uom
+
+	def can_update_items(self) -> bool:
+		result = True
+
+		if self.is_subcontracted and not self.is_old_subcontracting_flow:
+			if frappe.db.exists(
+				"Subcontracting Order", {"purchase_order": self.name, "docstatus": ["!=", 2]}
+			):
+				result = False
+
+		return result
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_ordered_qty_in_so_for_removed_items(self, removed_items):
 		"""
 		Updates ordered_qty in linked SO when item rows are removed using Update Items
@@ -465,6 +671,32 @@ class PurchaseOrder(BuyingController):
 				"Sales Order Item", item.get("sales_order_item"), "ordered_qty", prev_ordered_qty - item.qty
 			)
 
+<<<<<<< HEAD
+=======
+	def auto_create_subcontracting_order(self):
+		if self.is_subcontracted and not self.is_old_subcontracting_flow:
+			if frappe.db.get_single_value("Buying Settings", "auto_create_subcontracting_order"):
+				make_subcontracting_order(self.name, save=True, notify=True)
+
+	def update_subcontracting_order_status(self):
+		from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
+			update_subcontracting_order_status as update_sco_status,
+		)
+
+		if self.is_subcontracted and not self.is_old_subcontracting_flow:
+			sco = frappe.db.get_value("Subcontracting Order", {"purchase_order": self.name, "docstatus": 1})
+
+			if sco:
+				update_sco_status(sco, "Closed" if self.status == "Closed" else None)
+
+	def set_missing_values(self, for_validate=False):
+		tds_category = frappe.db.get_value("Supplier", self.supplier, "tax_withholding_category")
+		if tds_category and not for_validate:
+			self.set_onload("supplier_tds", tds_category)
+
+		super().set_missing_values(for_validate)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.request_cache
 def item_last_purchase_rate(name, conversion_rate, item_code, conversion_factor=1.0):
@@ -548,7 +780,11 @@ def make_purchase_receipt(source_name, target_doc=None):
 				"condition": lambda doc: abs(doc.received_qty) < abs(doc.qty)
 				and doc.delivered_by_supplier != 1,
 			},
+<<<<<<< HEAD
 			"Purchase Taxes and Charges": {"doctype": "Purchase Taxes and Charges", "add_if_empty": True},
+=======
+			"Purchase Taxes and Charges": {"doctype": "Purchase Taxes and Charges", "reset_value": True},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		target_doc,
 		set_missing_values,
@@ -577,6 +813,14 @@ def get_mapped_purchase_invoice(source_name, target_doc=None, ignore_permissions
 	def postprocess(source, target):
 		target.flags.ignore_permissions = ignore_permissions
 		set_missing_values(source, target)
+<<<<<<< HEAD
+=======
+
+		# set tax_withholding_category from Purchase Order
+		if source.apply_tds and source.tax_withholding_category and target.apply_tds:
+			target.tax_withholding_category = source.tax_withholding_category
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# Get the advance paid Journal Entries in Purchase Invoice Advance
 		if target.get("allocate_advances_automatically"):
 			target.set_advances()
@@ -617,12 +861,21 @@ def get_mapped_purchase_invoice(source_name, target_doc=None, ignore_permissions
 			"field_map": {
 				"name": "po_detail",
 				"parent": "purchase_order",
+<<<<<<< HEAD
+=======
+				"material_request": "material_request",
+				"material_request_item": "material_request_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"wip_composite_asset": "wip_composite_asset",
 			},
 			"postprocess": update_item,
 			"condition": lambda doc: (doc.base_amount == 0 or abs(doc.billed_amt) < abs(doc.amount)),
 		},
+<<<<<<< HEAD
 		"Purchase Taxes and Charges": {"doctype": "Purchase Taxes and Charges", "add_if_empty": True},
+=======
+		"Purchase Taxes and Charges": {"doctype": "Purchase Taxes and Charges", "reset_value": True},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	doc = get_mapped_doc(
@@ -667,11 +920,61 @@ def make_inter_company_sales_order(source_name, target_doc=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def make_subcontracting_order(source_name, target_doc=None):
 	return get_mapped_subcontracting_order(source_name, target_doc)
 
 
 def get_mapped_subcontracting_order(source_name, target_doc=None):
+=======
+def make_subcontracting_order(source_name, target_doc=None, save=False, submit=False, notify=False):
+	target_doc = get_mapped_subcontracting_order(source_name, target_doc)
+
+	if (save or submit) and frappe.has_permission(target_doc.doctype, "create"):
+		target_doc.save()
+
+		if submit and frappe.has_permission(target_doc.doctype, "submit", target_doc):
+			try:
+				target_doc.submit()
+			except Exception as e:
+				target_doc.add_comment("Comment", _("Submit Action Failed") + "<br><br>" + str(e))
+
+		if notify:
+			frappe.msgprint(
+				_("Subcontracting Order {0} created.").format(
+					get_link_to_form(target_doc.doctype, target_doc.name)
+				),
+				indicator="green",
+				alert=True,
+			)
+
+	return target_doc
+
+
+def get_mapped_subcontracting_order(source_name, target_doc=None):
+	def post_process(source_doc, target_doc):
+		target_doc.populate_items_table()
+
+		if target_doc.set_warehouse:
+			for item in target_doc.items:
+				item.warehouse = target_doc.set_warehouse
+		else:
+			if source_doc.set_warehouse:
+				for item in target_doc.items:
+					item.warehouse = source_doc.set_warehouse
+			else:
+				for idx, item in enumerate(target_doc.items):
+					item.warehouse = source_doc.items[idx].warehouse
+
+		for idx, item in enumerate(target_doc.items):
+			item.job_card = source_doc.items[idx].job_card
+			if not target_doc.supplier_warehouse:
+				# WIP warehouse is set as Supplier Warehouse in Job Card
+				target_doc.supplier_warehouse = frappe.get_cached_value(
+					"Job Card", item.job_card, "wip_warehouse"
+				)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if target_doc and isinstance(target_doc, str):
 		target_doc = json.loads(target_doc)
 		for key in ["service_items", "items", "supplied_items"]:
@@ -694,6 +997,10 @@ def get_mapped_subcontracting_order(source_name, target_doc=None):
 			"Purchase Order Item": {
 				"doctype": "Subcontracting Order Service Item",
 				"field_map": {
+<<<<<<< HEAD
+=======
+					"name": "purchase_order_item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"material_request": "material_request",
 					"material_request_item": "material_request_item",
 				},
@@ -701,6 +1008,7 @@ def get_mapped_subcontracting_order(source_name, target_doc=None):
 			},
 		},
 		target_doc,
+<<<<<<< HEAD
 	)
 
 	target_doc.populate_items_table()
@@ -717,6 +1025,11 @@ def get_mapped_subcontracting_order(source_name, target_doc=None):
 			for idx, item in enumerate(target_doc.items):
 				item.warehouse = source_doc.items[idx].warehouse
 
+=======
+		post_process,
+	)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return target_doc
 
 

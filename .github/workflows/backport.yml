@@ -21,6 +21,10 @@ jobs:
       - name: Run backport
         uses: ./actions/backport
         with:
+<<<<<<< HEAD
           token: ${{secrets.BACKPORT_BOT_TOKEN}}
+=======
+          token: ${{secrets.RELEASE_TOKEN}}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
           labelsToAdd: "backport"
           title: "{{originalTitle}}"

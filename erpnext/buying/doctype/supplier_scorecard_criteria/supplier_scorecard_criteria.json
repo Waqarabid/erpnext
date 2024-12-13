@@ -43,7 +43,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-11-11 18:34:58.477648",
+=======
+ "modified": "2024-03-27 13:10:49.920492",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier Scorecard Criteria",
@@ -64,7 +68,13 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

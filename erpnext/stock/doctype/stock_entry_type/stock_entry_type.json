@@ -7,7 +7,12 @@
  "engine": "InnoDB",
  "field_order": [
   "purpose",
+<<<<<<< HEAD
   "add_to_transit"
+=======
+  "add_to_transit",
+  "is_standard"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -16,7 +21,11 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Purpose",
+<<<<<<< HEAD
    "options": "\nMaterial Issue\nMaterial Receipt\nMaterial Transfer\nMaterial Transfer for Manufacture\nMaterial Consumption for Manufacture\nManufacture\nRepack\nSend to Subcontractor",
+=======
+   "options": "\nMaterial Issue\nMaterial Receipt\nMaterial Transfer\nMaterial Transfer for Manufacture\nMaterial Consumption for Manufacture\nManufacture\nRepack\nSend to Subcontractor\nDisassemble",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "reqd": 1,
    "set_only_once": 1
   },
@@ -26,6 +35,7 @@
    "fieldname": "add_to_transit",
    "fieldtype": "Check",
    "label": "Add to Transit"
+<<<<<<< HEAD
   }
  ],
  "links": [],
@@ -33,6 +43,23 @@
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Entry Type",
+=======
+  },
+  {
+   "default": "0",
+   "fieldname": "is_standard",
+   "fieldtype": "Check",
+   "label": "Is Standard",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2024-08-23 16:00:22.696958",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Stock Entry Type",
+ "naming_rule": "Set by user",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -72,6 +99,7 @@
    "write": 1
   },
   {
+<<<<<<< HEAD
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -88,4 +116,16 @@
  "sort_field": "modified",
  "sort_order": "ASC",
  "track_changes": 1
+=======
+   "read": 1,
+   "role": "Stock User"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1,
+ "translated_doctype": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

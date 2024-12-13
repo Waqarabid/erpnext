@@ -8,6 +8,10 @@ from frappe.contacts.doctype.address.address import get_address_display
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.utils import get_fetch_values
 from frappe.utils import add_days, cint, cstr, flt, formatdate, get_link_to_form, getdate, nowdate
+<<<<<<< HEAD
+=======
+from frappe.utils.data import comma_and
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.accounts.deferred_revenue import validate_service_stop_date
@@ -15,6 +19,13 @@ from erpnext.accounts.doctype.loyalty_program.loyalty_program import (
 	get_loyalty_program_details_with_points,
 	validate_loyalty_points,
 )
+<<<<<<< HEAD
+=======
+from erpnext.accounts.doctype.pricing_rule.utils import (
+	update_coupon_code_count,
+	validate_coupon_code,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.accounts.doctype.repost_accounting_ledger.repost_accounting_ledger import (
 	validate_docs_for_deferred_accounting,
 	validate_docs_for_voucher_types,
@@ -27,16 +38,24 @@ from erpnext.accounts.party import get_due_date, get_party_account, get_party_de
 from erpnext.accounts.utils import cancel_exchange_gain_loss_journal, get_account_currency
 from erpnext.assets.doctype.asset.depreciation import (
 	depreciate_asset,
+<<<<<<< HEAD
 	get_disposal_account_and_cost_center,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	get_gl_entries_on_asset_disposal,
 	get_gl_entries_on_asset_regain,
 	reset_depreciation_schedule,
 	reverse_depreciation_entry_made_after_disposal,
 )
+<<<<<<< HEAD
+=======
+from erpnext.assets.doctype.asset_activity.asset_activity import add_asset_activity
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.controllers.accounts_controller import validate_account_head
 from erpnext.controllers.selling_controller import SellingController
 from erpnext.projects.doctype.timesheet.timesheet import get_projectwise_timesheet_data
 from erpnext.setup.doctype.company.company import update_company_current_month_sales
+<<<<<<< HEAD
 from erpnext.stock.doctype.batch.batch import set_batch_nos
 from erpnext.stock.doctype.delivery_note.delivery_note import update_billed_amount_based_on_so
 from erpnext.stock.doctype.serial_no.serial_no import (
@@ -44,11 +63,201 @@ from erpnext.stock.doctype.serial_no.serial_no import (
 	get_serial_nos,
 	update_serial_nos_after_submit,
 )
+=======
+from erpnext.stock.doctype.delivery_note.delivery_note import update_billed_amount_based_on_so
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 
 class SalesInvoice(SellingController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.payment_schedule.payment_schedule import PaymentSchedule
+		from erpnext.accounts.doctype.pricing_rule_detail.pricing_rule_detail import PricingRuleDetail
+		from erpnext.accounts.doctype.sales_invoice_advance.sales_invoice_advance import SalesInvoiceAdvance
+		from erpnext.accounts.doctype.sales_invoice_item.sales_invoice_item import SalesInvoiceItem
+		from erpnext.accounts.doctype.sales_invoice_payment.sales_invoice_payment import SalesInvoicePayment
+		from erpnext.accounts.doctype.sales_invoice_timesheet.sales_invoice_timesheet import (
+			SalesInvoiceTimesheet,
+		)
+		from erpnext.accounts.doctype.sales_taxes_and_charges.sales_taxes_and_charges import (
+			SalesTaxesandCharges,
+		)
+		from erpnext.selling.doctype.sales_team.sales_team import SalesTeam
+		from erpnext.stock.doctype.packed_item.packed_item import PackedItem
+
+		account_for_change_amount: DF.Link | None
+		additional_discount_account: DF.Link | None
+		additional_discount_percentage: DF.Float
+		address_display: DF.TextEditor | None
+		advances: DF.Table[SalesInvoiceAdvance]
+		against_income_account: DF.SmallText | None
+		allocate_advances_automatically: DF.Check
+		amended_from: DF.Link | None
+		amount_eligible_for_commission: DF.Currency
+		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
+		auto_repeat: DF.Link | None
+		base_change_amount: DF.Currency
+		base_discount_amount: DF.Currency
+		base_grand_total: DF.Currency
+		base_in_words: DF.SmallText | None
+		base_net_total: DF.Currency
+		base_paid_amount: DF.Currency
+		base_rounded_total: DF.Currency
+		base_rounding_adjustment: DF.Currency
+		base_total: DF.Currency
+		base_total_taxes_and_charges: DF.Currency
+		base_write_off_amount: DF.Currency
+		cash_bank_account: DF.Link | None
+		change_amount: DF.Currency
+		commission_rate: DF.Float
+		company: DF.Link
+		company_address: DF.Link | None
+		company_address_display: DF.TextEditor | None
+		company_contact_person: DF.Link | None
+		company_tax_id: DF.Data | None
+		contact_display: DF.SmallText | None
+		contact_email: DF.Data | None
+		contact_mobile: DF.SmallText | None
+		contact_person: DF.Link | None
+		conversion_rate: DF.Float
+		cost_center: DF.Link | None
+		coupon_code: DF.Link | None
+		currency: DF.Link
+		customer: DF.Link | None
+		customer_address: DF.Link | None
+		customer_group: DF.Link | None
+		customer_name: DF.SmallText | None
+		debit_to: DF.Link
+		disable_rounded_total: DF.Check
+		discount_amount: DF.Currency
+		dispatch_address: DF.TextEditor | None
+		dispatch_address_name: DF.Link | None
+		dont_create_loyalty_points: DF.Check
+		due_date: DF.Date | None
+		from_date: DF.Date | None
+		grand_total: DF.Currency
+		group_same_items: DF.Check
+		ignore_default_payment_terms_template: DF.Check
+		ignore_pricing_rule: DF.Check
+		in_words: DF.SmallText | None
+		incoterm: DF.Link | None
+		inter_company_invoice_reference: DF.Link | None
+		is_cash_or_non_trade_discount: DF.Check
+		is_consolidated: DF.Check
+		is_debit_note: DF.Check
+		is_discounted: DF.Check
+		is_internal_customer: DF.Check
+		is_opening: DF.Literal["No", "Yes"]
+		is_pos: DF.Check
+		is_return: DF.Check
+		items: DF.Table[SalesInvoiceItem]
+		language: DF.Link | None
+		letter_head: DF.Link | None
+		loyalty_amount: DF.Currency
+		loyalty_points: DF.Int
+		loyalty_program: DF.Link | None
+		loyalty_redemption_account: DF.Link | None
+		loyalty_redemption_cost_center: DF.Link | None
+		named_place: DF.Data | None
+		naming_series: DF.Literal["ACC-SINV-.YYYY.-", "ACC-SINV-RET-.YYYY.-"]
+		net_total: DF.Currency
+		only_include_allocated_payments: DF.Check
+		other_charges_calculation: DF.TextEditor | None
+		outstanding_amount: DF.Currency
+		packed_items: DF.Table[PackedItem]
+		paid_amount: DF.Currency
+		party_account_currency: DF.Link | None
+		payment_schedule: DF.Table[PaymentSchedule]
+		payment_terms_template: DF.Link | None
+		payments: DF.Table[SalesInvoicePayment]
+		plc_conversion_rate: DF.Float
+		po_date: DF.Date | None
+		po_no: DF.Data | None
+		pos_profile: DF.Link | None
+		posting_date: DF.Date
+		posting_time: DF.Time | None
+		price_list_currency: DF.Link
+		pricing_rules: DF.Table[PricingRuleDetail]
+		project: DF.Link | None
+		redeem_loyalty_points: DF.Check
+		remarks: DF.SmallText | None
+		represents_company: DF.Link | None
+		return_against: DF.Link | None
+		rounded_total: DF.Currency
+		rounding_adjustment: DF.Currency
+		sales_partner: DF.Link | None
+		sales_team: DF.Table[SalesTeam]
+		scan_barcode: DF.Data | None
+		select_print_heading: DF.Link | None
+		selling_price_list: DF.Link
+		set_posting_time: DF.Check
+		set_target_warehouse: DF.Link | None
+		set_warehouse: DF.Link | None
+		shipping_address: DF.TextEditor | None
+		shipping_address_name: DF.Link | None
+		shipping_rule: DF.Link | None
+		status: DF.Literal[
+			"",
+			"Draft",
+			"Return",
+			"Credit Note Issued",
+			"Submitted",
+			"Paid",
+			"Partly Paid",
+			"Unpaid",
+			"Unpaid and Discounted",
+			"Partly Paid and Discounted",
+			"Overdue and Discounted",
+			"Overdue",
+			"Cancelled",
+			"Internal Transfer",
+		]
+		subscription: DF.Link | None
+		tax_category: DF.Link | None
+		tax_id: DF.Data | None
+		taxes: DF.Table[SalesTaxesandCharges]
+		taxes_and_charges: DF.Link | None
+		tc_name: DF.Link | None
+		terms: DF.TextEditor | None
+		territory: DF.Link | None
+		timesheets: DF.Table[SalesInvoiceTimesheet]
+		title: DF.Data | None
+		to_date: DF.Date | None
+		total: DF.Currency
+		total_advance: DF.Currency
+		total_billing_amount: DF.Currency
+		total_billing_hours: DF.Float
+		total_commission: DF.Currency
+		total_net_weight: DF.Float
+		total_qty: DF.Float
+		total_taxes_and_charges: DF.Currency
+		unrealized_profit_loss_account: DF.Link | None
+		update_billed_amount_in_delivery_note: DF.Check
+		update_billed_amount_in_sales_order: DF.Check
+		update_outstanding_for_self: DF.Check
+		update_stock: DF.Check
+		use_company_roundoff_cost_center: DF.Check
+		utm_campaign: DF.Link | None
+		utm_content: DF.Data | None
+		utm_medium: DF.Link | None
+		utm_source: DF.Link | None
+		write_off_account: DF.Link | None
+		write_off_amount: DF.Currency
+		write_off_cost_center: DF.Link | None
+		write_off_outstanding_amount_automatically: DF.Check
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.status_updater = [
@@ -103,7 +312,10 @@ class SalesInvoice(SellingController):
 		self.check_sales_order_on_hold_or_close("sales_order")
 		self.validate_debit_to_acc()
 		self.clear_unallocated_advances("Sales Invoice Advance", "advances")
+<<<<<<< HEAD
 		self.add_remarks()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_fixed_asset()
 		self.set_income_account_for_fixed_assets()
 		self.validate_item_cost_centers()
@@ -114,6 +326,7 @@ class SalesInvoice(SellingController):
 			self.doctype, self.customer, self.company, self.inter_company_invoice_reference
 		)
 
+<<<<<<< HEAD
 		if cint(self.is_pos):
 			self.validate_pos()
 
@@ -126,10 +339,33 @@ class SalesInvoice(SellingController):
 
 		# validate service stop date to lie in between start and end date
 		validate_service_stop_date(self)
+=======
+		# Validating coupon code
+		if self.coupon_code:
+			validate_coupon_code(self.coupon_code)
+
+		if cint(self.is_pos):
+			self.validate_pos()
+
+		self.validate_dropship_item()
+
+		if cint(self.update_stock):
+			self.validate_warehouse()
+			self.update_current_stock()
+
+		self.validate_delivery_note()
+
+		is_deferred_invoice = any(d.get("enable_deferred_revenue") for d in self.get("items"))
+
+		# validate service stop date to lie in between start and end date
+		if is_deferred_invoice:
+			validate_service_stop_date(self)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.is_opening:
 			self.is_opening = "No"
 
+<<<<<<< HEAD
 		if self._action != "submit" and self.update_stock and not self.is_return:
 			set_batch_nos(self, "warehouse", True)
 
@@ -144,6 +380,8 @@ class SalesInvoice(SellingController):
 				else self.loyalty_redemption_cost_center
 			)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.set_against_income_account()
 		self.validate_time_sheets_are_submitted()
 		self.validate_multiple_billing("Delivery Note", "dn_detail", "amount")
@@ -162,12 +400,16 @@ class SalesInvoice(SellingController):
 		if self.is_pos and self.is_return:
 			self.verify_payment_amount_is_negative()
 
+<<<<<<< HEAD
 		if (
 			self.redeem_loyalty_points
 			and self.loyalty_program
 			and self.loyalty_points
 			and not self.is_consolidated
 		):
+=======
+		if self.redeem_loyalty_points and self.loyalty_points and not self.is_consolidated:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			validate_loyalty_points(self, self.loyalty_points)
 
 		self.allow_write_off_only_on_pos()
@@ -204,6 +446,7 @@ class SalesInvoice(SellingController):
 
 	def validate_item_cost_centers(self):
 		for item in self.items:
+<<<<<<< HEAD
 			cost_center_company = frappe.get_cached_value("Cost Center", item.cost_center, "company")
 			if cost_center_company != self.company:
 				frappe.throw(
@@ -217,6 +460,18 @@ class SalesInvoice(SellingController):
 			validate_account_head(item.idx, item.income_account, self.company, "Income")
 
 	def set_tax_withholding(self):
+=======
+			item.validate_cost_center(self.company)
+
+	def validate_income_account(self):
+		for item in self.get("items"):
+			validate_account_head(item.idx, item.income_account, self.company, _("Income"))
+
+	def set_tax_withholding(self):
+		if self.get("is_opening") == "Yes":
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		tax_withholding_details = get_party_tax_withholding_details(self)
 
 		if not tax_withholding_details:
@@ -249,6 +504,12 @@ class SalesInvoice(SellingController):
 		self.set_account_for_mode_of_payment()
 		self.set_paid_amount()
 
+<<<<<<< HEAD
+=======
+	def before_submit(self):
+		self.add_remarks()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_submit(self):
 		self.validate_pos_paid_amount()
 
@@ -272,9 +533,19 @@ class SalesInvoice(SellingController):
 		# Updating stock ledger should always be called after updating prevdoc status,
 		# because updating reserved qty in bin depends upon updated delivered qty in SO
 		if self.update_stock == 1:
+<<<<<<< HEAD
 			self.update_stock_ledger()
 		if self.is_return and self.update_stock:
 			update_serial_nos_after_submit(self, "items")
+=======
+			for table_name in ["items", "packed_items"]:
+				if not self.get(table_name):
+					continue
+
+				self.make_bundle_for_sales_purchase_return(table_name)
+				self.make_bundle_using_old_serial_batch_fields(table_name)
+			self.update_stock_ledger()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# this sequence because outstanding may get -ve
 		self.make_gl_entries()
@@ -287,9 +558,13 @@ class SalesInvoice(SellingController):
 			self.update_billing_status_for_zero_amount_refdoc("Sales Order")
 			self.check_credit_limit()
 
+<<<<<<< HEAD
 		self.update_serial_no()
 
 		if not cint(self.is_pos) == 1 and not self.is_return:
+=======
+		if cint(self.is_pos) != 1 and not self.is_return:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.update_against_document_in_jv()
 
 		self.update_time_sheet(self.name)
@@ -299,6 +574,12 @@ class SalesInvoice(SellingController):
 			self.update_project()
 		update_linked_doc(self.doctype, self.name, self.inter_company_invoice_reference)
 
+<<<<<<< HEAD
+=======
+		if self.coupon_code:
+			update_coupon_code_count(self.coupon_code, "used")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# create the loyalty point ledger entry if the customer is enrolled in any loyalty program
 		if (
 			not self.is_return
@@ -344,7 +625,11 @@ class SalesInvoice(SellingController):
 			)
 			if pos_closing_entry and pos_closing_entry[0]:
 				msg = _("To cancel a {} you need to cancel the POS Closing Entry {}.").format(
+<<<<<<< HEAD
 					frappe.bold("Consolidated Sales Invoice"),
+=======
+					frappe.bold(_("Consolidated Sales Invoice")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					get_link_to_form("POS Closing Entry", pos_closing_entry[0]),
 				)
 				frappe.throw(msg, title=_("Not Allowed"))
@@ -373,7 +658,10 @@ class SalesInvoice(SellingController):
 		if not self.is_return:
 			self.update_billing_status_for_zero_amount_refdoc("Delivery Note")
 			self.update_billing_status_for_zero_amount_refdoc("Sales Order")
+<<<<<<< HEAD
 			self.update_serial_no(in_cancel=True)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# Updating stock ledger should always be called after updating prevdoc status,
 		# because updating reserved qty in bin depends upon updated delivered qty in SO
@@ -387,6 +675,12 @@ class SalesInvoice(SellingController):
 
 		self.db_set("status", "Cancelled")
 
+<<<<<<< HEAD
+=======
+		if self.coupon_code:
+			update_coupon_code_count(self.coupon_code, "cancelled")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if frappe.db.get_single_value("Selling Settings", "sales_update_frequency") == "Each Transaction":
 			update_company_current_month_sales(self.company)
 			self.update_project()
@@ -411,6 +705,7 @@ class SalesInvoice(SellingController):
 			"Unreconcile Payment",
 			"Unreconcile Payment Entries",
 			"Payment Ledger Entry",
+<<<<<<< HEAD
 		)
 
 	def update_status_updater_args(self):
@@ -451,6 +746,56 @@ class SalesInvoice(SellingController):
 						"extra_cond": """ and exists (select name from `tabSales Invoice` where name=`tabSales Invoice Item`.parent and update_stock=1 and is_return=1)""",
 					}
 				)
+=======
+			"Serial and Batch Bundle",
+		)
+
+		self.delete_auto_created_batches()
+
+	def update_status_updater_args(self):
+		if not cint(self.update_stock):
+			return
+
+		self.status_updater.append(
+			{
+				"source_dt": "Sales Invoice Item",
+				"target_dt": "Sales Order Item",
+				"target_parent_dt": "Sales Order",
+				"target_parent_field": "per_delivered",
+				"target_field": "delivered_qty",
+				"target_ref_field": "qty",
+				"source_field": "qty",
+				"join_field": "so_detail",
+				"percent_join_field": "sales_order",
+				"status_field": "delivery_status",
+				"keyword": "Delivered",
+				"second_source_dt": "Delivery Note Item",
+				"second_source_field": "qty",
+				"second_join_field": "so_detail",
+				"overflow_type": "delivery",
+				"extra_cond": """ and exists(select name from `tabSales Invoice`
+				where name=`tabSales Invoice Item`.parent and update_stock = 1)""",
+			}
+		)
+
+		if not cint(self.is_return):
+			return
+
+		self.status_updater.append(
+			{
+				"source_dt": "Sales Invoice Item",
+				"target_dt": "Sales Order Item",
+				"join_field": "so_detail",
+				"target_field": "returned_qty",
+				"target_parent_dt": "Sales Order",
+				"source_field": "-1 * qty",
+				"second_source_dt": "Delivery Note Item",
+				"second_source_field": "-1 * qty",
+				"second_join_field": "so_detail",
+				"extra_cond": """ and exists (select name from `tabSales Invoice` where name=`tabSales Invoice Item`.parent and update_stock=1 and is_return=1)""",
+			}
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def check_credit_limit(self):
 		from erpnext.selling.doctype.customer.customer import check_credit_limit
@@ -475,6 +820,7 @@ class SalesInvoice(SellingController):
 	def unlink_sales_invoice_from_timesheets(self):
 		for row in self.timesheets:
 			timesheet = frappe.get_doc("Timesheet", row.time_sheet)
+<<<<<<< HEAD
 			for time_log in timesheet.time_logs:
 				if time_log.sales_invoice == self.name:
 					time_log.sales_invoice = None
@@ -482,6 +828,10 @@ class SalesInvoice(SellingController):
 			timesheet.calculate_percentage_billed()
 			timesheet.flags.ignore_validate_update_after_submit = True
 			timesheet.set_status()
+=======
+			timesheet.unlink_sales_invoice(self.name)
+			timesheet.flags.ignore_validate_update_after_submit = True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			timesheet.db_update_all()
 
 	@frappe.whitelist()
@@ -507,7 +857,13 @@ class SalesInvoice(SellingController):
 				"print_format": print_format,
 				"allow_edit_rate": pos.get("allow_user_to_edit_rate"),
 				"allow_edit_discount": pos.get("allow_user_to_edit_discount"),
+<<<<<<< HEAD
 				"campaign": pos.get("campaign"),
+=======
+				"utm_source": pos.get("utm_source"),
+				"utm_campaign": pos.get("utm_campaign"),
+				"utm_medium": pos.get("utm_medium"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"allow_print_before_pay": pos.get("allow_print_before_pay"),
 			}
 
@@ -583,7 +939,15 @@ class SalesInvoice(SellingController):
 				"Company", self.company, "default_cash_account"
 			)
 
+<<<<<<< HEAD
 		from erpnext.stock.get_item_details import get_pos_profile, get_pos_profile_item_details
+=======
+		from erpnext.stock.get_item_details import (
+			ItemDetailsCtx,
+			get_pos_profile,
+			get_pos_profile_item_details_,
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not self.pos_profile and not self.flags.ignore_pos_profile:
 			pos_profile = get_pos_profile(self.company) or {}
@@ -651,8 +1015,13 @@ class SalesInvoice(SellingController):
 			# set pos values in items
 			for item in self.get("items"):
 				if item.get("item_code"):
+<<<<<<< HEAD
 					profile_details = get_pos_profile_item_details(
 						pos, frappe._dict(item.as_dict()), pos, update_data=True
+=======
+					profile_details = get_pos_profile_item_details_(
+						ItemDetailsCtx(item.as_dict()), pos, pos, update_data=True
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					)
 					for fname, val in profile_details.items():
 						if (not for_validate) or (for_validate and not item.get(fname)):
@@ -686,7 +1055,11 @@ class SalesInvoice(SellingController):
 
 		if account.report_type != "Balance Sheet":
 			msg = (
+<<<<<<< HEAD
 				_("Please ensure {} account is a Balance Sheet account.").format(frappe.bold("Debit To"))
+=======
+				_("Please ensure {} account is a Balance Sheet account.").format(frappe.bold(_("Debit To")))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				+ " "
 			)
 			msg += _(
@@ -697,7 +1070,11 @@ class SalesInvoice(SellingController):
 		if self.customer and account.account_type != "Receivable":
 			msg = (
 				_("Please ensure {} account {} is a Receivable account.").format(
+<<<<<<< HEAD
 					frappe.bold("Debit To"), frappe.bold(self.debit_to)
+=======
+					frappe.bold(_("Debit To")), frappe.bold(self.debit_to)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				)
 				+ " "
 			)
@@ -774,10 +1151,18 @@ class SalesInvoice(SellingController):
 
 	def add_remarks(self):
 		if not self.remarks:
+<<<<<<< HEAD
 			if self.po_no and self.po_date:
 				self.remarks = _("Against Customer Order {0} dated {1}").format(
 					self.po_no, formatdate(self.po_date)
 				)
+=======
+			if self.po_no:
+				self.remarks = _("Against Customer Order {0}").format(self.po_no)
+				if self.po_date:
+					self.remarks += " " + _("dated {0}").format(formatdate(self.po_date))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			else:
 				self.remarks = _("No Remarks")
 
@@ -827,11 +1212,14 @@ class SalesInvoice(SellingController):
 			):
 				frappe.throw(_("Paid amount + Write Off Amount can not be greater than Grand Total"))
 
+<<<<<<< HEAD
 	def validate_item_code(self):
 		for d in self.get("items"):
 			if not d.item_code and self.is_opening == "No":
 				msgprint(_("Item Code required at Row No {0}").format(d.idx), raise_exception=True)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_warehouse(self):
 		super().validate_warehouse()
 
@@ -844,12 +1232,26 @@ class SalesInvoice(SellingController):
 				frappe.throw(_("Warehouse required for stock Item {0}").format(d.item_code))
 
 	def validate_delivery_note(self):
+<<<<<<< HEAD
 		for d in self.get("items"):
 			if d.delivery_note:
 				msgprint(
 					_("Stock cannot be updated against Delivery Note {0}").format(d.delivery_note),
 					raise_exception=1,
 				)
+=======
+		"""If items are linked with a delivery note, stock cannot be updated again."""
+		if not cint(self.update_stock):
+			return
+
+		notes = [item.delivery_note for item in self.items if item.delivery_note]
+		if notes:
+			frappe.throw(
+				_("Stock cannot be updated against the following Delivery Notes: {0}").format(
+					comma_and(notes)
+				),
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def allow_write_off_only_on_pos(self):
 		if not self.is_pos and self.write_off_account:
@@ -867,6 +1269,7 @@ class SalesInvoice(SellingController):
 			msgprint(_("Please enter Account for Change Amount"), raise_exception=1)
 
 	def validate_dropship_item(self):
+<<<<<<< HEAD
 		for item in self.items:
 			if item.sales_order:
 				if frappe.db.get_value("Sales Order Item", item.so_detail, "delivered_by_supplier"):
@@ -890,6 +1293,25 @@ class SalesInvoice(SellingController):
 			)
 			d.actual_qty = bin and flt(bin[0]["actual_qty"]) or 0
 			d.projected_qty = bin and flt(bin[0]["projected_qty"]) or 0
+=======
+		"""If items are drop shipped, stock cannot be updated."""
+		if not cint(self.update_stock):
+			return
+
+		if any(item.delivered_by_supplier for item in self.items):
+			frappe.throw(
+				_(
+					"Stock cannot be updated because the invoice contains a drop shipping item. Please disable 'Update Stock' or remove the drop shipping item."
+				),
+			)
+
+	def update_current_stock(self):
+		for item in self.items:
+			item.set_actual_qty()
+
+		for packed_item in self.packed_items:
+			packed_item.set_actual_and_projected_qty()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_packing_list(self):
 		if cint(self.update_stock) == 1:
@@ -964,6 +1386,7 @@ class SalesInvoice(SellingController):
 		return warehouse
 
 	def set_income_account_for_fixed_assets(self):
+<<<<<<< HEAD
 		disposal_account = depreciation_cost_center = None
 		for d in self.get("items"):
 			if d.is_fixed_asset:
@@ -975,6 +1398,10 @@ class SalesInvoice(SellingController):
 				d.income_account = disposal_account
 				if not d.cost_center:
 					d.cost_center = depreciation_cost_center
+=======
+		for item in self.items:
+			item.set_income_account_for_fixed_asset(self.company)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def check_prev_docstatus(self):
 		for d in self.get("items"):
@@ -1046,6 +1473,11 @@ class SalesInvoice(SellingController):
 		self.make_precision_loss_gl_entry(gl_entries)
 		self.make_discount_gl_entries(gl_entries)
 
+<<<<<<< HEAD
+=======
+		gl_entries = make_regional_gl_entries(gl_entries, self)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# merge gl entries before adding pos entries
 		gl_entries = merge_similar_entries(gl_entries)
 
@@ -1151,6 +1583,13 @@ class SalesInvoice(SellingController):
 
 		for item in self.get("items"):
 			if flt(item.base_net_amount, item.precision("base_net_amount")):
+<<<<<<< HEAD
+=======
+				# Do not book income for transfer within same company
+				if self.is_internal_transfer():
+					continue
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				if item.is_fixed_asset:
 					asset = self.get_asset(item)
 
@@ -1164,18 +1603,45 @@ class SalesInvoice(SellingController):
 							self.get("posting_date"),
 						)
 						asset.db_set("disposal_date", None)
+<<<<<<< HEAD
+=======
+						add_asset_activity(asset.name, _("Asset returned"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 						if asset.calculate_depreciation:
 							posting_date = frappe.db.get_value(
 								"Sales Invoice", self.return_against, "posting_date"
 							)
 							reverse_depreciation_entry_made_after_disposal(asset, posting_date)
+<<<<<<< HEAD
 							reset_depreciation_schedule(asset, self.posting_date)
 
 					else:
 						if asset.calculate_depreciation:
 							depreciate_asset(asset, self.posting_date)
 							asset.reload()
+=======
+							notes = _(
+								"This schedule was created when Asset {0} was returned through Sales Invoice {1}."
+							).format(
+								get_link_to_form(asset.doctype, asset.name),
+								get_link_to_form(self.doctype, self.get("name")),
+							)
+							reset_depreciation_schedule(asset, self.posting_date, notes)
+							asset.reload()
+
+					else:
+						if asset.calculate_depreciation:
+							if not asset.status == "Fully Depreciated":
+								notes = _(
+									"This schedule was created when Asset {0} was sold through Sales Invoice {1}."
+								).format(
+									get_link_to_form(asset.doctype, asset.name),
+									get_link_to_form(self.doctype, self.get("name")),
+								)
+								depreciate_asset(asset, self.posting_date, notes)
+								asset.reload()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 						fixed_asset_gl_entries = get_gl_entries_on_asset_disposal(
 							asset,
@@ -1186,6 +1652,10 @@ class SalesInvoice(SellingController):
 							self.get("posting_date"),
 						)
 						asset.db_set("disposal_date", self.posting_date)
+<<<<<<< HEAD
+=======
+						add_asset_activity(asset.name, _("Asset sold"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 					for gle in fixed_asset_gl_entries:
 						gle["against"] = self.customer
@@ -1194,6 +1664,7 @@ class SalesInvoice(SellingController):
 					self.set_asset_status(asset)
 
 				else:
+<<<<<<< HEAD
 					# Do not book income for transfer within same company
 					if not self.is_internal_transfer():
 						income_account = (
@@ -1225,6 +1696,35 @@ class SalesInvoice(SellingController):
 								item=item,
 							)
 						)
+=======
+					income_account = (
+						item.income_account
+						if (not item.enable_deferred_revenue or self.is_return)
+						else item.deferred_revenue_account
+					)
+
+					amount, base_amount = self.get_amount_and_base_amount(item, enable_discount_accounting)
+
+					account_currency = get_account_currency(income_account)
+					gl_entries.append(
+						self.get_gl_dict(
+							{
+								"account": income_account,
+								"against": self.customer,
+								"credit": flt(base_amount, item.precision("base_net_amount")),
+								"credit_in_account_currency": (
+									flt(base_amount, item.precision("base_net_amount"))
+									if account_currency == self.company_currency
+									else flt(amount, item.precision("net_amount"))
+								),
+								"cost_center": item.cost_center,
+								"project": item.project or self.project,
+							},
+							account_currency,
+							item=item,
+						)
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# expense account gl entries
 		if cint(self.update_stock) and erpnext.is_perpetual_inventory_enabled(self.company):
@@ -1258,7 +1758,11 @@ class SalesInvoice(SellingController):
 			asset.set_status("Sold" if self.docstatus == 1 else None)
 
 	def make_loyalty_point_redemption_gle(self, gl_entries):
+<<<<<<< HEAD
 		if cint(self.redeem_loyalty_points):
+=======
+		if cint(self.redeem_loyalty_points and self.loyalty_points and not self.is_consolidated):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			gl_entries.append(
 				self.get_gl_dict(
 					{
@@ -1343,6 +1847,7 @@ class SalesInvoice(SellingController):
 					)
 
 			if not skip_change_gl_entries:
+<<<<<<< HEAD
 				self.make_gle_for_change_amount(gl_entries)
 
 	def make_gle_for_change_amount(self, gl_entries):
@@ -1384,6 +1889,48 @@ class SalesInvoice(SellingController):
 				)
 			else:
 				frappe.throw(_("Select change amount account"), title=_("Mandatory Field"))
+=======
+				gl_entries.extend(self.get_gle_for_change_amount())
+
+	def get_gle_for_change_amount(self) -> list[dict]:
+		if not self.change_amount:
+			return []
+
+		if not self.account_for_change_amount:
+			frappe.throw(_("Please set Account for Change Amount"), title=_("Mandatory Field"))
+
+		return [
+			self.get_gl_dict(
+				{
+					"account": self.debit_to,
+					"party_type": "Customer",
+					"party": self.customer,
+					"against": self.account_for_change_amount,
+					"debit": flt(self.base_change_amount),
+					"debit_in_account_currency": flt(self.base_change_amount)
+					if self.party_account_currency == self.company_currency
+					else flt(self.change_amount),
+					"against_voucher": self.return_against
+					if cint(self.is_return) and self.return_against
+					else self.name,
+					"against_voucher_type": self.doctype,
+					"cost_center": self.cost_center,
+					"project": self.project,
+				},
+				self.party_account_currency,
+				item=self,
+			),
+			self.get_gl_dict(
+				{
+					"account": self.account_for_change_amount,
+					"against": self.customer,
+					"credit": self.base_change_amount,
+					"cost_center": self.cost_center,
+				},
+				item=self,
+			),
+		]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def make_write_off_gl_entry(self, gl_entries):
 		# write off entries, applicable if only pos
@@ -1441,10 +1988,36 @@ class SalesInvoice(SellingController):
 			and self.base_rounding_adjustment
 			and not self.is_internal_transfer()
 		):
+<<<<<<< HEAD
 			round_off_account, round_off_cost_center = get_round_off_account_and_cost_center(
 				self.company, "Sales Invoice", self.name, self.use_company_roundoff_cost_center
 			)
 
+=======
+			(
+				round_off_account,
+				round_off_cost_center,
+				round_off_for_opening,
+			) = get_round_off_account_and_cost_center(
+				self.company, "Sales Invoice", self.name, self.use_company_roundoff_cost_center
+			)
+
+			if self.is_opening == "Yes" and self.rounding_adjustment:
+				if not round_off_for_opening:
+					frappe.throw(
+						_(
+							"Opening Invoice has rounding adjustment of {0}.<br><br> '{1}' account is required to post these values. Please set it in Company: {2}.<br><br> Or, '{3}' can be enabled to not post any rounding adjustment."
+						).format(
+							frappe.bold(self.rounding_adjustment),
+							frappe.bold("Round Off for Opening"),
+							get_link_to_form("Company", self.company),
+							frappe.bold("Disable Rounded Total"),
+						)
+					)
+				else:
+					round_off_account = round_off_for_opening
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			gl_entries.append(
 				self.get_gl_dict(
 					{
@@ -1494,6 +2067,7 @@ class SalesInvoice(SellingController):
 		self.set("write_off_amount", reference_doc.get("write_off_amount"))
 		self.due_date = None
 
+<<<<<<< HEAD
 	def update_serial_no(self, in_cancel=False):
 		"""update Sales Invoice refrence in Serial No"""
 		invoice = None if (in_cancel or self.is_return) else self.name
@@ -1508,10 +2082,13 @@ class SalesInvoice(SellingController):
 				if serial_no and frappe.db.get_value("Serial No", serial_no, "item_code") == item.item_code:
 					frappe.db.set_value("Serial No", serial_no, "sales_invoice", invoice)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_serial_numbers(self):
 		"""
 		validate serial number agains Delivery Note and Sales Invoice
 		"""
+<<<<<<< HEAD
 		self.set_serial_no_against_delivery_note()
 		self.validate_serial_against_delivery_note()
 
@@ -1554,6 +2131,11 @@ class SalesInvoice(SellingController):
 						item.idx, item.qty, item.item_code, len(si_serial_nos)
 					)
 				)
+=======
+		for item in self.items:
+			item.set_serial_no_against_delivery_note()
+			item.validate_serial_against_delivery_note()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_project(self):
 		unique_projects = list(set([d.project for d in self.get("items") if d.project]))
@@ -1563,6 +2145,10 @@ class SalesInvoice(SellingController):
 		for p in unique_projects:
 			project = frappe.get_doc("Project", p)
 			project.update_billed_amount()
+<<<<<<< HEAD
+=======
+			project.calculate_gross_margin()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			project.db_update()
 
 	def verify_payment_amount_is_positive(self):
@@ -1648,7 +2234,12 @@ class SalesInvoice(SellingController):
 			loyalty_program=self.loyalty_program,
 			include_expired_entry=True,
 		)
+<<<<<<< HEAD
 		frappe.db.set_value("Customer", self.customer, "loyalty_program_tier", lp_details.tier_name)
+=======
+		customer = frappe.get_doc("Customer", self.customer)
+		customer.db_set("loyalty_program_tier", lp_details.tier_name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_returned_amount(self):
 		from frappe.query_builder.functions import Sum
@@ -1831,9 +2422,15 @@ def validate_inter_company_party(doctype, party, company, inter_company_referenc
 	if inter_company_reference:
 		doc = frappe.get_doc(ref_doc, inter_company_reference)
 		ref_party = doc.supplier if doctype in ["Sales Invoice", "Sales Order"] else doc.customer
+<<<<<<< HEAD
 		if not frappe.db.get_value(partytype, {"represents_company": doc.company}, "name") == party:
 			frappe.throw(_("Invalid {0} for Inter Company Transaction.").format(partytype))
 		if not frappe.get_cached_value(ref_partytype, ref_party, "represents_company") == company:
+=======
+		if frappe.db.get_value(partytype, {"represents_company": doc.company}, "name") != party:
+			frappe.throw(_("Invalid {0} for Inter Company Transaction.").format(_(partytype)))
+		if frappe.get_cached_value(ref_partytype, ref_party, "represents_company") != company:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.throw(_("Invalid Company for Inter Company Transaction."))
 
 	elif frappe.db.get_value(partytype, {"name": party, internal: 1}, "name") == party:
@@ -1953,7 +2550,11 @@ def make_delivery_note(source_name, target_doc=None):
 				"postprocess": update_item,
 				"condition": lambda doc: doc.delivered_by_supplier != 1,
 			},
+<<<<<<< HEAD
 			"Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "add_if_empty": True},
+=======
+			"Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "reset_value": True},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Sales Team": {
 				"doctype": "Sales Team",
 				"field_map": {"incentives": "incentives"},
@@ -2066,6 +2667,14 @@ def make_inter_company_purchase_invoice(source_name, target_doc=None):
 	return make_inter_company_transaction("Sales Invoice", source_name, target_doc)
 
 
+<<<<<<< HEAD
+=======
+@erpnext.allow_regional
+def make_regional_gl_entries(gl_entries, doc):
+	return gl_entries
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def make_inter_company_transaction(doctype, source_name, target_doc=None):
 	if doctype in ["Sales Invoice", "Sales Order"]:
 		source_doc = frappe.get_doc(doctype, source_name)
@@ -2500,6 +3109,7 @@ def get_mode_of_payment_info(mode_of_payment, company):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def create_dunning(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
 
@@ -2523,10 +3133,31 @@ def create_dunning(source_name, target_doc=None):
 			target.rate_of_interest = dunning_type.rate_of_interest
 			target.dunning_fee = dunning_type.dunning_fee
 			letter_text = get_dunning_letter_text(dunning_type=dunning_type.name, doc=target.as_dict())
+=======
+def create_dunning(source_name, target_doc=None, ignore_permissions=False):
+	from frappe.model.mapper import get_mapped_doc
+
+	def postprocess_dunning(source, target):
+		from erpnext.accounts.doctype.dunning.dunning import get_dunning_letter_text
+
+		dunning_type = frappe.db.exists("Dunning Type", {"is_default": 1, "company": source.company})
+		if dunning_type:
+			dunning_type = frappe.get_doc("Dunning Type", dunning_type)
+			target.dunning_type = dunning_type.name
+			target.rate_of_interest = dunning_type.rate_of_interest
+			target.dunning_fee = dunning_type.dunning_fee
+			target.income_account = dunning_type.income_account
+			target.cost_center = dunning_type.cost_center
+			letter_text = get_dunning_letter_text(
+				dunning_type=dunning_type.name, doc=target.as_dict(), language=source.language
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if letter_text:
 				target.body_text = letter_text.get("body_text")
 				target.closing_text = letter_text.get("closing_text")
 				target.language = letter_text.get("language")
+<<<<<<< HEAD
 			amounts = calculate_interest_and_amount(
 				target.outstanding_amount,
 				target.rate_of_interest,
@@ -2549,6 +3180,33 @@ def create_dunning(source_name, target_doc=None):
 		set_missing_values,
 	)
 	return doclist
+=======
+
+		# update outstanding
+		if source.payment_schedule and len(source.payment_schedule) == 1:
+			target.overdue_payments[0].outstanding = source.get("outstanding_amount")
+
+		target.validate()
+
+	return get_mapped_doc(
+		from_doctype="Sales Invoice",
+		from_docname=source_name,
+		target_doc=target_doc,
+		table_maps={
+			"Sales Invoice": {
+				"doctype": "Dunning",
+				"field_map": {"customer_address": "customer_address", "parent": "sales_invoice"},
+			},
+			"Payment Schedule": {
+				"doctype": "Overdue Payment",
+				"field_map": {"name": "payment_schedule", "parent": "sales_invoice"},
+				"condition": lambda doc: doc.outstanding > 0 and getdate(doc.due_date) < getdate(),
+			},
+		},
+		postprocess=postprocess_dunning,
+		ignore_permissions=ignore_permissions,
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def check_if_return_invoice_linked_with_payment_entry(self):

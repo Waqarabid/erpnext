@@ -3,7 +3,11 @@
  "allow_import": 1,
  "autoname": "hash",
  "creation": "2013-05-02 16:29:48",
+<<<<<<< HEAD
  "description": "Multiple Item prices.",
+=======
+ "description": "Log the selling and buying rate of an Item",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -52,10 +56,20 @@
    "search_index": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "uom",
    "fieldtype": "Link",
    "label": "UOM",
    "options": "UOM"
+=======
+   "fetch_from": "item_code.stock_uom",
+   "fetch_if_empty": 1,
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "default": "0",
@@ -192,7 +206,11 @@
   {
    "fieldname": "valid_upto",
    "fieldtype": "Date",
+<<<<<<< HEAD
    "label": "Valid Upto"
+=======
+   "label": "Valid Up To"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "section_break_24",
@@ -221,7 +239,11 @@
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-13 12:23:39.630290",
+=======
+ "modified": "2024-04-02 22:18:00.450641",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Price",
@@ -256,7 +278,11 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": [],
  "title_field": "item_name",

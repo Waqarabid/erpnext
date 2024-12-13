@@ -32,8 +32,13 @@ def get_data():
 			},
 			{
 				"label": _("Sub-contracting"),
+<<<<<<< HEAD
 				"items": ["Subcontracting Order", "Stock Entry"],
 			},
 			{"label": _("Internal"), "items": ["Sales Order"]},
+=======
+				"items": ["Subcontracting Order", "Subcontracting Receipt", "Stock Entry"],
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		],
 	}

@@ -60,7 +60,11 @@ frappe.ui.form.on("Quality Inspection", {
 
 	refresh: function (frm) {
 		// Ignore cancellation of reference doctype on cancel all.
+<<<<<<< HEAD
 		frm.ignore_doctypes_on_cancel_all = [frm.doc.reference_type];
+=======
+		frm.ignore_doctypes_on_cancel_all = [frm.doc.reference_type, "Serial and Batch Bundle"];
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	item_code: function (frm) {

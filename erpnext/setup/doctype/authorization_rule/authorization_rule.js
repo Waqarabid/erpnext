@@ -12,6 +12,12 @@ frappe.ui.form.on("Authorization Rule", {
 		} else if (frm.doc.based_on === "Itemwise Discount") {
 			unhide_field("master_name");
 			frm.set_value("customer_or_item", "Item");
+<<<<<<< HEAD
+=======
+		} else if (frm.doc.based_on === "Item Group wise Discount") {
+			unhide_field("master_name");
+			frm.set_value("customer_or_item", "Item Group");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		} else {
 			frm.set_value("customer_or_item", "");
 			frm.set_value("master_name", "");
@@ -73,6 +79,16 @@ cur_frm.fields_dict["master_name"].get_query = function (doc) {
 			doctype: "Item",
 			query: "erpnext.controllers.queries.item_query",
 		};
+<<<<<<< HEAD
+=======
+	else if (doc.based_on === "Item Group wise Discount")
+		return {
+			doctype: "Item Group",
+			filters: {
+				is_group: 0,
+			},
+		};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else
 		return {
 			filters: [["Item", "name", "=", "cheating done to avoid null"]],

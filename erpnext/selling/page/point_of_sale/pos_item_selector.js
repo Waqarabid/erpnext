@@ -77,7 +77,11 @@ erpnext.PointOfSale.ItemSelector = class {
 	get_item_html(item) {
 		const me = this;
 		// eslint-disable-next-line no-unused-vars
+<<<<<<< HEAD
 		const { item_image, serial_no, batch_no, barcode, actual_qty, stock_uom, price_list_rate } = item;
+=======
+		const { item_image, serial_no, batch_no, barcode, actual_qty, uom, price_list_rate } = item;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		const precision = flt(price_list_rate, 2) % 1 != 0 ? 2 : 0;
 		let indicator_color;
 		let qty_to_display = actual_qty;
@@ -99,7 +103,11 @@ erpnext.PointOfSale.ItemSelector = class {
 				return `<div class="item-qty-pill">
 							<span class="indicator-pill whitespace-nowrap ${indicator_color}">${qty_to_display}</span>
 						</div>
+<<<<<<< HEAD
 						<div class="flex items-center justify-center h-32 border-b-grey text-6xl text-grey-100">
+=======
+						<div class="flex items-center justify-center border-b-grey text-6xl text-grey-100" style="height:8rem; min-height:8rem">
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							<img
 								onerror="cur_pos.item_selector.handle_broken_image(this)"
 								class="h-full item-img" src="${item_image}"
@@ -116,7 +124,11 @@ erpnext.PointOfSale.ItemSelector = class {
 
 		return `<div class="item-wrapper"
 				data-item-code="${escape(item.item_code)}" data-serial-no="${escape(serial_no)}"
+<<<<<<< HEAD
 				data-batch-no="${escape(batch_no)}" data-uom="${escape(stock_uom)}"
+=======
+				data-batch-no="${escape(batch_no)}" data-uom="${escape(uom)}"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				data-rate="${escape(price_list_rate || 0)}"
 				title="${item.item_name}">
 
@@ -126,7 +138,11 @@ erpnext.PointOfSale.ItemSelector = class {
 					<div class="item-name">
 						${frappe.ellipsis(item.item_name, 18)}
 					</div>
+<<<<<<< HEAD
 					<div class="item-rate">${format_currency(price_list_rate, item.currency, precision) || 0}</div>
+=======
+					<div class="item-rate">${format_currency(price_list_rate, item.currency, precision) || 0} / ${uom}</div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				</div>
 			</div>`;
 	}
@@ -138,7 +154,10 @@ erpnext.PointOfSale.ItemSelector = class {
 
 	make_search_bar() {
 		const me = this;
+<<<<<<< HEAD
 		const doc = me.events.get_frm().doc;
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.$component.find(".search-field").html("");
 		this.$component.find(".item-group-field").html("");
 
@@ -163,6 +182,10 @@ erpnext.PointOfSale.ItemSelector = class {
 					me.filter_items();
 				},
 				get_query: function () {
+<<<<<<< HEAD
+=======
+					const doc = me.events.get_frm().doc;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					return {
 						query: "erpnext.selling.page.point_of_sale.point_of_sale.item_group_query",
 						filters: {

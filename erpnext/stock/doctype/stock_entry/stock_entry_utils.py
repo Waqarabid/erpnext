@@ -52,6 +52,10 @@ def make_stock_entry(**args):
 	:do_not_save: Optional flag
 	:do_not_submit: Optional flag
 	"""
+<<<<<<< HEAD
+=======
+	from erpnext.stock.serial_batch_bundle import SerialBatchCreation
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def process_serial_numbers(serial_nos_list):
 		serial_nos_list = [
@@ -131,6 +135,7 @@ def make_stock_entry(**args):
 	# We can find out the serial number using the batch source document
 	serial_number = args.serial_no
 
+<<<<<<< HEAD
 	if not args.serial_no and args.qty and args.batch_no:
 		serial_number_list = frappe.get_list(
 			doctype="Stock Ledger Entry",
@@ -140,6 +145,42 @@ def make_stock_entry(**args):
 		serial_number = process_serial_numbers(serial_number_list)
 
 	args.serial_no = serial_number
+=======
+	bundle_id = None
+	if not args.use_serial_batch_fields and (args.serial_no or args.batch_no or args.batches):
+		batches = frappe._dict({})
+		if args.batch_no:
+			batches = frappe._dict({args.batch_no: args.qty})
+		elif args.batches:
+			batches = args.batches
+
+		bundle_id = (
+			SerialBatchCreation(
+				{
+					"item_code": args.item,
+					"warehouse": args.source or args.target,
+					"voucher_type": "Stock Entry",
+					"total_qty": args.qty * (-1 if args.source else 1),
+					"batches": batches,
+					"serial_nos": args.serial_no,
+					"type_of_transaction": "Outward" if args.source else "Inward",
+					"company": s.company,
+					"posting_date": s.posting_date,
+					"posting_time": s.posting_time,
+					"rate": args.rate or args.basic_rate,
+					"do_not_submit": True,
+				}
+			)
+			.make_serial_and_batch_bundle()
+			.name
+		)
+
+		args["serial_no"] = ""
+		args["batch_no"] = ""
+
+	else:
+		args.serial_no = serial_number
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	s.append(
 		"items",
@@ -148,6 +189,10 @@ def make_stock_entry(**args):
 			"s_warehouse": args.source,
 			"t_warehouse": args.target,
 			"qty": args.qty,
+<<<<<<< HEAD
+=======
+			"serial_and_batch_bundle": bundle_id,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"basic_rate": args.rate or args.basic_rate,
 			"conversion_factor": args.conversion_factor or 1.0,
 			"transfer_qty": flt(args.qty) * (flt(args.conversion_factor) or 1.0),
@@ -155,6 +200,10 @@ def make_stock_entry(**args):
 			"batch_no": args.batch_no,
 			"cost_center": args.cost_center,
 			"expense_account": args.expense_account,
+<<<<<<< HEAD
+=======
+			"use_serial_batch_fields": args.use_serial_batch_fields,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 	)
 
@@ -164,4 +213,10 @@ def make_stock_entry(**args):
 		s.insert()
 		if not args.do_not_submit:
 			s.submit()
+<<<<<<< HEAD
+=======
+
+		s.load_from_db()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return s

@@ -99,7 +99,13 @@ class ForecastingReport(ExponentialSmoothingForecast):
 		parent = frappe.qb.DocType(self.doctype)
 		child = frappe.qb.DocType(self.child_doctype)
 
+<<<<<<< HEAD
 		date_field = "posting_date" if self.doctype == "Delivery Note" else "transaction_date"
+=======
+		date_field = (
+			"posting_date" if self.doctype in ("Delivery Note", "Sales Invoice") else "transaction_date"
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		query = (
 			frappe.qb.from_(parent)
@@ -142,7 +148,11 @@ class ForecastingReport(ExponentialSmoothingForecast):
 		if not self.data:
 			return
 
+<<<<<<< HEAD
 		total_row = {"item_code": _(frappe.bold("Total Quantity"))}
+=======
+		total_row = {"item_code": _("Total Quantity")}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for value in self.data:
 			for period in self.period_list:

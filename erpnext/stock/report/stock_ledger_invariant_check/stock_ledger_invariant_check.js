@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 const DIFFERENCE_FIELD_NAMES = [
 	"difference_in_qty",
@@ -33,6 +36,15 @@ frappe.query_reports["Stock Ledger Invariant Check"] = {
 			mandatory: 1,
 			options: "Warehouse",
 		},
+<<<<<<< HEAD
+=======
+		{
+			fieldname: "show_incorrect_entries",
+			fieldtype: "Check",
+			label: "Show Incorrect Entries",
+			default: 0,
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 
 	formatter(value, row, column, data, default_formatter) {

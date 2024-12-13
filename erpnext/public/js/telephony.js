@@ -12,7 +12,11 @@ frappe.ui.form.ControlData = class ControlData extends frappe.ui.form.ControlDat
 					field.disp_area.style[0] != "display" &&
 					!field.has_icon
 				) {
+<<<<<<< HEAD
 					field.setup_phone();
+=======
+					field.setup_phone && field.setup_phone();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					field.has_icon = true;
 				}
 			});

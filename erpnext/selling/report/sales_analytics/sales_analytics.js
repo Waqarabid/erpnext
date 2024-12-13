@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Sales Analytics"] = {
 	filters: [
@@ -22,9 +25,23 @@ frappe.query_reports["Sales Analytics"] = {
 		},
 		{
 			fieldname: "doc_type",
+<<<<<<< HEAD
 			label: __("based_on"),
 			fieldtype: "Select",
 			options: ["Sales Order", "Delivery Note", "Sales Invoice"],
+=======
+			label: __("Based On"),
+			fieldtype: "Select",
+			options: [
+				"All",
+				"Quotation",
+				"Sales Order",
+				"Delivery Note",
+				"Sales Invoice",
+				"Sales Invoice (due)",
+				"Payment Entry",
+			],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			default: "Sales Invoice",
 			reqd: 1,
 		},
@@ -43,14 +60,26 @@ frappe.query_reports["Sales Analytics"] = {
 			fieldname: "from_date",
 			label: __("From Date"),
 			fieldtype: "Date",
+<<<<<<< HEAD
 			default: erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), true)[1],
+=======
+			default:
+				frappe.defaults.get_user_default("sales_start_date") ||
+				erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), true)[1],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 		},
 		{
 			fieldname: "to_date",
 			label: __("To Date"),
 			fieldtype: "Date",
+<<<<<<< HEAD
 			default: erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), true)[2],
+=======
+			default:
+				frappe.defaults.get_user_default("sales_end_date") ||
+				erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), true)[2],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 		},
 		{
@@ -74,6 +103,27 @@ frappe.query_reports["Sales Analytics"] = {
 			default: "Monthly",
 			reqd: 1,
 		},
+<<<<<<< HEAD
+=======
+		{
+			fieldname: "curves",
+			label: __("Curves"),
+			fieldtype: "Select",
+			options: [
+				{ value: "select", label: __("Select") },
+				{ value: "all", label: __("All") },
+				{ value: "non-zeros", label: __("Non-Zeros") },
+				{ value: "total", label: __("Total Only") },
+			],
+			default: "select",
+			reqd: 1,
+		},
+		{
+			fieldname: "show_aggregate_value_from_subsidiary_companies",
+			label: __("Show Aggregate Value from Subsidiary Companies"),
+			fieldtype: "Check",
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	],
 	get_datatable_options(options) {
 		return Object.assign(options, {

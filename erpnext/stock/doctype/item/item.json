@@ -22,7 +22,10 @@
   "allow_alternative_item",
   "is_stock_item",
   "has_variants",
+<<<<<<< HEAD
   "include_item_in_manufacturing",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "opening_stock",
   "valuation_rate",
   "standard_rate",
@@ -37,6 +40,11 @@
   "section_break_11",
   "description",
   "brand",
+<<<<<<< HEAD
+=======
+  "unit_of_measure_conversion",
+  "uoms",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "dashboard_tab",
   "inventory_section",
   "inventory_settings_section",
@@ -53,8 +61,11 @@
   "barcodes",
   "reorder_section",
   "reorder_levels",
+<<<<<<< HEAD
   "unit_of_measure_conversion",
   "uoms",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "serial_nos_and_batches",
   "has_batch_no",
   "create_new_batch",
@@ -111,13 +122,20 @@
   "quality_inspection_template",
   "inspection_required_before_delivery",
   "manufacturing",
+<<<<<<< HEAD
+=======
+  "include_item_in_manufacturing",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "is_sub_contracted_item",
   "default_bom",
   "column_break_74",
   "customer_code",
   "default_item_manufacturer",
   "default_manufacturer_part_no",
+<<<<<<< HEAD
   "published_in_website",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "total_projected_qty"
  ],
  "fields": [
@@ -383,7 +401,11 @@
    "options": "fa fa-rss"
   },
   {
+<<<<<<< HEAD
    "description": "Will also apply for variants unless overrridden",
+=======
+   "description": "Will also apply for variants unless overridden",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "reorder_levels",
    "fieldtype": "Table",
    "label": "Reorder level based on Warehouse",
@@ -819,6 +841,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "default": "0",
    "depends_on": "published_in_website",
    "fieldname": "published_in_website",
@@ -827,6 +850,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "1",
    "fieldname": "grant_commission",
    "fieldtype": "Check",
@@ -900,7 +925,11 @@
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
+<<<<<<< HEAD
  "modified": "2024-01-08 18:09:30.225085",
+=======
+ "modified": "2024-04-30 13:46:39.098753",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
@@ -959,7 +988,11 @@
    "export": 1,
    "print": 1,
    "report": 1,
+<<<<<<< HEAD
    "role": "All",
+=======
+   "role": "Desk User",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "select": 1,
    "share": 1
   }
@@ -968,7 +1001,11 @@
  "search_fields": "item_name,description,item_group,customer_code",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "item_name",

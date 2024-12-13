@@ -2,6 +2,7 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
 from frappe.utils import cstr
 
@@ -11,6 +12,30 @@ from erpnext.assets.doctype.asset.test_asset import create_asset
 class TestAssetShiftAllocation(FrappeTestCase):
 	@classmethod
 	def setUpClass(cls):
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+from frappe.utils import cstr
+
+from erpnext.assets.doctype.asset.test_asset import create_asset
+from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
+	get_depr_schedule,
+)
+
+
+class UnitTestAssetShiftAllocation(UnitTestCase):
+	"""
+	Unit tests for AssetShiftAllocation.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestAssetShiftAllocation(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		create_asset_shift_factors()
 
 	@classmethod
@@ -47,7 +72,11 @@ class TestAssetShiftAllocation(FrappeTestCase):
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount, d.shift]
+<<<<<<< HEAD
 			for d in asset.get("schedules")
+=======
+			for d in get_depr_schedule(asset.name, "Active")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)
@@ -90,11 +119,17 @@ class TestAssetShiftAllocation(FrappeTestCase):
 
 		asset_shift_allocation.submit()
 
+<<<<<<< HEAD
 		asset.reload()
 
 		schedules = [
 			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount, d.shift]
 			for d in asset.get("schedules")
+=======
+		schedules = [
+			[cstr(d.schedule_date), d.depreciation_amount, d.accumulated_depreciation_amount, d.shift]
+			for d in get_depr_schedule(asset.name, "Active")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		self.assertEqual(schedules, expected_schedules)

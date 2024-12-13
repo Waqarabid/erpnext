@@ -23,7 +23,10 @@
   "default_bank_account",
   "column_break_10",
   "default_price_list",
+<<<<<<< HEAD
   "payment_terms",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "internal_supplier_section",
   "is_internal_supplier",
   "represents_company",
@@ -46,6 +49,7 @@
   "column_break1",
   "contact_html",
   "primary_address_and_contact_detail_section",
+<<<<<<< HEAD
   "supplier_primary_contact",
   "mobile_no",
   "email_id",
@@ -53,6 +57,18 @@
   "supplier_primary_address",
   "primary_address",
   "accounting_tab",
+=======
+  "column_break_44",
+  "supplier_primary_address",
+  "primary_address",
+  "column_break_mglr",
+  "supplier_primary_contact",
+  "mobile_no",
+  "email_id",
+  "accounting_tab",
+  "payment_terms",
+  "default_accounts_section",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "accounts",
   "settings_tab",
   "allow_purchase_invoice_creation_without_purchase_order",
@@ -68,7 +84,14 @@
   "on_hold",
   "hold_type",
   "column_break_59",
+<<<<<<< HEAD
   "release_date"
+=======
+  "release_date",
+  "portal_users_tab",
+  "portal_users",
+  "column_break_1mqv"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -162,8 +185,12 @@
    "label": "Supplier Group",
    "oldfieldname": "supplier_type",
    "oldfieldtype": "Link",
+<<<<<<< HEAD
    "options": "Supplier Group",
    "reqd": 1
+=======
+   "options": "Supplier Group"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "default": "Company",
@@ -445,6 +472,33 @@
   {
    "fieldname": "column_break_59",
    "fieldtype": "Column Break"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "default_accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Default Accounts"
+  },
+  {
+   "fieldname": "portal_users_tab",
+   "fieldtype": "Tab Break",
+   "label": "Portal Users"
+  },
+  {
+   "fieldname": "portal_users",
+   "fieldtype": "Table",
+   "label": "Supplier Portal Users",
+   "options": "Portal User"
+  },
+  {
+   "fieldname": "column_break_1mqv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mglr",
+   "fieldtype": "Column Break"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-user",
@@ -461,7 +515,10 @@
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
+<<<<<<< HEAD
  "name_case": "Title Case",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
@@ -490,7 +547,10 @@
    "read": 1,
    "report": 1,
    "role": "Purchase Master Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "share": 1,
    "write": 1
   },
@@ -518,11 +578,21 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "search_fields": "supplier_name, supplier_group",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
+=======
+ "search_fields": "supplier_group",
+ "show_name_in_global_search": 1,
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": [],
  "title_field": "supplier_name",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

@@ -10,6 +10,11 @@
   "item_code",
   "customer_item_code",
   "ensure_delivery_based_on_produced_serial_no",
+<<<<<<< HEAD
+=======
+  "is_stock_item",
+  "reserve_stock",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "col_break1",
   "delivery_date",
   "item_name",
@@ -27,6 +32,10 @@
   "uom",
   "conversion_factor",
   "stock_qty",
+<<<<<<< HEAD
+=======
+  "stock_reserved_qty",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_16",
   "price_list_rate",
   "base_price_list_rate",
@@ -37,6 +46,10 @@
   "column_break_19",
   "discount_percentage",
   "discount_amount",
+<<<<<<< HEAD
+=======
+  "distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "base_rate_with_margin",
   "section_break_simple1",
   "rate",
@@ -75,11 +88,21 @@
   "against_blanket_order",
   "blanket_order",
   "blanket_order_rate",
+<<<<<<< HEAD
+=======
+  "available_quantity_section",
+  "actual_qty",
+  "column_break_jpky",
+  "company_total_stock",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "manufacturing_section_section",
   "bom_no",
   "planning_section",
   "projected_qty",
+<<<<<<< HEAD
   "actual_qty",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "ordered_qty",
   "planned_qty",
   "production_plan_qty",
@@ -161,7 +184,10 @@
    "oldfieldname": "description",
    "oldfieldtype": "Small Text",
    "print_width": "300px",
+<<<<<<< HEAD
    "reqd": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "300px"
   },
   {
@@ -278,7 +304,11 @@
   },
   {
    "collapsible": 1,
+<<<<<<< HEAD
    "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount",
+=======
+   "collapsible_depends_on": "eval: doc.margin_type || doc.discount_amount || doc.distributed_discount_amount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "discount_and_margin",
    "fieldtype": "Section Break",
    "label": "Discount and Margin"
@@ -634,7 +664,11 @@
    "allow_on_submit": 1,
    "fieldname": "actual_qty",
    "fieldtype": "Float",
+<<<<<<< HEAD
    "label": "Actual Qty",
+=======
+   "label": "Qty (Warehouse)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "no_copy": 1,
    "print_hide": 1,
    "print_width": "70px",
@@ -866,24 +900,94 @@
    "label": "Material Request Item"
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_on_submit": 1,
+   "default": "1",
+   "depends_on": "eval:doc.is_stock_item",
+   "fieldname": "reserve_stock",
+   "fieldtype": "Check",
+   "label": "Reserve Stock",
+   "print_hide": 1,
+   "report_hide": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.stock_reserved_qty",
+   "fieldname": "stock_reserved_qty",
+   "fieldtype": "Float",
+   "label": "Stock Reserved Qty (in Stock UOM)",
+   "no_copy": 1,
+   "non_negative": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "report_hide": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "production_plan_qty",
    "fieldtype": "Float",
    "label": "Production Plan Qty",
    "no_copy": 1,
    "read_only": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.is_stock_item",
+   "fieldname": "is_stock_item",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Is Stock Item",
+   "print_hide": 1,
+   "report_hide": 1
+  },
+  {
+   "fieldname": "distributed_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Distributed Discount Amount",
+   "options": "currency"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "company_total_stock",
+   "fieldtype": "Float",
+   "label": "Qty (Company)",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jpky",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "available_quantity_section",
+   "fieldtype": "Section Break",
+   "label": "Available Quantity"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-03-21 18:15:56.625005",
+=======
+ "modified": "2024-11-21 13:21:29.743474",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

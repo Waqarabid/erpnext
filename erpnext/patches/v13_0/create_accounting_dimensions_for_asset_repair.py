@@ -13,8 +13,14 @@ def execute():
 	for d in accounting_dimensions:
 		doctype = "Asset Repair"
 		field = frappe.db.get_value("Custom Field", {"dt": doctype, "fieldname": d.fieldname})
+<<<<<<< HEAD
 
 		if field:
+=======
+		docfield = frappe.db.get_value("DocField", {"parent": doctype, "fieldname": d.fieldname})
+
+		if field or docfield:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			continue
 
 		df = {

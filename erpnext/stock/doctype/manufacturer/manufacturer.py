@@ -7,6 +7,25 @@ from frappe.model.document import Document
 
 
 class Manufacturer(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		country: DF.Link | None
+		full_name: DF.Data | None
+		logo: DF.AttachImage | None
+		notes: DF.SmallText | None
+		short_name: DF.Data
+		website: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		"""Load address and contacts in `__onload`"""
 		load_address_and_contact(self)

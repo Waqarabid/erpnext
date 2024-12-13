@@ -54,6 +54,13 @@ status_map = {
 			"eval:self.per_delivered < 100 and self.per_billed >= 100 and self.docstatus == 1 and not self.skip_delivery_note",
 		],
 		[
+<<<<<<< HEAD
+=======
+			"To Pay",
+			"eval:self.advance_payment_status == 'Requested' and self.docstatus == 1",
+		],
+		[
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Completed",
 			"eval:(self.per_delivered >= 100 or self.skip_delivery_note) and self.per_billed >= 100 and self.docstatus == 1",
 		],
@@ -63,16 +70,30 @@ status_map = {
 	],
 	"Purchase Order": [
 		["Draft", None],
+<<<<<<< HEAD
 		[
 			"To Receive and Bill",
 			"eval:self.per_received < 100 and self.per_billed < 100 and self.docstatus == 1",
 		],
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		["To Bill", "eval:self.per_received >= 100 and self.per_billed < 100 and self.docstatus == 1"],
 		[
 			"To Receive",
 			"eval:self.per_received < 100 and self.per_billed == 100 and self.docstatus == 1",
 		],
 		[
+<<<<<<< HEAD
+=======
+			"To Receive and Bill",
+			"eval:self.per_received < 100 and self.per_billed < 100 and self.docstatus == 1",
+		],
+		[
+			"To Pay",
+			"eval:self.advance_payment_status == 'Initiated' and self.docstatus == 1",
+		],
+		[
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Completed",
 			"eval:self.per_received >= 100 and self.per_billed == 100 and self.docstatus == 1",
 		],
@@ -94,7 +115,14 @@ status_map = {
 		["To Bill", "eval:self.per_billed == 0 and self.docstatus == 1"],
 		["Partly Billed", "eval:self.per_billed > 0 and self.per_billed < 100 and self.docstatus == 1"],
 		["Return Issued", "eval:self.per_returned == 100 and self.docstatus == 1"],
+<<<<<<< HEAD
 		["Completed", "eval:self.per_billed == 100 and self.docstatus == 1"],
+=======
+		[
+			"Completed",
+			"eval:(self.per_billed == 100 and self.docstatus == 1) or (self.docstatus == 1 and self.grand_total == 0 and self.per_returned != 100 and self.is_return == 0)",
+		],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		["Cancelled", "eval:self.docstatus==2"],
 		["Closed", "eval:self.status=='Closed' and self.docstatus != 2"],
 	],
@@ -132,11 +160,14 @@ status_map = {
 			"eval:self.status != 'Stopped' and self.per_ordered == 100 and self.docstatus == 1 and self.material_request_type == 'Manufacture'",
 		],
 	],
+<<<<<<< HEAD
 	"Bank Transaction": [
 		["Unreconciled", "eval:self.docstatus == 1 and self.unallocated_amount>0"],
 		["Reconciled", "eval:self.docstatus == 1 and self.unallocated_amount<=0"],
 		["Cancelled", "eval:self.docstatus == 2"],
 	],
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"POS Opening Entry": [
 		["Draft", None],
 		["Open", "eval:self.docstatus == 1 and not self.pos_closing_entry"],
@@ -175,6 +206,7 @@ class StatusUpdater(Document):
 				self.status = "Draft"
 			return
 
+<<<<<<< HEAD
 		if self.doctype in status_map:
 			_status = self.status
 			if status and update:
@@ -214,6 +246,67 @@ class StatusUpdater(Document):
 
 			if update:
 				self.db_set("status", self.status, update_modified=update_modified)
+=======
+		if self.doctype not in status_map:
+			return
+		_status = self.status
+		# TODO: revise accidential complexity where update has a double meaning, see below
+		self.status = status if status else self.status
+		new_status = self.get_status()["status"]
+
+		if new_status != _status:
+			if new_status not in ("Cancelled", "Partially Ordered", "Ordered", "Issued", "Transferred"):
+				self.add_comment("Label", _(new_status))
+
+			self.status = new_status
+			if update:
+				self.db_set("status", new_status, update_modified=update_modified)
+
+	def get_status(self):
+		"""
+		Get the status of the document.
+
+		Returns:
+		        dict: A dictionary containing the status. This allows callers to receive
+		        a dictionary for efficient bulk updates, for example when `per_billed`
+		        and other status fields also need to be updated.
+
+		Note:
+		        Can be overriden on a doctype to implement more localized status updater logic.
+
+		Example:
+		        {
+		                "status": "Draft",
+		                "per_billed": 50,
+		                "billing_status": "Partly Billed"
+		        }
+		"""
+		if self.doctype not in status_map:
+			return {"status": self.status}
+
+		sl = status_map[self.doctype][:]
+		sl.reverse()
+
+		for s in sl:
+			if not s[1]:
+				return {"status": s[0]}
+			elif s[1].startswith("eval:"):
+				if frappe.safe_eval(
+					s[1][5:],
+					None,
+					{
+						"self": self.as_dict(),
+						"getdate": getdate,
+						"nowdate": nowdate,
+						"get_value": frappe.db.get_value,
+					},
+				):
+					return {"status": s[0]}
+			elif getattr(self, s[1])():
+				return {"status": s[0]}
+
+		return {"status": self.status}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_qty(self):
 		"""Validates qty at row level"""
@@ -441,6 +534,42 @@ class StatusUpdater(Document):
 					where name='{detail_id}'""".format(**args)
 				)
 
+<<<<<<< HEAD
+=======
+	@staticmethod
+	def _calculate_target_parent_percentage(
+		name, target_parent_dt, target_dt, target_ref_field, target_field
+	):
+		child_records = frappe.get_all(
+			target_dt,
+			filters={"parent": name, "parenttype": target_parent_dt},
+			fields=[target_ref_field, target_field],
+		)
+
+		sum_ref = sum(abs(record[target_ref_field]) for record in child_records)
+
+		if sum_ref > 0:
+			percentage = round(
+				sum(min(abs(record[target_field]), abs(record[target_ref_field])) for record in child_records)
+				/ sum_ref
+				* 100,
+				6,
+			)
+		else:
+			percentage = 0
+
+		return percentage
+
+	@staticmethod
+	def _determine_status(percentage, keyword):
+		if percentage < 0.001:
+			return f"Not {keyword}"
+		elif percentage >= 99.999999:
+			return f"Fully {keyword}"
+		else:
+			return f"Partly {keyword}"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def _update_percent_field_in_targets(self, args, update_modified=True):
 		"""Update percent field in parent transaction"""
 		if args.get("percent_join_field_parent"):
@@ -461,6 +590,7 @@ class StatusUpdater(Document):
 	def _update_percent_field(self, args, update_modified=True):
 		"""Update percent field in parent transaction"""
 
+<<<<<<< HEAD
 		self._update_modified(args, update_modified)
 
 		if args.get("target_parent_field"):
@@ -489,6 +619,30 @@ class StatusUpdater(Document):
 				target = frappe.get_doc(args["target_parent_dt"], args["name"])
 				target.set_status(update=True)
 				target.notify_update()
+=======
+		update_data = {}
+
+		if args.get("target_parent_field"):
+			update_data[args.get("target_parent_field")] = self._calculate_target_parent_percentage(
+				args["name"],
+				args["target_parent_dt"],
+				args["target_dt"],
+				args["target_ref_field"],
+				args["target_field"],
+			)
+			# update field
+			if args.get("status_field"):
+				update_data[args.get("status_field")] = self._determine_status(
+					update_data[args.get("target_parent_field")], args["keyword"]
+				)
+
+		if update_data:
+			target = frappe.get_doc(args["target_parent_dt"], args["name"])
+			target.update(update_data)  # status calculus might depend on it
+			status = target.get_status()
+			update_data.update(status)
+			target.db_set(update_data, update_modified=update_modified, notify=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def _update_modified(self, args, update_modified):
 		if not update_modified:

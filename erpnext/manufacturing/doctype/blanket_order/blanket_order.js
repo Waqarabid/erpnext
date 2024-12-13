@@ -18,7 +18,11 @@ frappe.ui.form.on("Blanket Order", {
 	},
 
 	refresh: function (frm) {
+<<<<<<< HEAD
 		erpnext.hide_company();
+=======
+		erpnext.hide_company(frm);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.customer && frm.doc.docstatus === 1 && frm.doc.to_date > frappe.datetime.get_today()) {
 			frm.add_custom_button(
 				__("Sales Order"),

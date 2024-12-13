@@ -9,6 +9,26 @@ from frappe.utils import add_months, flt
 
 
 class MonthlyDistribution(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.monthly_distribution_percentage.monthly_distribution_percentage import (
+			MonthlyDistributionPercentage,
+		)
+
+		distribution_id: DF.Data
+		fiscal_year: DF.Link | None
+		percentages: DF.Table[MonthlyDistributionPercentage]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@frappe.whitelist()
 	def get_months(self):
 		month_list = [

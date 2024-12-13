@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "autoname": "naming_series:",
  "creation": "2018-07-20 16:43:08.505978",
  "doctype": "DocType",
@@ -107,7 +111,12 @@
   }
  ],
  "is_submittable": 1,
+<<<<<<< HEAD
  "modified": "2020-04-06 18:00:56.022642",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:10:10.186727",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Order",
@@ -144,7 +153,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

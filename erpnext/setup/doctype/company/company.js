@@ -20,7 +20,10 @@ frappe.ui.form.on("Company", {
 	},
 	setup: function (frm) {
 		frm.__rename_queue = "long";
+<<<<<<< HEAD
 		erpnext.company.setup_queries(frm);
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		frm.set_query("parent_company", function () {
 			return {
@@ -28,6 +31,15 @@ frappe.ui.form.on("Company", {
 			};
 		});
 
+<<<<<<< HEAD
+=======
+		frm.set_query("default_operating_cost_account", function (doc) {
+			return {
+				filters: { company: doc.name, root_type: "Expense" },
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("default_selling_terms", function () {
 			return { filters: { selling: 1 } };
 		});
@@ -75,6 +87,11 @@ frappe.ui.form.on("Company", {
 	},
 
 	refresh: function (frm) {
+<<<<<<< HEAD
+=======
+		erpnext.company.setup_queries(frm);
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.toggle_display("address_html", !frm.is_new());
 
 		if (!frm.is_new()) {
@@ -82,8 +99,11 @@ frappe.ui.form.on("Company", {
 			disbale_coa_fields(frm);
 			frappe.contacts.render_address_and_contact(frm);
 
+<<<<<<< HEAD
 			frappe.dynamic_link = { doc: frm.doc, fieldname: "name", doctype: "Company" };
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if (frappe.perm.has_perm("Cost Center", 0, "read")) {
 				frm.add_custom_button(
 					__("Cost Centers"),
@@ -242,11 +262,20 @@ erpnext.company.setup_queries = function (frm) {
 		[
 			["default_bank_account", { account_type: "Bank" }],
 			["default_cash_account", { account_type: "Cash" }],
+<<<<<<< HEAD
 			["default_receivable_account", { account_type: "Receivable" }],
 			["default_payable_account", { account_type: "Payable" }],
 			["default_expense_account", { root_type: "Expense" }],
 			["default_income_account", { root_type: "Income" }],
 			["round_off_account", { root_type: "Expense" }],
+=======
+			["default_receivable_account", { root_type: "Asset", account_type: "Receivable" }],
+			["default_payable_account", { root_type: "Liability", account_type: "Payable" }],
+			["default_expense_account", { root_type: "Expense" }],
+			["default_income_account", { root_type: "Income" }],
+			["round_off_account", { root_type: "Expense" }],
+			["round_off_for_opening", { root_type: "Liability", account_type: "Round Off for Opening" }],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			["write_off_account", { root_type: "Expense" }],
 			["default_deferred_expense_account", {}],
 			["default_deferred_revenue_account", {}],
@@ -254,7 +283,14 @@ erpnext.company.setup_queries = function (frm) {
 			["discount_allowed_account", { root_type: "Expense" }],
 			["discount_received_account", { root_type: "Income" }],
 			["exchange_gain_loss_account", { root_type: ["in", ["Expense", "Income"]] }],
+<<<<<<< HEAD
 			["unrealized_exchange_gain_loss_account", { root_type: ["in", ["Expense", "Income"]] }],
+=======
+			[
+				"unrealized_exchange_gain_loss_account",
+				{ root_type: ["in", ["Expense", "Income", "Equity", "Liability"]] },
+			],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			[
 				"accumulated_depreciation_account",
 				{ root_type: "Asset", account_type: "Accumulated Depreciation" },
@@ -269,6 +305,11 @@ erpnext.company.setup_queries = function (frm) {
 			["asset_received_but_not_billed", { account_type: "Asset Received But Not Billed" }],
 			["unrealized_profit_loss_account", { root_type: ["in", ["Liability", "Asset"]] }],
 			["default_provisional_account", { root_type: ["in", ["Liability", "Asset"]] }],
+<<<<<<< HEAD
+=======
+			["default_advance_received_account", { root_type: "Liability", account_type: "Receivable" }],
+			["default_advance_paid_account", { root_type: "Asset", account_type: "Payable" }],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		],
 		function (i, v) {
 			erpnext.company.set_custom_query(frm, v);

@@ -12,6 +12,7 @@ $.extend(erpnext.queries, {
 		return { query: "erpnext.controllers.queries.lead_query" };
 	},
 
+<<<<<<< HEAD
 	customer: function () {
 		return { query: "erpnext.controllers.queries.customer_query" };
 	},
@@ -20,6 +21,8 @@ $.extend(erpnext.queries, {
 		return { query: "erpnext.controllers.queries.supplier_query" };
 	},
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	item: function (filters) {
 		var args = { query: "erpnext.controllers.queries.item_query" };
 		if (filters) args["filters"] = filters;
@@ -97,7 +100,11 @@ $.extend(erpnext.queries, {
 
 	company_address_query: function (doc) {
 		if (!doc.company) {
+<<<<<<< HEAD
 			frappe.throw(__("Please set {0}", [frappe.meta.get_label(doc.doctype, "company", doc.name)]));
+=======
+			frappe.throw(__("Please set {0}", [__(frappe.meta.get_label(doc.doctype, "company", doc.name))]));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		return {
@@ -107,9 +114,18 @@ $.extend(erpnext.queries, {
 	},
 
 	dispatch_address_query: function (doc) {
+<<<<<<< HEAD
 		return {
 			query: "frappe.contacts.doctype.address.address.address_query",
 			filters: { link_doctype: "Company", link_name: doc.company || "" },
+=======
+		var filters = { link_doctype: "Company", link_name: doc.company || "" };
+		var is_drop_ship = doc.items.some((item) => item.delivered_by_supplier);
+		if (is_drop_ship) filters = {};
+		return {
+			query: "frappe.contacts.doctype.address.address.address_query",
+			filters: filters,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		};
 	},
 

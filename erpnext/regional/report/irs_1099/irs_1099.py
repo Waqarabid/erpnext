@@ -10,7 +10,11 @@ from frappe.utils.data import fmt_money
 from frappe.utils.jinja import render_template
 from frappe.utils.pdf import get_pdf
 from frappe.utils.print_format import read_multi_pdf
+<<<<<<< HEAD
 from PyPDF2 import PdfWriter
+=======
+from pypdf import PdfWriter
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.utils import get_fiscal_year
 

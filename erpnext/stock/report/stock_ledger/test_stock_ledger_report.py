@@ -2,12 +2,17 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, today
 
 from erpnext.maintenance.doctype.maintenance_schedule.test_maintenance_schedule import (
 	make_serial_item_with_serial,
 )
+<<<<<<< HEAD
 from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 from erpnext.stock.report.stock_ledger.stock_ledger import execute
@@ -16,6 +21,13 @@ from erpnext.stock.report.stock_ledger.stock_ledger import execute
 class TestStockLedgerReeport(FrappeTestCase):
 	def setUp(self) -> None:
 		make_serial_item_with_serial("_Test Stock Report Serial Item")
+=======
+
+
+class TestStockLedgerReeport(IntegrationTestCase):
+	def setUp(self) -> None:
+		make_serial_item_with_serial(self, "_Test Stock Report Serial Item")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.filters = frappe._dict(
 			company="_Test Company",
 			from_date=today(),
@@ -25,6 +37,7 @@ class TestStockLedgerReeport(FrappeTestCase):
 
 	def tearDown(self) -> None:
 		frappe.db.rollback()
+<<<<<<< HEAD
 
 	def test_serial_balance(self):
 		item_code = "_Test Stock Report Serial Item"
@@ -40,3 +53,5 @@ class TestStockLedgerReeport(FrappeTestCase):
 		self.assertEqual(data[0].out_qty, -1)
 		self.assertEqual(data[0].serial_no, serials_added[1])
 		self.assertEqual(data[0].balance_serial_no, serials_added[0])
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

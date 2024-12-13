@@ -1,9 +1,16 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import now_datetime, random_string, today
 
 from erpnext.crm.doctype.lead.lead import make_customer
@@ -11,10 +18,15 @@ from erpnext.crm.doctype.lead.test_lead import make_lead
 from erpnext.crm.doctype.opportunity.opportunity import make_quotation
 from erpnext.crm.utils import get_linked_communication_list
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("Opportunity")
 
 
 class TestOpportunity(unittest.TestCase):
+=======
+
+class TestOpportunity(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_opportunity_status(self):
 		doc = make_opportunity(with_items=0)
 		quotation = make_quotation(doc.name)
@@ -51,7 +63,11 @@ class TestOpportunity(unittest.TestCase):
 		self.assertEqual(opportunity_doc.total, 2200)
 
 	def test_carry_forward_of_email_and_comments(self):
+<<<<<<< HEAD
 		frappe.db.set_value("CRM Settings", "CRM Settings", "carry_forward_communication_and_comments", 1)
+=======
+		frappe.db.set_single_value("CRM Settings", "carry_forward_communication_and_comments", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		lead_doc = make_lead()
 		lead_doc.add_comment("Comment", text="Test Comment 1")
 		lead_doc.add_comment("Comment", text="Test Comment 2")

@@ -7,17 +7,84 @@ from email_reply_parser import EmailReplyParser
 from frappe import _, qb
 from frappe.desk.reportview import get_match_cond
 from frappe.model.document import Document
+<<<<<<< HEAD
 from frappe.query_builder.functions import Sum
 from frappe.utils import add_days, flt, get_datetime, get_time, get_url, nowtime, today
 
 from erpnext import get_default_company
 from erpnext.controllers.queries import get_filters_cond
+=======
+from frappe.query_builder import Interval
+from frappe.query_builder.functions import Count, CurDate, Date, Sum, UnixTimestamp
+from frappe.utils import add_days, flt, get_datetime, get_time, get_url, nowtime, today
+from frappe.utils.user import is_website_user
+
+from erpnext import get_default_company
+from erpnext.controllers.queries import get_filters_cond
+from erpnext.controllers.website_list_for_contact import get_customers_suppliers
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.setup.doctype.holiday_list.holiday_list import is_holiday
 
 
 class Project(Document):
+<<<<<<< HEAD
 	def get_feed(self):
 		return f"{_(self.status)}: {frappe.safe_decode(self.project_name)}"
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.projects.doctype.project_user.project_user import ProjectUser
+
+		actual_end_date: DF.Date | None
+		actual_start_date: DF.Date | None
+		actual_time: DF.Float
+		collect_progress: DF.Check
+		company: DF.Link
+		copied_from: DF.Data | None
+		cost_center: DF.Link | None
+		customer: DF.Link | None
+		daily_time_to_send: DF.Time | None
+		day_to_send: DF.Literal["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+		department: DF.Link | None
+		estimated_costing: DF.Currency
+		expected_end_date: DF.Date | None
+		expected_start_date: DF.Date | None
+		first_email: DF.Time | None
+		frequency: DF.Literal["Hourly", "Twice Daily", "Daily", "Weekly"]
+		from_time: DF.Time | None
+		gross_margin: DF.Currency
+		holiday_list: DF.Link | None
+		is_active: DF.Literal["Yes", "No"]
+		message: DF.Text | None
+		naming_series: DF.Literal["PROJ-.####"]
+		notes: DF.TextEditor | None
+		per_gross_margin: DF.Percent
+		percent_complete: DF.Percent
+		percent_complete_method: DF.Literal["Manual", "Task Completion", "Task Progress", "Task Weight"]
+		priority: DF.Literal["Medium", "Low", "High"]
+		project_name: DF.Data
+		project_template: DF.Link | None
+		project_type: DF.Link | None
+		sales_order: DF.Link | None
+		second_email: DF.Time | None
+		status: DF.Literal["Open", "Completed", "Cancelled"]
+		to_time: DF.Time | None
+		total_billable_amount: DF.Currency
+		total_billed_amount: DF.Currency
+		total_consumed_material_cost: DF.Currency
+		total_costing_amount: DF.Currency
+		total_purchase_cost: DF.Currency
+		total_sales_amount: DF.Currency
+		users: DF.Table[ProjectUser]
+		weekly_time_to_send: DF.Time | None
+	# end: auto-generated types
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def onload(self):
 		self.set_onload(
@@ -39,12 +106,23 @@ class Project(Document):
 
 	def validate(self):
 		if not self.is_new():
+<<<<<<< HEAD
 			self.copy_from_template()
 		self.send_welcome_email()
 		self.update_costing()
 		self.update_percent_complete()
 
 	def copy_from_template(self):
+=======
+			self.copy_from_template()  # nosemgrep
+		self.send_welcome_email()
+		self.update_costing()
+		self.update_percent_complete()
+		self.validate_from_to_dates("expected_start_date", "expected_end_date")
+		self.validate_from_to_dates("actual_start_date", "actual_end_date")
+
+	def copy_from_template(self):  # nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"""
 		Copy tasks from template
 		"""
@@ -149,7 +227,11 @@ class Project(Document):
 		self.db_update()
 
 	def after_insert(self):
+<<<<<<< HEAD
 		self.copy_from_template()
+=======
+		self.copy_from_template()  # nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.sales_order:
 			frappe.db.set_value("Sales Order", self.sales_order, "project", self.name)
 
@@ -157,6 +239,16 @@ class Project(Document):
 		frappe.db.set_value("Sales Order", {"project": self.name}, "project", "")
 
 	def update_percent_complete(self):
+<<<<<<< HEAD
+=======
+		if self.status == "Completed":
+			if (
+				len(frappe.get_all("Task", dict(project=self.name))) == 0
+			):  # A project without tasks should be able to complete
+				self.percent_complete_method = "Manual"
+				self.percent_complete = 100
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if self.percent_complete_method == "Manual":
 			if self.status == "Completed":
 				self.percent_complete = 100
@@ -206,8 +298,12 @@ class Project(Document):
 		if self.status == "Cancelled":
 			return
 
+<<<<<<< HEAD
 		if self.percent_complete == 100:
 			self.status = "Completed"
+=======
+		self.status = "Completed" if self.percent_complete == 100 else "Open"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_costing(self):
 		from frappe.query_builder.functions import Max, Min, Sum
@@ -262,9 +358,19 @@ class Project(Document):
 		self.total_sales_amount = total_sales_amount and total_sales_amount[0][0] or 0
 
 	def update_billed_amount(self):
+<<<<<<< HEAD
 		total_billed_amount = frappe.db.sql(
 			"""select sum(base_net_total)
 			from `tabSales Invoice` where project = %s and docstatus=1""",
+=======
+		# nosemgrep
+		total_billed_amount = frappe.db.sql(
+			"""select sum(base_net_amount)
+			from `tabSales Invoice Item` si_item, `tabSales Invoice` si
+			where si_item.parent = si.name
+				and if(si_item.project, si_item.project, si.project) = %s
+				and si.docstatus=1""",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.name,
 		)
 
@@ -297,6 +403,7 @@ class Project(Document):
 				user.welcome_email_sent = 1
 
 
+<<<<<<< HEAD
 def get_timeline_data(doctype, name):
 	"""Return timeline for attendance"""
 	return dict(
@@ -315,6 +422,37 @@ def get_project_list(doctype, txt, filters, limit_start, limit_page_length=20, o
 	meta = frappe.get_meta(doctype)
 	if not filters:
 		filters = []
+=======
+def get_timeline_data(doctype: str, name: str) -> dict[int, int]:
+	"""Return timeline for attendance"""
+
+	timesheet_detail = frappe.qb.DocType("Timesheet Detail")
+
+	return dict(
+		frappe.qb.from_(timesheet_detail)
+		.select(UnixTimestamp(timesheet_detail.from_time), Count("*"))
+		.where(timesheet_detail.project == name)
+		.where(timesheet_detail.from_time > CurDate() - Interval(years=1))
+		.where(timesheet_detail.docstatus < 2)
+		.groupby(Date(timesheet_detail.from_time))
+		.run()
+	)
+
+
+def get_project_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="creation"):
+	customers, suppliers = get_customers_suppliers("Project", frappe.session.user)
+
+	ignore_permissions = False
+	if is_website_user() and frappe.session.user != "Guest":
+		if not filters:
+			filters = []
+
+		if customers:
+			filters.append([doctype, "customer", "in", customers])
+			ignore_permissions = True
+
+	meta = frappe.get_meta(doctype)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	fields = "distinct *"
 
@@ -345,10 +483,15 @@ def get_project_list(doctype, txt, filters, limit_start, limit_page_length=20, o
 		limit_start=limit_start,
 		limit_page_length=limit_page_length,
 		order_by=order_by,
+<<<<<<< HEAD
+=======
+		ignore_permissions=ignore_permissions,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
 def get_list_context(context=None):
+<<<<<<< HEAD
 	return {
 		"show_sidebar": True,
 		"show_search": True,
@@ -357,6 +500,23 @@ def get_list_context(context=None):
 		"get_list": get_project_list,
 		"row_template": "templates/includes/projects/project_row.html",
 	}
+=======
+	from erpnext.controllers.website_list_for_contact import get_list_context
+
+	list_context = get_list_context(context)
+	list_context.update(
+		{
+			"show_sidebar": True,
+			"show_search": True,
+			"no_breadcrumbs": True,
+			"title": _("Projects"),
+			"get_list": get_project_list,
+			"row_template": "templates/includes/projects/project_row.html",
+		}
+	)
+
+	return list_context
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -595,6 +755,7 @@ def update_project_sales_billing():
 		return
 
 	# Else simply fallback to Daily
+<<<<<<< HEAD
 	exists_query = "(SELECT 1 from `tab{doctype}` where docstatus = 1 and project = `tabProject`.name)"
 	project_map = {}
 	for project_details in frappe.db.sql(
@@ -620,6 +781,10 @@ def update_project_sales_billing():
 
 	for project in project_map.values():
 		project.save()
+=======
+	for project in frappe.get_all("Project", filters={"status": ["!=", "Cancelled"]}):
+		frappe.get_doc("Project", project.name).save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -670,7 +835,10 @@ def get_users_email(doc):
 def calculate_total_purchase_cost(project: str | None = None):
 	if project:
 		pitem = qb.DocType("Purchase Invoice Item")
+<<<<<<< HEAD
 		frappe.qb.DocType("Purchase Invoice Item")
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		total_purchase_cost = (
 			qb.from_(pitem)
 			.select(Sum(pitem.base_net_amount))

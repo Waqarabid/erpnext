@@ -10,10 +10,39 @@ import pytz
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint
+<<<<<<< HEAD
+=======
+from frappe.utils.data import get_system_timezone
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from pyyoutube import Api
 
 
 class Video(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		comment_count: DF.Float
+		description: DF.TextEditor
+		dislike_count: DF.Float
+		duration: DF.Duration | None
+		image: DF.AttachImage | None
+		like_count: DF.Float
+		provider: DF.Literal["YouTube", "Vimeo"]
+		publish_date: DF.Date | None
+		title: DF.Data
+		url: DF.Data
+		view_count: DF.Float
+		youtube_video_id: DF.Data | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if self.provider == "YouTube" and is_tracking_enabled():
 			self.set_video_id()
@@ -55,6 +84,7 @@ def get_frequency(value):
 
 def update_youtube_data():
 	# Called every 30 minutes via hooks
+<<<<<<< HEAD
 	enable_youtube_tracking, frequency = frappe.db.get_value(
 		"Video Settings", "Video Settings", ["enable_youtube_tracking", "frequency"]
 	)
@@ -65,6 +95,15 @@ def update_youtube_data():
 	frequency = get_frequency(frequency)
 	time = datetime.now()
 	timezone = pytz.timezone(frappe.utils.get_time_zone())
+=======
+	video_settings = frappe.get_cached_doc("Video Settings")
+	if not video_settings.enable_youtube_tracking:
+		return
+
+	frequency = get_frequency(video_settings.frequency)
+	time = datetime.now()
+	timezone = pytz.timezone(get_system_timezone())
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	site_time = time.astimezone(timezone)
 
 	if frequency == 30:

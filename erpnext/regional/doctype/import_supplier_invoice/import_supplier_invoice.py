@@ -12,12 +12,36 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, get_datetime_str, today
 from frappe.utils.data import format_datetime
+<<<<<<< HEAD
 from frappe.utils.file_manager import save_file
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 
 
 class ImportSupplierInvoice(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		company: DF.Link
+		default_buying_price_list: DF.Link
+		invoice_series: DF.Literal["ACC-PINV-.YYYY.-"]
+		item_code: DF.Link
+		status: DF.Data | None
+		supplier_group: DF.Link
+		tax_account: DF.Link
+		zip_file: DF.Attach | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if not frappe.db.get_value("Stock Settings", fieldname="stock_uom"):
 			frappe.throw(_("Please set default UOM in Stock Settings"))
@@ -83,6 +107,7 @@ class ImportSupplierInvoice(Document):
 			self.file_count += 1
 			if pi_name:
 				self.purchase_invoices_count += 1
+<<<<<<< HEAD
 				save_file(
 					file_name,
 					encoded_content,
@@ -93,6 +118,17 @@ class ImportSupplierInvoice(Document):
 					is_private=0,
 					df=None,
 				)
+=======
+
+				file_doc = frappe.new_doc("File")
+				file_doc.file_name = file_name
+				file_doc.attached_to_doctype = "Purchase Invoice"
+				file_doc.attached_to_name = pi_name
+				file_doc.content = encoded_content
+				file_doc.decode = False
+				file_doc.is_private = False
+				file_doc.insert(ignore_permissions=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def prepare_items_for_invoice(self, file_content, invoices_args):
 		qty = 1

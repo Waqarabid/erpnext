@@ -16,6 +16,29 @@ from erpnext.controllers.accounts_controller import (
 
 
 class SalesTaxesandChargesTemplate(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.sales_taxes_and_charges.sales_taxes_and_charges import (
+			SalesTaxesandCharges,
+		)
+
+		company: DF.Link
+		disabled: DF.Check
+		is_default: DF.Check
+		tax_category: DF.Link | None
+		taxes: DF.Table[SalesTaxesandCharges]
+		title: DF.Data
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		valdiate_taxes_and_charges_template(self)
 
@@ -27,7 +50,11 @@ class SalesTaxesandChargesTemplate(Document):
 	def set_missing_values(self):
 		for data in self.taxes:
 			if data.charge_type == "On Net Total" and flt(data.rate) == 0.0:
+<<<<<<< HEAD
 				data.rate = frappe.db.get_value("Account", data.account_head, "tax_rate")
+=======
+				data.rate = frappe.get_cached_value("Account", data.account_head, "tax_rate")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def valdiate_taxes_and_charges_template(doc):
@@ -49,7 +76,11 @@ def valdiate_taxes_and_charges_template(doc):
 
 	for tax in doc.get("taxes"):
 		validate_taxes_and_charges(tax)
+<<<<<<< HEAD
 		validate_account_head(tax.idx, tax.account_head, doc.company)
+=======
+		validate_account_head(tax.idx, tax.account_head, doc.company, _("Taxes and Charges"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		validate_cost_center(tax, doc)
 		validate_inclusive_tax(tax, doc)
 

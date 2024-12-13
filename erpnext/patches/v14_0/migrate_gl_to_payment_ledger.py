@@ -189,4 +189,8 @@ def execute():
 						raise err
 				else:
 					break
+<<<<<<< HEAD
 			print(f"{processed} records have been sucessfully migrated")
+=======
+			print(f"{processed} records have been successfully migrated")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

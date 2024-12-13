@@ -41,7 +41,11 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Cost Center Number",
+<<<<<<< HEAD
    "read_only": 1
+=======
+   "read_only_depends_on": "eval:!doc.__islocal"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "parent_cost_center",
@@ -176,7 +180,11 @@
  ],
  "search_fields": "parent_cost_center, is_group",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": []
 }

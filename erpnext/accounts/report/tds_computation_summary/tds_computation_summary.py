@@ -1,7 +1,11 @@
 import frappe
 from frappe import _
 
+<<<<<<< HEAD
 from erpnext.accounts.report.tds_payable_monthly.tds_payable_monthly import (
+=======
+from erpnext.accounts.report.tax_withholding_details.tax_withholding_details import (
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	get_result,
 	get_tds_docs,
 )

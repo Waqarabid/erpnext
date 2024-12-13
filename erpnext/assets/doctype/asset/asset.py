@@ -8,6 +8,7 @@ import math
 import frappe
 from frappe import _
 from frappe.utils import (
+<<<<<<< HEAD
 	add_days,
 	add_months,
 	add_years,
@@ -19,12 +20,21 @@ from frappe.utils import (
 	get_last_day,
 	getdate,
 	month_diff,
+=======
+	cint,
+	flt,
+	get_datetime,
+	get_last_day,
+	get_link_to_form,
+	getdate,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	nowdate,
 	today,
 )
 
 import erpnext
 from erpnext.accounts.general_ledger import make_reverse_gl_entries
+<<<<<<< HEAD
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.assets.doctype.asset.depreciation import (
 	get_depreciation_accounts,
@@ -33,16 +43,118 @@ from erpnext.assets.doctype.asset.depreciation import (
 	is_last_day_of_the_month,
 )
 from erpnext.assets.doctype.asset_category.asset_category import get_asset_category_account
+=======
+from erpnext.assets.doctype.asset.depreciation import (
+	get_comma_separated_links,
+	get_depreciation_accounts,
+	get_disposal_account_and_cost_center,
+)
+from erpnext.assets.doctype.asset_activity.asset_activity import add_asset_activity
+from erpnext.assets.doctype.asset_category.asset_category import get_asset_category_account
+from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
+	cancel_asset_depr_schedules,
+	convert_draft_asset_depr_schedules_into_active,
+	get_asset_depr_schedule_doc,
+	get_depr_schedule,
+	make_draft_asset_depr_schedules,
+	make_draft_asset_depr_schedules_if_not_present,
+	update_draft_asset_depr_schedules,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.controllers.accounts_controller import AccountsController
 
 
 class Asset(AccountsController):
+<<<<<<< HEAD
 	def validate(self):
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.assets.doctype.asset_finance_book.asset_finance_book import AssetFinanceBook
+
+		additional_asset_cost: DF.Currency
+		amended_from: DF.Link | None
+		asset_category: DF.Link | None
+		asset_name: DF.Data
+		asset_owner: DF.Literal["", "Company", "Supplier", "Customer"]
+		asset_owner_company: DF.Link | None
+		asset_quantity: DF.Int
+		available_for_use_date: DF.Date | None
+		booked_fixed_asset: DF.Check
+		calculate_depreciation: DF.Check
+		company: DF.Link
+		comprehensive_insurance: DF.Data | None
+		cost_center: DF.Link | None
+		custodian: DF.Link | None
+		customer: DF.Link | None
+		default_finance_book: DF.Link | None
+		department: DF.Link | None
+		depr_entry_posting_status: DF.Literal["", "Successful", "Failed"]
+		depreciation_method: DF.Literal["", "Straight Line", "Double Declining Balance", "Manual"]
+		disposal_date: DF.Date | None
+		finance_books: DF.Table[AssetFinanceBook]
+		frequency_of_depreciation: DF.Int
+		gross_purchase_amount: DF.Currency
+		image: DF.AttachImage | None
+		insurance_end_date: DF.Date | None
+		insurance_start_date: DF.Date | None
+		insured_value: DF.Data | None
+		insurer: DF.Data | None
+		is_composite_asset: DF.Check
+		is_existing_asset: DF.Check
+		is_fully_depreciated: DF.Check
+		item_code: DF.Link
+		item_name: DF.ReadOnly | None
+		journal_entry_for_scrap: DF.Link | None
+		location: DF.Link
+		maintenance_required: DF.Check
+		naming_series: DF.Literal["ACC-ASS-.YYYY.-"]
+		next_depreciation_date: DF.Date | None
+		opening_accumulated_depreciation: DF.Currency
+		opening_number_of_booked_depreciations: DF.Int
+		policy_number: DF.Data | None
+		purchase_amount: DF.Currency
+		purchase_date: DF.Date | None
+		purchase_invoice: DF.Link | None
+		purchase_invoice_item: DF.Link | None
+		purchase_receipt: DF.Link | None
+		purchase_receipt_item: DF.Link | None
+		split_from: DF.Link | None
+		status: DF.Literal[
+			"Draft",
+			"Submitted",
+			"Partially Depreciated",
+			"Fully Depreciated",
+			"Sold",
+			"Scrapped",
+			"In Maintenance",
+			"Out of Order",
+			"Issue",
+			"Receipt",
+			"Capitalized",
+			"Decapitalized",
+		]
+		supplier: DF.Link | None
+		total_asset_cost: DF.Currency
+		total_number_of_depreciations: DF.Int
+		value_after_depreciation: DF.Currency
+	# end: auto-generated types
+
+	def validate(self):
+		self.validate_precision()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_asset_values()
 		self.validate_asset_and_reference()
 		self.validate_item()
 		self.validate_cost_center()
 		self.set_missing_values()
+<<<<<<< HEAD
 		self.validate_finance_books()
 		if not self.split_from:
 			self.prepare_depreciation_data()
@@ -51,27 +163,97 @@ class Asset(AccountsController):
 		if self.get("schedules"):
 			self.validate_expected_value_after_useful_life()
 
+=======
+		self.validate_gross_and_purchase_amount()
+		self.validate_finance_books()
+
+		if not self.split_from:
+			self.prepare_depreciation_data()
+
+			if self.calculate_depreciation:
+				update_draft_asset_depr_schedules(self)
+
+				if frappe.db.exists("Asset", self.name):
+					asset_depr_schedules_names = make_draft_asset_depr_schedules_if_not_present(self)
+
+					if asset_depr_schedules_names:
+						asset_depr_schedules_links = get_comma_separated_links(
+							asset_depr_schedules_names, "Asset Depreciation Schedule"
+						)
+						frappe.msgprint(
+							_(
+								"Asset Depreciation Schedules created:<br>{0}<br><br>Please check, edit if needed, and submit the Asset."
+							).format(asset_depr_schedules_links)
+						)
+		self.validate_expected_value_after_useful_life()
+		self.set_total_booked_depreciations()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.total_asset_cost = self.gross_purchase_amount
 		self.status = self.get_status()
 
 	def on_submit(self):
 		self.validate_in_use_date()
+<<<<<<< HEAD
 		self.set_status()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.make_asset_movement()
 		self.reload()
 		if not self.booked_fixed_asset and self.validate_make_gl_entry():
 			self.make_gl_entries()
+<<<<<<< HEAD
+=======
+		if self.calculate_depreciation and not self.split_from:
+			convert_draft_asset_depr_schedules_into_active(self)
+		self.set_status()
+		add_asset_activity(self.name, _("Asset submitted"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def on_cancel(self):
 		self.validate_cancellation()
 		self.cancel_movement_entries()
+<<<<<<< HEAD
 		self.cancel_capitalization()
 		self.reload()
 		self.delete_depreciation_entries()
+=======
+		self.reload()
+		self.delete_depreciation_entries()
+		cancel_asset_depr_schedules(self)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.set_status()
 		self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry")
 		make_reverse_gl_entries(voucher_type="Asset", voucher_no=self.name)
 		self.db_set("booked_fixed_asset", 0)
+<<<<<<< HEAD
+=======
+		add_asset_activity(self.name, _("Asset cancelled"))
+
+	def after_insert(self):
+		if self.calculate_depreciation and not self.split_from:
+			asset_depr_schedules_names = make_draft_asset_depr_schedules(self)
+			asset_depr_schedules_links = get_comma_separated_links(
+				asset_depr_schedules_names, "Asset Depreciation Schedule"
+			)
+			frappe.msgprint(
+				_(
+					"Asset Depreciation Schedules created:<br>{0}<br><br>Please check, edit if needed, and submit the Asset."
+				).format(asset_depr_schedules_links)
+			)
+		if (
+			not frappe.db.exists(
+				{
+					"doctype": "Asset Activity",
+					"asset": self.name,
+				}
+			)
+			and not self.flags.asset_created_via_asset_capitalization
+		):
+			add_asset_activity(self.name, _("Asset created"))
+
+	def after_delete(self):
+		add_asset_activity(self.name, _("Asset deleted"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_asset_and_reference(self):
 		if self.purchase_invoice or self.purchase_receipt:
@@ -88,6 +270,7 @@ class Asset(AccountsController):
 		if self.is_existing_asset and self.purchase_invoice:
 			frappe.throw(_("Purchase Invoice cannot be made against an existing asset {0}").format(self.name))
 
+<<<<<<< HEAD
 	def prepare_depreciation_data(
 		self,
 		date_of_disposal=None,
@@ -156,6 +339,17 @@ class Asset(AccountsController):
 			return True
 
 		return False
+=======
+	def prepare_depreciation_data(self):
+		if self.calculate_depreciation:
+			self.value_after_depreciation = 0
+			self.set_depreciation_rate()
+		else:
+			self.finance_books = []
+			self.value_after_depreciation = flt(self.gross_purchase_amount) - flt(
+				self.opening_accumulated_depreciation
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_item(self):
 		item = frappe.get_cached_value(
@@ -204,10 +398,17 @@ class Asset(AccountsController):
 			frappe.throw(_("Available for use date is required"))
 
 		for d in self.finance_books:
+<<<<<<< HEAD
 			if d.depreciation_start_date == self.available_for_use_date:
 				frappe.throw(
 					_(
 						"Row #{}: Depreciation Posting Date should not be equal to Available for Use Date."
+=======
+			if getdate(d.depreciation_start_date) < getdate(self.available_for_use_date):
+				frappe.throw(
+					_(
+						"Depreciation Row {0}: Depreciation Posting Date cannot be before Available-for-use Date"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					).format(d.idx),
 					title=_("Incorrect Date"),
 				)
@@ -241,6 +442,18 @@ class Asset(AccountsController):
 					title=_("Missing Finance Book"),
 				)
 
+<<<<<<< HEAD
+=======
+	def validate_precision(self):
+		float_precision = cint(frappe.db.get_default("float_precision")) or 2
+		if self.gross_purchase_amount:
+			self.gross_purchase_amount = flt(self.gross_purchase_amount, float_precision)
+		if self.opening_accumulated_depreciation:
+			self.opening_accumulated_depreciation = flt(
+				self.opening_accumulated_depreciation, float_precision
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_asset_values(self):
 		if not self.asset_category:
 			self.asset_category = frappe.get_cached_value("Item", self.item_code, "asset_category")
@@ -290,7 +503,11 @@ class Asset(AccountsController):
 		if self.is_existing_asset:
 			return
 
+<<<<<<< HEAD
 		if self.gross_purchase_amount and self.gross_purchase_amount != self.purchase_receipt_amount:
+=======
+		if self.gross_purchase_amount and self.gross_purchase_amount != self.purchase_amount:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			error_message = _(
 				"Gross Purchase Amount should be <b>equal</b> to purchase amount of one single Asset."
 			)
@@ -334,6 +551,7 @@ class Asset(AccountsController):
 				self.get_depreciation_rate(d, on_validate=True), d.precision("rate_of_depreciation")
 			)
 
+<<<<<<< HEAD
 	def make_depreciation_schedule(self, date_of_disposal=None, value_after_depreciation=None):
 		if not self.get("schedules"):
 			self.schedules = []
@@ -667,6 +885,8 @@ class Asset(AccountsController):
 				(self.number_of_depreciations_booked * row.frequency_of_depreciation),
 			)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate_asset_finance_books(self, row):
 		if flt(row.expected_value_after_useful_life) >= flt(self.gross_purchase_amount):
 			frappe.throw(
@@ -686,7 +906,11 @@ class Asset(AccountsController):
 
 		if not self.is_existing_asset:
 			self.opening_accumulated_depreciation = 0
+<<<<<<< HEAD
 			self.number_of_depreciations_booked = 0
+=======
+			self.opening_number_of_booked_depreciations = 0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			depreciable_amount = flt(self.gross_purchase_amount) - flt(row.expected_value_after_useful_life)
 			if flt(self.opening_accumulated_depreciation) > depreciable_amount:
@@ -697,6 +921,7 @@ class Asset(AccountsController):
 				)
 
 			if self.opening_accumulated_depreciation:
+<<<<<<< HEAD
 				if not self.number_of_depreciations_booked:
 					frappe.throw(_("Please set Number of Depreciations Booked"))
 			else:
@@ -706,6 +931,17 @@ class Asset(AccountsController):
 				frappe.throw(
 					_(
 						"Row {0}: Total Number of Depreciations cannot be less than or equal to Number of Depreciations Booked"
+=======
+				if not self.opening_number_of_booked_depreciations:
+					frappe.throw(_("Please set Opening Number of Booked Depreciations"))
+			else:
+				self.opening_number_of_booked_depreciations = 0
+
+			if flt(row.total_number_of_depreciations) <= cint(self.opening_number_of_booked_depreciations):
+				frappe.throw(
+					_(
+						"Row {0}: Total Number of Depreciations cannot be less than or equal to Opening Number of Booked Depreciations"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					).format(row.idx),
 					title=_("Invalid Schedule"),
 				)
@@ -726,6 +962,7 @@ class Asset(AccountsController):
 				).format(row.idx)
 			)
 
+<<<<<<< HEAD
 	# to ensure that final accumulated depreciation amount is accurate
 	def get_adjusted_depreciation_amount(
 		self, depreciation_amount_without_pro_rata, depreciation_amount_for_last_row, finance_book
@@ -816,6 +1053,31 @@ class Asset(AccountsController):
 				d.accumulated_depreciation_amount
 				for d in self.get("schedules")
 				if cint(d.finance_book_id) == row.idx
+=======
+	def set_total_booked_depreciations(self):
+		# set value of total number of booked depreciations field
+		for fb_row in self.get("finance_books"):
+			total_number_of_booked_depreciations = self.opening_number_of_booked_depreciations
+			depr_schedule = get_depr_schedule(self.name, "Active", fb_row.finance_book)
+			if depr_schedule:
+				for je in depr_schedule:
+					if je.journal_entry:
+						total_number_of_booked_depreciations += 1
+			fb_row.db_set("total_number_of_booked_depreciations", total_number_of_booked_depreciations)
+
+	def validate_expected_value_after_useful_life(self):
+		for row in self.get("finance_books"):
+			row.expected_value_after_useful_life = flt(
+				row.expected_value_after_useful_life, self.precision("gross_purchase_amount")
+			)
+			depr_schedule = get_depr_schedule(self.name, "Draft", row.finance_book)
+
+			if not depr_schedule:
+				continue
+
+			accumulated_depreciation_after_full_schedule = [
+				d.accumulated_depreciation_amount for d in depr_schedule
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			]
 
 			if accumulated_depreciation_after_full_schedule:
@@ -863,6 +1125,7 @@ class Asset(AccountsController):
 			movement = frappe.get_doc("Asset Movement", movement.get("name"))
 			movement.cancel()
 
+<<<<<<< HEAD
 	def cancel_capitalization(self):
 		asset_capitalization = frappe.db.get_value(
 			"Asset Capitalization",
@@ -878,6 +1141,16 @@ class Asset(AccountsController):
 			for d in self.get("schedules"):
 				if d.journal_entry:
 					frappe.get_doc("Journal Entry", d.journal_entry).cancel()
+=======
+	def delete_depreciation_entries(self):
+		if self.calculate_depreciation:
+			for row in self.get("finance_books"):
+				depr_schedule = get_depr_schedule(self.name, "Active", row.finance_book)
+
+				for d in depr_schedule or []:
+					if d.journal_entry:
+						frappe.get_doc("Journal Entry", d.journal_entry).cancel()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			depr_entries = self.get_manual_depreciation_entries()
 
@@ -910,18 +1183,31 @@ class Asset(AccountsController):
 
 				if self.calculate_depreciation:
 					idx = self.get_default_finance_book_idx() or 0
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					expected_value_after_useful_life = self.finance_books[
 						idx
 					].expected_value_after_useful_life
 					value_after_depreciation = self.finance_books[idx].value_after_depreciation
 
+<<<<<<< HEAD
 				if flt(value_after_depreciation) <= expected_value_after_useful_life:
 					status = "Fully Depreciated"
 					self.is_fully_depreciated = 1
 				elif flt(value_after_depreciation) < flt(self.gross_purchase_amount):
 					status = "Partially Depreciated"
 					self.is_fully_depreciated = 0
+=======
+				if (
+					flt(value_after_depreciation) <= expected_value_after_useful_life
+					or self.is_fully_depreciated
+				):
+					status = "Fully Depreciated"
+				elif flt(value_after_depreciation) < flt(self.gross_purchase_amount):
+					status = "Partially Depreciated"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		elif self.docstatus == 2:
 			status = "Cancelled"
 		return status
@@ -948,7 +1234,33 @@ class Asset(AccountsController):
 				if d.finance_book == self.default_finance_book:
 					return cint(d.idx) - 1
 
+<<<<<<< HEAD
 	def validate_make_gl_entry(self):
+=======
+	@frappe.whitelist()
+	def get_manual_depreciation_entries(self):
+		(_, _, depreciation_expense_account) = get_depreciation_accounts(self.asset_category, self.company)
+
+		gle = frappe.qb.DocType("GL Entry")
+
+		records = (
+			frappe.qb.from_(gle)
+			.select(gle.voucher_no.as_("name"), gle.debit.as_("value"), gle.posting_date)
+			.where(gle.against_voucher == self.name)
+			.where(gle.account == depreciation_expense_account)
+			.where(gle.debit != 0)
+			.where(gle.is_cancelled == 0)
+			.orderby(gle.posting_date)
+			.orderby(gle.creation)
+		).run(as_dict=True)
+
+		return records
+
+	def validate_make_gl_entry(self):
+		if self.is_composite_asset:
+			return True
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		purchase_document = self.get_purchase_document()
 		if not purchase_document:
 			return False
@@ -997,7 +1309,11 @@ class Asset(AccountsController):
 		if not fixed_asset_account:
 			frappe.throw(
 				_("Set {0} in asset category {1} for company {2}").format(
+<<<<<<< HEAD
 					frappe.bold("Fixed Asset Account"),
+=======
+					frappe.bold(_("Fixed Asset Account")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frappe.bold(self.asset_category),
 					frappe.bold(self.company),
 				),
@@ -1019,16 +1335,28 @@ class Asset(AccountsController):
 		return cwip_account
 
 	def make_gl_entries(self):
+<<<<<<< HEAD
+=======
+		if self.check_asset_capitalization_gl_entries():
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		gl_entries = []
 
 		purchase_document = self.get_purchase_document()
 		fixed_asset_account, cwip_account = self.get_fixed_asset_account(), self.get_cwip_account()
 
+<<<<<<< HEAD
 		if (
 			purchase_document
 			and self.purchase_receipt_amount
 			and getdate(self.available_for_use_date) <= getdate()
 		):
+=======
+		if (self.is_composite_asset or (purchase_document and self.purchase_amount)) and getdate(
+			self.available_for_use_date
+		) <= getdate():
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			gl_entries.append(
 				self.get_gl_dict(
 					{
@@ -1036,8 +1364,13 @@ class Asset(AccountsController):
 						"against": fixed_asset_account,
 						"remarks": self.get("remarks") or _("Accounting Entry for Asset"),
 						"posting_date": self.available_for_use_date,
+<<<<<<< HEAD
 						"credit": self.purchase_receipt_amount,
 						"credit_in_account_currency": self.purchase_receipt_amount,
+=======
+						"credit": self.purchase_amount,
+						"credit_in_account_currency": self.purchase_amount,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"cost_center": self.cost_center,
 					},
 					item=self,
@@ -1051,8 +1384,13 @@ class Asset(AccountsController):
 						"against": cwip_account,
 						"remarks": self.get("remarks") or _("Accounting Entry for Asset"),
 						"posting_date": self.available_for_use_date,
+<<<<<<< HEAD
 						"debit": self.purchase_receipt_amount,
 						"debit_in_account_currency": self.purchase_receipt_amount,
+=======
+						"debit": self.purchase_amount,
+						"debit_in_account_currency": self.purchase_amount,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						"cost_center": self.cost_center,
 					},
 					item=self,
@@ -1065,6 +1403,7 @@ class Asset(AccountsController):
 			make_gl_entries(gl_entries)
 			self.db_set("booked_fixed_asset", 1)
 
+<<<<<<< HEAD
 	@frappe.whitelist()
 	def get_manual_depreciation_entries(self):
 		(_, _, depreciation_expense_account) = get_depreciation_accounts(self.asset_category, self.company)
@@ -1083,6 +1422,25 @@ class Asset(AccountsController):
 		).run(as_dict=True)
 
 		return records
+=======
+	def check_asset_capitalization_gl_entries(self):
+		if self.is_composite_asset:
+			result = frappe.db.get_value(
+				"Asset Capitalization",
+				{"target_asset": self.name, "docstatus": 1},
+				["name", "target_fixed_asset_account"],
+			)
+
+			if result:
+				asset_capitalization, target_fixed_asset_account = result
+				# Check GL entries for the retrieved Asset Capitalization and target fixed asset account
+				return has_gl_entries(
+					"Asset Capitalization", asset_capitalization, target_fixed_asset_account
+				)
+			# return if there are no submitted capitalization for given asset
+			return True
+		return False
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	@frappe.whitelist()
 	def get_depreciation_rate(self, args, on_validate=False):
@@ -1113,14 +1471,27 @@ class Asset(AccountsController):
 					args.get("value_after_depreciation")
 				)
 			else:
+<<<<<<< HEAD
 				value = flt(args.get("expected_value_after_useful_life")) / flt(self.gross_purchase_amount)
+=======
+				value = flt(args.get("expected_value_after_useful_life")) / (
+					flt(self.gross_purchase_amount) - flt(self.opening_accumulated_depreciation)
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			depreciation_rate = math.pow(
 				value,
 				1.0
 				/ (
 					(
+<<<<<<< HEAD
 						flt(args.get("total_number_of_depreciations"), 2)
+=======
+						(
+							flt(args.get("total_number_of_depreciations"), 2)
+							- flt(self.opening_number_of_booked_depreciations)
+						)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						* flt(args.get("frequency_of_depreciation"))
 					)
 					/ 12
@@ -1129,6 +1500,7 @@ class Asset(AccountsController):
 
 			return flt((100 * (1 - depreciation_rate)), float_precision)
 
+<<<<<<< HEAD
 	def get_pro_rata_amt(
 		self,
 		row,
@@ -1146,6 +1518,23 @@ class Asset(AccountsController):
 			total_days = get_total_days(original_schedule_date or to_date, row.frequency_of_depreciation)
 
 		return (depreciation_amount * flt(days)) / flt(total_days), days, months
+=======
+
+def has_gl_entries(doctype, docname, target_account):
+	gl_entry = frappe.qb.DocType("GL Entry")
+	gl_entries = (
+		frappe.qb.from_(gl_entry)
+		.select(gl_entry.account)
+		.where(
+			(gl_entry.voucher_type == doctype)
+			& (gl_entry.voucher_no == docname)
+			& (gl_entry.debit != 0)
+			& (gl_entry.account == target_account)
+		)
+		.run(as_dict=True)
+	)
+	return len(gl_entries) > 0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def update_maintenance_status():
@@ -1223,17 +1612,36 @@ def create_asset_maintenance(asset, item_code, item_name, asset_category, compan
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def create_asset_repair(asset, asset_name):
 	asset_repair = frappe.new_doc("Asset Repair")
 	asset_repair.update({"asset": asset, "asset_name": asset_name})
+=======
+def create_asset_repair(company, asset, asset_name):
+	asset_repair = frappe.new_doc("Asset Repair")
+	asset_repair.update({"company": company, "asset": asset, "asset_name": asset_name})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return asset_repair
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def create_asset_capitalization(asset):
 	asset_capitalization = frappe.new_doc("Asset Capitalization")
 	asset_capitalization.update(
 		{"target_asset": asset, "capitalization_method": "Choose a WIP composite asset"}
+=======
+def create_asset_capitalization(company, asset, asset_name, item_code):
+	asset_capitalization = frappe.new_doc("Asset Capitalization")
+	asset_capitalization.update(
+		{
+			"target_asset": asset,
+			"company": company,
+			"capitalization_method": "Choose a WIP composite asset",
+			"target_asset_name": asset_name,
+			"target_item_code": item_code,
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 	return asset_capitalization
 
@@ -1268,7 +1676,11 @@ def transfer_asset(args):
 
 @frappe.whitelist()
 def get_item_details(item_code, asset_category, gross_purchase_amount):
+<<<<<<< HEAD
 	asset_category_doc = frappe.get_doc("Asset Category", asset_category)
+=======
+	asset_category_doc = frappe.get_cached_doc("Asset Category", asset_category)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	books = []
 	for d in asset_category_doc.finance_books:
 		books.append(
@@ -1366,7 +1778,11 @@ def make_asset_movement(assets, purpose=None):
 		assets = json.loads(assets)
 
 	if len(assets) == 0:
+<<<<<<< HEAD
 		frappe.throw(_("Atleast one asset has to be selected."))
+=======
+		frappe.throw(_("At least one asset has to be selected."))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	asset_movement = frappe.new_doc("Asset Movement")
 	asset_movement.quantity = len(assets)
@@ -1399,6 +1815,7 @@ def get_asset_value_after_depreciation(asset_name, finance_book=None):
 	return asset.get_value_after_depreciation(finance_book)
 
 
+<<<<<<< HEAD
 def get_total_days(date, frequency):
 	period_start_date = add_months(date, cint(frequency) * -1)
 
@@ -1634,6 +2051,14 @@ def get_default_wdv_or_dd_depr_amount(
 				)
 			else:
 				return prev_depreciation_amount
+=======
+@frappe.whitelist()
+def has_active_capitalization(asset):
+	active_capitalizations = frappe.db.count(
+		"Asset Capitalization", filters={"target_asset": asset, "docstatus": 1}
+	)
+	return active_capitalizations > 0
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -1647,12 +2072,20 @@ def split_asset(asset_name, split_qty):
 	remaining_qty = asset.asset_quantity - split_qty
 
 	new_asset = create_new_asset_after_split(asset, split_qty)
+<<<<<<< HEAD
 	update_existing_asset(asset, remaining_qty)
+=======
+	update_existing_asset(asset, remaining_qty, new_asset.name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return new_asset
 
 
+<<<<<<< HEAD
 def update_existing_asset(asset, remaining_qty):
+=======
+def update_existing_asset(asset, remaining_qty, new_asset_name):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	remaining_gross_purchase_amount = flt(
 		(asset.gross_purchase_amount * remaining_qty) / asset.asset_quantity
 	)
@@ -1670,6 +2103,7 @@ def update_existing_asset(asset, remaining_qty):
 		},
 	)
 
+<<<<<<< HEAD
 	for finance_book in asset.get("finance_books"):
 		value_after_depreciation = flt(
 			(finance_book.value_after_depreciation * remaining_qty) / asset.asset_quantity
@@ -1683,10 +2117,29 @@ def update_existing_asset(asset, remaining_qty):
 		frappe.db.set_value(
 			"Asset Finance Book",
 			finance_book.name,
+=======
+	add_asset_activity(
+		asset.name,
+		_("Asset updated after being split into Asset {0}").format(get_link_to_form("Asset", new_asset_name)),
+	)
+
+	for row in asset.get("finance_books"):
+		value_after_depreciation = flt((row.value_after_depreciation * remaining_qty) / asset.asset_quantity)
+		expected_value_after_useful_life = flt(
+			(row.expected_value_after_useful_life * remaining_qty) / asset.asset_quantity
+		)
+		frappe.db.set_value(
+			"Asset Finance Book", row.name, "value_after_depreciation", value_after_depreciation
+		)
+		frappe.db.set_value(
+			"Asset Finance Book",
+			row.name,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"expected_value_after_useful_life",
 			expected_value_after_useful_life,
 		)
 
+<<<<<<< HEAD
 	processed_finance_books = []
 
 	for term in asset.get("schedules"):
@@ -1700,6 +2153,30 @@ def update_existing_asset(asset, remaining_qty):
 		frappe.db.set_value(
 			"Depreciation Schedule", term.name, "accumulated_depreciation_amount", accumulated_depreciation
 		)
+=======
+		current_asset_depr_schedule_doc = get_asset_depr_schedule_doc(asset.name, "Active", row.finance_book)
+		new_asset_depr_schedule_doc = frappe.copy_doc(current_asset_depr_schedule_doc)
+
+		new_asset_depr_schedule_doc.set_draft_asset_depr_schedule_details(asset, row)
+
+		accumulated_depreciation = 0
+
+		for term in new_asset_depr_schedule_doc.get("depreciation_schedule"):
+			depreciation_amount = flt((term.depreciation_amount * remaining_qty) / asset.asset_quantity)
+			term.depreciation_amount = depreciation_amount
+			accumulated_depreciation += depreciation_amount
+			term.accumulated_depreciation_amount = accumulated_depreciation
+
+		notes = _(
+			"This schedule was created when Asset {0} was updated after being split into new Asset {1}."
+		).format(get_link_to_form(asset.doctype, asset.name), get_link_to_form(asset.doctype, new_asset_name))
+		new_asset_depr_schedule_doc.notes = notes
+
+		current_asset_depr_schedule_doc.flags.should_not_cancel_depreciation_entries = True
+		current_asset_depr_schedule_doc.cancel()
+
+		new_asset_depr_schedule_doc.submit()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def create_new_asset_after_split(asset, split_qty):
@@ -1710,12 +2187,18 @@ def create_new_asset_after_split(asset, split_qty):
 	)
 
 	new_asset.gross_purchase_amount = new_gross_purchase_amount
+<<<<<<< HEAD
 	if asset.purchase_receipt_amount:
 		new_asset.purchase_receipt_amount = new_gross_purchase_amount
+=======
+	if asset.purchase_amount:
+		new_asset.purchase_amount = new_gross_purchase_amount
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	new_asset.opening_accumulated_depreciation = opening_accumulated_depreciation
 	new_asset.asset_quantity = split_qty
 	new_asset.split_from = asset.name
 
+<<<<<<< HEAD
 	for finance_book in new_asset.get("finance_books"):
 		finance_book.value_after_depreciation = flt(
 			(finance_book.value_after_depreciation * split_qty) / asset.asset_quantity
@@ -1735,16 +2218,64 @@ def create_new_asset_after_split(asset, split_qty):
 		term.depreciation_amount = depreciation_amount
 		accumulated_depreciation += depreciation_amount
 		term.accumulated_depreciation_amount = accumulated_depreciation
+=======
+	for row in new_asset.get("finance_books"):
+		row.value_after_depreciation = flt((row.value_after_depreciation * split_qty) / asset.asset_quantity)
+		row.expected_value_after_useful_life = flt(
+			(row.expected_value_after_useful_life * split_qty) / asset.asset_quantity
+		)
+
+	new_asset.insert()
+
+	add_asset_activity(
+		new_asset.name,
+		_("Asset created after being split from Asset {0}").format(get_link_to_form("Asset", asset.name)),
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	new_asset.submit()
 	new_asset.set_status()
 
+<<<<<<< HEAD
 	for term in new_asset.get("schedules"):
 		# Update references in JV
 		if term.journal_entry:
 			add_reference_in_jv_on_split(
 				term.journal_entry, new_asset.name, asset.name, term.depreciation_amount
 			)
+=======
+	for row in new_asset.get("finance_books"):
+		current_asset_depr_schedule_doc = get_asset_depr_schedule_doc(asset.name, "Active", row.finance_book)
+		if not current_asset_depr_schedule_doc:
+			continue
+		new_asset_depr_schedule_doc = frappe.copy_doc(current_asset_depr_schedule_doc)
+
+		new_asset_depr_schedule_doc.set_draft_asset_depr_schedule_details(new_asset, row)
+
+		accumulated_depreciation = 0
+
+		for term in new_asset_depr_schedule_doc.get("depreciation_schedule"):
+			depreciation_amount = flt((term.depreciation_amount * split_qty) / asset.asset_quantity)
+			term.depreciation_amount = depreciation_amount
+			accumulated_depreciation += depreciation_amount
+			term.accumulated_depreciation_amount = accumulated_depreciation
+
+		notes = _("This schedule was created when new Asset {0} was split from Asset {1}.").format(
+			get_link_to_form(new_asset.doctype, new_asset.name), get_link_to_form(asset.doctype, asset.name)
+		)
+		new_asset_depr_schedule_doc.notes = notes
+
+		new_asset_depr_schedule_doc.submit()
+
+	for row in new_asset.get("finance_books"):
+		depr_schedule = get_depr_schedule(new_asset.name, "Active", row.finance_book)
+		for term in depr_schedule:
+			# Update references in JV
+			if term.journal_entry:
+				add_reference_in_jv_on_split(
+					term.journal_entry, new_asset.name, asset.name, term.depreciation_amount
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return new_asset
 

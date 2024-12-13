@@ -3,6 +3,7 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 from frappe.test_runner import make_test_records
 
@@ -16,6 +17,29 @@ from frappe.tests.utils import FrappeTestCase
 
 
 class TestSupplier(FrappeTestCase):
+=======
+
+from erpnext.accounts.party import get_due_date
+from erpnext.controllers.website_list_for_contact import get_customers_suppliers
+from erpnext.exceptions import PartyDisabled
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Payment Term", "Payment Terms Template"]
+
+
+from frappe.tests import IntegrationTestCase, UnitTestCase
+
+
+class UnitTestSupplier(UnitTestCase):
+	"""
+	Unit tests for Supplier.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestSupplier(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_get_supplier_group_details(self):
 		doc = frappe.new_doc("Supplier Group")
 		doc.supplier_group_name = "_Testing Supplier Group"
@@ -96,8 +120,11 @@ class TestSupplier(FrappeTestCase):
 		self.assertEqual(due_date, "2017-01-22")
 
 	def test_supplier_disabled(self):
+<<<<<<< HEAD
 		make_test_records("Item")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.db.set_value("Supplier", "_Test Supplier", "disabled", 1)
 
 		from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
@@ -153,6 +180,7 @@ class TestSupplier(FrappeTestCase):
 		# Rollback
 		address.delete()
 
+<<<<<<< HEAD
 	def test_serach_fields_for_supplier(self):
 		from erpnext.controllers.queries import supplier_query
 
@@ -191,6 +219,8 @@ class TestSupplier(FrappeTestCase):
 
 		frappe.db.set_value("Buying Settings", None, "supp_master_name", "Supplier Name")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def create_supplier(**args):
 	args = frappe._dict(args)
@@ -206,6 +236,7 @@ def create_supplier(**args):
 			"doctype": "Supplier",
 			"supplier_name": args.supplier_name,
 			"default_currency": args.default_currency,
+<<<<<<< HEAD
 			"supplier_group": args.supplier_group or "Services",
 			"supplier_type": args.supplier_type or "Company",
 			"tax_withholding_category": args.tax_withholding_category,
@@ -213,3 +244,36 @@ def create_supplier(**args):
 	).insert()
 
 	return doc
+=======
+			"supplier_type": args.supplier_type or "Company",
+			"tax_withholding_category": args.tax_withholding_category,
+		}
+	)
+	if not args.without_supplier_group:
+		doc.supplier_group = args.supplier_group or "Services"
+
+	doc.insert()
+
+	return doc
+
+
+class TestSupplierPortal(IntegrationTestCase):
+	def test_portal_user_can_access_supplier_data(self):
+		supplier = create_supplier()
+
+		user = frappe.generate_hash() + "@example.com"
+		frappe.new_doc(
+			"User",
+			first_name="Supplier Portal User",
+			email=user,
+			send_welcome_email=False,
+		).insert()
+
+		supplier.append("portal_users", {"user": user})
+		supplier.save()
+
+		frappe.set_user(user)
+		_, suppliers = get_customers_suppliers("Purchase Order", user)
+
+		self.assertIn(supplier.name, suppliers)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

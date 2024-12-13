@@ -59,6 +59,13 @@ frappe.ui.form.on("Bank Reconciliation Tool", {
 		);
 
 		frm.add_custom_button(__("Auto Reconcile"), function () {
+<<<<<<< HEAD
+=======
+			if (!frm.doc.bank_account) {
+				frappe.msgprint(__("Please select Bank Account"));
+				return;
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.call({
 				method: "erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool.auto_reconcile_vouchers",
 				args: {
@@ -75,7 +82,11 @@ frappe.ui.form.on("Bank Reconciliation Tool", {
 		frm.add_custom_button(__("Get Unreconciled Entries"), function () {
 			frm.trigger("make_reconciliation_tool");
 		});
+<<<<<<< HEAD
 		frm.change_custom_button_type("Get Unreconciled Entries", null, "primary");
+=======
+		frm.change_custom_button_type(__("Get Unreconciled Entries"), null, "primary");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	bank_account: function (frm) {

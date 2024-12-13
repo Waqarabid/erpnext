@@ -5,9 +5,37 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+<<<<<<< HEAD
 
 
 class AssetMovement(Document):
+=======
+from frappe.utils import get_link_to_form
+
+from erpnext.assets.doctype.asset_activity.asset_activity import add_asset_activity
+
+
+class AssetMovement(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.assets.doctype.asset_movement_item.asset_movement_item import AssetMovementItem
+
+		amended_from: DF.Link | None
+		assets: DF.Table[AssetMovementItem]
+		company: DF.Link
+		purpose: DF.Literal["", "Issue", "Receipt", "Transfer"]
+		reference_doctype: DF.Link | None
+		reference_name: DF.DynamicLink | None
+		transaction_date: DF.Datetime
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_asset()
 		self.validate_location()
@@ -66,7 +94,11 @@ class AssetMovement(Document):
 					frappe.throw(_("Source and Target Location cannot be same"))
 
 			if self.purpose == "Receipt":
+<<<<<<< HEAD
 				if not (d.source_location) and not (d.target_location or d.to_employee):
+=======
+				if not (d.source_location) and not d.target_location and not d.to_employee:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frappe.throw(
 						_("Target Location or To Employee is required while receiving Asset {0}").format(
 							d.asset
@@ -134,5 +166,31 @@ class AssetMovement(Document):
 				current_location = latest_movement_entry[0][0]
 				current_employee = latest_movement_entry[0][1]
 
+<<<<<<< HEAD
 			frappe.db.set_value("Asset", d.asset, "location", current_location)
 			frappe.db.set_value("Asset", d.asset, "custodian", current_employee)
+=======
+			frappe.db.set_value("Asset", d.asset, "location", current_location, update_modified=False)
+			frappe.db.set_value("Asset", d.asset, "custodian", current_employee, update_modified=False)
+
+			if current_location and current_employee:
+				add_asset_activity(
+					d.asset,
+					_("Asset received at Location {0} and issued to Employee {1}").format(
+						get_link_to_form("Location", current_location),
+						get_link_to_form("Employee", current_employee),
+					),
+				)
+			elif current_location:
+				add_asset_activity(
+					d.asset,
+					_("Asset transferred to Location {0}").format(
+						get_link_to_form("Location", current_location)
+					),
+				)
+			elif current_employee:
+				add_asset_activity(
+					d.asset,
+					_("Asset issued to Employee {0}").format(get_link_to_form("Employee", current_employee)),
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

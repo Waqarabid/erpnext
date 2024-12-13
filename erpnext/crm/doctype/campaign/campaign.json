@@ -67,7 +67,11 @@
  "icon": "fa fa-bullhorn",
  "idx": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-06-30 18:05:06.412712",
+=======
+ "modified": "2024-03-27 13:06:43.861206",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Campaign",
@@ -83,7 +87,10 @@
    "read": 1,
    "report": 1,
    "role": "Sales Manager",
+<<<<<<< HEAD
    "set_user_permissions": 1,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "write": 1
   },
   {
@@ -106,6 +113,12 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC"
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

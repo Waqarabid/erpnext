@@ -6,10 +6,19 @@
  "engine": "InnoDB",
  "field_order": [
   "item_code",
+<<<<<<< HEAD
   "valuation_rate",
   "consumed_quantity",
   "total_value",
   "serial_no"
+=======
+  "warehouse",
+  "valuation_rate",
+  "consumed_quantity",
+  "total_value",
+  "serial_no",
+  "serial_and_batch_bundle"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -34,26 +43,61 @@
   {
    "fieldname": "serial_no",
    "fieldtype": "Small Text",
+<<<<<<< HEAD
    "label": "Serial No"
+=======
+   "hidden": 1,
+   "label": "Serial No",
+   "print_hide": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item",
+<<<<<<< HEAD
    "options": "Item"
+=======
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "options": "Serial and Batch Bundle"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2022-02-08 17:37:20.028290",
+=======
+ "modified": "2024-06-13 12:01:47.147333",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Repair Consumed Item",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

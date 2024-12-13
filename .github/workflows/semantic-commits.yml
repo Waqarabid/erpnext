@@ -21,7 +21,11 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
+<<<<<<< HEAD
           node-version: 20
+=======
+          node-version: 18
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
           check-latest: true
 
       - name: Check commit titles

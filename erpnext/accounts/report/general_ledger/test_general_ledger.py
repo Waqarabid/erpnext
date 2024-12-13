@@ -3,7 +3,11 @@
 
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import flt, today
 
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
@@ -11,12 +15,21 @@ from erpnext.accounts.report.general_ledger.general_ledger import execute
 from erpnext.controllers.sales_and_purchase_return import make_return_doc
 
 
+<<<<<<< HEAD
 class TestGeneralLedger(FrappeTestCase):
 	def setUp(self):
 		self.company = "_Test Company"
 		self.clear_old_records()
 
 	def clear_old_records(self):
+=======
+class TestGeneralLedger(IntegrationTestCase):
+	def setUp(self):
+		self.company = "_Test Company"
+		self.clear_old_entries()
+
+	def clear_old_entries(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		doctype_list = [
 			"GL Entry",
 			"Payment Ledger Entry",

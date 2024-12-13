@@ -86,7 +86,17 @@ def simple_to_detailed(templates):
 
 def from_detailed_data(company_name, data):
 	"""Create Taxes and Charges Templates from detailed data."""
+<<<<<<< HEAD
 	coa_name = frappe.db.get_value("Company", company_name, "chart_of_accounts")
+=======
+	charts_company_name = company_name
+	if (
+		frappe.db.get_value("Company", company_name, "create_chart_of_accounts_based_on")
+		== "Existing Company"
+	):
+		charts_company_name = frappe.db.get_value("Company", company_name, "existing_company")
+	coa_name = frappe.db.get_value("Company", charts_company_name, "chart_of_accounts")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	coa_data = data.get("chart_of_accounts", {})
 	tax_templates = coa_data.get(coa_name) or coa_data.get("*", {})
 	tax_categories = data.get("tax_categories")
@@ -117,10 +127,18 @@ def update_regional_tax_settings(country, company):
 		try:
 			module_name = f"erpnext.regional.{frappe.scrub(country)}.setup.update_regional_tax_settings"
 			frappe.get_attr(module_name)(country, company)
+<<<<<<< HEAD
 		except Exception:
 			# Log error and ignore if failed to setup regional tax settings
 			frappe.log_error("Unable to setup regional tax settings")
 			pass
+=======
+		except (ImportError, AttributeError):
+			pass
+		except Exception:
+			# Log error and ignore if failed to setup regional tax settings
+			frappe.log_error("Unable to setup regional tax settings")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def make_taxes_and_charges_template(company_name, doctype, template):

@@ -4,6 +4,10 @@ import json
 import frappe
 import pytz
 from frappe import _
+<<<<<<< HEAD
+=======
+from frappe.utils.data import get_system_timezone
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
@@ -125,7 +129,11 @@ def filter_timeslots(date, timeslots):
 
 def convert_to_guest_timezone(guest_tz, datetimeobject):
 	guest_tz = pytz.timezone(guest_tz)
+<<<<<<< HEAD
 	local_timezone = pytz.timezone(frappe.utils.get_time_zone())
+=======
+	local_timezone = pytz.timezone(get_system_timezone())
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	datetimeobject = local_timezone.localize(datetimeobject)
 	datetimeobject = datetimeobject.astimezone(guest_tz)
 	return datetimeobject
@@ -134,7 +142,11 @@ def convert_to_guest_timezone(guest_tz, datetimeobject):
 def convert_to_system_timezone(guest_tz, datetimeobject):
 	guest_tz = pytz.timezone(guest_tz)
 	datetimeobject = guest_tz.localize(datetimeobject)
+<<<<<<< HEAD
 	system_tz = pytz.timezone(frappe.utils.get_time_zone())
+=======
+	system_tz = pytz.timezone(get_system_timezone())
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	datetimeobject = datetimeobject.astimezone(system_tz)
 	return datetimeobject
 

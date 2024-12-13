@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, flt, now_datetime, nowdate
 
 import erpnext
@@ -14,7 +18,20 @@ from erpnext.stock.doctype.delivery_trip.delivery_trip import (
 from erpnext.tests.utils import create_test_contact_and_address
 
 
+<<<<<<< HEAD
 class TestDeliveryTrip(FrappeTestCase):
+=======
+class UnitTestDeliveryTrip(UnitTestCase):
+	"""
+	Unit tests for DeliveryTrip.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestDeliveryTrip(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		super().setUp()
 		driver = create_driver()

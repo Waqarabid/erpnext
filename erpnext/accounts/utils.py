@@ -10,7 +10,11 @@ import frappe.defaults
 from frappe import _, qb, throw
 from frappe.model.meta import get_field_precision
 from frappe.query_builder import AliasedQuery, Criterion, Table
+<<<<<<< HEAD
 from frappe.query_builder.functions import Round, Sum
+=======
+from frappe.query_builder.functions import Count, Round, Sum
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.query_builder.utils import DocType
 from frappe.utils import (
 	add_days,
@@ -53,6 +57,7 @@ GL_REPOSTING_CHUNK = 100
 
 @frappe.whitelist()
 def get_fiscal_year(
+<<<<<<< HEAD
 	date=None, fiscal_year=None, label="Date", verbose=1, company=None, as_dict=False, boolean=False
 ):
 	if isinstance(boolean, str):
@@ -65,6 +70,30 @@ def get_fiscal_year(
 		return fiscal_years
 	else:
 		return fiscal_years[0]
+=======
+	date=None,
+	fiscal_year=None,
+	label="Date",
+	verbose=1,
+	company=None,
+	as_dict=False,
+	boolean=None,
+	raise_on_missing=True,
+):
+	if isinstance(raise_on_missing, str):
+		raise_on_missing = loads(raise_on_missing)
+
+	# backwards compat
+	if isinstance(boolean, str):
+		boolean = loads(boolean)
+	if boolean is not None:
+		raise_on_missing = not boolean
+
+	fiscal_years = get_fiscal_years(
+		date, fiscal_year, label, verbose, company, as_dict=as_dict, raise_on_missing=raise_on_missing
+	)
+	return False if not fiscal_years else fiscal_years[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_fiscal_years(
@@ -74,8 +103,53 @@ def get_fiscal_years(
 	verbose=1,
 	company=None,
 	as_dict=False,
+<<<<<<< HEAD
 	boolean=False,
 ):
+=======
+	boolean=None,
+	raise_on_missing=True,
+):
+	if transaction_date:
+		transaction_date = getdate(transaction_date)
+	# backwards compat
+	if boolean is not None:
+		raise_on_missing = not boolean
+
+	all_fiscal_years = _get_fiscal_years(company=company)
+
+	# No restricting selectors
+	if not transaction_date and not fiscal_year:
+		return all_fiscal_years
+
+	for fy in all_fiscal_years:
+		if (fiscal_year and fy.name == fiscal_year) or (
+			transaction_date
+			and getdate(fy.year_start_date) <= transaction_date
+			and getdate(fy.year_end_date) >= transaction_date
+		):
+			if as_dict:
+				return (fy,)
+			else:
+				return ((fy.name, fy.year_start_date, fy.year_end_date),)
+
+	# No match for restricting selectors
+	if raise_on_missing:
+		error_msg = _("""{0} {1} is not in any active Fiscal Year""").format(
+			label, formatdate(transaction_date)
+		)
+		if company:
+			error_msg = _("""{0} for {1}""").format(error_msg, frappe.bold(company))
+
+		if verbose == 1:
+			frappe.msgprint(error_msg)
+
+		raise FiscalYearError(error_msg)
+	return []
+
+
+def _get_fiscal_years(company=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	fiscal_years = frappe.cache().hget("fiscal_years", company) or []
 
 	if not fiscal_years:
@@ -86,9 +160,12 @@ def get_fiscal_years(
 			frappe.qb.from_(FY).select(FY.name, FY.year_start_date, FY.year_end_date).where(FY.disabled == 0)
 		)
 
+<<<<<<< HEAD
 		if fiscal_year:
 			query = query.where(FY.name == fiscal_year)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if company:
 			FYC = DocType("Fiscal Year Company")
 			query = query.where(
@@ -105,6 +182,7 @@ def get_fiscal_years(
 		fiscal_years = query.run(as_dict=True)
 
 		frappe.cache().hset("fiscal_years", company, fiscal_years)
+<<<<<<< HEAD
 
 	if not transaction_date and not fiscal_year:
 		return fiscal_years
@@ -141,6 +219,9 @@ def get_fiscal_years(
 		frappe.msgprint(error_msg)
 
 	raise FiscalYearError(error_msg)
+=======
+	return fiscal_years
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
@@ -180,6 +261,10 @@ def get_balance_on(
 	in_account_currency=True,
 	cost_center=None,
 	ignore_account_permission=False,
+<<<<<<< HEAD
+=======
+	account_type=None,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	start_date=None,
 ):
 	if not account and frappe.form_dict.get("account"):
@@ -233,7 +318,11 @@ def get_balance_on(
 			)
 
 		else:
+<<<<<<< HEAD
 			cond.append(f"""gle.cost_center = {frappe.db.escape(cost_center, percent=False)} """)
+=======
+			cond.append(f"""gle.cost_center = {frappe.db.escape(cost_center)} """)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if account:
 		if not (frappe.flags.ignore_account_permission or ignore_account_permission):
@@ -253,6 +342,7 @@ def get_balance_on(
 			if acc.account_currency == frappe.get_cached_value("Company", acc.company, "default_currency"):
 				in_account_currency = False
 		else:
+<<<<<<< HEAD
 			cond.append(f"""gle.account = {frappe.db.escape(account, percent=False)} """)
 
 	if party_type and party:
@@ -268,13 +358,55 @@ def get_balance_on(
 			select_field = "sum(debit_in_account_currency) - sum(credit_in_account_currency)"
 		else:
 			select_field = "sum(debit) - sum(credit)"
+=======
+			cond.append(f"""gle.account = {frappe.db.escape(account)} """)
+
+	if account_type:
+		accounts = frappe.db.get_all(
+			"Account",
+			filters={"company": company, "account_type": account_type, "is_group": 0},
+			pluck="name",
+			order_by="lft",
+		)
+
+		cond.append(
+			"""
+			gle.account in (%s)
+		"""
+			% (", ".join([frappe.db.escape(account) for account in accounts]))
+		)
+
+	if party_type and party:
+		cond.append(
+			f"""gle.party_type = {frappe.db.escape(party_type)} and gle.party = {frappe.db.escape(party)} """
+		)
+
+	if company:
+		cond.append("""gle.company = %s """ % (frappe.db.escape(company)))
+
+	if account or (party_type and party) or account_type:
+		precision = get_currency_precision()
+		if in_account_currency:
+			select_field = (
+				"sum(round(debit_in_account_currency, %s)) - sum(round(credit_in_account_currency, %s))"
+			)
+		else:
+			select_field = "sum(round(debit, %s)) - sum(round(credit, %s))"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		bal = frappe.db.sql(
 			"""
 			SELECT {}
 			FROM `tabGL Entry` gle
+<<<<<<< HEAD
 			WHERE {}""".format(select_field, " and ".join(cond))
 		)[0][0]
 
+=======
+			WHERE {}""".format(select_field, " and ".join(cond)),
+			(precision, precision),
+		)[0][0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# if bal is None, return 0
 		return flt(bal)
 
@@ -318,7 +450,11 @@ def get_count_on(account, fieldname, date):
 			)"""
 			)
 		else:
+<<<<<<< HEAD
 			cond.append(f"""gle.account = {frappe.db.escape(account, percent=False)} """)
+=======
+			cond.append(f"""gle.account = {frappe.db.escape(account)} """)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		entries = frappe.db.sql(
 			"""
@@ -453,7 +589,21 @@ def reconcile_against_document(
 		# cancel advance entry
 		doc = frappe.get_doc(voucher_type, voucher_no)
 		frappe.flags.ignore_party_validation = True
+<<<<<<< HEAD
 		_delete_pl_entries(voucher_type, voucher_no)
+=======
+
+		# When Advance is allocated from an Order to an Invoice
+		# whole ledger must be reposted
+		repost_whole_ledger = any([x.voucher_detail_no for x in entries])
+		if voucher_type == "Payment Entry" and doc.book_advance_payments_in_separate_party_account:
+			if repost_whole_ledger:
+				doc.make_gl_entries(cancel=1)
+			else:
+				doc.make_advance_gl_entries(cancel=1)
+		else:
+			_delete_pl_entries(voucher_type, voucher_no)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for entry in entries:
 			check_if_advance_entry_modified(entry)
@@ -463,14 +613,24 @@ def reconcile_against_document(
 
 			# update ref in advance entry
 			if voucher_type == "Journal Entry":
+<<<<<<< HEAD
 				referenced_row = update_reference_in_journal_entry(entry, doc, do_not_save=False)
+=======
+				referenced_row, update_advance_paid = update_reference_in_journal_entry(
+					entry, doc, do_not_save=False
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				# advance section in sales/purchase invoice and reconciliation tool,both pass on exchange gain/loss
 				# amount and account in args
 				# referenced_row is used to deduplicate gain/loss journal
 				entry.update({"referenced_row": referenced_row})
 				doc.make_exchange_gain_loss_journal([entry], dimensions_dict)
 			else:
+<<<<<<< HEAD
 				referenced_row = update_reference_in_payment_entry(
+=======
+				referenced_row, update_advance_paid = update_reference_in_payment_entry(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					entry,
 					doc,
 					do_not_save=True,
@@ -481,6 +641,7 @@ def reconcile_against_document(
 		doc.save(ignore_permissions=True)
 		# re-submit advance entry
 		doc = frappe.get_doc(entry.voucher_type, entry.voucher_no)
+<<<<<<< HEAD
 		gl_map = doc.build_gl_map()
 		from erpnext.accounts.general_ledger import process_debit_credit_difference
 
@@ -488,6 +649,25 @@ def reconcile_against_document(
 		process_debit_credit_difference(gl_map)
 
 		create_payment_ledger_entry(gl_map, update_outstanding="No", cancel=0, adv_adj=1)
+=======
+
+		if voucher_type == "Payment Entry" and doc.book_advance_payments_in_separate_party_account:
+			# When Advance is allocated from an Order to an Invoice
+			# whole ledger must be reposted
+			if repost_whole_ledger:
+				doc.make_gl_entries()
+			else:
+				# both ledgers must be posted to for `Advance` in separate account feature
+				# TODO: find a more efficient way post only for the new linked vouchers
+				doc.make_advance_gl_entries()
+		else:
+			gl_map = doc.build_gl_map()
+			# Make sure there is no overallocation
+			from erpnext.accounts.general_ledger import process_debit_credit_difference
+
+			process_debit_credit_difference(gl_map)
+			create_payment_ledger_entry(gl_map, update_outstanding="No", cancel=0, adv_adj=1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# Only update outstanding for newly linked vouchers
 		for entry in entries:
@@ -498,6 +678,13 @@ def reconcile_against_document(
 				entry.party_type,
 				entry.party,
 			)
+<<<<<<< HEAD
+=======
+		# update advance paid in Advance Receivable/Payable doctypes
+		if update_advance_paid:
+			for t, n in update_advance_paid:
+				frappe.get_doc(t, n).set_total_advance_paid()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		frappe.flags.ignore_party_validation = False
 
@@ -513,6 +700,7 @@ def check_if_advance_entry_modified(args):
 
 	ret = None
 	if args.voucher_type == "Journal Entry":
+<<<<<<< HEAD
 		ret = frappe.db.sql(
 			"""
 			select t2.{dr_or_cr} from `tabJournal Entry` t1, `tabJournal Entry Account` t2
@@ -557,6 +745,61 @@ def check_if_advance_entry_modified(args):
 				.run()
 			)
 
+=======
+		journal_entry = frappe.qb.DocType("Journal Entry")
+		journal_acc = frappe.qb.DocType("Journal Entry Account")
+
+		q = (
+			frappe.qb.from_(journal_entry)
+			.inner_join(journal_acc)
+			.on(journal_entry.name == journal_acc.parent)
+			.select(journal_acc[args.get("dr_or_cr")])
+			.where(
+				(journal_acc.account == args.get("account"))
+				& (journal_acc.party_type == args.get("party_type"))
+				& (journal_acc.party == args.get("party"))
+				& (
+					(journal_acc.reference_type.isnull())
+					| (journal_acc.reference_type.isin(["", "Sales Order", "Purchase Order"]))
+				)
+				& (journal_entry.name == args.get("voucher_no"))
+				& (journal_acc.name == args.get("voucher_detail_no"))
+				& (journal_entry.docstatus == 1)
+			)
+		)
+
+	else:
+		precision = frappe.get_precision("Payment Entry", "unallocated_amount")
+
+		payment_entry = frappe.qb.DocType("Payment Entry")
+		payment_ref = frappe.qb.DocType("Payment Entry Reference")
+
+		q = (
+			frappe.qb.from_(payment_entry)
+			.select(payment_entry.name)
+			.where(payment_entry.name == args.get("voucher_no"))
+			.where(payment_entry.docstatus == 1)
+			.where(payment_entry.party_type == args.get("party_type"))
+			.where(payment_entry.party == args.get("party"))
+		)
+
+		if args.voucher_detail_no:
+			q = (
+				q.inner_join(payment_ref)
+				.on(payment_entry.name == payment_ref.parent)
+				.where(payment_ref.name == args.get("voucher_detail_no"))
+				.where(payment_ref.reference_doctype.isin(("", "Sales Order", "Purchase Order")))
+				.where(payment_ref.allocated_amount == args.get("unreconciled_amount"))
+			)
+		else:
+			q = q.where(
+				Round(payment_entry.unallocated_amount, precision)
+				== Round(args.get("unreconciled_amount"), precision)
+			)
+
+	ret = q.run(as_dict=True)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not ret:
 		throw(_("""Payment Entry has been modified after you pulled it. Please pull it again."""))
 
@@ -576,8 +819,17 @@ def update_reference_in_journal_entry(d, journal_entry, do_not_save=False):
 	jv_detail = journal_entry.get("accounts", {"name": d["voucher_detail_no"]})[0]
 
 	# Update Advance Paid in SO/PO since they might be getting unlinked
+<<<<<<< HEAD
 	if jv_detail.get("reference_type") in ("Sales Order", "Purchase Order"):
 		frappe.get_doc(jv_detail.reference_type, jv_detail.reference_name).set_total_advance_paid()
+=======
+	update_advance_paid = []
+	advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+		"advance_payment_payable_doctypes"
+	)
+	if jv_detail.get("reference_type") in advance_payment_doctypes:
+		update_advance_paid.append((jv_detail.reference_type, jv_detail.reference_name))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	rev_dr_or_cr = (
 		"debit_in_account_currency"
@@ -633,10 +885,19 @@ def update_reference_in_journal_entry(d, journal_entry, do_not_save=False):
 
 	# will work as update after submit
 	journal_entry.flags.ignore_validate_update_after_submit = True
+<<<<<<< HEAD
 	if not do_not_save:
 		journal_entry.save(ignore_permissions=True)
 
 	return new_row.name
+=======
+	# Ledgers will be reposted by Reconciliation tool
+	journal_entry.flags.ignore_reposting_on_reconciliation = True
+	if not do_not_save:
+		journal_entry.save(ignore_permissions=True)
+
+	return new_row.name, update_advance_paid
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def update_reference_in_payment_entry(
@@ -655,15 +916,27 @@ def update_reference_in_payment_entry(
 		"account": d.account,
 		"dimensions": d.dimensions,
 	}
+<<<<<<< HEAD
+=======
+	update_advance_paid = []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if d.voucher_detail_no:
 		existing_row = payment_entry.get("references", {"name": d["voucher_detail_no"]})[0]
 
 		# Update Advance Paid in SO/PO since they are getting unlinked
+<<<<<<< HEAD
 		if existing_row.get("reference_doctype") in ("Sales Order", "Purchase Order"):
 			frappe.get_doc(
 				existing_row.reference_doctype, existing_row.reference_name
 			).set_total_advance_paid()
+=======
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		if existing_row.get("reference_doctype") in advance_payment_doctypes:
+			update_advance_paid.append((existing_row.reference_doctype, existing_row.reference_name))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if d.allocated_amount <= existing_row.allocated_amount:
 			existing_row.allocated_amount -= d.allocated_amount
@@ -672,11 +945,19 @@ def update_reference_in_payment_entry(
 			new_row.docstatus = 1
 			for field in list(reference_details):
 				new_row.set(field, reference_details[field])
+<<<<<<< HEAD
 
+=======
+			row = new_row
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		new_row = payment_entry.append("references")
 		new_row.docstatus = 1
 		new_row.update(reference_details)
+<<<<<<< HEAD
+=======
+		row = new_row
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	payment_entry.flags.ignore_validate_update_after_submit = True
 	payment_entry.clear_unallocated_reference_document_rows()
@@ -704,6 +985,10 @@ def update_reference_in_payment_entry(
 
 	if not do_not_save:
 		payment_entry.save(ignore_permissions=True)
+<<<<<<< HEAD
+=======
+	return row, update_advance_paid
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def cancel_exchange_gain_loss_journal(
@@ -948,6 +1233,18 @@ def remove_ref_doc_link_from_pe(
 			try:
 				pe_doc = frappe.get_doc("Payment Entry", pe)
 				pe_doc.set_amounts()
+<<<<<<< HEAD
+=======
+
+				# Call cancel on only removed reference
+				references = [
+					x
+					for x in pe_doc.references
+					if x.reference_doctype == ref_type and x.reference_name == ref_no
+				]
+				[pe_doc.make_advance_gl_entries(x, cancel=1) for x in references]
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				pe_doc.clear_unallocated_reference_document_rows()
 				pe_doc.validate_payment_type_with_outstanding()
 			except Exception:
@@ -1011,6 +1308,7 @@ def get_currency_precision():
 	return precision
 
 
+<<<<<<< HEAD
 def get_stock_rbnb_difference(posting_date, company):
 	stock_items = frappe.db.sql_list(
 		"""select distinct item_code
@@ -1053,6 +1351,8 @@ def get_stock_rbnb_difference(posting_date, company):
 	return flt(stock_rbnb) + flt(sys_bal)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_held_invoices(party_type, party):
 	"""
 	Returns a list of names Purchase Invoices for the given party that are on hold
@@ -1087,7 +1387,13 @@ def get_outstanding_invoices(
 	precision = frappe.get_precision("Sales Invoice", "outstanding_amount") or 2
 
 	if account:
+<<<<<<< HEAD
 		root_type, account_type = frappe.get_cached_value("Account", account, ["root_type", "account_type"])
+=======
+		root_type, account_type = frappe.get_cached_value(
+			"Account", account[0], ["root_type", "account_type"]
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		party_account_type = "Receivable" if root_type == "Asset" else "Payable"
 		party_account_type = account_type or party_account_type
 	else:
@@ -1097,7 +1403,11 @@ def get_outstanding_invoices(
 
 	common_filter = common_filter or []
 	common_filter.append(ple.account_type == party_account_type)
+<<<<<<< HEAD
 	common_filter.append(ple.account == account)
+=======
+	common_filter.append(ple.account.isin(account))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	common_filter.append(ple.party_type == party_type)
 	common_filter.append(ple.party == party)
 
@@ -1121,11 +1431,19 @@ def get_outstanding_invoices(
 			if (
 				min_outstanding
 				and max_outstanding
+<<<<<<< HEAD
 				and not (outstanding_amount >= min_outstanding and outstanding_amount <= max_outstanding)
 			):
 				continue
 
 			if not d.voucher_type == "Purchase Invoice" or d.voucher_no not in held_invoices:
+=======
+				and (outstanding_amount < min_outstanding or outstanding_amount > max_outstanding)
+			):
+				continue
+
+			if d.voucher_type != "Purchase Invoice" or d.voucher_no not in held_invoices:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				outstanding_invoices.append(
 					frappe._dict(
 						{
@@ -1137,6 +1455,10 @@ def get_outstanding_invoices(
 							"outstanding_amount": outstanding_amount,
 							"due_date": d.due_date,
 							"currency": d.currency,
+<<<<<<< HEAD
+=======
+							"account": d.account,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						}
 					)
 				)
@@ -1167,12 +1489,23 @@ def get_companies():
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_children(doctype, parent, company, is_root=False):
+=======
+def get_children(doctype, parent, company, is_root=False, include_disabled=False):
+	if isinstance(include_disabled, str):
+		include_disabled = loads(include_disabled)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	from erpnext.accounts.report.financial_statements import sort_accounts
 
 	parent_fieldname = "parent_" + doctype.lower().replace(" ", "_")
 	fields = ["name as value", "is_group as expandable"]
 	filters = [["docstatus", "<", 2]]
+<<<<<<< HEAD
+=======
+	if frappe.db.has_column(doctype, "disabled") and not include_disabled:
+		filters.append(["disabled", "=", False])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	filters.append([f'ifnull(`{parent_fieldname}`,"")', "=", "" if is_root else parent])
 
@@ -1214,7 +1547,11 @@ def get_account_balances(accounts, company):
 def create_payment_gateway_account(gateway, payment_channel="Email"):
 	from erpnext.setup.setup_wizard.operations.install_fixtures import create_bank_account
 
+<<<<<<< HEAD
 	company = frappe.db.get_value("Global Defaults", None, "default_company")
+=======
+	company = frappe.get_cached_value("Global Defaults", "Global Defaults", "default_company")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not company:
 		return
 
@@ -1326,9 +1663,23 @@ def parse_naming_series_variable(doc, variable):
 			company = None
 		return get_fiscal_year(date=date, company=company)[0]
 
+<<<<<<< HEAD
 
 @frappe.whitelist()
 def get_coa(doctype, parent, is_root, chart=None):
+=======
+	elif variable == "ABBR":
+		if doc:
+			company = doc.get("company") or frappe.db.get_default("company")
+		else:
+			company = frappe.db.get_default("company")
+
+		return frappe.db.get_value("Company", company, "abbr") if company else ""
+
+
+@frappe.whitelist()
+def get_coa(doctype, parent, is_root=None, chart=None):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	from erpnext.accounts.doctype.account.chart_of_accounts.chart_of_accounts import (
 		build_tree_from_json,
 	)
@@ -1568,24 +1919,56 @@ def get_stock_accounts(company, voucher_type=None, voucher_no=None, accounts=Non
 				)
 			]
 
+<<<<<<< HEAD
 	return stock_accounts
+=======
+	return list(set(stock_accounts))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_stock_and_account_balance(account=None, posting_date=None, company=None):
 	if not posting_date:
 		posting_date = nowdate()
 
+<<<<<<< HEAD
 	warehouse_account = get_warehouse_account_map(company)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	account_balance = get_balance_on(
 		account, posting_date, in_account_currency=False, ignore_account_permission=True
 	)
 
+<<<<<<< HEAD
 	related_warehouses = [
 		wh
 		for wh, wh_details in warehouse_account.items()
 		if wh_details.account == account and not wh_details.is_group
 	]
+=======
+	account_table = frappe.qb.DocType("Account")
+	query = (
+		frappe.qb.from_(account_table)
+		.select(Count(account_table.name))
+		.where(
+			(account_table.account_type == "Stock")
+			& (account_table.company == company)
+			& (account_table.is_group == 0)
+		)
+	)
+
+	no_of_stock_accounts = cint(query.run()[0][0])
+
+	related_warehouses = []
+	if no_of_stock_accounts > 1:
+		warehouse_account = get_warehouse_account_map(company)
+
+		related_warehouses = [
+			wh
+			for wh, wh_details in warehouse_account.items()
+			if wh_details.account == account and not wh_details.is_group
+		]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	total_stock_value = get_stock_value_on(related_warehouses, posting_date)
 
@@ -1799,6 +2182,10 @@ def update_voucher_outstanding(voucher_type, voucher_no, account, party_type, pa
 		)
 
 		ref_doc.set_status(update=True)
+<<<<<<< HEAD
+=======
+		ref_doc.notify_update()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def delink_original_entry(pl_entry, partial_cancel=False):
@@ -2149,6 +2536,13 @@ def create_gain_loss_journal(
 	return journal_entry.name
 
 
+<<<<<<< HEAD
+=======
+def get_party_types_from_account_type(account_type):
+	return frappe.db.get_all("Party Type", {"account_type": account_type}, pluck="name")
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def run_ledger_health_checks():
 	health_monitor_settings = frappe.get_doc("Ledger Health Monitor")
 	if health_monitor_settings.enable_health_monitor:

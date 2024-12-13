@@ -8,7 +8,11 @@ from frappe.utils import cint, flt
 
 from erpnext.accounts.party import get_partywise_advanced_payment_amount
 from erpnext.accounts.report.accounts_receivable.accounts_receivable import ReceivablePayableReport
+<<<<<<< HEAD
 from erpnext.accounts.utils import get_currency_precision
+=======
+from erpnext.accounts.utils import get_currency_precision, get_party_types_from_account_type
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def execute(filters=None):
@@ -23,8 +27,13 @@ def execute(filters=None):
 class AccountsReceivableSummary(ReceivablePayableReport):
 	def run(self, args):
 		self.account_type = args.get("account_type")
+<<<<<<< HEAD
 		self.party_type = frappe.db.get_all("Party Type", {"account_type": self.account_type}, pluck="name")
 		self.party_naming_by = frappe.db.get_value(args.get("naming_by")[0], None, args.get("naming_by")[1])
+=======
+		self.party_type = get_party_types_from_account_type(self.account_type)
+		self.party_naming_by = frappe.db.get_single_value(args.get("naming_by")[0], args.get("naming_by")[1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.get_columns()
 		self.get_data(args)
 		return self.columns, self.data
@@ -104,6 +113,7 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 			self.set_party_details(d)
 
 	def init_party_total(self, row):
+<<<<<<< HEAD
 		self.party_total.setdefault(
 			row.party,
 			frappe._dict(
@@ -123,6 +133,25 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 					"party_type": row.party_type,
 				}
 			),
+=======
+		default_dict = {
+			"invoiced": 0.0,
+			"paid": 0.0,
+			"credit_note": 0.0,
+			"outstanding": 0.0,
+			"total_due": 0.0,
+			"future_amount": 0.0,
+			"sales_person": [],
+			"party_type": row.party_type,
+		}
+		for i in self.range_numbers:
+			range_key = f"range{i}"
+			default_dict[range_key] = 0.0
+
+		self.party_total.setdefault(
+			row.party,
+			frappe._dict(default_dict),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 	def set_party_details(self, row):
@@ -173,6 +202,10 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 			self.add_column(_("Difference"), fieldname="diff")
 
 		self.setup_ageing_columns()
+<<<<<<< HEAD
+=======
+		self.add_column(label="Total Amount Due", fieldname="total_due")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.filters.show_future_payments:
 			self.add_column(label=_("Future Payment Amount"), fieldname="future_amount")
@@ -206,6 +239,7 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 			label=_("Currency"), fieldname="currency", fieldtype="Link", options="Currency", width=80
 		)
 
+<<<<<<< HEAD
 	def setup_ageing_columns(self):
 		for i, label in enumerate(
 			[
@@ -227,6 +261,8 @@ class AccountsReceivableSummary(ReceivablePayableReport):
 		# Add column for total due amount
 		self.add_column(label="Total Amount Due", fieldname="total_due")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def get_gl_balance(report_date, company):
 	return frappe._dict(

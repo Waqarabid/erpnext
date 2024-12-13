@@ -243,7 +243,11 @@
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "download_materials_required",
    "fieldtype": "Button",
+<<<<<<< HEAD
    "label": "Download Materials Request Plan"
+=======
+   "label": "Download Required Materials"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "get_items_for_mr",
@@ -398,7 +402,11 @@
    "collapsible": 1,
    "fieldname": "download_materials_request_plan_section_section",
    "fieldtype": "Section Break",
+<<<<<<< HEAD
    "label": "Download Materials Request Plan Section"
+=======
+   "label": "Preview Required Materials"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "default": "0",
@@ -439,7 +447,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-02-27 13:34:20.692211",
+=======
+ "modified": "2024-12-04 11:55:03.108971",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Plan",
@@ -460,7 +472,11 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "ASC",
  "states": []
 }

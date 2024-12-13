@@ -6,6 +6,7 @@ import json
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
 from frappe.core.page.background_jobs.background_jobs import get_info
 from frappe.model.document import Document
 from frappe.model.mapper import map_child_doc, map_doc
@@ -15,6 +16,43 @@ from frappe.utils.scheduler import is_scheduler_inactive
 
 
 class POSInvoiceMergeLog(Document):
+=======
+from frappe.model.document import Document
+from frappe.model.mapper import map_child_doc, map_doc
+from frappe.utils import cint, flt, get_time, getdate, nowdate, nowtime
+from frappe.utils.background_jobs import enqueue, is_job_enqueued
+from frappe.utils.scheduler import is_scheduler_inactive
+
+from erpnext.accounts.doctype.pos_profile.pos_profile import required_accounting_dimensions
+from erpnext.controllers.taxes_and_totals import ItemWiseTaxDetail
+
+
+class POSInvoiceMergeLog(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.pos_invoice_reference.pos_invoice_reference import (
+			POSInvoiceReference,
+		)
+
+		amended_from: DF.Link | None
+		consolidated_credit_note: DF.Link | None
+		consolidated_invoice: DF.Link | None
+		customer: DF.Link
+		customer_group: DF.Link | None
+		merge_invoices_based_on: DF.Literal["Customer", "Customer Group"]
+		pos_closing_entry: DF.Link | None
+		pos_invoices: DF.Table[POSInvoiceReference]
+		posting_date: DF.Date
+		posting_time: DF.Time
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_customer()
 		self.validate_pos_invoice_status()
@@ -72,6 +110,7 @@ class POSInvoiceMergeLog(Document):
 				return_against_status = frappe.db.get_value("POS Invoice", return_against, "status")
 				if return_against_status != "Consolidated":
 					# if return entry is not getting merged in the current pos closing and if it is not consolidated
+<<<<<<< HEAD
 					bold_unconsolidated = frappe.bold("not Consolidated")
 					msg = _("Row #{}: Original Invoice {} of return invoice {} is {}.").format(
 						d.idx, bold_return_against, bold_pos_invoice, bold_unconsolidated
@@ -82,6 +121,17 @@ class POSInvoiceMergeLog(Document):
 					)
 					msg += "<br><br>"
 					msg += _("You can add original invoice {} manually to proceed.").format(
+=======
+					msg = _(
+						"Row #{}: The original Invoice {} of return invoice {} is not consolidated."
+					).format(d.idx, bold_return_against, bold_pos_invoice)
+					msg += " "
+					msg += _(
+						"The original invoice should be consolidated before or along with the return invoice."
+					)
+					msg += "<br><br>"
+					msg += _("You can add the original invoice {} manually to proceed.").format(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						bold_return_against
 					)
 					frappe.throw(msg)
@@ -100,18 +150,28 @@ class POSInvoiceMergeLog(Document):
 			sales_invoice = self.process_merging_into_sales_invoice(sales)
 
 		self.save()  # save consolidated_sales_invoice & consolidated_credit_note ref in merge log
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.update_pos_invoices(pos_invoice_docs, sales_invoice, credit_note)
 
 	def on_cancel(self):
 		pos_invoice_docs = [frappe.get_cached_doc("POS Invoice", d.pos_invoice) for d in self.pos_invoices]
 
 		self.update_pos_invoices(pos_invoice_docs)
+<<<<<<< HEAD
+=======
+		self.serial_and_batch_bundle_reference_for_pos_invoice()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.cancel_linked_invoices()
 
 	def process_merging_into_sales_invoice(self, data):
 		sales_invoice = self.get_new_sales_invoice()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		sales_invoice = self.merge_pos_invoice_into(sales_invoice, data)
 
 		sales_invoice.is_consolidated = 1
@@ -168,6 +228,10 @@ class POSInvoiceMergeLog(Document):
 				for i in items:
 					if (
 						i.item_code == item.item_code
+<<<<<<< HEAD
+=======
+						and not i.serial_and_batch_bundle
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						and not i.serial_no
 						and not i.batch_no
 						and i.uom == item.uom
@@ -187,6 +251,11 @@ class POSInvoiceMergeLog(Document):
 					item.base_amount = item.base_net_amount
 					item.price_list_rate = 0
 					si_item = map_child_doc(item, invoice, {"doctype": "Sales Invoice Item"})
+<<<<<<< HEAD
+=======
+					if item.serial_and_batch_bundle:
+						si_item.serial_and_batch_bundle = item.serial_and_batch_bundle
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					items.append(si_item)
 
 			for tax in doc.get("taxes"):
@@ -244,6 +313,25 @@ class POSInvoiceMergeLog(Document):
 		invoice.disable_rounded_total = cint(
 			frappe.db.get_value("POS Profile", invoice.pos_profile, "disable_rounded_total")
 		)
+<<<<<<< HEAD
+=======
+		accounting_dimensions = required_accounting_dimensions()
+		dimension_values = frappe.db.get_value(
+			"POS Profile", {"name": invoice.pos_profile}, accounting_dimensions, as_dict=1
+		)
+		for dimension in accounting_dimensions:
+			dimension_value = dimension_values.get(dimension)
+
+			if not dimension_value:
+				frappe.throw(
+					_("Please set Accounting Dimension {} in {}").format(
+						frappe.bold(frappe.unscrub(dimension)),
+						frappe.get_desk_link("POS Profile", invoice.pos_profile),
+					)
+				)
+
+			invoice.set(dimension, dimension_value)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if self.merge_invoices_based_on == "Customer Group":
 			invoice.flags.ignore_pos_profile = True
@@ -271,6 +359,15 @@ class POSInvoiceMergeLog(Document):
 			doc.set_status(update=True)
 			doc.save()
 
+<<<<<<< HEAD
+=======
+	def serial_and_batch_bundle_reference_for_pos_invoice(self):
+		for d in self.pos_invoices:
+			pos_invoice = frappe.get_doc("POS Invoice", d.pos_invoice)
+			for table_name in ["items", "packed_items"]:
+				pos_invoice.set_serial_and_batch_bundle(table_name)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def cancel_linked_invoices(self):
 		for si_name in [self.consolidated_invoice, self.consolidated_credit_note]:
 			if not si_name:
@@ -288,6 +385,7 @@ def update_item_wise_tax_detail(consolidate_tax_row, tax_row):
 		consolidated_tax_detail = {}
 
 	for item_code, tax_data in tax_row_detail.items():
+<<<<<<< HEAD
 		if consolidated_tax_detail.get(item_code):
 			consolidated_tax_data = consolidated_tax_detail.get(item_code)
 			consolidated_tax_detail.update(
@@ -297,6 +395,16 @@ def update_item_wise_tax_detail(consolidate_tax_row, tax_row):
 			consolidated_tax_detail.update({item_code: [tax_data[0], tax_data[1]]})
 
 	consolidate_tax_row.item_wise_tax_detail = json.dumps(consolidated_tax_detail, separators=(",", ":"))
+=======
+		tax_data = ItemWiseTaxDetail(**tax_data)
+		if consolidated_tax_detail.get(item_code):
+			consolidated_tax_detail[item_code]["tax_amount"] += tax_data.tax_amount
+			consolidated_tax_detail[item_code]["net_amount"] += tax_data.net_amount
+		else:
+			consolidated_tax_detail.update({item_code: tax_data})
+
+	consolidate_tax_row.item_wise_tax_detail = json.dumps(consolidated_tax_detail)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_all_unconsolidated_invoices():
@@ -351,7 +459,11 @@ def unconsolidate_pos_invoices(closing_entry):
 		"POS Invoice Merge Log", filters={"pos_closing_entry": closing_entry.name}, pluck="name"
 	)
 
+<<<<<<< HEAD
 	if len(merge_logs) >= 10:
+=======
+	if len(closing_entry.pos_transactions) >= 10:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		closing_entry.set_status(update=True, status="Queued")
 		enqueue_job(cancel_merge_logs, merge_logs=merge_logs, closing_entry=closing_entry)
 	else:
@@ -384,9 +496,16 @@ def split_invoices(invoices):
 		for d in invoices
 		if d.is_return and d.return_against
 	]
+<<<<<<< HEAD
 	for pos_invoice in pos_return_docs:
 		for item in pos_invoice.items:
 			if not item.serial_no:
+=======
+
+	for pos_invoice in pos_return_docs:
+		for item in pos_invoice.items:
+			if not item.serial_no and not item.serial_and_batch_bundle:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				continue
 
 			return_against_is_added = any(
@@ -425,11 +544,17 @@ def create_merge_logs(invoice_by_customer, closing_entry=None):
 				)
 				merge_log.customer = customer
 				merge_log.pos_closing_entry = closing_entry.get("name") if closing_entry else None
+<<<<<<< HEAD
 
 				merge_log.set("pos_invoices", _invoices)
 				merge_log.save(ignore_permissions=True)
 				merge_log.submit()
 
+=======
+				merge_log.set("pos_invoices", _invoices)
+				merge_log.save(ignore_permissions=True)
+				merge_log.submit()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if closing_entry:
 			closing_entry.set_status(update=True, status="Submitted")
 			closing_entry.db_set("error_message", "")
@@ -438,7 +563,11 @@ def create_merge_logs(invoice_by_customer, closing_entry=None):
 	except Exception as e:
 		frappe.db.rollback()
 		message_log = frappe.message_log.pop() if frappe.message_log else str(e)
+<<<<<<< HEAD
 		error_message = safe_load_json(message_log)
+=======
+		error_message = get_error_message(message_log)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if closing_entry:
 			closing_entry.set_status(update=True, status="Failed")
@@ -467,7 +596,11 @@ def cancel_merge_logs(merge_logs, closing_entry=None):
 	except Exception as e:
 		frappe.db.rollback()
 		message_log = frappe.message_log.pop() if frappe.message_log else str(e)
+<<<<<<< HEAD
 		error_message = safe_load_json(message_log)
+=======
+		error_message = get_error_message(message_log)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if closing_entry:
 			closing_entry.set_status(update=True, status="Submitted")
@@ -484,15 +617,24 @@ def enqueue_job(job, **kwargs):
 
 	closing_entry = kwargs.get("closing_entry") or {}
 
+<<<<<<< HEAD
 	job_name = closing_entry.get("name")
 	if not job_already_enqueued(job_name):
+=======
+	job_id = "pos_invoice_merge::" + str(closing_entry.get("name"))
+	if not is_job_enqueued(job_id):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		enqueue(
 			job,
 			**kwargs,
 			queue="long",
 			timeout=10000,
 			event="processing_merge_logs",
+<<<<<<< HEAD
 			job_name=job_name,
+=======
+			job_id=job_id,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			now=frappe.conf.developer_mode or frappe.flags.in_test,
 		)
 
@@ -509,6 +651,7 @@ def check_scheduler_status():
 		frappe.throw(_("Scheduler is inactive. Cannot enqueue job."), title=_("Scheduler Inactive"))
 
 
+<<<<<<< HEAD
 def job_already_enqueued(job_name):
 	enqueued_jobs = [d.get("job_name") for d in get_info()]
 	if job_name in enqueued_jobs:
@@ -522,3 +665,10 @@ def safe_load_json(message):
 		json_message = message
 
 	return json_message
+=======
+def get_error_message(message) -> str:
+	try:
+		return message["message"]
+	except Exception:
+		return str(message)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

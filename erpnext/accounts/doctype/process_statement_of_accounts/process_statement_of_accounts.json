@@ -33,10 +33,18 @@
   "fetch_customers",
   "column_break_6",
   "primary_mandatory",
+<<<<<<< HEAD
+=======
+  "show_net_values_in_party_account",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_17",
   "customers",
   "preferences",
   "orientation",
+<<<<<<< HEAD
+=======
+  "include_break",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "include_ageing",
   "ageing_based_on",
   "section_break_14",
@@ -430,7 +438,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

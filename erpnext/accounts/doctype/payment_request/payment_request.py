@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -9,6 +10,15 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.query_builder.functions import Sum
 from frappe.utils import flt, get_url, nowdate
+=======
+import json
+
+import frappe
+from frappe import _, qb
+from frappe.model.document import Document
+from frappe.query_builder.functions import Abs, Sum
+from frappe.utils import flt, nowdate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.background_jobs import enqueue
 
 from erpnext import get_company_currency
@@ -22,9 +32,23 @@ from erpnext.accounts.doctype.payment_entry.payment_entry import (
 from erpnext.accounts.doctype.subscription_plan.subscription_plan import get_plan_rate
 from erpnext.accounts.party import get_party_account, get_party_bank_account
 from erpnext.accounts.utils import get_account_currency, get_currency_precision
+<<<<<<< HEAD
 from erpnext.erpnext_integrations.stripe_integration import create_stripe_subscription
 from erpnext.utilities import payment_app_import_guard
 
+=======
+from erpnext.utilities import payment_app_import_guard
+
+ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST = [
+	"Sales Order",
+	"Purchase Order",
+	"Sales Invoice",
+	"Purchase Invoice",
+	"POS Invoice",
+	"Fees",
+]
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def _get_payment_gateway_controller(*args, **kwargs):
 	with payment_app_import_guard():
@@ -34,6 +58,73 @@ def _get_payment_gateway_controller(*args, **kwargs):
 
 
 class PaymentRequest(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.subscription_plan_detail.subscription_plan_detail import (
+			SubscriptionPlanDetail,
+		)
+
+		account: DF.ReadOnly | None
+		amended_from: DF.Link | None
+		bank: DF.Link | None
+		bank_account: DF.Link | None
+		bank_account_no: DF.ReadOnly | None
+		branch_code: DF.ReadOnly | None
+		company: DF.Link | None
+		cost_center: DF.Link | None
+		currency: DF.Link | None
+		email_to: DF.Data | None
+		failed_reason: DF.Data | None
+		grand_total: DF.Currency
+		iban: DF.ReadOnly | None
+		is_a_subscription: DF.Check
+		make_sales_invoice: DF.Check
+		message: DF.Text | None
+		mode_of_payment: DF.Link | None
+		mute_email: DF.Check
+		naming_series: DF.Literal["ACC-PRQ-.YYYY.-"]
+		outstanding_amount: DF.Currency
+		party: DF.DynamicLink | None
+		party_account_currency: DF.Link | None
+		party_name: DF.Data | None
+		party_type: DF.Link | None
+		payment_account: DF.ReadOnly | None
+		payment_channel: DF.Literal["", "Email", "Phone", "Other"]
+		payment_gateway: DF.ReadOnly | None
+		payment_gateway_account: DF.Link | None
+		payment_order: DF.Link | None
+		payment_request_type: DF.Literal["Outward", "Inward"]
+		payment_url: DF.Data | None
+		print_format: DF.Literal[None]
+		project: DF.Link | None
+		reference_doctype: DF.Link | None
+		reference_name: DF.DynamicLink | None
+		status: DF.Literal[
+			"",
+			"Draft",
+			"Requested",
+			"Initiated",
+			"Partially Paid",
+			"Payment Ordered",
+			"Paid",
+			"Failed",
+			"Cancelled",
+		]
+		subject: DF.Data | None
+		subscription_plans: DF.Table[SubscriptionPlanDetail]
+		swift_number: DF.ReadOnly | None
+		transaction_date: DF.Date | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if self.get("__islocal"):
 			self.status = "Draft"
@@ -60,6 +151,11 @@ class PaymentRequest(Document):
 		ref_doc = frappe.get_doc(self.reference_doctype, self.reference_name)
 		if not hasattr(ref_doc, "order_type") or ref_doc.order_type != "Shopping Cart":
 			ref_amount = get_amount(ref_doc, self.payment_account)
+<<<<<<< HEAD
+=======
+			if not ref_amount:
+				frappe.throw(_("Payment Entry is already created"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if existing_payment_request_amount + flt(self.grand_total) > ref_amount:
 				frappe.throw(
@@ -70,7 +166,11 @@ class PaymentRequest(Document):
 
 	def validate_currency(self):
 		ref_doc = frappe.get_doc(self.reference_doctype, self.reference_name)
+<<<<<<< HEAD
 		if self.payment_account and ref_doc.currency != frappe.db.get_value(
+=======
+		if self.payment_account and ref_doc.currency != frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Account", self.payment_account, "account_currency"
 		):
 			frappe.throw(_("Transaction currency must be same as Payment Gateway currency"))
@@ -101,10 +201,16 @@ class PaymentRequest(Document):
 				)
 
 	def before_submit(self):
+<<<<<<< HEAD
 		company = frappe.get_value(self.reference_doctype, self.reference_name, "company")
 		if (
 			self.currency != self.party_account_currency
 			and self.party_account_currency == get_company_currency(company)
+=======
+		if (
+			self.currency != self.party_account_currency
+			and self.party_account_currency == get_company_currency(self.company)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		):
 			# set outstanding amount in party account currency
 			invoice = frappe.get_value(
@@ -123,6 +229,7 @@ class PaymentRequest(Document):
 		else:
 			self.outstanding_amount = self.grand_total
 
+<<<<<<< HEAD
 	def on_submit(self):
 		if self.payment_request_type == "Outward":
 			self.db_set("status", "Initiated")
@@ -145,6 +252,24 @@ class PaymentRequest(Document):
 
 		elif self.payment_channel == "Phone":
 			self.request_phone_payment()
+=======
+		if self.payment_request_type == "Outward":
+			self.status = "Initiated"
+		elif self.payment_request_type == "Inward":
+			self.status = "Requested"
+
+		if self.payment_request_type == "Inward":
+			if self.payment_channel == "Phone":
+				self.request_phone_payment()
+			else:
+				self.set_payment_request_url()
+				if not (self.mute_email or self.flags.mute_email):
+					self.send_email()
+					self.make_communication_entry()
+
+	def on_submit(self):
+		self.update_reference_advance_payment_status()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def request_phone_payment(self):
 		controller = _get_payment_gateway_controller(self.payment_gateway)
@@ -183,6 +308,7 @@ class PaymentRequest(Document):
 	def on_cancel(self):
 		self.check_if_payment_entry_exists()
 		self.set_as_cancelled()
+<<<<<<< HEAD
 
 	def make_invoice(self):
 		ref_doc = frappe.get_doc(self.reference_doctype, self.reference_name)
@@ -193,6 +319,17 @@ class PaymentRequest(Document):
 			si.allocate_advances_automatically = True
 			si = si.insert(ignore_permissions=True)
 			si.submit()
+=======
+		self.update_reference_advance_payment_status()
+
+	def make_invoice(self):
+		from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+
+		si = make_sales_invoice(self.reference_name, ignore_permissions=True)
+		si.allocate_advances_automatically = True
+		si = si.insert(ignore_permissions=True)
+		si.submit()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def payment_gateway_validation(self):
 		try:
@@ -205,6 +342,7 @@ class PaymentRequest(Document):
 			return False
 
 	def set_payment_request_url(self):
+<<<<<<< HEAD
 		if self.payment_account and self.payment_channel != "Phone":
 			self.payment_url = self.get_payment_url()
 
@@ -218,6 +356,11 @@ class PaymentRequest(Document):
 		):
 			self.db_set("status", "Initiated")
 
+=======
+		if self.payment_account and self.payment_gateway and self.payment_gateway_validation():
+			self.payment_url = self.get_payment_url()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def get_payment_url(self):
 		if self.reference_doctype != "Fees":
 			data = frappe.db.get_value(
@@ -255,7 +398,12 @@ class PaymentRequest(Document):
 
 		else:
 			payment_entry = self.create_payment_entry()
+<<<<<<< HEAD
 			self.make_invoice()
+=======
+			if self.make_sales_invoice:
+				self.make_invoice()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			return payment_entry
 
@@ -353,7 +501,18 @@ class PaymentRequest(Document):
 				)
 			],
 		}
+<<<<<<< HEAD
 		enqueue(method=frappe.sendmail, queue="short", timeout=300, is_async=True, **email_args)
+=======
+		enqueue(
+			method=frappe.sendmail,
+			queue="short",
+			timeout=300,
+			is_async=True,
+			enqueue_after_commit=True,
+			**email_args,
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_message(self):
 		"""return message with payment gateway link"""
@@ -396,6 +555,7 @@ class PaymentRequest(Document):
 		)
 		comm.insert(ignore_permissions=True)
 
+<<<<<<< HEAD
 	def get_payment_success_url(self):
 		return self.payment_success_url
 
@@ -429,6 +589,23 @@ class PaymentRequest(Document):
 		if payment_provider == "stripe":
 			return create_stripe_subscription(gateway_controller, data)
 
+=======
+	def create_subscription(self, payment_provider, gateway_controller, data):
+		if payment_provider == "stripe":
+			with payment_app_import_guard():
+				from payments.payment_gateways.stripe_integration import create_stripe_subscription
+
+			return create_stripe_subscription(gateway_controller, data)
+
+	def update_reference_advance_payment_status(self):
+		advance_payment_doctypes = frappe.get_hooks("advance_payment_receivable_doctypes") + frappe.get_hooks(
+			"advance_payment_payable_doctypes"
+		)
+		if self.reference_doctype in advance_payment_doctypes:
+			ref_doc = frappe.get_doc(self.reference_doctype, self.reference_name)
+			ref_doc.set_advance_payment_status()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def _allocate_payment_request_to_pe_references(self, references):
 		"""
 		Allocate the Payment Request to the Payment Entry references based on\n
@@ -491,6 +668,7 @@ def make_payment_request(**args):
 	"""Make payment request"""
 
 	args = frappe._dict(args)
+<<<<<<< HEAD
 
 	ref_doc = frappe.get_doc(args.dt, args.dn)
 	gateway_account = get_gateway_details(args) or frappe._dict()
@@ -504,6 +682,24 @@ def make_payment_request(**args):
 			"Sales Order", args.dn, "loyalty_points", int(args.loyalty_points), update_modified=False
 		)
 		frappe.db.set_value("Sales Order", args.dn, "loyalty_amount", loyalty_amount, update_modified=False)
+=======
+	if args.dt not in ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST:
+		frappe.throw(_("Payment Requests cannot be created against: {0}").format(frappe.bold(args.dt)))
+
+	ref_doc = args.ref_doc or frappe.get_doc(args.dt, args.dn)
+
+	gateway_account = get_gateway_details(args) or frappe._dict()
+
+	grand_total = get_amount(ref_doc, gateway_account.get("payment_account"))
+	if not grand_total:
+		frappe.throw(_("Payment Entry is already created"))
+
+	if args.loyalty_points and ref_doc.doctype == "Sales Order":
+		from erpnext.accounts.doctype.loyalty_program.loyalty_program import validate_loyalty_points
+
+		loyalty_amount = validate_loyalty_points(ref_doc, int(args.loyalty_points))  # sets fields on ref_doc
+		ref_doc.db_update()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		grand_total = grand_total - loyalty_amount
 
 	bank_account = (
@@ -512,17 +708,53 @@ def make_payment_request(**args):
 
 	draft_payment_request = frappe.db.get_value(
 		"Payment Request",
+<<<<<<< HEAD
 		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 0},
+=======
+		{"reference_doctype": ref_doc.doctype, "reference_name": ref_doc.name, "docstatus": 0},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	# fetches existing payment request `grand_total` amount
 	existing_payment_request_amount = get_existing_payment_request_amount(ref_doc.doctype, ref_doc.name)
 
+<<<<<<< HEAD
 	if existing_payment_request_amount:
 		grand_total -= existing_payment_request_amount
 
 		if not grand_total:
 			frappe.throw(_("Payment Request is already created"))
+=======
+	existing_paid_amount = get_existing_paid_amount(ref_doc.doctype, ref_doc.name)
+
+	def validate_and_calculate_grand_total(grand_total, existing_payment_request_amount):
+		grand_total -= existing_payment_request_amount
+		if not grand_total:
+			frappe.throw(_("Payment Request is already created"))
+		return grand_total
+
+	if existing_payment_request_amount:
+		if args.order_type == "Shopping Cart":
+			# If Payment Request is in an advanced stage, then create for remaining amount.
+			if get_existing_payment_request_amount(
+				ref_doc.doctype, ref_doc.name, ["Initiated", "Partially Paid", "Payment Ordered", "Paid"]
+			):
+				grand_total = validate_and_calculate_grand_total(grand_total, existing_payment_request_amount)
+			else:
+				# If PR's are processed, cancel all of them.
+				cancel_old_payment_requests(ref_doc.doctype, ref_doc.name)
+		else:
+			grand_total = validate_and_calculate_grand_total(grand_total, existing_payment_request_amount)
+
+	if existing_paid_amount:
+		if ref_doc.party_account_currency == ref_doc.currency:
+			if ref_doc.conversion_rate:
+				grand_total -= flt(existing_paid_amount / ref_doc.conversion_rate)
+			else:
+				grand_total -= flt(existing_paid_amount)
+		else:
+			grand_total -= flt(existing_paid_amount / ref_doc.conversion_rate)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if draft_payment_request:
 		frappe.db.set_value(
@@ -558,11 +790,30 @@ def make_payment_request(**args):
 				"email_to": args.recipient_id or ref_doc.owner,
 				"subject": _("Payment Request for {0}").format(args.dn),
 				"message": gateway_account.get("message") or get_dummy_message(ref_doc),
+<<<<<<< HEAD
 				"reference_doctype": args.dt,
 				"reference_name": args.dn,
 				"party_type": party_type,
 				"party": args.get("party") or ref_doc.get("customer"),
 				"bank_account": bank_account,
+=======
+				"reference_doctype": ref_doc.doctype,
+				"reference_name": ref_doc.name,
+				"company": ref_doc.get("company"),
+				"party_type": party_type,
+				"party": args.get("party") or ref_doc.get("customer"),
+				"bank_account": bank_account,
+				"party_name": args.get("party_name") or ref_doc.get("customer_name"),
+				"make_sales_invoice": (
+					args.make_sales_invoice  # new standard
+					or args.order_type == "Shopping Cart"  # compat for webshop app
+				),
+				"mute_email": (
+					args.mute_email  # new standard
+					or args.order_type == "Shopping Cart"  # compat for webshop app
+					or gateway_account.get("payment_channel", "Email") != "Email"
+				),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		)
 
@@ -577,11 +828,19 @@ def make_payment_request(**args):
 		for dimension in get_accounting_dimensions():
 			pr.update({dimension: ref_doc.get(dimension)})
 
+<<<<<<< HEAD
 		if args.order_type == "Shopping Cart" or args.mute_email:
 			pr.flags.mute_email = True
 
 		pr.insert(ignore_permissions=True)
 		if args.submit_doc:
+=======
+		if frappe.db.get_single_value("Accounts Settings", "create_pr_in_draft_status", cache=True):
+			pr.insert(ignore_permissions=True)
+		if args.submit_doc:
+			if pr.get("__unsaved"):
+				pr.insert(ignore_permissions=True)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			pr.submit()
 
 	if args.order_type == "Shopping Cart":
@@ -627,25 +886,107 @@ def get_amount(ref_doc, payment_account=None):
 		frappe.throw(_("Payment Entry is already created"))
 
 
+<<<<<<< HEAD
 def get_existing_payment_request_amount(ref_dt, ref_dn):
+=======
+def get_irequest_status(payment_requests: None | list = None) -> list:
+	IR = frappe.qb.DocType("Integration Request")
+	res = []
+	if payment_requests:
+		res = (
+			frappe.qb.from_(IR)
+			.select(IR.name)
+			.where(IR.reference_doctype.eq("Payment Request"))
+			.where(IR.reference_docname.isin(payment_requests))
+			.where(IR.status.isin(["Authorized", "Completed"]))
+			.run(as_dict=True)
+		)
+	return res
+
+
+def cancel_old_payment_requests(ref_dt, ref_dn):
+	PR = frappe.qb.DocType("Payment Request")
+
+	if res := (
+		frappe.qb.from_(PR)
+		.select(PR.name)
+		.where(PR.reference_doctype == ref_dt)
+		.where(PR.reference_name == ref_dn)
+		.where(PR.docstatus == 1)
+		.where(PR.status.isin(["Draft", "Requested"]))
+		.run(as_dict=True)
+	):
+		if get_irequest_status([x.name for x in res]):
+			frappe.throw(_("Another Payment Request is already processed"))
+		else:
+			for x in res:
+				doc = frappe.get_doc("Payment Request", x.name)
+				doc.flags.ignore_permissions = True
+				doc.cancel()
+
+				if ireqs := get_irequests_of_payment_request(doc.name):
+					for ireq in ireqs:
+						frappe.db.set_value("Integration Request", ireq.name, "status", "Cancelled")
+
+
+def get_existing_payment_request_amount(ref_dt, ref_dn, statuses: list | None = None) -> list:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"""
 	Return the total amount of Payment Requests against a reference document.
 	"""
 	PR = frappe.qb.DocType("Payment Request")
 
+<<<<<<< HEAD
 	response = (
+=======
+	query = (
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.qb.from_(PR)
 		.select(Sum(PR.grand_total))
 		.where(PR.reference_doctype == ref_dt)
 		.where(PR.reference_name == ref_dn)
 		.where(PR.docstatus == 1)
+<<<<<<< HEAD
 		.run()
 	)
+
+=======
+	)
+
+	if statuses:
+		query = query.where(PR.status.isin(statuses))
+
+	response = query.run()
 
 	return response[0][0] if response[0] else 0
 
 
+def get_existing_paid_amount(doctype, name):
+	PL = frappe.qb.DocType("Payment Ledger Entry")
+	PER = frappe.qb.DocType("Payment Entry Reference")
+
+	query = (
+		frappe.qb.from_(PL)
+		.left_join(PER)
+		.on(
+			(PER.reference_doctype == PL.against_voucher_type) & (PER.reference_name == PL.against_voucher_no)
+		)
+		.select(Abs(Sum(PL.amount)).as_("total_paid_amount"))
+		.where(PL.against_voucher_type.eq(doctype))
+		.where(PL.against_voucher_no.eq(name))
+		.where(PL.amount < 0)
+		.where(PL.delinked == 0)
+		.where(PER.docstatus == 1)
+		.where(PER.payment_request.isnull())
+	)
+	response = query.run()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
+	return response[0][0] if response[0] else 0
+
+
 def get_gateway_details(args):  # nosemgrep
+<<<<<<< HEAD
 	"""return gateway and payment account of default payment gateway"""
 	if args.get("payment_gateway_account"):
 		return get_payment_gateway_account(args.get("payment_gateway_account"))
@@ -664,6 +1005,20 @@ def get_payment_gateway_account(args):
 		"Payment Gateway Account",
 		args,
 		["name", "payment_gateway", "payment_account", "message"],
+=======
+	"""
+	Return gateway and payment account of default payment gateway
+	"""
+	gateway_account = args.get("payment_gateway_account", {"is_default": 1})
+	return get_payment_gateway_account(gateway_account)
+
+
+def get_payment_gateway_account(filter):
+	return frappe.db.get_value(
+		"Payment Gateway Account",
+		filter,
+		["name", "payment_gateway", "payment_account", "payment_channel", "message"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		as_dict=1,
 	)
 
@@ -861,3 +1216,20 @@ def get_open_payment_requests_query(doctype, txt, searchfield, start, page_len, 
 		)
 		for pr in open_payment_requests
 	]
+<<<<<<< HEAD
+=======
+
+
+def get_irequests_of_payment_request(doc: str | None = None) -> list:
+	res = []
+	if doc:
+		res = frappe.db.get_all(
+			"Integration Request",
+			{
+				"reference_doctype": "Payment Request",
+				"reference_docname": doc,
+				"status": "Queued",
+			},
+		)
+	return res
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

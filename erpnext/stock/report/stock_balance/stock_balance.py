@@ -100,6 +100,11 @@ class StockBalanceReport:
 
 		del self.sle_entries
 
+<<<<<<< HEAD
+=======
+		sre_details = self.get_sre_reserved_qty_details()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		variant_values = {}
 		if self.filters.get("show_variant_attributes"):
 			variant_values = self.get_variant_values_for()
@@ -132,6 +137,21 @@ class StockBalanceReport:
 
 				report_data.update(stock_ageing_data)
 
+<<<<<<< HEAD
+=======
+			report_data.update(
+				{"reserved_stock": sre_details.get((report_data.item_code, report_data.warehouse), 0.0)}
+			)
+
+			if (
+				not self.filters.get("include_zero_stock_items")
+				and report_data
+				and report_data.bal_qty == 0
+				and report_data.bal_val == 0
+			):
+				continue
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.data.append(report_data)
 
 	def get_item_warehouse_map(self):
@@ -167,6 +187,21 @@ class StockBalanceReport:
 
 		return item_warehouse_map
 
+<<<<<<< HEAD
+=======
+	def get_sre_reserved_qty_details(self) -> dict:
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import (
+			get_sre_reserved_qty_for_items_and_warehouses as get_reserved_qty_details,
+		)
+
+		item_code_list, warehouse_list = [], []
+		for d in self.item_warehouse_map:
+			item_code_list.append(d[1])
+			warehouse_list.append(d[2])
+
+		return get_reserved_qty_details(item_code_list, warehouse_list)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def prepare_item_warehouse_map(self, item_warehouse_map, entry, group_by_key):
 		qty_dict = item_warehouse_map[group_by_key]
 		for field in self.inventory_dimensions:
@@ -282,6 +317,11 @@ class StockBalanceReport:
 				sle.stock_value,
 				sle.batch_no,
 				sle.serial_no,
+<<<<<<< HEAD
+=======
+				sle.serial_and_batch_bundle,
+				sle.has_serial_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				item_table.item_group,
 				item_table.stock_uom,
 				item_table.item_name,
@@ -451,6 +491,16 @@ class StockBalanceReport:
 					else None,
 				},
 				{
+<<<<<<< HEAD
+=======
+					"label": _("Reserved Stock"),
+					"fieldname": "reserved_stock",
+					"fieldtype": "Float",
+					"width": 80,
+					"convertible": "qty",
+				},
+				{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"label": _("Company"),
 					"fieldname": "company",
 					"fieldtype": "Link",

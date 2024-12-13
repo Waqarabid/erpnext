@@ -10,6 +10,21 @@ from frappe.model.rename_doc import bulk_rename
 
 
 class RenameTool(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		file_to_rename: DF.Attach | None
+		select_doctype: DF.Literal
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass
 
 

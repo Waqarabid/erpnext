@@ -10,6 +10,11 @@
  "field_order": [
   "attribute_name",
   "numeric_values",
+<<<<<<< HEAD
+=======
+  "column_break_vbik",
+  "disabled",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_4",
   "from_range",
   "increment",
@@ -70,15 +75,36 @@
    "fieldtype": "Table",
    "label": "Item Attribute Values",
    "options": "Item Attribute Value"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "column_break_vbik",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-edit",
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-10-02 12:03:02.359202",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Attribute",
+=======
+ "modified": "2024-11-26 20:05:29.421714",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Item Attribute",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -91,7 +117,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

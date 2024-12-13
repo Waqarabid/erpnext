@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
 	"branches": ["version-14"],
+=======
+	"branches": ["version-13"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"plugins": [
 		"@semantic-release/commit-analyzer", {
 			"preset": "angular",
@@ -10,7 +14,11 @@
 		"@semantic-release/release-notes-generator",
 		[
 			"@semantic-release/exec", {
+<<<<<<< HEAD
 				"prepareCmd": 'sed -ir -E "s/\"[0-9]+\.[0-9]+\.[0-9]+\"/\"${nextRelease.version}\"/" erpnext/__init__.py'
+=======
+				"prepareCmd": 'sed -ir "s/[0-9]*\.[0-9]*\.[0-9]*/${nextRelease.version}/" erpnext/__init__.py'
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 		],
 		[
@@ -21,4 +29,8 @@
 		],
 		"@semantic-release/github"
 	]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

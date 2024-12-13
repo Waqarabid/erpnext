@@ -16,6 +16,26 @@ class ClosedAccountingPeriod(frappe.ValidationError):
 
 
 class AccountingPeriod(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.closed_document.closed_document import ClosedDocument
+
+		closed_documents: DF.Table[ClosedDocument]
+		company: DF.Link
+		end_date: DF.Date
+		period_name: DF.Data
+		start_date: DF.Date
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_overlap()
 
@@ -84,6 +104,11 @@ def validate_accounting_period_on_doc_save(doc, method=None):
 			date = doc.available_for_use_date
 	elif doc.doctype == "Asset Repair":
 		date = doc.completion_date
+<<<<<<< HEAD
+=======
+	elif doc.doctype == "Period Closing Voucher":
+		date = doc.period_end_date
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		date = doc.posting_date
 

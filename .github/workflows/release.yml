@@ -2,7 +2,11 @@ name: Generate Semantic Release
 on:
   push:
     branches:
+<<<<<<< HEAD
       - version-14
+=======
+      - version-13
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 jobs:
   release:
     name: Release
@@ -13,12 +17,18 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 20
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
       - name: Setup dependencies
         run: |
           npm install @semantic-release/git @semantic-release/exec --no-save

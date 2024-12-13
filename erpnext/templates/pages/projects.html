@@ -9,18 +9,27 @@
 {% endblock %}
 
 {% block header %}
+<<<<<<< HEAD
   <h1>{{ doc.project_name }}</h1>
+=======
+  <h3 class="my-account-header">{{ doc.project_name }}</h3>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 {% endblock %}
 
 {% block style %}
   <style>
+<<<<<<< HEAD
     {
       % include "templates/includes/projects.css"%
     }
+=======
+    {% include "templates/includes/projects.css" %}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   </style>
 {% endblock %}
 
 {% block page_content %}
+<<<<<<< HEAD
 
   {{ progress_bar(doc.percent_complete) }}
 
@@ -33,10 +42,19 @@
     <h4>Hours Spent:
       <span>{{ doc.actual_time }}</span>
     </h4>
+=======
+  <div class="web-list-item transaction-list-item">
+    <div class="row align-items-center">
+      <div class="col-sm-4 "><b>{{ _("Status") }}: {{ _(doc.status) }}</b></div>
+      <div class="col-sm-4 "><b>{{ _("Progress") }}: {{ doc.get_formatted("percent_complete") }}</b></div>
+      <div class="col-sm-4 "><b>{{ _("Hours Spent") }}: {{ doc.get_formatted("actual_time") }}</b></div>
+    </div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   </div>
 
   {{ progress_bar(doc.percent_complete) }}
 
+<<<<<<< HEAD
   {% if doc.tasks %}
     <div class="website-list">
       <div class="result">
@@ -58,10 +76,41 @@
     <p class="font-weight-bold">{{ _("No Tasks") }}</p>
   {% endif %}
 
+=======
+  <hr>
+
+  <div class="row align-items-center">
+    <div class="col-sm-6 my-account-header"> <h4>{{ _("Tasks") }}</h4></div>
+    <div class="col-sm-6 text-right">
+      <a class="btn btn-secondary btn-light btn-sm" href='/tasks/new?project={{ doc.project_name }}'>{{ _("New task") }}</a>
+    </div>
+  </div>
+  {% if doc.tasks %}
+  <div class="website-list">
+    <div class="result">
+      <div class="web-list-item transaction-list-item">
+        <div class="row align-items-center">
+          <div class="col-sm-4"><b>{{ _("Tasks") }}</b></div>
+          <div class="col-sm-2"><b>{{ _("Status") }}</b></div>
+          <div class="col-sm-2"><b>{{ _("End Date") }}</b></div>
+          <div class="col-sm-2"><b>{{ _("Assignment") }}</b></div>
+          <div class="col-sm-2"><b>{{ _("Modified On") }}</b></div>
+        </div>
+      </div>
+      {% include "erpnext/templates/includes/projects/project_tasks.html" %}
+    </div>
+  </div>
+  {% else %}
+    {{ empty_state(_("Task")) }}
+  {% endif %}
+
+  <h4 class="my-account-header">{{ _("Timesheets") }}</h4>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   {% if doc.timesheets %}
     <div class="website-list">
       <div class="result">
         <div class="web-list-item transaction-list-item">
+<<<<<<< HEAD
           <div class="row">
             <h3 class="col-xs-2">Timesheets</h3>
             <h3 class="col-xs-2">Status</h3>
@@ -76,6 +125,22 @@
     </div>
   {% else %}
     <p class="font-weight-bold mt-5">{{ _("No Timesheets") }}</p>
+=======
+          <div class="row align-items-center">
+            <div class="col-xs-2"><b>{{ _("Timesheet") }}</b></div>
+            <div class="col-xs-2"><b>{{ _("Status") }}</b></div>
+            <div class="col-xs-2"><b>{{ _("From") }}</b></div>
+            <div class="col-xs-2"><b>{{ _("To") }}</b></div>
+            <div class="col-xs-2"><b>{{ _("Modified By") }}</b></div>
+            <div class="col-xs-2"><b>{{ _("Modified On") }}</b></div>
+          </div>
+        </div>
+      {% include "erpnext/templates/includes/projects/project_timesheets.html" %}
+      </div>
+    </div>
+  {% else %}
+    {{ empty_state(_("Timesheet")) }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   {% endif %}
 
   {% if doc.attachments %}
@@ -104,15 +169,22 @@
 </div>
 
 <script>
+<<<<<<< HEAD
   { % include "frappe/public/js/frappe/provide.js" %
   } { % include "frappe/public/js/frappe/form/formatters.js" %
   }
 </script>
+=======
+  { % include "frappe/public/js/frappe/provide.js" % }
+  { % include "frappe/public/js/frappe/form/formatters.js" % }
+ </script>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 {% endblock %}
 
 {% macro progress_bar(percent_complete) %}
 {% if percent_complete %}
+<<<<<<< HEAD
   <div class="progress progress-hg" style="height: 5px;">
     <div class="progress-bar progress-bar-{{ 'warning' if percent_complete|round < 100 else 'success' }} active" role="progressbar" aria-valuenow="{{ percent_complete|round|int }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ percent_complete|round|int }}%;"></div>
   </div>
@@ -171,3 +243,31 @@
   {% endfor %}
 {% endif %}
 {% endmacro %}
+=======
+  <span class="small py-2">{{ _("Project Progress:") }}</span>
+  <div class="progress progress-hg" style="height: 15px;">
+    <div
+      class="progress-bar progress-bar-{{ 'warning' if percent_complete|round < 100 else 'success' }} active"\
+      role="progressbar" aria-valuenow="{{ percent_complete|round|int }}" aria-valuemin="0"\
+      aria-valuemax="100" style="width:{{ percent_complete|round|int }}%;">
+    </div>
+  </div>
+{% endif %}
+{% endmacro %}
+
+
+{% macro empty_state(section_name) %}
+<div class="frappe-list align-items-center">
+  <div class=" text-muted flex justify-center align-center" style="">
+    <div class=" text-muted flex text-center">
+      <div class="msg-box no-border">
+        <div>
+          <img src="/assets/frappe/images/ui-states/list-empty-state.svg" alt="Generic Empty State" class="null-state">
+        </div>
+        <p>{{ _("You haven't created a {0} yet").format(section_name) }}</p>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endmacro %}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

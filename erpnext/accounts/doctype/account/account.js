@@ -20,10 +20,16 @@ frappe.ui.form.on("Account", {
 		frm.toggle_display("account_name", frm.is_new());
 
 		// hide fields if group
+<<<<<<< HEAD
 		frm.toggle_display(["account_type", "tax_rate"], cint(frm.doc.is_group) == 0);
 
 		// disable fields
 		frm.toggle_enable(["is_group", "company"], false);
+=======
+		frm.toggle_display(["tax_rate"], cint(frm.doc.is_group) == 0);
+
+		frm.toggle_enable(["is_group", "company", "account_number"], frm.is_new());
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if (cint(frm.doc.is_group) == 0) {
 			frm.toggle_display("freeze_account", frm.doc.__onload && frm.doc.__onload.can_freeze_account);

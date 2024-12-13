@@ -7,11 +7,51 @@ from frappe.utils import add_days, cint, cstr, date_diff, formatdate, getdate
 
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
+<<<<<<< HEAD
 from erpnext.stock.utils import get_valid_serial_nos
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.utilities.transaction_base import TransactionBase, delete_events
 
 
 class MaintenanceSchedule(TransactionBase):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.maintenance.doctype.maintenance_schedule_detail.maintenance_schedule_detail import (
+			MaintenanceScheduleDetail,
+		)
+		from erpnext.maintenance.doctype.maintenance_schedule_item.maintenance_schedule_item import (
+			MaintenanceScheduleItem,
+		)
+
+		address_display: DF.TextEditor | None
+		amended_from: DF.Link | None
+		company: DF.Link
+		contact_display: DF.SmallText | None
+		contact_email: DF.Data | None
+		contact_mobile: DF.Data | None
+		contact_person: DF.Link | None
+		customer: DF.Link | None
+		customer_address: DF.Link | None
+		customer_group: DF.Link | None
+		customer_name: DF.Data | None
+		items: DF.Table[MaintenanceScheduleItem]
+		naming_series: DF.Literal["MAT-MSH-.YYYY.-"]
+		schedules: DF.Table[MaintenanceScheduleDetail]
+		status: DF.Literal["", "Draft", "Submitted", "Cancelled"]
+		territory: DF.Link | None
+		transaction_date: DF.Date
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@frappe.whitelist()
 	def generate_schedule(self):
 		if self.docstatus != 0:
@@ -74,10 +114,21 @@ class MaintenanceSchedule(TransactionBase):
 
 		email_map = {}
 		for d in self.get("items"):
+<<<<<<< HEAD
 			if d.serial_no:
 				serial_nos = get_valid_serial_nos(d.serial_no)
 				self.validate_serial_no(d.item_code, serial_nos, d.start_date)
 				self.update_amc_date(serial_nos, d.end_date)
+=======
+			if d.serial_and_batch_bundle:
+				serial_nos = frappe.get_doc(
+					"Serial and Batch Bundle", d.serial_and_batch_bundle
+				).get_serial_nos()
+
+				if serial_nos:
+					self.validate_serial_no(d.item_code, serial_nos, d.start_date)
+					self.update_amc_date(serial_nos, d.end_date)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			no_email_sp = []
 			if d.sales_person and d.sales_person not in email_map:
@@ -184,7 +235,11 @@ class MaintenanceSchedule(TransactionBase):
 
 	def validate_maintenance_detail(self):
 		if not self.get("items"):
+<<<<<<< HEAD
 			throw(_("Please enter Maintaince Details first"))
+=======
+			throw(_("Please enter Maintenance Details first"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for d in self.get("items"):
 			if not d.item_code:
@@ -237,9 +292,33 @@ class MaintenanceSchedule(TransactionBase):
 		self.validate_maintenance_detail()
 		self.validate_dates_with_periodicity()
 		self.validate_sales_order()
+<<<<<<< HEAD
 		if not self.schedules or self.validate_items_table_change() or self.validate_no_of_visits():
 			self.generate_schedule()
 
+=======
+		self.validate_serial_no_bundle()
+		if not self.schedules or self.validate_items_table_change() or self.validate_no_of_visits():
+			self.generate_schedule()
+
+	def validate_serial_no_bundle(self):
+		ids = [d.serial_and_batch_bundle for d in self.items if d.serial_and_batch_bundle]
+
+		if not ids:
+			return
+
+		voucher_nos = frappe.get_all(
+			"Serial and Batch Bundle", fields=["name", "voucher_type"], filters={"name": ("in", ids)}
+		)
+
+		for row in voucher_nos:
+			if row.voucher_type != "Maintenance Schedule":
+				msg = f"""Serial and Batch Bundle {row.name}
+					should have voucher type as 'Maintenance Schedule'"""
+
+				frappe.throw(_(msg))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_update(self):
 		self.db_set("status", "Draft")
 
@@ -335,9 +414,20 @@ class MaintenanceSchedule(TransactionBase):
 
 	def on_cancel(self):
 		for d in self.get("items"):
+<<<<<<< HEAD
 			if d.serial_no:
 				serial_nos = get_valid_serial_nos(d.serial_no)
 				self.update_amc_date(serial_nos)
+=======
+			if d.serial_and_batch_bundle:
+				serial_nos = frappe.get_doc(
+					"Serial and Batch Bundle", d.serial_and_batch_bundle
+				).get_serial_nos()
+
+				if serial_nos:
+					self.update_amc_date(serial_nos)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.db_set("status", "Cancelled")
 		delete_events(self.doctype, self.name)
 
@@ -399,10 +489,17 @@ def make_maintenance_visit(source_name, target_doc=None, item_name=None, s_id=No
 
 	def update_serial(source, target, parent):
 		if source.item_reference:
+<<<<<<< HEAD
 			if serial_nos := frappe.db.get_value(
 				"Maintenance Schedule Item", source.item_reference, "serial_no"
 			):
 				serial_nos = serial_nos.split("\n")
+=======
+			if sbb := frappe.db.get_value(
+				"Maintenance Schedule Item", source.item_reference, "serial_and_batch_bundle"
+			):
+				serial_nos = frappe.get_doc("Serial and Batch Bundle", sbb).get_serial_nos()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				if len(serial_nos) == 1:
 					target.serial_no = serial_nos[0]

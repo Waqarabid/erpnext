@@ -9,7 +9,48 @@ from frappe.utils import flt, today
 
 
 class LoyaltyProgram(Document):
+<<<<<<< HEAD
 	pass
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.loyalty_program_collection.loyalty_program_collection import (
+			LoyaltyProgramCollection,
+		)
+
+		auto_opt_in: DF.Check
+		collection_rules: DF.Table[LoyaltyProgramCollection]
+		company: DF.Link | None
+		conversion_factor: DF.Float
+		cost_center: DF.Link | None
+		customer_group: DF.Link | None
+		customer_territory: DF.Link | None
+		expense_account: DF.Link | None
+		expiry_duration: DF.Int
+		from_date: DF.Date
+		loyalty_program_name: DF.Data
+		loyalty_program_type: DF.Literal["Single Tier Program", "Multiple Tier Program"]
+		to_date: DF.Date | None
+	# end: auto-generated types
+
+	def validate(self):
+		self.validate_lowest_tier()
+
+	def validate_lowest_tier(self):
+		tiers = sorted(self.collection_rules, key=lambda x: x.min_spent)
+		if tiers and tiers[0].min_spent != 0:
+			frappe.throw(
+				_(
+					"The lowest tier must have a minimum spent amount of 0. Customers need to be part of a tier as soon as they are enrolled in the program."
+				)
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_loyalty_details(
@@ -52,17 +93,30 @@ def get_loyalty_program_details_with_points(
 ):
 	lp_details = get_loyalty_program_details(customer, loyalty_program, company=company, silent=silent)
 	loyalty_program = frappe.get_doc("Loyalty Program", loyalty_program)
+<<<<<<< HEAD
 	lp_details.update(
 		get_loyalty_details(customer, loyalty_program.name, expiry_date, company, include_expired_entry)
 	)
+=======
+	loyalty_details = get_loyalty_details(
+		customer, loyalty_program.name, expiry_date, company, include_expired_entry
+	)
+	lp_details.update(loyalty_details)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	tier_spent_level = sorted(
 		[d.as_dict() for d in loyalty_program.collection_rules],
 		key=lambda rule: rule.min_spent,
+<<<<<<< HEAD
 		reverse=True,
 	)
 	for i, d in enumerate(tier_spent_level):
 		if i == 0 or (lp_details.total_spent + current_transaction_amount) <= d.min_spent:
+=======
+	)
+	for i, d in enumerate(tier_spent_level):
+		if i == 0 or (lp_details.total_spent + current_transaction_amount) >= d.min_spent:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			lp_details.tier_name = d.tier_name
 			lp_details.collection_factor = d.collection_factor
 		else:
@@ -141,11 +195,21 @@ def validate_loyalty_points(ref_doc, points_to_redeem):
 
 		loyalty_amount = flt(points_to_redeem * loyalty_program_details.conversion_factor)
 
+<<<<<<< HEAD
 		if loyalty_amount > ref_doc.grand_total:
 			frappe.throw(_("You can't redeem Loyalty Points having more value than the Grand Total."))
 
 		if not ref_doc.loyalty_amount and ref_doc.loyalty_amount != loyalty_amount:
 			ref_doc.loyalty_amount = loyalty_amount
+=======
+		if loyalty_amount > ref_doc.rounded_total:
+			frappe.throw(_("You can't redeem Loyalty Points having more value than the Rounded Total."))
+
+		if not ref_doc.loyalty_amount and ref_doc.loyalty_amount != loyalty_amount:
+			ref_doc.loyalty_amount = loyalty_amount
+		if not ref_doc.loyalty_points and ref_doc.loyalty_points != points_to_redeem:
+			ref_doc.loyalty_points = points_to_redeem
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if ref_doc.doctype == "Sales Invoice":
 			ref_doc.loyalty_program = loyalty_program

@@ -94,13 +94,23 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-04-24 10:33:12.250687",
+=======
+ "modified": "2024-03-27 13:09:50.384173",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Regional",
  "name": "Import Supplier Invoice",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

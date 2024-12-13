@@ -5,7 +5,11 @@
 from urllib.parse import urlparse
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import nowdate
 
 from erpnext.buying.doctype.request_for_quotation.request_for_quotation import (
@@ -14,13 +18,40 @@ from erpnext.buying.doctype.request_for_quotation.request_for_quotation import (
 	get_pdf,
 	make_supplier_quotation_from_rfq,
 )
+<<<<<<< HEAD
+=======
+from erpnext.controllers.accounts_controller import InvalidQtyError
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.crm.doctype.opportunity.opportunity import make_request_for_quotation as make_rfq
 from erpnext.crm.doctype.opportunity.test_opportunity import make_opportunity
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.templates.pages.rfq import check_supplier_has_docname_access
 
 
+<<<<<<< HEAD
 class TestRequestforQuotation(FrappeTestCase):
+=======
+class UnitTestRequestForQuotation(UnitTestCase):
+	"""
+	Unit tests for RequestForQuotation.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestRequestforQuotation(IntegrationTestCase):
+	def test_rfq_qty(self):
+		rfq = make_request_for_quotation(qty=0, do_not_save=True)
+		with self.assertRaises(InvalidQtyError):
+			rfq.save()
+
+		# No error with qty=1
+		rfq.items[0].qty = 1
+		rfq.save()
+		self.assertEqual(rfq.items[0].qty, 1)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_quote_status(self):
 		rfq = make_request_for_quotation()
 
@@ -134,6 +165,36 @@ class TestRequestforQuotation(FrappeTestCase):
 		get_pdf(rfq.name, rfq.get("suppliers")[0].supplier)
 		self.assertEqual(frappe.local.response.type, "pdf")
 
+<<<<<<< HEAD
+=======
+	def test_portal_user_with_new_supplier(self):
+		supplier_doc = frappe.get_doc(
+			{
+				"doctype": "Supplier",
+				"supplier_name": "Test Supplier for RFQ",
+				"supplier_group": "_Test Supplier Group",
+			}
+		).insert()
+
+		self.assertFalse(supplier_doc.portal_users)
+
+		rfq = make_request_for_quotation(
+			supplier_data=[
+				{
+					"supplier": supplier_doc.name,
+					"supplier_name": supplier_doc.supplier_name,
+					"email_id": "123_testrfquser@example.com",
+				}
+			],
+			do_not_submit=True,
+		)
+		for rfq_supplier in rfq.suppliers:
+			rfq.update_supplier_contact(rfq_supplier, rfq.get_link())
+
+		supplier_doc.reload()
+		self.assertTrue(supplier_doc.portal_users[0].user)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def make_request_for_quotation(**args) -> "RequestforQuotation":
 	"""
@@ -157,14 +218,25 @@ def make_request_for_quotation(**args) -> "RequestforQuotation":
 			"description": "_Test Item",
 			"uom": args.uom or "_Test UOM",
 			"stock_uom": args.stock_uom or "_Test UOM",
+<<<<<<< HEAD
 			"qty": args.qty or 5,
+=======
+			"qty": args.qty if args.qty is not None else 5,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"conversion_factor": args.conversion_factor or 1.0,
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
 			"schedule_date": nowdate(),
 		},
 	)
 
+<<<<<<< HEAD
 	rfq.submit()
+=======
+	if not args.do_not_save:
+		rfq.insert()
+		if not args.do_not_submit:
+			rfq.submit()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return rfq
 

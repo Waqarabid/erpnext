@@ -1,5 +1,18 @@
 frappe.listview_settings["Item"] = {
+<<<<<<< HEAD
 	add_fields: ["item_name", "stock_uom", "item_group", "image", "has_variants", "end_of_life", "disabled"],
+=======
+	add_fields: [
+		"item_name",
+		"stock_uom",
+		"item_group",
+		"image",
+		"has_variants",
+		"end_of_life",
+		"disabled",
+		"variant_of",
+	],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	filters: [["disabled", "=", "0"]],
 
 	get_indicator: function (doc) {
@@ -17,8 +30,12 @@ frappe.listview_settings["Item"] = {
 	reports: [
 		{
 			name: "Stock Summary",
+<<<<<<< HEAD
 			report_type: "Page",
 			route: "stock-balance",
+=======
+			route: "/app/stock-balance",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			name: "Stock Ledger",

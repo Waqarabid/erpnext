@@ -4,7 +4,10 @@
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
 from frappe.query_builder.custom import ConstantColumn
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import getdate, nowdate
 
 
@@ -61,7 +64,32 @@ def get_conditions(filters):
 
 
 def get_entries(filters):
+<<<<<<< HEAD
 	conditions = get_conditions(filters)
+=======
+	entries = []
+
+	# get entries from all the apps
+	for method_name in frappe.get_hooks("get_entries_for_bank_clearance_summary"):
+		entries += (
+			frappe.get_attr(method_name)(
+				filters,
+			)
+			or []
+		)
+
+	return sorted(
+		entries,
+		key=lambda k: k[2].strftime("%H%M%S") or getdate(nowdate()),
+	)
+
+
+def get_entries_for_bank_clearance_summary(filters):
+	entries = []
+
+	conditions = get_conditions(filters)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	journal_entries = frappe.db.sql(
 		f"""SELECT
 			"Journal Entry", jv.name, jv.posting_date, jv.cheque_no,
@@ -88,6 +116,7 @@ def get_entries(filters):
 		as_list=1,
 	)
 
+<<<<<<< HEAD
 	# Loan Disbursement
 	loan_disbursement = frappe.qb.DocType("Loan Disbursement")
 
@@ -150,3 +179,8 @@ def get_entries(filters):
 		journal_entries + payment_entries + loan_disbursements + loan_repayments,
 		key=lambda k: k[2].strftime("%H%M%S") or getdate(nowdate()),
 	)
+=======
+	entries = journal_entries + payment_entries
+
+	return entries
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

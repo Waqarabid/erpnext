@@ -21,6 +21,10 @@
   "rate",
   "discount_amount",
   "discount_percentage",
+<<<<<<< HEAD
+=======
+  "for_price_list",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_11",
   "warehouse",
   "threshold_percentage",
@@ -121,6 +125,16 @@
    "label": "Discount Percentage"
   },
   {
+<<<<<<< HEAD
+=======
+   "depends_on": "eval:doc.rate_or_discount!=\"Rate\"",
+   "fieldname": "for_price_list",
+   "fieldtype": "Link",
+   "label": "For Price List",
+   "options": "Price List"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_11",
    "fieldtype": "Section Break"
   },
@@ -169,12 +183,22 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-11-16 00:25:33.843996",
+=======
+ "modified": "2024-07-23 12:33:46.574950",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Promotional Scheme Price Discount",
  "owner": "Administrator",
  "permissions": [],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC"
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

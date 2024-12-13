@@ -68,7 +68,11 @@ frappe.ready(function () {
 
 	var more_items = function (item, item_status) {
 		if (item_status) {
+<<<<<<< HEAD
 			var item_status = $(".project-" + item + "-section .btn-group .bold").hasClass(
+=======
+			item_status = $(".project-" + item + "-section .btn-group .bold").hasClass(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"btn-completed-" + item
 			)
 				? "completed"

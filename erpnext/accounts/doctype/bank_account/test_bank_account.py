@@ -1,15 +1,25 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import unittest
 
 import frappe
 from frappe import ValidationError
+<<<<<<< HEAD
 
 # test_records = frappe.get_test_records('Bank Account')
 
 
 class TestBankAccount(unittest.TestCase):
+=======
+from frappe.tests import IntegrationTestCase
+
+
+class TestBankAccount(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_validate_iban(self):
 		valid_ibans = [
 			"GB82 WEST 1234 5698 7654 32",

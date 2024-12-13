@@ -35,10 +35,18 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-04-01 15:35:18.112619",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Terms Template",
+=======
+ "modified": "2024-04-07 11:26:42.021585",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Payment Terms Template",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -76,9 +84,26 @@
    "role": "Accounts Manager",
    "share": 1,
    "write": 1
+<<<<<<< HEAD
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "role": "All",
+   "select": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

@@ -1,8 +1,13 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
+<<<<<<< HEAD
 erpnext.get_purchase_trends_filters = function () {
 	return [
+=======
+erpnext.purchase_trends_filters = {
+	filters: [
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{
 			fieldname: "company",
 			label: __("Company"),
@@ -63,5 +68,9 @@ erpnext.get_purchase_trends_filters = function () {
 			options: ["", { value: "Item", label: __("Item") }, { value: "Supplier", label: __("Supplier") }],
 			default: "",
 		},
+<<<<<<< HEAD
 	];
+=======
+	],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 };

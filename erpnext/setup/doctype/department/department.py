@@ -2,6 +2,11 @@
 # License: GNU General Public License v3. See license.txt
 
 
+<<<<<<< HEAD
+=======
+import json
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import frappe
 from frappe.utils.nestedset import NestedSet, get_root_of
 
@@ -9,6 +14,27 @@ from erpnext.utilities.transaction_base import delete_events
 
 
 class Department(NestedSet):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		company: DF.Link
+		department_name: DF.Data
+		disabled: DF.Check
+		is_group: DF.Check
+		lft: DF.Int
+		old_parent: DF.Data | None
+		parent_department: DF.Link | None
+		rgt: DF.Int
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	nsm_parent_field = "parent_department"
 
 	def autoname(self):
@@ -51,7 +77,13 @@ def get_abbreviated_name(name, company):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def get_children(doctype, parent=None, company=None, is_root=False):
+=======
+def get_children(doctype, parent=None, company=None, is_root=False, include_disabled=False):
+	if isinstance(include_disabled, str):
+		include_disabled = json.loads(include_disabled)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	fields = ["name as value", "is_group as expandable"]
 	filters = {}
 
@@ -63,6 +95,12 @@ def get_children(doctype, parent=None, company=None, is_root=False):
 	else:
 		filters["parent_department"] = parent
 
+<<<<<<< HEAD
+=======
+	if frappe.db.has_column(doctype, "disabled") and not include_disabled:
+		filters["disabled"] = False
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return frappe.get_all("Department", fields=fields, filters=filters, order_by="name")
 
 

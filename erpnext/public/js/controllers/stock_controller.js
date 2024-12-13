@@ -79,7 +79,11 @@ erpnext.stock.StockController = class StockController extends frappe.ui.form.Con
 	}
 
 	show_general_ledger() {
+<<<<<<< HEAD
 		var me = this;
+=======
+		let me = this;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if(this.frm.doc.docstatus > 0) {
 			cur_frm.add_custom_button(__('Accounting Ledger'), function() {
 				frappe.route_options = {

@@ -4,10 +4,14 @@
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
 from frappe.query_builder.custom import ConstantColumn
 from frappe.query_builder.functions import Sum
 from frappe.utils import flt, getdate
 from pypika import CustomFunction
+=======
+from frappe.utils import flt, getdate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.utils import get_balance_on
 
@@ -21,7 +25,11 @@ def execute(filters=None):
 	if not filters.get("account"):
 		return columns, []
 
+<<<<<<< HEAD
 	account_currency = frappe.db.get_value("Account", filters.account, "account_currency")
+=======
+	account_currency = frappe.get_cached_value("Account", filters.account, "account_currency")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	data = get_entries(filters)
 
@@ -110,20 +118,42 @@ def get_columns():
 
 
 def get_entries(filters):
+<<<<<<< HEAD
+=======
+	entries = []
+
+	for method_name in frappe.get_hooks("get_entries_for_bank_reconciliation_statement"):
+		entries += frappe.get_attr(method_name)(filters) or []
+
+	return sorted(
+		entries,
+		key=lambda k: getdate(k["posting_date"]),
+	)
+
+
+def get_entries_for_bank_reconciliation_statement(filters):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	journal_entries = get_journal_entries(filters)
 
 	payment_entries = get_payment_entries(filters)
 
+<<<<<<< HEAD
 	loan_entries = get_loan_entries(filters)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pos_entries = []
 	if filters.include_pos_transactions:
 		pos_entries = get_pos_entries(filters)
 
+<<<<<<< HEAD
 	return sorted(
 		list(payment_entries) + list(journal_entries + list(pos_entries) + list(loan_entries)),
 		key=lambda k: getdate(k["posting_date"]),
 	)
+=======
+	return list(journal_entries) + list(payment_entries) + list(pos_entries)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_journal_entries(filters):
@@ -185,6 +215,7 @@ def get_pos_entries(filters):
 	)
 
 
+<<<<<<< HEAD
 def get_loan_entries(filters):
 	loan_docs = []
 	for doctype in ["Loan Disbursement", "Loan Repayment"]:
@@ -226,6 +257,21 @@ def get_loan_entries(filters):
 
 
 def get_amounts_not_reflected_in_system(filters):
+=======
+def get_amounts_not_reflected_in_system(filters):
+	amount = 0.0
+
+	# get amounts from all the apps
+	for method_name in frappe.get_hooks(
+		"get_amounts_not_reflected_in_system_for_bank_reconciliation_statement"
+	):
+		amount += frappe.get_attr(method_name)(filters) or 0.0
+
+	return amount
+
+
+def get_amounts_not_reflected_in_system_for_bank_reconciliation_statement(filters):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	je_amount = frappe.db.sql(
 		"""
 		select sum(jvd.debit_in_account_currency - jvd.credit_in_account_currency)
@@ -249,6 +295,7 @@ def get_amounts_not_reflected_in_system(filters):
 
 	pe_amount = flt(pe_amount[0][0]) if pe_amount else 0.0
 
+<<<<<<< HEAD
 	loan_amount = get_loan_amount(filters)
 
 	return je_amount + pe_amount + loan_amount
@@ -285,6 +332,9 @@ def get_loan_amount(filters):
 		total_amount += flt(amount)
 
 	return total_amount
+=======
+	return je_amount + pe_amount
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_balance_row(label, amount, account_currency):

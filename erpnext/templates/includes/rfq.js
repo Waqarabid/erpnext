@@ -72,7 +72,11 @@ rfq = class rfq {
 	}
 
 	submit_rfq(){
+<<<<<<< HEAD
 		$('.btn-sm').click(function() {
+=======
+		$('.btn-sm').click(function(){
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.freeze();
 			frappe.call({
 				type: "POST",
@@ -81,7 +85,11 @@ rfq = class rfq {
 					doc: doc
 				},
 				btn: this,
+<<<<<<< HEAD
 				callback: function(r) {
+=======
+				callback: function(r){
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frappe.unfreeze();
 					if(r.message){
 						$('.btn-sm').hide()

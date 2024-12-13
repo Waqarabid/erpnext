@@ -4,7 +4,11 @@
  "allow_rename": 1,
  "autoname": "field:sales_person_name",
  "creation": "2013-01-10 16:34:24",
+<<<<<<< HEAD
  "description": "All Sales Transactions can be tagged against multiple **Sales Persons** so that you can set and monitor targets.",
+=======
+ "description": "All Sales Transactions can be tagged against multiple Sales Persons so that you can set and monitor targets.",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -145,10 +149,18 @@
  "idx": 1,
  "is_tree": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-03-18 18:11:13.968024",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Sales Person",
+=======
+ "modified": "2024-03-27 13:10:37.891377",
+ "modified_by": "Administrator",
+ "module": "Setup",
+ "name": "Sales Person",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "nsm_parent_field": "parent_sales_person",
  "owner": "Administrator",
  "permissions": [
@@ -180,6 +192,12 @@
  ],
  "search_fields": "parent_sales_person",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC"
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 }

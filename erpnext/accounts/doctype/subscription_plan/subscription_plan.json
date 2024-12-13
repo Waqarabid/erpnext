@@ -41,7 +41,12 @@
    "fieldname": "currency",
    "fieldtype": "Link",
    "label": "Currency",
+<<<<<<< HEAD
    "options": "Currency"
+=======
+   "options": "Currency",
+   "reqd": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "column_break_3",
@@ -148,10 +153,18 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-12-10 15:24:15.794477",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Subscription Plan",
+=======
+ "modified": "2024-03-27 13:10:47.998597",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Subscription Plan",
+ "naming_rule": "By fieldname",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -191,7 +204,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

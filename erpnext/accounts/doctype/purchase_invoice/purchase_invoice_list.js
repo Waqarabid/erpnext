@@ -19,7 +19,11 @@ frappe.listview_settings["Purchase Invoice"] = {
 	],
 	get_indicator(doc) {
 		if (doc.status == "Debit Note Issued") {
+<<<<<<< HEAD
 			return [__(doc.status), "darkgrey", "status,=," + doc.status];
+=======
+			return [__(doc.status), "gray", "status,=," + doc.status];
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		if (flt(doc.outstanding_amount) > 0 && doc.docstatus == 1 && cint(doc.on_hold)) {

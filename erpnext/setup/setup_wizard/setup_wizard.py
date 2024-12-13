@@ -5,7 +5,12 @@
 import frappe
 from frappe import _
 
+<<<<<<< HEAD
 from .operations import install_fixtures as fixtures
+=======
+from erpnext.setup.demo import setup_demo_data
+from erpnext.setup.setup_wizard.operations import install_fixtures as fixtures
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_setup_stages(args=None):
@@ -63,6 +68,14 @@ def fin(args):
 	login_as_first_user(args)
 
 
+<<<<<<< HEAD
+=======
+def setup_demo(args):
+	if args.get("setup_demo"):
+		frappe.enqueue(setup_demo_data, enqueue_after_commit=True, at_front=True)
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def login_as_first_user(args):
 	if args.get("email") and hasattr(frappe.local, "login_manager"):
 		frappe.local.login_manager.login_as(args.get("email"))

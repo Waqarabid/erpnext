@@ -3,6 +3,10 @@
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
+=======
+from frappe.desk.form.load import get_attachments
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.exceptions import QueryDeadlockError, QueryTimeoutError
 from frappe.model.document import Document
 from frappe.query_builder import DocType, Interval
@@ -24,6 +28,40 @@ RecoverableErrors = (JobTimeoutException, QueryDeadlockError, QueryTimeoutError)
 
 
 class RepostItemValuation(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		affected_transactions: DF.Code | None
+		allow_negative_stock: DF.Check
+		allow_zero_rate: DF.Check
+		amended_from: DF.Link | None
+		based_on: DF.Literal["Transaction", "Item and Warehouse"]
+		company: DF.Link | None
+		current_index: DF.Int
+		distinct_item_and_warehouse: DF.Code | None
+		error_log: DF.LongText | None
+		gl_reposting_index: DF.Int
+		item_code: DF.Link | None
+		items_to_be_repost: DF.Code | None
+		posting_date: DF.Date
+		posting_time: DF.Time | None
+		reposting_data_file: DF.Attach | None
+		status: DF.Literal["Queued", "In Progress", "Completed", "Skipped", "Failed"]
+		total_reposting_count: DF.Int
+		via_landed_cost_voucher: DF.Check
+		voucher_no: DF.DynamicLink | None
+		voucher_type: DF.Link | None
+		warehouse: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@staticmethod
 	def clear_old_logs(days=None):
 		days = days or 90
@@ -31,7 +69,11 @@ class RepostItemValuation(Document):
 		frappe.db.delete(
 			table,
 			filters=(
+<<<<<<< HEAD
 				(table.modified < (Now() - Interval(days=days)))
+=======
+				(table.creation < (Now() - Interval(days=days)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				& (table.status.isin(["Completed", "Skipped"]))
 			),
 		)
@@ -93,19 +135,27 @@ class RepostItemValuation(Document):
 
 		query = (
 			frappe.qb.from_(table)
+<<<<<<< HEAD
 			.select(Max(table.posting_date))
+=======
+			.select(Max(table.period_end_date))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			.where((table.company == company) & (table.docstatus == 1))
 		).run()
 
 		return query[0][0] if query and query[0][0] else None
 
 	def validate_accounts_freeze(self):
+<<<<<<< HEAD
 		acc_settings = frappe.db.get_value(
 			"Accounts Settings",
 			"Accounts Settings",
 			["acc_frozen_upto", "frozen_accounts_modifier"],
 			as_dict=1,
 		)
+=======
+		acc_settings = frappe.get_cached_doc("Accounts Settings")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if not acc_settings.acc_frozen_upto:
 			return
 		if getdate(self.posting_date) <= getdate(acc_settings.acc_frozen_upto):
@@ -123,6 +173,15 @@ class RepostItemValuation(Document):
 
 		self.allow_negative_stock = 1
 
+<<<<<<< HEAD
+=======
+	def on_cancel(self):
+		self.clear_attachment()
+
+	def on_trash(self):
+		self.clear_attachment()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def set_company(self):
 		if self.based_on == "Transaction":
 			self.company = frappe.get_cached_value(self.voucher_type, self.voucher_no, "company")
@@ -138,6 +197,17 @@ class RepostItemValuation(Document):
 		if write:
 			self.db_set("status", self.status)
 
+<<<<<<< HEAD
+=======
+	def clear_attachment(self):
+		if attachments := get_attachments(self.doctype, self.name):
+			attachment = attachments[0]
+			frappe.delete_doc("File", attachment.name, ignore_permissions=True)
+
+		if self.reposting_data_file:
+			self.db_set("reposting_data_file", None)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_submit(self):
 		"""During tests reposts are executed immediately.
 
@@ -173,6 +243,10 @@ class RepostItemValuation(Document):
 		self.distinct_item_and_warehouse = None
 		self.items_to_be_repost = None
 		self.gl_reposting_index = 0
+<<<<<<< HEAD
+=======
+		self.clear_attachment()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.db_update()
 
 	def deduplicate_similar_repost(self):
@@ -225,6 +299,11 @@ def repost(doc):
 		repost_gl_entries(doc)
 
 		doc.set_status("Completed")
+<<<<<<< HEAD
+=======
+		doc.db_set("reposting_data_file", None)
+		remove_attached_file(doc.name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	except Exception as e:
 		if frappe.flags.in_test:
@@ -237,6 +316,11 @@ def repost(doc):
 		doc.log_error("Unable to repost item valuation")
 
 		message = frappe.message_log.pop() if frappe.message_log else ""
+<<<<<<< HEAD
+=======
+		if isinstance(message, dict):
+			message = message.get("message")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		status = "Failed"
 		# If failed because of timeout, set status to In Progress
@@ -244,7 +328,11 @@ def repost(doc):
 			status = "In Progress"
 
 		if traceback:
+<<<<<<< HEAD
 			message += "<br>" + "Traceback: <br>" + traceback
+=======
+			message += "<br><br>" + "<b>Traceback:</b> <br>" + traceback
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		frappe.db.set_value(
 			doc.doctype,
@@ -261,11 +349,25 @@ def repost(doc):
 
 		if outgoing_email_account and not isinstance(e, RecoverableErrors):
 			notify_error_to_stock_managers(doc, message)
+<<<<<<< HEAD
+=======
+			doc.set_status("Failed")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	finally:
 		if not frappe.flags.in_test:
 			frappe.db.commit()
 
 
+<<<<<<< HEAD
+=======
+def remove_attached_file(docname):
+	if file_name := frappe.db.get_value(
+		"File", {"attached_to_name": docname, "attached_to_doctype": "Repost Item Valuation"}, "name"
+	):
+		frappe.delete_doc("File", file_name, ignore_permissions=True, delete_permanently=True)
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def repost_sl_entries(doc):
 	if doc.based_on == "Transaction":
 		repost_future_sle(

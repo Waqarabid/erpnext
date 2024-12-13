@@ -10,7 +10,11 @@ URL_PREFIXES = ("http://", "https://")
 
 @frappe.whitelist()
 def import_genericode():
+<<<<<<< HEAD
 	doctype = "Code List"
+=======
+	doctype = frappe.form_dict.doctype
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	docname = frappe.form_dict.docname
 	content = frappe.local.uploaded_file
 

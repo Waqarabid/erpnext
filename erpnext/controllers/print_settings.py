@@ -10,7 +10,18 @@ def set_print_templates_for_item_table(doc, settings):
 	doc.child_print_templates = {
 		"items": {
 			"qty": "templates/print_formats/includes/item_table_qty.html",
+<<<<<<< HEAD
 		}
+=======
+			"serial_and_batch_bundle": "templates/print_formats/includes/serial_and_batch_bundle.html",
+		},
+		"packed_items": {
+			"serial_and_batch_bundle": "templates/print_formats/includes/serial_and_batch_bundle.html",
+		},
+		"supplied_items": {
+			"serial_and_batch_bundle": "templates/print_formats/includes/serial_and_batch_bundle.html",
+		},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	doc.flags.compact_item_fields = ["description", "qty", "rate", "amount"]

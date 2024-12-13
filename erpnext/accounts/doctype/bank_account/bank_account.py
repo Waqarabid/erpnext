@@ -13,6 +13,36 @@ from frappe.utils import comma_and, get_link_to_form
 
 
 class BankAccount(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		account_name: DF.Data
+		account_subtype: DF.Link | None
+		account_type: DF.Link | None
+		bank: DF.Link
+		bank_account_no: DF.Data | None
+		branch_code: DF.Data | None
+		company: DF.Link | None
+		disabled: DF.Check
+		iban: DF.Data | None
+		integration_id: DF.Data | None
+		is_company_account: DF.Check
+		is_default: DF.Check
+		last_integration_date: DF.Date | None
+		mask: DF.Data | None
+		party: DF.DynamicLink | None
+		party_type: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		"""Load address and contacts in `__onload`"""
 		load_address_and_contact(self)
@@ -27,6 +57,10 @@ class BankAccount(Document):
 		self.validate_company()
 		self.validate_iban()
 		self.validate_account()
+<<<<<<< HEAD
+=======
+		self.update_default_bank_account()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_account(self):
 		if self.account:
@@ -42,7 +76,11 @@ class BankAccount(Document):
 
 	def validate_company(self):
 		if self.is_company_account and not self.company:
+<<<<<<< HEAD
 			frappe.throw(_("Company is manadatory for company account"))
+=======
+			frappe.throw(_("Company is mandatory for company account"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_iban(self):
 		"""
@@ -73,24 +111,72 @@ class BankAccount(Document):
 		if to_check % 97 != 1:
 			frappe.throw(_("IBAN is not valid"))
 
+<<<<<<< HEAD
+=======
+	def update_default_bank_account(self):
+		if self.is_default and not self.disabled:
+			frappe.db.set_value(
+				"Bank Account",
+				{
+					"party_type": self.party_type,
+					"party": self.party,
+					"is_company_account": self.is_company_account,
+					"is_default": 1,
+					"disabled": 0,
+				},
+				"is_default",
+				0,
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.whitelist()
 def make_bank_account(doctype, docname):
 	doc = frappe.new_doc("Bank Account")
 	doc.party_type = doctype
 	doc.party = docname
+<<<<<<< HEAD
 	doc.is_default = 1
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return doc
 
 
+<<<<<<< HEAD
 @frappe.whitelist()
 def get_party_bank_account(party_type, party):
 	return frappe.db.get_value(party_type, party, "default_bank_account")
+=======
+def get_party_bank_account(party_type, party):
+	return frappe.db.get_value(
+		"Bank Account",
+		{"party_type": party_type, "party": party, "is_default": 1, "disabled": 0},
+		"name",
+	)
+
+
+def get_default_company_bank_account(company, party_type, party):
+	default_company_bank_account = frappe.db.get_value(party_type, party, "default_bank_account")
+	if default_company_bank_account:
+		if company != frappe.get_cached_value("Bank Account", default_company_bank_account, "company"):
+			default_company_bank_account = None
+
+	if not default_company_bank_account:
+		default_company_bank_account = frappe.db.get_value(
+			"Bank Account", {"company": company, "is_company_account": 1, "is_default": 1}
+		)
+
+	return default_company_bank_account
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 @frappe.whitelist()
 def get_bank_account_details(bank_account):
+<<<<<<< HEAD
 	return frappe.db.get_value(
+=======
+	return frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Bank Account", bank_account, ["account", "bank", "bank_account_no"], as_dict=1
 	)

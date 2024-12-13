@@ -1,12 +1,18 @@
 name: Server (Mariadb)
 
 on:
+<<<<<<< HEAD
+=======
+  repository_dispatch:
+    types: [frappe-framework-change]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   pull_request:
     paths-ignore:
       - '**.js'
       - '**.css'
       - '**.md'
       - '**.html'
+<<<<<<< HEAD
       - '**.csv'
   push:
     branches: [ develop ]
@@ -17,34 +23,62 @@ on:
     inputs:
       user:
         description: 'user'
+=======
+  schedule:
+    # Run everday at midnight UTC / 5:30 IST
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      user:
+        description: 'Frappe Framework repository user (add your username for forks)'
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         required: true
         default: 'frappe'
         type: string
       branch:
+<<<<<<< HEAD
         description: 'Branch name'
+=======
+        description: 'Frappe Framework branch'
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         default: 'develop'
         required: false
         type: string
 
 concurrency:
+<<<<<<< HEAD
   group: server-mariadb-develop-${{ github.event.number }}
+=======
+  group: server-mariadb-develop-${{ github.event_name }}-${{ github.event.number || github.event_name == 'workflow_dispatch' && github.run_id || '' }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+<<<<<<< HEAD
+=======
+    env:
+      NODE_ENV: "production"
+      WITH_COVERAGE: ${{ github.event_name != 'pull_request' }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
     strategy:
       fail-fast: false
 
       matrix:
+<<<<<<< HEAD
         container: [1, 2, 3]
+=======
+        container: [1, 2, 3, 4]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
     name: Python Unit Tests
 
     services:
       mysql:
+<<<<<<< HEAD
         image: mariadb:10.3
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: YES
@@ -60,6 +94,23 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
+=======
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: 'root'
+        ports:
+          - 3306:3306
+        options: --health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
       - name: Check for valid Python & Merge Conflicts
         run: |
@@ -70,16 +121,26 @@ jobs:
           fi
 
       - name: Setup Node
+<<<<<<< HEAD
         uses: actions/setup-node@v2
         with:
           node-version: 14
+=======
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
           check-latest: true
 
       - name: Add to Hosts
         run: echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
 
       - name: Cache pip
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/*requirements.txt', '**/pyproject.toml') }}
@@ -88,7 +149,11 @@ jobs:
             ${{ runner.os }}-
 
       - name: Cache node modules
+<<<<<<< HEAD
         uses: actions/cache@v2
+=======
+        uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         env:
           cache-name: cache-node-modules
         with:
@@ -103,7 +168,11 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+<<<<<<< HEAD
       - uses: actions/cache@v2
+=======
+      - uses: actions/cache@v4
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -117,6 +186,7 @@ jobs:
           DB: mariadb
           TYPE: server
           FRAPPE_USER: ${{ github.event.inputs.user }}
+<<<<<<< HEAD
           FRAPPE_BRANCH: ${{ github.event.inputs.branch }}
 
       - name: Run Tests
@@ -124,3 +194,44 @@ jobs:
         env:
           TYPE: server
           CI_BUILD_ID: ${{ github.run_id }}
+=======
+          FRAPPE_BRANCH: ${{ github.event.client_payload.sha || github.event.inputs.branch }}
+
+      - name: Run Tests
+        run: 'cd ~/frappe-bench/ && bench --site test_site run-parallel-tests --app erpnext --total-builds ${{ strategy.job-total }} --build-number ${{ matrix.container }}'
+        env:
+          TYPE: server
+          CAPTURE_COVERAGE: ${{ github.event_name != 'pull_request' }}
+
+
+      - name: Show bench output
+        if: ${{ always() }}
+        run: cat ~/frappe-bench/bench_start.log || true
+
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          name: coverage-${{ matrix.container }}
+          path: /home/runner/frappe-bench/sites/coverage.xml
+
+  coverage:
+    name: Coverage Wrap Up
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload coverage data
+        uses: codecov/codecov-action@v4
+        with:
+          name: MariaDB
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

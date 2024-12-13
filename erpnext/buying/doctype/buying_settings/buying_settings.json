@@ -1,7 +1,10 @@
 {
  "actions": [],
  "creation": "2013-06-25 11:04:03",
+<<<<<<< HEAD
  "description": "Settings for Buying Module",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "doctype": "DocType",
  "document_type": "Other",
  "engine": "InnoDB",
@@ -29,7 +32,15 @@
   "subcontract",
   "backflush_raw_materials_of_subcontract_based_on",
   "column_break_11",
+<<<<<<< HEAD
   "over_transfer_allowance"
+=======
+  "over_transfer_allowance",
+  "section_break_xcug",
+  "auto_create_subcontracting_order",
+  "column_break_izrr",
+  "auto_create_purchase_receipt"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -148,6 +159,10 @@
   },
   {
    "default": "1",
+<<<<<<< HEAD
+=======
+   "depends_on": "eval: frappe.boot.versions && frappe.boot.versions.payments",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "show_pay_button",
    "fieldtype": "Check",
    "label": "Show Pay Button in Purchase Order Portal"
@@ -175,6 +190,31 @@
    "label": "Blanket Order Allowance (%)"
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "section_break_xcug",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_izrr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Subcontracting Order (Draft) will be auto-created on submission of Purchase Order.",
+   "fieldname": "auto_create_subcontracting_order",
+   "fieldtype": "Check",
+   "label": "Auto Create Subcontracting Order"
+  },
+  {
+   "default": "0",
+   "description": "Purchase Receipt (Draft) will be auto-created on submission of Subcontracting Receipt.",
+   "fieldname": "auto_create_purchase_receipt",
+   "fieldtype": "Check",
+   "label": "Auto Create Purchase Receipt"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "Each Transaction",
    "description": "How often should Project be updated of Total Purchase Cost ?",
    "fieldname": "project_update_frequency",
@@ -188,7 +228,11 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-01-12 16:42:01.894346",
+=======
+ "modified": "2024-03-27 13:06:43.375495",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Buying Settings",
@@ -234,8 +278,16 @@
    "role": "Purchase User"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

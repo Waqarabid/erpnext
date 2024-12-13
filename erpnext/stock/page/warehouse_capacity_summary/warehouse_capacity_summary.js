@@ -1,7 +1,11 @@
 frappe.pages["warehouse-capacity-summary"].on_page_load = function (wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
+<<<<<<< HEAD
 		title: "Warehouse Capacity Summary",
+=======
+		title: __("Warehouse Capacity Summary"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		single_column: true,
 	});
 	page.set_secondary_action("Refresh", () => page.capacity_dashboard.refresh(), "refresh");

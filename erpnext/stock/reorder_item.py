@@ -18,7 +18,11 @@ def reorder_item():
 	if not (frappe.db.a_row_exists("Company") and frappe.db.a_row_exists("Fiscal Year")):
 		return
 
+<<<<<<< HEAD
 	if cint(frappe.db.get_value("Stock Settings", None, "auto_indent")):
+=======
+	if cint(frappe.db.get_single_value("Stock Settings", "auto_indent")):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		return _reorder_item()
 
 
@@ -60,7 +64,11 @@ def _reorder_item():
 		else:
 			projected_qty = flt(item_warehouse_projected_qty.get(kwargs.item_code, {}).get(kwargs.warehouse))
 
+<<<<<<< HEAD
 		if (reorder_level or reorder_qty) and projected_qty < reorder_level:
+=======
+		if (reorder_level or reorder_qty) and projected_qty <= reorder_level:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			deficiency = reorder_level - projected_qty
 			if deficiency > reorder_qty:
 				reorder_qty = deficiency
@@ -303,7 +311,11 @@ def create_material_request(material_requests):
 	if company_wise_mr:
 		if getattr(frappe.local, "reorder_email_notify", None) is None:
 			frappe.local.reorder_email_notify = cint(
+<<<<<<< HEAD
 				frappe.db.get_value("Stock Settings", None, "reorder_email_notify")
+=======
+				frappe.db.get_single_value("Stock Settings", "reorder_email_notify")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 		if frappe.local.reorder_email_notify:
@@ -356,9 +368,20 @@ def get_email_list(company):
 
 
 def get_comapny_wise_users(company):
+<<<<<<< HEAD
 	users = frappe.get_all(
 		"User Permission",
 		filters={"allow": "Company", "for_value": company, "apply_to_all_doctypes": 1},
+=======
+	companies = [company]
+
+	if parent_company := frappe.db.get_value("Company", company, "parent_company"):
+		companies.append(parent_company)
+
+	users = frappe.get_all(
+		"User Permission",
+		filters={"allow": "Company", "for_value": ("in", companies), "apply_to_all_doctypes": 1},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		fields=["user"],
 	)
 
@@ -371,7 +394,11 @@ def notify_errors(exceptions_list):
 		_("Dear System Manager,")
 		+ "<br>"
 		+ _(
+<<<<<<< HEAD
 			"An error occured for certain Items while creating Material Requests based on Re-order level. Please rectify these issues :"
+=======
+			"An error occurred for certain Items while creating Material Requests based on Re-order level. Please rectify these issues :"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		+ "<br>"
 	)

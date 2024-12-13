@@ -40,8 +40,15 @@ erpnext.financial_statements = {
 				return value;
 			}
 		}
+<<<<<<< HEAD
 		if (data && column.fieldname == "account") {
 			value = data.account_name || value;
+=======
+
+		if (data && column.fieldname == "account") {
+			// first column
+			value = data.section_name || data.account_name || value;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			if (filter && filter?.text && filter?.type == "contains") {
 				if (!value.toLowerCase().includes(filter.text)) {
@@ -49,7 +56,11 @@ erpnext.financial_statements = {
 				}
 			}
 
+<<<<<<< HEAD
 			if (data.account) {
+=======
+			if (data.account || data.accounts) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				column.link_onclick =
 					"erpnext.financial_statements.open_general_ledger(" + JSON.stringify(data) + ")";
 			}
@@ -58,7 +69,11 @@ erpnext.financial_statements = {
 
 		value = default_formatter(value, row, column, data);
 
+<<<<<<< HEAD
 		if (data && !data.parent_account) {
+=======
+		if (data && !data.parent_account && !data.parent_section) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			value = $(`<span>${value}</span>`);
 
 			var $value = $(value).css("font-weight", "bold");
@@ -72,13 +87,21 @@ erpnext.financial_statements = {
 		return value;
 	},
 	open_general_ledger: function (data) {
+<<<<<<< HEAD
 		if (!data.account) return;
+=======
+		if (!data.account && !data.accounts) return;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		let project = $.grep(frappe.query_report.filters, function (e) {
 			return e.df.fieldname == "project";
 		});
 
 		frappe.route_options = {
+<<<<<<< HEAD
 			account: data.account,
+=======
+			account: data.account || data.accounts,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			company: frappe.query_report.get_filter_value("company"),
 			from_date: data.from_date || data.year_start_date,
 			to_date: data.to_date || data.year_end_date,
@@ -116,6 +139,7 @@ erpnext.financial_statements = {
 			});
 		}
 
+<<<<<<< HEAD
 		const views_menu = report.page.add_custom_button_group(__("Financial Statements"));
 
 		report.page.add_custom_menu_item(views_menu, __("Balance Sheet"), function () {
@@ -132,6 +156,26 @@ erpnext.financial_statements = {
 			var filters = report.get_values();
 			frappe.set_route("query-report", "Cash Flow", { company: filters.company });
 		});
+=======
+		if (report.page) {
+			const views_menu = report.page.add_custom_button_group(__("Financial Statements"));
+
+			report.page.add_custom_menu_item(views_menu, __("Balance Sheet"), function () {
+				var filters = report.get_values();
+				frappe.set_route("query-report", "Balance Sheet", { company: filters.company });
+			});
+
+			report.page.add_custom_menu_item(views_menu, __("Profit and Loss"), function () {
+				var filters = report.get_values();
+				frappe.set_route("query-report", "Profit and Loss Statement", { company: filters.company });
+			});
+
+			report.page.add_custom_menu_item(views_menu, __("Cash Flow Statement"), function () {
+				var filters = report.get_values();
+				frappe.set_route("query-report", "Cash Flow", { company: filters.company });
+			});
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 };
 
@@ -196,7 +240,10 @@ function get_filters() {
 			label: __("Start Year"),
 			fieldtype: "Link",
 			options: "Fiscal Year",
+<<<<<<< HEAD
 			default: erpnext.utils.get_fiscal_year(frappe.datetime.get_today()),
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 			depends_on: "eval:doc.filter_based_on == 'Fiscal Year'",
 		},
@@ -205,7 +252,10 @@ function get_filters() {
 			label: __("End Year"),
 			fieldtype: "Link",
 			options: "Fiscal Year",
+<<<<<<< HEAD
 			default: erpnext.utils.get_fiscal_year(frappe.datetime.get_today()),
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			reqd: 1,
 			depends_on: "eval:doc.filter_based_on == 'Fiscal Year'",
 		},
@@ -254,5 +304,19 @@ function get_filters() {
 		},
 	];
 
+<<<<<<< HEAD
+=======
+	// Dynamically set 'default' values for fiscal year filters
+	let fy_filters = filters.filter((x) => {
+		return ["from_fiscal_year", "to_fiscal_year"].includes(x.fieldname);
+	});
+	let fiscal_year = erpnext.utils.get_fiscal_year(frappe.datetime.get_today(), false, false);
+	if (fiscal_year) {
+		fy_filters.forEach((x) => {
+			x.default = fiscal_year;
+		});
+	}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return filters;
 }

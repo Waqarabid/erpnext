@@ -16,6 +16,10 @@
   "supplier",
   "supplier_name",
   "supplier_delivery_note",
+<<<<<<< HEAD
+=======
+  "subcontracting_receipt",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break1",
   "posting_date",
   "posting_time",
@@ -57,6 +61,11 @@
   "column_break_27",
   "total",
   "net_total",
+<<<<<<< HEAD
+=======
+  "tax_withholding_net_total",
+  "base_tax_withholding_net_total",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "taxes_charges_section",
   "tax_category",
   "taxes_and_charges",
@@ -312,7 +321,11 @@
   },
   {
    "fieldname": "address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Address",
    "read_only": 1
   },
@@ -327,6 +340,10 @@
    "fieldname": "contact_mobile",
    "fieldtype": "Small Text",
    "label": "Mobile No",
+<<<<<<< HEAD
+=======
+   "options": "Phone",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -350,7 +367,11 @@
   },
   {
    "fieldname": "shipping_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Shipping Address",
    "print_hide": 1,
    "read_only": 1
@@ -1093,7 +1114,11 @@
   },
   {
    "fieldname": "billing_address_display",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
+=======
+   "fieldtype": "Text Editor",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Billing Address",
    "read_only": 1
   },
@@ -1107,6 +1132,10 @@
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "per_returned",
    "fieldtype": "Percent",
+<<<<<<< HEAD
+=======
+   "in_list_view": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "% Returned",
    "no_copy": 1,
    "print_hide": 1,
@@ -1236,6 +1265,35 @@
    "fieldname": "named_place",
    "fieldtype": "Data",
    "label": "Named Place"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "depends_on": "eval: (doc.is_subcontracted && !doc.is_old_subcontracting_flow)",
+   "fieldname": "subcontracting_receipt",
+   "fieldtype": "Link",
+   "label": "Subcontracting Receipt",
+   "options": "Subcontracting Receipt",
+   "search_index": 1
+  },
+  {
+   "fieldname": "tax_withholding_net_total",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Tax Withholding Net Total",
+   "no_copy": 1,
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_tax_withholding_net_total",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Base Tax Withholding Net Total",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-truck",
@@ -1305,10 +1363,18 @@
  ],
  "search_fields": "status, posting_date, supplier",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "supplier",
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

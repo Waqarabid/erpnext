@@ -284,7 +284,11 @@ erpnext.PointOfSale.ItemCart = class {
 			this.item_is_selected = false;
 			this.$cart_container.find(".cart-item-wrapper").css("background-color", "");
 		} else {
+<<<<<<< HEAD
 			$cart_item.css("background-color", "var(--gray-50)");
+=======
+			$cart_item.css("background-color", "var(--control-bg)");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.item_is_selected = true;
 			this.$cart_container.find(".cart-item-wrapper").not(item).css("background-color", "");
 		}
@@ -295,10 +299,17 @@ erpnext.PointOfSale.ItemCart = class {
 			<div class="customer-field"></div>
 		`);
 		const me = this;
+<<<<<<< HEAD
 		const query = { query: "erpnext.controllers.queries.customer_query" };
 		const allowed_customer_group = this.allowed_customer_groups || [];
 		if (allowed_customer_group.length) {
 			query.filters = {
+=======
+		const allowed_customer_group = this.allowed_customer_groups || [];
+		let filters = {};
+		if (allowed_customer_group.length) {
+			filters = {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				customer_group: ["in", allowed_customer_group],
 			};
 		}
@@ -308,7 +319,15 @@ erpnext.PointOfSale.ItemCart = class {
 				fieldtype: "Link",
 				options: "Customer",
 				placeholder: __("Search by customer name, phone, email."),
+<<<<<<< HEAD
 				get_query: () => query,
+=======
+				get_query: function () {
+					return {
+						filters: filters,
+					};
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				onchange: function () {
 					if (this.value) {
 						const frm = me.events.get_frm();
@@ -522,14 +541,27 @@ erpnext.PointOfSale.ItemCart = class {
 	}
 
 	render_taxes(taxes) {
+<<<<<<< HEAD
 		if (taxes.length) {
+=======
+		if (taxes && taxes.length) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			const currency = this.events.get_frm().doc.currency;
 			const taxes_html = taxes
 				.map((t) => {
 					if (t.tax_amount_after_discount_amount == 0.0) return;
+<<<<<<< HEAD
 					const description = /[0-9]+/.test(t.description)
 						? t.description
 						: `${t.description} @ ${t.rate}%`;
+=======
+					// if tax rate is 0, don't print it.
+					const description = /[0-9]+/.test(t.description)
+						? t.description
+						: t.rate != 0
+						? `${t.description} @ ${t.rate}%`
+						: t.description;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					return `<div class="tax-row">
 					<div class="tax-label">${description}</div>
 					<div class="tax-value">${format_currency(t.tax_amount_after_discount_amount, currency)}</div>
@@ -613,7 +645,11 @@ erpnext.PointOfSale.ItemCart = class {
 			if (item_data.rate && item_data.amount && item_data.rate !== item_data.amount) {
 				return `
 					<div class="item-qty-rate">
+<<<<<<< HEAD
 						<div class="item-qty"><span>${item_data.qty || 0}</span></div>
+=======
+						<div class="item-qty"><span>${item_data.qty || 0} ${item_data.uom}</span></div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						<div class="item-rate-amount">
 							<div class="item-rate">${format_currency(item_data.amount, currency)}</div>
 							<div class="item-amount">${format_currency(item_data.rate, currency)}</div>
@@ -622,7 +658,11 @@ erpnext.PointOfSale.ItemCart = class {
 			} else {
 				return `
 					<div class="item-qty-rate">
+<<<<<<< HEAD
 						<div class="item-qty"><span>${item_data.qty || 0}</span></div>
+=======
+						<div class="item-qty"><span>${item_data.qty || 0} ${item_data.uom}</span></div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						<div class="item-rate-amount">
 							<div class="item-rate">${format_currency(item_data.rate, currency)}</div>
 						</div>
@@ -840,7 +880,11 @@ erpnext.PointOfSale.ItemCart = class {
 			});
 			this.$customer_section.find(".customer-details").html(
 				`<div class="header">
+<<<<<<< HEAD
 					<div class="label">Contact Details</div>
+=======
+					<div class="label">${__("Contact Details")}</div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					<div class="close-details-btn">
 						<svg width="32" height="32" viewBox="0 0 14 14" fill="none">
 							<path d="M4.93764 4.93759L7.00003 6.99998M9.06243 9.06238L7.00003 6.99998M7.00003 6.99998L4.93764 9.06238L9.06243 4.93759" stroke="#8D99A6"/>
@@ -860,7 +904,11 @@ erpnext.PointOfSale.ItemCart = class {
 					<div class="loyalty_program-field"></div>
 					<div class="loyalty_points-field"></div>
 				</div>
+<<<<<<< HEAD
 				<div class="transactions-label">Recent Transactions</div>`
+=======
+				<div class="transactions-label">${__("Recent Transactions")}</div>`
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			);
 			// transactions need to be in diff div from sticky elem for scrolling
 			this.$customer_section.append(`<div class="customer-transactions"></div>`);
@@ -959,15 +1007,23 @@ erpnext.PointOfSale.ItemCart = class {
 
 				if (!res.length) {
 					transaction_container.html(
+<<<<<<< HEAD
 						`<div class="no-transactions-placeholder">${__("No recent transactions found")}</div>`
+=======
+						`<div class="no-transactions-placeholder">No recent transactions found</div>`
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					);
 					return;
 				}
 
 				const elapsed_time = moment(res[0].posting_date + " " + res[0].posting_time).fromNow();
+<<<<<<< HEAD
 				this.$customer_section
 					.find(".customer-desc")
 					.html(`${__("Last transacted")} ${__(elapsed_time)}`);
+=======
+				this.$customer_section.find(".customer-desc").html(`Last transacted ${elapsed_time}`);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				res.forEach((invoice) => {
 					const posting_datetime = moment(invoice.posting_date + " " + invoice.posting_time).format(
@@ -992,7 +1048,11 @@ erpnext.PointOfSale.ItemCart = class {
 							</div>
 							<div class="invoice-status">
 								<span class="indicator-pill whitespace-nowrap ${indicator_color[invoice.status]}">
+<<<<<<< HEAD
 									<span>${__(invoice.status)}</span>
+=======
+									<span>${invoice.status}</span>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 								</span>
 							</div>
 						</div>

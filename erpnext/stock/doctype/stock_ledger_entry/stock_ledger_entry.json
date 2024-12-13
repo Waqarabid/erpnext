@@ -13,13 +13,24 @@
   "posting_time",
   "posting_datetime",
   "is_adjustment_entry",
+<<<<<<< HEAD
+=======
+  "auto_created_serial_and_batch_bundle",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_6",
   "voucher_type",
   "voucher_no",
   "voucher_detail_no",
+<<<<<<< HEAD
   "dependant_sle_voucher_detail_no",
   "recalculate_rate",
   "section_break_11",
+=======
+  "serial_and_batch_bundle",
+  "dependant_sle_voucher_detail_no",
+  "section_break_11",
+  "recalculate_rate",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "actual_qty",
   "qty_after_transaction",
   "incoming_rate",
@@ -33,12 +44,23 @@
   "company",
   "stock_uom",
   "project",
+<<<<<<< HEAD
   "batch_no",
   "column_break_26",
   "fiscal_year",
   "serial_no",
   "is_cancelled",
   "to_rename"
+=======
+  "column_break_26",
+  "fiscal_year",
+  "has_batch_no",
+  "has_serial_no",
+  "is_cancelled",
+  "to_rename",
+  "serial_no",
+  "batch_no"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -97,6 +119,10 @@
    "oldfieldtype": "Date",
    "print_width": "100px",
    "read_only": 1,
+<<<<<<< HEAD
+=======
+   "search_index": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "width": "100px"
   },
   {
@@ -311,12 +337,46 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "serial_and_batch_bundle",
+   "fieldtype": "Link",
+   "label": "Serial and Batch Bundle",
+   "options": "Serial and Batch Bundle",
+   "search_index": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.has_batch_no",
+   "fieldname": "has_batch_no",
+   "fieldtype": "Check",
+   "label": "Has Batch No"
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.has_serial_no",
+   "fieldname": "has_serial_no",
+   "fieldtype": "Check",
+   "label": "Has Serial No"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "fieldname": "is_adjustment_entry",
    "fieldtype": "Check",
    "label": "Is Adjustment Entry"
   },
   {
+<<<<<<< HEAD
+=======
+   "default": "0",
+   "depends_on": "serial_and_batch_bundle",
+   "fieldname": "auto_created_serial_and_batch_bundle",
+   "fieldtype": "Check",
+   "label": "Auto Created Serial and Batch Bundle"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "posting_datetime",
    "fieldtype": "Datetime",
    "label": "Posting Datetime",
@@ -329,7 +389,11 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-08-27 09:29:03.961443",
+=======
+ "modified": "2024-08-27 09:28:03.961443",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Ledger Entry",
@@ -350,7 +414,14 @@
    "role": "Accounts Manager"
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

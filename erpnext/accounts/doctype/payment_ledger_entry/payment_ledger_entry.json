@@ -159,7 +159,11 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-08 10:53:10.664896",
+=======
+ "modified": "2024-03-27 13:10:09.967095",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Ledger Entry",
@@ -194,7 +198,11 @@
   }
  ],
  "search_fields": "voucher_no, against_voucher_no",
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

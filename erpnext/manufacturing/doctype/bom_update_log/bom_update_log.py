@@ -24,13 +24,41 @@ class BOMMissingError(frappe.ValidationError):
 
 
 class BOMUpdateLog(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.manufacturing.doctype.bom_update_batch.bom_update_batch import BOMUpdateBatch
+
+		amended_from: DF.Link | None
+		bom_batches: DF.Table[BOMUpdateBatch]
+		current_bom: DF.Link | None
+		current_level: DF.Int
+		error_log: DF.Link | None
+		new_bom: DF.Link | None
+		processed_boms: DF.LongText | None
+		status: DF.Literal["Queued", "In Progress", "Completed", "Failed"]
+		update_type: DF.Literal["Replace BOM", "Update Cost"]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@staticmethod
 	def clear_old_logs(days=None):
 		days = days or 90
 		table = DocType("BOM Update Log")
 		frappe.db.delete(
 			table,
+<<<<<<< HEAD
 			filters=((table.modified < (Now() - Interval(days=days))) & (table.update_type == "Update Cost")),
+=======
+			filters=((table.creation < (Now() - Interval(days=days))) & (table.update_type == "Update Cost")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 	def validate(self):

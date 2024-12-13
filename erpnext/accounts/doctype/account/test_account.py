@@ -1,11 +1,19 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
+<<<<<<< HEAD
 
 
 import unittest
 
 import frappe
 from frappe.test_runner import make_test_records
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import nowdate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.account.account import (
 	InvalidAccountMergeError,
@@ -14,10 +22,17 @@ from erpnext.accounts.doctype.account.account import (
 )
 from erpnext.stock import get_company_default_inventory_account, get_warehouse_account
 
+<<<<<<< HEAD
 test_dependencies = ["Company"]
 
 
 class TestAccount(unittest.TestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Company"]
+
+
+class TestAccount(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_rename_account(self):
 		if not frappe.db.exists("Account", "1210 - Debtors - _TC"):
 			acc = frappe.new_doc("Account")
@@ -119,7 +134,11 @@ class TestAccount(unittest.TestCase):
 			InvalidAccountMergeError,
 			merge_account,
 			"Capital Stock - _TC",
+<<<<<<< HEAD
 			"Softwares - _TC",
+=======
+			"Software - _TC",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		# Raise error as currency doesn't match
@@ -202,8 +221,11 @@ class TestAccount(unittest.TestCase):
 		In a parent->child company setup, child should inherit parent account currency if explicitly specified.
 		"""
 
+<<<<<<< HEAD
 		make_test_records("Company")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.local.flags.pop("ignore_root_company_validation", None)
 
 		def create_bank_account():
@@ -312,9 +334,28 @@ class TestAccount(unittest.TestCase):
 		acc.account_currency = "USD"
 		self.assertRaises(frappe.ValidationError, acc.save)
 
+<<<<<<< HEAD
 
 def _make_test_records(verbose=None):
 	from frappe.test_runner import make_test_objects
+=======
+	def test_account_balance(self):
+		from erpnext.accounts.utils import get_balance_on
+
+		if not frappe.db.exists("Account", "Test Percent Account %5 - _TC"):
+			acc = frappe.new_doc("Account")
+			acc.account_name = "Test Percent Account %5"
+			acc.parent_account = "Tax Assets - _TC"
+			acc.company = "_Test Company"
+			acc.insert()
+
+		balance = get_balance_on(account="Test Percent Account %5 - _TC", date=nowdate())
+		self.assertEqual(balance, 0)
+
+
+def _make_test_records(verbose=None):
+	from frappe.tests.utils import make_test_objects
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	accounts = [
 		# [account_name, parent_account, is_group]

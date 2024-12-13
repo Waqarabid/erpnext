@@ -1,5 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
@@ -10,6 +11,16 @@ from frappe.utils import random_string
 
 
 class TestVehicle(unittest.TestCase):
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import random_string
+
+
+class TestVehicle(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_make_vehicle(self):
 		vehicle = frappe.get_doc(
 			{
@@ -26,3 +37,32 @@ class TestVehicle(unittest.TestCase):
 			}
 		)
 		vehicle.insert()
+<<<<<<< HEAD
+=======
+
+	def test_renaming_vehicle(self):
+		license_plate = random_string(10).upper()
+
+		vehicle = frappe.get_doc(
+			{
+				"doctype": "Vehicle",
+				"license_plate": license_plate,
+				"make": "Skoda",
+				"model": "Slavia",
+				"last_odometer": 5000,
+				"acquisition_date": frappe.utils.nowdate(),
+				"location": "Mumbai",
+				"chassis_no": "1234EFGH",
+				"uom": "Litre",
+				"vehicle_value": frappe.utils.flt(500000),
+			}
+		)
+		vehicle.insert()
+
+		new_license_plate = random_string(10).upper()
+		frappe.rename_doc("Vehicle", license_plate, new_license_plate)
+
+		self.assertEqual(
+			new_license_plate, frappe.db.get_value("Vehicle", new_license_plate, "license_plate")
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

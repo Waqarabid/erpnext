@@ -13,7 +13,10 @@ frappe.ui.form.on("Task", {
 				}),
 		};
 	},
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	onload: function (frm) {
 		frm.set_query("task", "depends_on", function () {
 			let filters = {

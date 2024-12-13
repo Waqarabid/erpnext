@@ -1,17 +1,31 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 
+<<<<<<< HEAD
 test_dependencies = ["Cost Center", "Location", "Warehouse", "Department"]
 
 
 class TestAccountingDimension(unittest.TestCase):
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Cost Center", "Location", "Warehouse", "Department"]
+
+
+class TestAccountingDimension(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		create_dimension()
 
@@ -86,12 +100,30 @@ def create_dimension():
 	frappe.set_user("Administrator")
 
 	if not frappe.db.exists("Accounting Dimension", {"document_type": "Department"}):
+<<<<<<< HEAD
 		frappe.get_doc(
+=======
+		dimension = frappe.get_doc(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				"doctype": "Accounting Dimension",
 				"document_type": "Department",
 			}
+<<<<<<< HEAD
 		).insert()
+=======
+		)
+		dimension.append(
+			"dimension_defaults",
+			{
+				"company": "_Test Company",
+				"reference_document": "Department",
+				"default_dimension": "_Test Department - _TC",
+			},
+		)
+		dimension.insert()
+		dimension.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		dimension = frappe.get_doc("Accounting Dimension", "Department")
 		dimension.disabled = 0

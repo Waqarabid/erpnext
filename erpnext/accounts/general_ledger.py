@@ -7,7 +7,12 @@ import copy
 import frappe
 from frappe import _
 from frappe.model.meta import get_field_precision
+<<<<<<< HEAD
 from frappe.utils import cint, flt, formatdate, getdate, now
+=======
+from frappe.utils import cint, flt, formatdate, get_link_to_form, getdate, now
+from frappe.utils.dashboard import cache_source
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
@@ -37,6 +42,7 @@ def make_gl_entries(
 			validate_disabled_accounts(gl_map)
 			gl_map = process_gl_map(gl_map, merge_entries)
 			if gl_map and len(gl_map) > 1:
+<<<<<<< HEAD
 				create_payment_ledger_entry(
 					gl_map,
 					cancel=0,
@@ -44,6 +50,16 @@ def make_gl_entries(
 					update_outstanding=update_outstanding,
 					from_repost=from_repost,
 				)
+=======
+				if gl_map[0].voucher_type != "Period Closing Voucher":
+					create_payment_ledger_entry(
+						gl_map,
+						cancel=0,
+						adv_adj=adv_adj,
+						update_outstanding=update_outstanding,
+						from_repost=from_repost,
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				save_entries(gl_map, adv_adj, update_outstanding, from_repost)
 			# Post GL Map process there may no be any GL Entries
 			elif gl_map:
@@ -116,6 +132,7 @@ def get_accounting_dimensions_for_offsetting_entry(gl_map, company):
 def validate_disabled_accounts(gl_map):
 	accounts = [d.account for d in gl_map if d.account]
 
+<<<<<<< HEAD
 	Account = frappe.qb.DocType("Account")
 
 	disabled_accounts = (
@@ -127,6 +144,18 @@ def validate_disabled_accounts(gl_map):
 	if disabled_accounts:
 		account_list = "<br>"
 		account_list += ", ".join([frappe.bold(d.name) for d in disabled_accounts])
+=======
+	disabled_accounts = frappe.get_all(
+		"Account",
+		filters={"disabled": 1, "is_group": 0, "company": gl_map[0].company},
+		fields=["name"],
+	)
+
+	used_disabled_accounts = set(accounts).intersection(set([d.name for d in disabled_accounts]))
+	if used_disabled_accounts:
+		account_list = "<br>"
+		account_list += ", ".join([frappe.bold(d) for d in used_disabled_accounts])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frappe.throw(
 			_("Cannot create accounting entries against disabled accounts: {0}").format(account_list),
 			title=_("Disabled Account Selected"),
@@ -234,6 +263,13 @@ def merge_similar_entries(gl_map, precision=None):
 	merge_properties = get_merge_properties(accounting_dimensions)
 
 	for entry in gl_map:
+<<<<<<< HEAD
+=======
+		if entry._skip_merge:
+			merged_gl_map.append(entry)
+			continue
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		entry.merge_key = get_merge_key(entry, merge_properties)
 		# if there is already an entry in this account then just add it
 		# to that entry
@@ -243,10 +279,22 @@ def merge_similar_entries(gl_map, precision=None):
 			same_head.debit_in_account_currency = flt(same_head.debit_in_account_currency) + flt(
 				entry.debit_in_account_currency
 			)
+<<<<<<< HEAD
+=======
+			same_head.debit_in_transaction_currency = flt(same_head.debit_in_transaction_currency) + flt(
+				entry.debit_in_transaction_currency
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			same_head.credit = flt(same_head.credit) + flt(entry.credit)
 			same_head.credit_in_account_currency = flt(same_head.credit_in_account_currency) + flt(
 				entry.credit_in_account_currency
 			)
+<<<<<<< HEAD
+=======
+			same_head.credit_in_transaction_currency = flt(same_head.credit_in_transaction_currency) + flt(
+				entry.credit_in_transaction_currency
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			merged_gl_map.append(entry)
 
@@ -283,6 +331,10 @@ def get_merge_properties(dimensions=None):
 		"against_voucher_type",
 		"project",
 		"finance_book",
+<<<<<<< HEAD
+=======
+		"voucher_no",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	]
 	if dimensions:
 		merge_properties.extend(dimensions)
@@ -304,6 +356,7 @@ def check_if_in_list(gle, gl_map):
 
 
 def toggle_debit_credit_if_negative(gl_map):
+<<<<<<< HEAD
 	for entry in gl_map:
 		# toggle debit, credit if negative entry
 		if flt(entry.debit) < 0:
@@ -327,10 +380,51 @@ def toggle_debit_credit_if_negative(gl_map):
 			entry.credit_in_account_currency = 0.0
 
 		update_net_values(entry)
+=======
+	debit_credit_field_map = {
+		"debit": "credit",
+		"debit_in_account_currency": "credit_in_account_currency",
+		"debit_in_transaction_currency": "credit_in_transaction_currency",
+	}
+
+	for entry in gl_map:
+		# toggle debit, credit if negative entry
+		for debit_field, credit_field in debit_credit_field_map.items():
+			debit = flt(entry.get(debit_field))
+			credit = flt(entry.get(credit_field))
+
+			if debit < 0 and credit < 0 and debit == credit:
+				debit *= -1
+				credit *= -1
+
+			if debit < 0:
+				credit = credit - debit
+				debit = 0.0
+
+			if credit < 0:
+				debit = debit - credit
+				credit = 0.0
+
+			# update net values
+			# In some scenarios net value needs to be shown in the ledger
+			# This method updates net values as debit or credit
+			if entry.post_net_value and debit and credit:
+				if debit > credit:
+					debit = debit - credit
+					credit = 0.0
+
+				else:
+					credit = credit - debit
+					debit = 0.0
+
+			entry[debit_field] = debit
+			entry[credit_field] = credit
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	return gl_map
 
 
+<<<<<<< HEAD
 def update_net_values(entry):
 	# In some scenarios net value needs to be shown in the ledger
 	# This method updates net values as debit or credit
@@ -352,6 +446,8 @@ def update_net_values(entry):
 			entry.debit_in_account_currency = 0
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def save_entries(gl_map, adv_adj, update_outstanding, from_repost=False):
 	if not from_repost:
 		validate_cwip_accounts(gl_map)
@@ -473,16 +569,48 @@ def raise_debit_credit_not_equal_error(debit_credit_diff, voucher_type, voucher_
 	)
 
 
+<<<<<<< HEAD
 def make_round_off_gle(gl_map, debit_credit_diff, precision):
 	round_off_account, round_off_cost_center = get_round_off_account_and_cost_center(
+=======
+def has_opening_entries(gl_map: list) -> bool:
+	for x in gl_map:
+		if x.is_opening == "Yes":
+			return True
+	return False
+
+
+def make_round_off_gle(gl_map, debit_credit_diff, precision):
+	round_off_account, round_off_cost_center, round_off_for_opening = get_round_off_account_and_cost_center(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		gl_map[0].company, gl_map[0].voucher_type, gl_map[0].voucher_no
 	)
 	round_off_gle = frappe._dict()
 	round_off_account_exists = False
+<<<<<<< HEAD
 
 	if gl_map[0].voucher_type != "Period Closing Voucher":
 		for d in gl_map:
 			if d.account == round_off_account:
+=======
+	has_opening_entry = has_opening_entries(gl_map)
+
+	if has_opening_entry:
+		if not round_off_for_opening:
+			frappe.throw(
+				_("Please set '{0}' in Company: {1}").format(
+					frappe.bold("Round Off for Opening"), get_link_to_form("Company", gl_map[0].company)
+				)
+			)
+
+		account = round_off_for_opening
+	else:
+		account = round_off_account
+
+	if gl_map[0].voucher_type != "Period Closing Voucher":
+		for d in gl_map:
+			if d.account == account:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				round_off_gle = d
 				if d.debit:
 					debit_credit_diff -= flt(d.debit) - flt(d.credit)
@@ -500,7 +628,11 @@ def make_round_off_gle(gl_map, debit_credit_diff, precision):
 
 	round_off_gle.update(
 		{
+<<<<<<< HEAD
 			"account": round_off_account,
+=======
+			"account": account,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"debit_in_account_currency": abs(debit_credit_diff) if debit_credit_diff < 0 else 0,
 			"credit_in_account_currency": debit_credit_diff if debit_credit_diff > 0 else 0,
 			"debit": abs(debit_credit_diff) if debit_credit_diff < 0 else 0,
@@ -514,6 +646,12 @@ def make_round_off_gle(gl_map, debit_credit_diff, precision):
 		}
 	)
 
+<<<<<<< HEAD
+=======
+	if has_opening_entry:
+		round_off_gle.update({"is_opening": "Yes"})
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	update_accounting_dimensions(round_off_gle)
 	if not round_off_account_exists:
 		gl_map.append(round_off_gle)
@@ -538,9 +676,19 @@ def update_accounting_dimensions(round_off_gle):
 
 
 def get_round_off_account_and_cost_center(company, voucher_type, voucher_no, use_company_default=False):
+<<<<<<< HEAD
 	round_off_account, round_off_cost_center = frappe.get_cached_value(
 		"Company", company, ["round_off_account", "round_off_cost_center"]
 	) or [None, None]
+=======
+	round_off_account, round_off_cost_center, round_off_for_opening = frappe.get_cached_value(
+		"Company", company, ["round_off_account", "round_off_cost_center", "round_off_for_opening"]
+	) or [None, None, None]
+
+	# Use expense account as fallback
+	if not round_off_account:
+		round_off_account = frappe.get_cached_value("Company", company, "default_expense_account")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	meta = frappe.get_meta(voucher_type)
 
@@ -551,12 +699,29 @@ def get_round_off_account_and_cost_center(company, voucher_type, voucher_no, use
 			round_off_cost_center = parent_cost_center
 
 	if not round_off_account:
+<<<<<<< HEAD
 		frappe.throw(_("Please mention Round Off Account in Company"))
 
 	if not round_off_cost_center:
 		frappe.throw(_("Please mention Round Off Cost Center in Company"))
 
 	return round_off_account, round_off_cost_center
+=======
+		frappe.throw(
+			_("Please mention '{0}' in Company: {1}").format(
+				frappe.bold("Round Off Account"), get_link_to_form("Company", company)
+			)
+		)
+
+	if not round_off_cost_center:
+		frappe.throw(
+			_("Please mention '{0}' in Company: {1}").format(
+				frappe.bold("Round Off Cost Center"), get_link_to_form("Company", company)
+			)
+		)
+
+	return round_off_account, round_off_cost_center, round_off_for_opening
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def make_reverse_gl_entries(
@@ -572,6 +737,11 @@ def make_reverse_gl_entries(
 	and make reverse gl entries by swapping debit and credit
 	"""
 
+<<<<<<< HEAD
+=======
+	immutable_ledger_enabled = is_immutable_ledger_enabled()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if not gl_entries:
 		gl_entry = frappe.qb.DocType("GL Entry")
 		gl_entries = (
@@ -596,8 +766,40 @@ def make_reverse_gl_entries(
 
 		is_opening = any(d.get("is_opening") == "Yes" for d in gl_entries)
 		validate_against_pcv(is_opening, gl_entries[0]["posting_date"], gl_entries[0]["company"])
+<<<<<<< HEAD
 		if not partial_cancel:
 			set_as_cancel(gl_entries[0]["voucher_type"], gl_entries[0]["voucher_no"])
+=======
+		if partial_cancel:
+			# Partial cancel is only used by `Advance` in separate account feature.
+			# Only cancel GL entries for unlinked reference using `voucher_detail_no`
+			gle = frappe.qb.DocType("GL Entry")
+			for x in gl_entries:
+				query = (
+					frappe.qb.update(gle)
+					.set(gle.modified, now())
+					.set(gle.modified_by, frappe.session.user)
+					.where(
+						(gle.company == x.company)
+						& (gle.account == x.account)
+						& (gle.party_type == x.party_type)
+						& (gle.party == x.party)
+						& (gle.voucher_type == x.voucher_type)
+						& (gle.voucher_no == x.voucher_no)
+						& (gle.against_voucher_type == x.against_voucher_type)
+						& (gle.against_voucher == x.against_voucher)
+						& (gle.voucher_detail_no == x.voucher_detail_no)
+					)
+				)
+
+				if not immutable_ledger_enabled:
+					query = query.set(gle.is_cancelled, True)
+
+				query.run()
+		else:
+			if not immutable_ledger_enabled:
+				set_as_cancel(gl_entries[0]["voucher_type"], gl_entries[0]["voucher_no"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		for entry in gl_entries:
 			new_gle = copy.deepcopy(entry)
@@ -616,6 +818,13 @@ def make_reverse_gl_entries(
 			new_gle["remarks"] = "On cancellation of " + new_gle["voucher_no"]
 			new_gle["is_cancelled"] = 1
 
+<<<<<<< HEAD
+=======
+			if immutable_ledger_enabled:
+				new_gle["is_cancelled"] = 0
+				new_gle["posting_date"] = frappe.form_dict.get("posting_date") or getdate()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if new_gle["debit"] or new_gle["credit"]:
 				make_entry(new_gle, adv_adj, "Yes")
 
@@ -629,10 +838,17 @@ def check_freezing_date(posting_date, adv_adj=False):
 	Hence stop admin to bypass if accounts are freezed
 	"""
 	if not adv_adj:
+<<<<<<< HEAD
 		acc_frozen_upto = frappe.db.get_value("Accounts Settings", None, "acc_frozen_upto")
 		if acc_frozen_upto:
 			frozen_accounts_modifier = frappe.db.get_value(
 				"Accounts Settings", None, "frozen_accounts_modifier"
+=======
+		acc_frozen_upto = frappe.db.get_single_value("Accounts Settings", "acc_frozen_upto")
+		if acc_frozen_upto:
+			frozen_accounts_modifier = frappe.db.get_single_value(
+				"Accounts Settings", "frozen_accounts_modifier"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 			if getdate(posting_date) <= getdate(acc_frozen_upto) and (
 				frozen_accounts_modifier not in frappe.get_roles() or frappe.session.user == "Administrator"
@@ -652,7 +868,11 @@ def validate_against_pcv(is_opening, posting_date, company):
 		)
 
 	last_pcv_date = frappe.db.get_value(
+<<<<<<< HEAD
 		"Period Closing Voucher", {"docstatus": 1, "company": company}, "max(posting_date)"
+=======
+		"Period Closing Voucher", {"docstatus": 1, "company": company}, "max(period_end_date)"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 	if last_pcv_date and getdate(posting_date) <= getdate(last_pcv_date):
@@ -708,3 +928,10 @@ def validate_allowed_dimensions(gl_entry, dimension_filter_map):
 						),
 						InvalidAccountDimensionError,
 					)
+<<<<<<< HEAD
+=======
+
+
+def is_immutable_ledger_enabled():
+	return frappe.db.get_single_value("Accounts Settings", "enable_immutable_ledger")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

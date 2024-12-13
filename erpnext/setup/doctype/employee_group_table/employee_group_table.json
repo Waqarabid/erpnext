@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+ "actions": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "creation": "2018-11-19 12:39:46.153061",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -33,14 +37,27 @@
   }
  ],
  "istable": 1,
+<<<<<<< HEAD
  "modified": "2022-02-13 19:44:21.302938",
+=======
+ "links": [],
+ "modified": "2024-03-27 13:09:39.428291",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Employee Group Table",
  "owner": "Administrator",
  "permissions": [],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

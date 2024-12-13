@@ -14,7 +14,11 @@ from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_accounting_dimensions,
 	get_dimension_with_children,
 )
+<<<<<<< HEAD
 from erpnext.accounts.utils import get_currency_precision
+=======
+from erpnext.accounts.utils import get_currency_precision, get_party_types_from_account_type
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 #  This report gives a summary of all Outstanding Invoices considering the following
 
@@ -50,10 +54,22 @@ class ReceivablePayableReport:
 			getdate(nowdate()) if self.filters.report_date > getdate(nowdate()) else self.filters.report_date
 		)
 
+<<<<<<< HEAD
 	def run(self, args):
 		self.filters.update(args)
 		self.set_defaults()
 		self.party_naming_by = frappe.db.get_value(args.get("naming_by")[0], None, args.get("naming_by")[1])
+=======
+		if not self.filters.range:
+			self.filters.range = "30, 60, 90, 120"
+		self.ranges = [num.strip() for num in self.filters.range.split(",") if num.strip().isdigit()]
+		self.range_numbers = [num for num in range(1, len(self.ranges) + 2)]
+
+	def run(self, args):
+		self.filters.update(args)
+		self.set_defaults()
+		self.party_naming_by = frappe.db.get_single_value(args.get("naming_by")[0], args.get("naming_by")[1])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.get_columns()
 		self.get_data()
 		self.get_chart_data()
@@ -68,7 +84,11 @@ class ReceivablePayableReport:
 		self.currency_precision = get_currency_precision() or 2
 		self.dr_or_cr = "debit" if self.filters.account_type == "Receivable" else "credit"
 		self.account_type = self.filters.account_type
+<<<<<<< HEAD
 		self.party_type = frappe.db.get_all("Party Type", {"account_type": self.account_type}, pluck="name")
+=======
+		self.party_type = get_party_types_from_account_type(self.account_type)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.party_details = {}
 		self.invoices = set()
 		self.skip_total_row = 0
@@ -380,6 +400,10 @@ class ReceivablePayableReport:
 			self.delivery_notes = frappe._dict()
 
 			# delivery note link inside sales invoice
+<<<<<<< HEAD
+=======
+			# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			si_against_dn = frappe.db.sql(
 				"""
 				select parent, delivery_note
@@ -395,6 +419,10 @@ class ReceivablePayableReport:
 				if d.delivery_note:
 					self.delivery_notes.setdefault(d.parent, set()).add(d.delivery_note)
 
+<<<<<<< HEAD
+=======
+			# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			dn_against_si = frappe.db.sql(
 				"""
 				select distinct parent, against_sales_invoice
@@ -412,13 +440,24 @@ class ReceivablePayableReport:
 	def get_invoice_details(self):
 		self.invoice_details = frappe._dict()
 		if self.account_type == "Receivable":
+<<<<<<< HEAD
+=======
+			# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			si_list = frappe.db.sql(
 				"""
 				select name, due_date, po_no
 				from `tabSales Invoice`
 				where posting_date <= %s
+<<<<<<< HEAD
 			""",
 				self.filters.report_date,
+=======
+					and company = %s
+					and docstatus = 1
+			""",
+				(self.filters.report_date, self.filters.company),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				as_dict=1,
 			)
 			for d in si_list:
@@ -426,6 +465,10 @@ class ReceivablePayableReport:
 
 			# Get Sales Team
 			if self.filters.show_sales_person:
+<<<<<<< HEAD
+=======
+				# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				sales_team = frappe.db.sql(
 					"""
 					select parent, sales_person
@@ -440,25 +483,51 @@ class ReceivablePayableReport:
 					)
 
 		if self.account_type == "Payable":
+<<<<<<< HEAD
+=======
+			# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			for pi in frappe.db.sql(
 				"""
 				select name, due_date, bill_no, bill_date
 				from `tabPurchase Invoice`
+<<<<<<< HEAD
 				where posting_date <= %s
 			""",
 				self.filters.report_date,
+=======
+				where
+					posting_date <= %s
+					and company = %s
+					and docstatus = 1
+			""",
+				(self.filters.report_date, self.filters.company),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				as_dict=1,
 			):
 				self.invoice_details.setdefault(pi.name, pi)
 
 		# Invoices booked via Journal Entries
+<<<<<<< HEAD
+=======
+		# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		journal_entries = frappe.db.sql(
 			"""
 			select name, due_date, bill_no, bill_date
 			from `tabJournal Entry`
+<<<<<<< HEAD
 			where posting_date <= %s
 		""",
 			self.filters.report_date,
+=======
+			where
+				posting_date <= %s
+				and company = %s
+				and docstatus = 1
+		""",
+			(self.filters.report_date, self.filters.company),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			as_dict=1,
 		)
 
@@ -467,6 +536,11 @@ class ReceivablePayableReport:
 				self.invoice_details.setdefault(je.name, je)
 
 	def set_party_details(self, row):
+<<<<<<< HEAD
+=======
+		if not row.party:
+			return
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# customer / supplier name
 		party_details = self.get_party_details(row.party) or {}
 		row.update(party_details)
@@ -491,6 +565,10 @@ class ReceivablePayableReport:
 
 	def get_payment_terms(self, row):
 		# build payment_terms for row
+<<<<<<< HEAD
+=======
+		# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		payment_terms_details = frappe.db.sql(
 			f"""
 			select
@@ -704,6 +782,10 @@ class ReceivablePayableReport:
 	def get_return_entries(self):
 		doctype = "Sales Invoice" if self.account_type == "Receivable" else "Purchase Invoice"
 		filters = {
+<<<<<<< HEAD
+=======
+			"posting_date": ("<=", self.filters.report_date),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"is_return": 1,
 			"docstatus": 1,
 			"company": self.filters.company,
@@ -734,6 +816,7 @@ class ReceivablePayableReport:
 
 		# ageing buckets should not have amounts if due date is not reached
 		if getdate(entry_date) > getdate(self.filters.report_date):
+<<<<<<< HEAD
 			row.range1 = row.range2 = row.range3 = row.range4 = row.range5 = 0.0
 
 		row.total_due = row.range1 + row.range2 + row.range3 + row.range4 + row.range5
@@ -741,11 +824,21 @@ class ReceivablePayableReport:
 	def get_ageing_data(self, entry_date, row):
 		# [0-30, 30-60, 60-90, 90-120, 120-above]
 		row.range1 = row.range2 = row.range3 = row.range4 = row.range5 = 0.0
+=======
+			[setattr(row, f"range{i}", 0.0) for i in self.range_numbers]
+
+		row.total_due = sum(row[f"range{i}"] for i in self.range_numbers)
+
+	def get_ageing_data(self, entry_date, row):
+		# [0-30, 30-60, 60-90, 90-120, 120-above]
+		[setattr(row, f"range{i}", 0.0) for i in self.range_numbers]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if not (self.age_as_on and entry_date):
 			return
 
 		row.age = (getdate(self.age_as_on) - getdate(entry_date)).days or 0
+<<<<<<< HEAD
 		index = None
 
 		if not (self.filters.range1 and self.filters.range2 and self.filters.range3 and self.filters.range4):
@@ -765,6 +858,12 @@ class ReceivablePayableReport:
 
 		if index is None:
 			index = 4
+=======
+
+		index = next(
+			(i for i, days in enumerate(self.ranges) if cint(row.age) <= cint(days)), len(self.ranges)
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		row["range" + str(index + 1)] = row.outstanding
 
 	def get_ple_entries(self):
@@ -826,6 +925,10 @@ class ReceivablePayableReport:
 		if self.filters.get("sales_person"):
 			lft, rgt = frappe.db.get_value("Sales Person", self.filters.get("sales_person"), ["lft", "rgt"])
 
+<<<<<<< HEAD
+=======
+			# nosemgrep
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			records = frappe.db.sql(
 				"""
 				select distinct parent, parenttype
@@ -1083,6 +1186,10 @@ class ReceivablePayableReport:
 			self.add_column(_("Debit Note"), fieldname="credit_note")
 		self.add_column(_("Outstanding Amount"), fieldname="outstanding")
 
+<<<<<<< HEAD
+=======
+		self.add_column(label=_("Age (Days)"), fieldname="age", fieldtype="Int", width=80)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.setup_ageing_columns()
 
 		self.add_column(
@@ -1141,6 +1248,7 @@ class ReceivablePayableReport:
 	def setup_ageing_columns(self):
 		# for charts
 		self.ageing_column_labels = []
+<<<<<<< HEAD
 		self.add_column(label=_("Age (Days)"), fieldname="age", fieldtype="Int", width=80)
 
 		for i, label in enumerate(
@@ -1162,13 +1270,34 @@ class ReceivablePayableReport:
 			self.ageing_column_labels.append(label)
 
 	def get_chart_data(self):
+=======
+		ranges = [*self.ranges, "Above"]
+
+		prev_range_value = 0
+		for idx, curr_range_value in enumerate(ranges):
+			label = f"{prev_range_value}-{curr_range_value}"
+			self.add_column(label=label, fieldname="range" + str(idx + 1))
+
+			self.ageing_column_labels.append(label)
+
+			if curr_range_value.isdigit():
+				prev_range_value = cint(curr_range_value) + 1
+
+	def get_chart_data(self):
+		precision = cint(frappe.db.get_default("float_precision")) or 2
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		rows = []
 		for row in self.data:
 			row = frappe._dict(row)
 			if not cint(row.bold):
+<<<<<<< HEAD
 				values = [row.range1, row.range2, row.range3, row.range4, row.range5]
 				precision = cint(frappe.db.get_default("float_precision")) or 2
 				rows.append({"values": [flt(val, precision) for val in values]})
+=======
+				values = [flt(row.get(f"range{i}", None), precision) for i in self.range_numbers]
+				rows.append({"values": values})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		self.chart = {
 			"data": {"labels": self.ageing_column_labels, "datasets": rows},

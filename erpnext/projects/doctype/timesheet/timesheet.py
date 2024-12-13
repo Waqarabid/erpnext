@@ -7,7 +7,12 @@ import json
 import frappe
 from frappe import _
 from frappe.model.document import Document
+<<<<<<< HEAD
 from frappe.utils import add_to_date, flt, get_datetime, getdate, time_diff_in_hours
+=======
+from frappe.utils import flt, get_datetime, getdate
+from frappe.utils.deprecations import deprecated
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.controllers.queries import get_match_cond
 from erpnext.setup.utils import get_exchange_rate
@@ -22,15 +27,72 @@ class OverWorkLoggedError(frappe.ValidationError):
 
 
 class Timesheet(Document):
+<<<<<<< HEAD
 	def validate(self):
 		self.set_status()
 		self.validate_dates()
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.projects.doctype.timesheet_detail.timesheet_detail import TimesheetDetail
+
+		amended_from: DF.Link | None
+		base_total_billable_amount: DF.Currency
+		base_total_billed_amount: DF.Currency
+		base_total_costing_amount: DF.Currency
+		company: DF.Link | None
+		currency: DF.Link | None
+		customer: DF.Link | None
+		department: DF.Link | None
+		employee: DF.Link | None
+		employee_name: DF.Data | None
+		end_date: DF.Date | None
+		exchange_rate: DF.Float
+		naming_series: DF.Literal["TS-.YYYY.-"]
+		note: DF.TextEditor | None
+		parent_project: DF.Link | None
+		per_billed: DF.Percent
+		sales_invoice: DF.Link | None
+		start_date: DF.Date | None
+		status: DF.Literal["Draft", "Submitted", "Billed", "Payslip", "Completed", "Cancelled"]
+		time_logs: DF.Table[TimesheetDetail]
+		title: DF.Data | None
+		total_billable_amount: DF.Currency
+		total_billable_hours: DF.Float
+		total_billed_amount: DF.Currency
+		total_billed_hours: DF.Float
+		total_costing_amount: DF.Currency
+		total_hours: DF.Float
+		user: DF.Link | None
+	# end: auto-generated types
+
+	def validate(self):
+		self.set_status()
+		self.validate_dates()
+		self.calculate_hours()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_time_logs()
 		self.update_cost()
 		self.calculate_total_amounts()
 		self.calculate_percentage_billed()
 		self.set_dates()
 
+<<<<<<< HEAD
+=======
+	def calculate_hours(self):
+		for row in self.time_logs:
+			if row.to_time and row.from_time:
+				row.calculate_hours()
+				row.validate_billing_hours()
+				row.update_billing_hours()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def calculate_total_amounts(self):
 		self.total_hours = 0.0
 		self.total_billable_hours = 0.0
@@ -40,7 +102,11 @@ class Timesheet(Document):
 		self.total_billed_amount = self.base_total_billed_amount = 0.0
 
 		for d in self.get("time_logs"):
+<<<<<<< HEAD
 			self.update_billing_hours(d)
+=======
+			d.update_billing_hours()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.update_time_rates(d)
 
 			self.total_hours += flt(d.hours)
@@ -61,6 +127,7 @@ class Timesheet(Document):
 		elif self.total_billed_hours > 0 and self.total_billable_hours > 0:
 			self.per_billed = (self.total_billed_hours * 100) / self.total_billable_hours
 
+<<<<<<< HEAD
 	def update_billing_hours(self, args):
 		if args.is_billable:
 			if flt(args.billing_hours) == 0.0:
@@ -73,6 +140,11 @@ class Timesheet(Document):
 				)
 		else:
 			args.billing_hours = 0
+=======
+	@deprecated
+	def update_billing_hours(self, args: "TimesheetDetail"):
+		args.update_billing_hours()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def set_status(self):
 		self.status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[str(self.docstatus or 0)]
@@ -120,6 +192,7 @@ class Timesheet(Document):
 			if data.task and data.task not in tasks:
 				task = frappe.get_doc("Task", data.task)
 				task.update_time_and_costing()
+<<<<<<< HEAD
 				task.save()
 				tasks.append(data.task)
 
@@ -146,12 +219,43 @@ class Timesheet(Document):
 		_to_time = get_datetime(add_to_date(data.from_time, hours=data.hours, as_datetime=True))
 		if data.to_time != _to_time:
 			data.to_time = _to_time
+=======
+				time_logs_completed = all(tl.completed for tl in self.time_logs if tl.task == task.name)
+
+				if time_logs_completed:
+					task.status = "Completed"
+				else:
+					task.status = "Working"
+				task.save()
+				tasks.append(data.task)
+
+			if data.project and data.project not in projects:
+				projects.append(data.project)
+
+		for project in projects:
+			project_doc = frappe.get_doc("Project", project)
+			project_doc.update_project()
+			project_doc.save()
+
+	def validate_dates(self):
+		for time_log in self.time_logs:
+			time_log.validate_dates()
+
+	def validate_time_logs(self):
+		for time_log in self.time_logs:
+			time_log.set_to_time()
+			self.validate_overlap(time_log)
+			time_log.set_project()
+			time_log.validate_parent_project(self.parent_project)
+			time_log.validate_task_project()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_overlap(self, data):
 		settings = frappe.get_single("Projects Settings")
 		self.validate_overlap_for("user", data, self.user, settings.ignore_user_time_overlap)
 		self.validate_overlap_for("employee", data, self.employee, settings.ignore_employee_time_overlap)
 
+<<<<<<< HEAD
 	def set_project(self, data):
 		data.project = data.project or frappe.db.get_value("Task", data.task, "project")
 
@@ -162,6 +266,15 @@ class Timesheet(Document):
 					data.idx, self.parent_project
 				)
 			)
+=======
+	@deprecated
+	def set_project(self, data: "TimesheetDetail"):
+		data.set_project()
+
+	@deprecated
+	def validate_project(self, data: "TimesheetDetail"):
+		data.validate_parent_project(self.parent_project)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_overlap_for(self, fieldname, args, value, ignore_validation=False):
 		if not value or ignore_validation:
@@ -231,6 +344,7 @@ class Timesheet(Document):
 		return False
 
 	def update_cost(self):
+<<<<<<< HEAD
 		for data in self.time_logs:
 			if data.activity_type or data.is_billable:
 				rate = get_activity_cost(self.employee, data.activity_type)
@@ -245,11 +359,28 @@ class Timesheet(Document):
 					)
 					data.billing_amount = data.billing_rate * hours
 					data.costing_amount = data.costing_rate * costing_hours
+=======
+		for time_log in self.time_logs:
+			time_log.update_cost(self.employee)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_time_rates(self, ts_detail):
 		if not ts_detail.is_billable:
 			ts_detail.billing_rate = 0.0
 
+<<<<<<< HEAD
+=======
+	def unlink_sales_invoice(self, sales_invoice: str):
+		"""Remove link to Sales Invoice from all time logs."""
+		for time_log in self.time_logs:
+			if time_log.sales_invoice == sales_invoice:
+				time_log.sales_invoice = None
+
+		self.calculate_total_amounts()
+		self.calculate_percentage_billed()
+		self.set_status()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 @frappe.whitelist()
 def get_projectwise_timesheet_data(project=None, parent=None, from_time=None, to_time=None):
@@ -370,8 +501,17 @@ def make_sales_invoice(source_name, item_code=None, customer=None, currency=None
 	billing_rate = billing_amount / hours
 
 	target.company = timesheet.company
+<<<<<<< HEAD
 	if customer:
 		target.customer = customer
+=======
+	target.project = timesheet.parent_project
+	if customer:
+		target.customer = customer
+		default_price_list = frappe.get_value("Customer", customer, "default_price_list")
+		if default_price_list:
+			target.selling_price_list = default_price_list
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	if currency:
 		target.currency = currency
@@ -455,7 +595,11 @@ def get_events(start, end, filters=None):
 	)
 
 
+<<<<<<< HEAD
 def get_timesheets_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="modified"):
+=======
+def get_timesheets_list(doctype, txt, filters, limit_start, limit_page_length=20, order_by="creation"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	user = frappe.session.user
 	# find customer name from contact.
 	customer = ""

@@ -7,7 +7,11 @@
 		</div>
 	{% else %}
 		<div class="col-xs-5 {%- if doc.align_labels_right %} text-right{%- endif -%}">
+<<<<<<< HEAD
 			<label>{{ _(df.label) }}</label></div>
+=======
+			<label>{{ _(df.label, context=df.parent) }}</label></div>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		<div class="col-xs-7 text-right value">
 			{{ doc.get_formatted("total", doc) }}
 		</div>

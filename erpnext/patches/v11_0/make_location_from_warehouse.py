@@ -27,7 +27,11 @@ def execute():
 		except frappe.DuplicateEntryError:
 			continue
 
+<<<<<<< HEAD
 	rebuild_tree("Location", "parent_location")
+=======
+	rebuild_tree("Location")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_parent_warehouse_name(warehouse):

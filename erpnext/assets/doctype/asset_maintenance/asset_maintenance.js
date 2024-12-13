@@ -3,6 +3,18 @@
 
 frappe.ui.form.on("Asset Maintenance", {
 	setup: (frm) => {
+<<<<<<< HEAD
+=======
+		frm.set_query("asset_name", function () {
+			return {
+				filters: {
+					company: frm.doc.company,
+					docstatus: 1,
+				},
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("assign_to", "asset_maintenance_tasks", function (doc) {
 			return {
 				query: "erpnext.assets.doctype.asset_maintenance.asset_maintenance.get_team_members",

@@ -26,7 +26,11 @@ def execute(filters=None):
 def get_columns(filters):
 	party_type = filters.get("party_type")
 	party_type_value = get_party_group(party_type)
+<<<<<<< HEAD
 	return [
+=======
+	columns = [
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		f"{party_type}:Link/{party_type}",
 		f"{frappe.unscrub(str(party_type_value))}::150",
 		"Address Line 1",
@@ -43,6 +47,18 @@ def get_columns(filters):
 		"Email Id",
 		"Is Primary Contact:Check",
 	]
+<<<<<<< HEAD
+=======
+	if filters.get("party_type") == "Supplier" and frappe.db.get_single_value(
+		"Buying Settings", "supp_master_name"
+	) == ["Naming Series", "Auto Name"]:
+		columns.insert(1, "Supplier Name:Data:150")
+	if filters.get("party_type") == "Customer" and frappe.db.get_single_value(
+		"Selling Settings", "cust_master_name"
+	) == ["Naming Series", "Auto Name"]:
+		columns.insert(1, "Customer Name:Data:150")
+	return columns
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_data(filters):
@@ -50,18 +66,28 @@ def get_data(filters):
 	party = filters.get("party_name")
 	party_group = get_party_group(party_type)
 
+<<<<<<< HEAD
 	return get_party_addresses_and_contact(party_type, party, party_group)
 
 
 def get_party_addresses_and_contact(party_type, party, party_group):
 	data = []
 	filters = None
+=======
+	return get_party_addresses_and_contact(party_type, party, party_group, filters)
+
+
+def get_party_addresses_and_contact(party_type, party, party_group, filters):
+	data = []
+	query_filters = None
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	party_details = frappe._dict()
 
 	if not party_type:
 		return []
 
 	if party:
+<<<<<<< HEAD
 		filters = {"name": party}
 
 	fetch_party_list = frappe.get_list(
@@ -71,6 +97,23 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 	party_groups = {}
 	for d in fetch_party_list:
 		party_groups[d[0]] = d[1]
+=======
+		query_filters = {"name": party}
+	if filters.get("party_type") in ["Customer", "Supplier"]:
+		field = filters.get("party_type").lower() + "_name"
+	else:
+		field = "partner_name"
+
+	fetch_party_list = frappe.get_list(
+		party_type, filters=query_filters, fields=["name", party_group, field], as_list=True
+	)
+	party_list = [d[0] for d in fetch_party_list]
+	party_groups = {}
+	party_name_map = {}
+	for d in fetch_party_list:
+		party_groups[d[0]] = d[1]
+		party_name_map[d[0]] = d[2]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	for d in party_list:
 		party_details.setdefault(d, frappe._dict())
@@ -84,6 +127,11 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 		if not any([addresses, contacts]):
 			result = [party]
 			result.append(party_groups[party])
+<<<<<<< HEAD
+=======
+			if filters.get("party_type") in ["Customer", "Supplier"]:
+				result.append(party_name_map[party])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			result.extend(add_blank_columns_for("Contact"))
 			result.extend(add_blank_columns_for("Address"))
 			data.append(result)
@@ -95,11 +143,19 @@ def get_party_addresses_and_contact(party_type, party, party_group):
 			for idx in range(0, max_length):
 				result = [party]
 				result.append(party_groups[party])
+<<<<<<< HEAD
+=======
+				if filters.get("party_type") in ["Customer", "Supplier"]:
+					result.append(party_name_map[party])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				address = addresses[idx] if idx < len(addresses) else add_blank_columns_for("Address")
 				contact = contacts[idx] if idx < len(contacts) else add_blank_columns_for("Contact")
 				result.extend(address)
 				result.extend(contact)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				data.append(result)
 	return data
 
@@ -115,7 +171,10 @@ def get_party_details(party_type, party_list, doctype, party_details):
 	for d in records:
 		details = party_details.get(d[0])
 		details.setdefault(frappe.scrub(doctype), []).append(d[1:])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return party_details
 
 
@@ -130,6 +189,10 @@ def get_party_group(party_type):
 		"Customer": "customer_group",
 		"Supplier": "supplier_group",
 		"Sales Partner": "partner_type",
+<<<<<<< HEAD
+=======
+		"Lead": "status",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	return group[party_type]

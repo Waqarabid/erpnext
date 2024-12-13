@@ -54,6 +54,177 @@ form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 
 class PurchaseInvoice(BuyingController):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.advance_tax.advance_tax import AdvanceTax
+		from erpnext.accounts.doctype.payment_schedule.payment_schedule import PaymentSchedule
+		from erpnext.accounts.doctype.pricing_rule_detail.pricing_rule_detail import PricingRuleDetail
+		from erpnext.accounts.doctype.purchase_invoice_advance.purchase_invoice_advance import (
+			PurchaseInvoiceAdvance,
+		)
+		from erpnext.accounts.doctype.purchase_invoice_item.purchase_invoice_item import PurchaseInvoiceItem
+		from erpnext.accounts.doctype.purchase_taxes_and_charges.purchase_taxes_and_charges import (
+			PurchaseTaxesandCharges,
+		)
+		from erpnext.accounts.doctype.tax_withheld_vouchers.tax_withheld_vouchers import TaxWithheldVouchers
+		from erpnext.buying.doctype.purchase_receipt_item_supplied.purchase_receipt_item_supplied import (
+			PurchaseReceiptItemSupplied,
+		)
+
+		additional_discount_percentage: DF.Float
+		address_display: DF.TextEditor | None
+		advance_tax: DF.Table[AdvanceTax]
+		advances: DF.Table[PurchaseInvoiceAdvance]
+		against_expense_account: DF.SmallText | None
+		allocate_advances_automatically: DF.Check
+		amended_from: DF.Link | None
+		apply_discount_on: DF.Literal["", "Grand Total", "Net Total"]
+		apply_tds: DF.Check
+		auto_repeat: DF.Link | None
+		base_discount_amount: DF.Currency
+		base_grand_total: DF.Currency
+		base_in_words: DF.Data | None
+		base_net_total: DF.Currency
+		base_paid_amount: DF.Currency
+		base_rounded_total: DF.Currency
+		base_rounding_adjustment: DF.Currency
+		base_tax_withholding_net_total: DF.Currency
+		base_taxes_and_charges_added: DF.Currency
+		base_taxes_and_charges_deducted: DF.Currency
+		base_total: DF.Currency
+		base_total_taxes_and_charges: DF.Currency
+		base_write_off_amount: DF.Currency
+		bill_date: DF.Date | None
+		bill_no: DF.Data | None
+		billing_address: DF.Link | None
+		billing_address_display: DF.TextEditor | None
+		buying_price_list: DF.Link | None
+		cash_bank_account: DF.Link | None
+		clearance_date: DF.Date | None
+		company: DF.Link | None
+		contact_display: DF.SmallText | None
+		contact_email: DF.SmallText | None
+		contact_mobile: DF.SmallText | None
+		contact_person: DF.Link | None
+		conversion_rate: DF.Float
+		cost_center: DF.Link | None
+		credit_to: DF.Link
+		currency: DF.Link | None
+		disable_rounded_total: DF.Check
+		discount_amount: DF.Currency
+		due_date: DF.Date | None
+		from_date: DF.Date | None
+		grand_total: DF.Currency
+		group_same_items: DF.Check
+		hold_comment: DF.SmallText | None
+		ignore_default_payment_terms_template: DF.Check
+		ignore_pricing_rule: DF.Check
+		in_words: DF.Data | None
+		incoterm: DF.Link | None
+		inter_company_invoice_reference: DF.Link | None
+		is_internal_supplier: DF.Check
+		is_old_subcontracting_flow: DF.Check
+		is_opening: DF.Literal["No", "Yes"]
+		is_paid: DF.Check
+		is_return: DF.Check
+		is_subcontracted: DF.Check
+		items: DF.Table[PurchaseInvoiceItem]
+		language: DF.Data | None
+		letter_head: DF.Link | None
+		mode_of_payment: DF.Link | None
+		named_place: DF.Data | None
+		naming_series: DF.Literal["ACC-PINV-.YYYY.-", "ACC-PINV-RET-.YYYY.-"]
+		net_total: DF.Currency
+		on_hold: DF.Check
+		only_include_allocated_payments: DF.Check
+		other_charges_calculation: DF.TextEditor | None
+		outstanding_amount: DF.Currency
+		paid_amount: DF.Currency
+		party_account_currency: DF.Link | None
+		payment_schedule: DF.Table[PaymentSchedule]
+		payment_terms_template: DF.Link | None
+		per_received: DF.Percent
+		plc_conversion_rate: DF.Float
+		posting_date: DF.Date
+		posting_time: DF.Time | None
+		price_list_currency: DF.Link | None
+		pricing_rules: DF.Table[PricingRuleDetail]
+		project: DF.Link | None
+		rejected_warehouse: DF.Link | None
+		release_date: DF.Date | None
+		remarks: DF.SmallText | None
+		represents_company: DF.Link | None
+		return_against: DF.Link | None
+		rounded_total: DF.Currency
+		rounding_adjustment: DF.Currency
+		scan_barcode: DF.Data | None
+		select_print_heading: DF.Link | None
+		sender: DF.Data | None
+		set_from_warehouse: DF.Link | None
+		set_posting_time: DF.Check
+		set_warehouse: DF.Link | None
+		shipping_address: DF.Link | None
+		shipping_address_display: DF.TextEditor | None
+		shipping_rule: DF.Link | None
+		status: DF.Literal[
+			"",
+			"Draft",
+			"Return",
+			"Debit Note Issued",
+			"Submitted",
+			"Paid",
+			"Partly Paid",
+			"Unpaid",
+			"Overdue",
+			"Cancelled",
+			"Internal Transfer",
+		]
+		subscription: DF.Link | None
+		supplied_items: DF.Table[PurchaseReceiptItemSupplied]
+		supplier: DF.Link
+		supplier_address: DF.Link | None
+		supplier_group: DF.Link | None
+		supplier_name: DF.Data | None
+		supplier_warehouse: DF.Link | None
+		tax_category: DF.Link | None
+		tax_id: DF.ReadOnly | None
+		tax_withheld_vouchers: DF.Table[TaxWithheldVouchers]
+		tax_withholding_category: DF.Link | None
+		tax_withholding_net_total: DF.Currency
+		taxes: DF.Table[PurchaseTaxesandCharges]
+		taxes_and_charges: DF.Link | None
+		taxes_and_charges_added: DF.Currency
+		taxes_and_charges_deducted: DF.Currency
+		tc_name: DF.Link | None
+		terms: DF.TextEditor | None
+		title: DF.Data | None
+		to_date: DF.Date | None
+		total: DF.Currency
+		total_advance: DF.Currency
+		total_net_weight: DF.Float
+		total_qty: DF.Float
+		total_taxes_and_charges: DF.Currency
+		unrealized_profit_loss_account: DF.Link | None
+		update_billed_amount_in_purchase_order: DF.Check
+		update_billed_amount_in_purchase_receipt: DF.Check
+		update_outstanding_for_self: DF.Check
+		update_stock: DF.Check
+		use_company_roundoff_cost_center: DF.Check
+		use_transaction_date_exchange_rate: DF.Check
+		write_off_account: DF.Link | None
+		write_off_amount: DF.Currency
+		write_off_cost_center: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.status_updater = [
@@ -106,9 +277,12 @@ class PurchaseInvoice(BuyingController):
 		# validate service stop date to lie in between start and end date
 		validate_service_stop_date(self)
 
+<<<<<<< HEAD
 		if self._action == "submit" and self.update_stock:
 			self.make_batches("warehouse")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_release_date()
 		self.check_conversion_rate()
 		self.validate_credit_to_acc()
@@ -122,7 +296,10 @@ class PurchaseInvoice(BuyingController):
 		self.set_against_expense_account()
 		self.validate_write_off_account()
 		self.validate_multiple_billing("Purchase Receipt", "pr_detail", "amount")
+<<<<<<< HEAD
 		self.create_remarks()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.set_status()
 		self.validate_purchase_receipt_if_update_stock()
 		validate_inter_company_party(
@@ -159,18 +336,31 @@ class PurchaseInvoice(BuyingController):
 
 	def create_remarks(self):
 		if not self.remarks:
+<<<<<<< HEAD
 			if self.bill_no and self.bill_date:
 				self.remarks = _("Against Supplier Invoice {0} dated {1}").format(
 					self.bill_no, formatdate(self.bill_date)
 				)
+=======
+			if self.bill_no:
+				self.remarks = _("Against Supplier Invoice {0}").format(self.bill_no)
+				if self.bill_date:
+					self.remarks += " " + _("dated {0}").format(formatdate(self.bill_date))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			else:
 				self.remarks = _("No Remarks")
 
 	def set_missing_values(self, for_validate=False):
 		if not self.credit_to:
 			self.credit_to = get_party_account("Supplier", self.supplier, self.company)
+<<<<<<< HEAD
 			self.party_account_currency = frappe.db.get_value(
 				"Account", self.credit_to, "account_currency", cache=True
+=======
+			self.party_account_currency = frappe.get_cached_value(
+				"Account", self.credit_to, "account_currency"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 		if not self.due_date:
 			self.due_date = get_due_date(
@@ -191,23 +381,37 @@ class PurchaseInvoice(BuyingController):
 			if not self.credit_to:
 				self.raise_missing_debit_credit_account_error("Supplier", self.supplier)
 
+<<<<<<< HEAD
 		account = frappe.db.get_value(
+=======
+		account = frappe.get_cached_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"Account", self.credit_to, ["account_type", "report_type", "account_currency"], as_dict=True
 		)
 
 		if account.report_type != "Balance Sheet":
 			frappe.throw(
 				_(
+<<<<<<< HEAD
 					"Please ensure {} account is a Balance Sheet account. You can change the parent account to a Balance Sheet account or select a different account."
 				).format(frappe.bold("Credit To")),
+=======
+					"Please ensure that the {0} account is a Balance Sheet account. You can change the parent account to a Balance Sheet account or select a different account."
+				).format(frappe.bold(_("Credit To"))),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				title=_("Invalid Account"),
 			)
 
 		if self.supplier and account.account_type != "Payable":
 			frappe.throw(
 				_(
+<<<<<<< HEAD
 					"Please ensure {} account {} is a Payable account. Change the account type to Payable or select a different account."
 				).format(frappe.bold("Credit To"), frappe.bold(self.credit_to)),
+=======
+					"Please ensure that the {0} account {1} is a Payable account. You can change the account type to Payable or select a different account."
+				).format(frappe.bold(_("Credit To")), frappe.bold(self.credit_to)),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				title=_("Invalid Account"),
 			)
 
@@ -426,7 +630,11 @@ class PurchaseInvoice(BuyingController):
 
 	def validate_expense_account(self):
 		for item in self.get("items"):
+<<<<<<< HEAD
 			validate_account_head(item.idx, item.expense_account, self.company, "Expense")
+=======
+			validate_account_head(item.idx, item.expense_account, self.company, _("Expense"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def set_against_expense_account(self, force=False):
 		against_accounts = []
@@ -441,7 +649,11 @@ class PurchaseInvoice(BuyingController):
 		frappe.db.set_value(self.doctype, self.name, "against_expense_account", self.against_expense_account)
 
 	def po_required(self):
+<<<<<<< HEAD
 		if frappe.db.get_value("Buying Settings", None, "po_required") == "Yes":
+=======
+		if frappe.db.get_single_value("Buying Settings", "po_required") == "Yes":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if frappe.get_value(
 				"Supplier", self.supplier, "allow_purchase_invoice_creation_without_purchase_order"
 			):
@@ -455,14 +667,22 @@ class PurchaseInvoice(BuyingController):
 						"To submit the invoice without purchase order please set {0} as {1} in {2}"
 					).format(
 						frappe.bold(_("Purchase Order Required")),
+<<<<<<< HEAD
 						frappe.bold("No"),
+=======
+						frappe.bold(_("No")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						get_link_to_form("Buying Settings", "Buying Settings", "Buying Settings"),
 					)
 					throw(msg, title=_("Mandatory Purchase Order"))
 
 	def pr_required(self):
 		stock_items = self.get_stock_items()
+<<<<<<< HEAD
 		if frappe.db.get_value("Buying Settings", None, "pr_required") == "Yes":
+=======
+		if frappe.db.get_single_value("Buying Settings", "pr_required") == "Yes":
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if frappe.get_value(
 				"Supplier", self.supplier, "allow_purchase_invoice_creation_without_purchase_receipt"
 			):
@@ -476,7 +696,11 @@ class PurchaseInvoice(BuyingController):
 						"To submit the invoice without purchase receipt please set {0} as {1} in {2}"
 					).format(
 						frappe.bold(_("Purchase Receipt Required")),
+<<<<<<< HEAD
 						frappe.bold("No"),
+=======
+						frappe.bold(_("No")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						get_link_to_form("Buying Settings", "Buying Settings", "Buying Settings"),
 					)
 					throw(msg, title=_("Mandatory Purchase Receipt"))
@@ -522,6 +746,22 @@ class PurchaseInvoice(BuyingController):
 					where name=`tabPurchase Invoice Item`.parent and update_stock = 1)""",
 				}
 			)
+<<<<<<< HEAD
+=======
+			self.status_updater.append(
+				{
+					"source_dt": "Purchase Invoice Item",
+					"target_dt": "Material Request Item",
+					"join_field": "material_request_item",
+					"target_field": "received_qty",
+					"target_parent_dt": "Material Request",
+					"target_parent_field": "per_received",
+					"target_ref_field": "stock_qty",
+					"source_field": "stock_qty",
+					"percent_join_field": "material_request",
+				}
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			if cint(self.is_return):
 				self.status_updater.append(
 					{
@@ -555,6 +795,12 @@ class PurchaseInvoice(BuyingController):
 		validate_docs_for_voucher_types(["Purchase Invoice"])
 		validate_docs_for_deferred_accounting([], [self.name])
 
+<<<<<<< HEAD
+=======
+	def before_submit(self):
+		self.create_remarks()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_submit(self):
 		super().on_submit()
 
@@ -581,15 +827,23 @@ class PurchaseInvoice(BuyingController):
 		# Updating stock ledger should always be called after updating prevdoc status,
 		# because updating ordered qty in bin depends upon updated ordered qty in PO
 		if self.update_stock == 1:
+<<<<<<< HEAD
+=======
+			self.make_bundle_for_sales_purchase_return()
+			self.make_bundle_using_old_serial_batch_fields()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.update_stock_ledger()
 
 			if self.is_old_subcontracting_flow:
 				self.set_consumed_qty_in_subcontract_order()
 
+<<<<<<< HEAD
 			from erpnext.stock.doctype.serial_no.serial_no import update_serial_nos_after_submit
 
 			update_serial_nos_after_submit(self, "items")
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# this sequence because outstanding may get -negative
 		self.make_gl_entries()
 
@@ -686,6 +940,10 @@ class PurchaseInvoice(BuyingController):
 
 		self.make_tax_gl_entries(gl_entries)
 		self.make_internal_transfer_gl_entries(gl_entries)
+<<<<<<< HEAD
+=======
+		self.make_gl_entries_for_tax_withholding(gl_entries)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		gl_entries = make_regional_gl_entries(gl_entries, self)
 
@@ -719,6 +977,7 @@ class PurchaseInvoice(BuyingController):
 		)
 
 		if grand_total and not self.is_internal_transfer():
+<<<<<<< HEAD
 			against_voucher = self.name
 			if self.is_return and self.return_against and not self.update_outstanding_for_self:
 				against_voucher = self.return_against
@@ -745,6 +1004,39 @@ class PurchaseInvoice(BuyingController):
 					item=self,
 				)
 			)
+=======
+			self.add_supplier_gl_entry(gl_entries, base_grand_total, grand_total)
+
+	def add_supplier_gl_entry(
+		self, gl_entries, base_grand_total, grand_total, against_account=None, remarks=None, skip_merge=False
+	):
+		against_voucher = self.name
+		if self.is_return and self.return_against and not self.update_outstanding_for_self:
+			against_voucher = self.return_against
+
+		# Did not use base_grand_total to book rounding loss gle
+		gl = {
+			"account": self.credit_to,
+			"party_type": "Supplier",
+			"party": self.supplier,
+			"due_date": self.due_date,
+			"against": against_account or self.against_expense_account,
+			"credit": base_grand_total,
+			"credit_in_account_currency": base_grand_total
+			if self.party_account_currency == self.company_currency
+			else grand_total,
+			"against_voucher": against_voucher,
+			"against_voucher_type": self.doctype,
+			"project": self.project,
+			"cost_center": self.cost_center,
+			"_skip_merge": skip_merge,
+		}
+
+		if remarks:
+			gl["remarks"] = remarks
+
+		gl_entries.append(self.get_gl_dict(gl, self.party_account_currency, item=self))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def make_item_gl_entries(self, gl_entries):
 		# item gl entries
@@ -776,7 +1068,13 @@ class PurchaseInvoice(BuyingController):
 		exchange_rate_map, net_rate_map = get_purchase_document_details(self)
 
 		provisional_accounting_for_non_stock_items = cint(
+<<<<<<< HEAD
 			frappe.db.get_value("Company", self.company, "enable_provisional_accounting_for_non_stock_items")
+=======
+			frappe.get_cached_value(
+				"Company", self.company, "enable_provisional_accounting_for_non_stock_items"
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		if provisional_accounting_for_non_stock_items:
 			self.get_provisional_accounts()
@@ -936,7 +1234,11 @@ class PurchaseInvoice(BuyingController):
 						)
 
 						# check if the exchange rate has changed
+<<<<<<< HEAD
 						if item.get("purchase_receipt"):
+=======
+						if item.get("purchase_receipt") and self.auto_accounting_for_stock:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							if (
 								exchange_rate_map[item.purchase_receipt]
 								and self.conversion_rate != exchange_rate_map[item.purchase_receipt]
@@ -986,7 +1288,11 @@ class PurchaseInvoice(BuyingController):
 						(item.purchase_receipt, valuation_tax_accounts),
 					)
 
+<<<<<<< HEAD
 					stock_rbnb = (
+=======
+					(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						self.get_company_default("asset_received_but_not_billed")
 						if item.is_fixed_asset
 						else self.stock_received_but_not_billed
@@ -996,7 +1302,11 @@ class PurchaseInvoice(BuyingController):
 						gl_entries.append(
 							self.get_gl_dict(
 								{
+<<<<<<< HEAD
 									"account": stock_rbnb,
+=======
+									"account": self.stock_received_but_not_billed,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 									"against": self.supplier,
 									"debit": flt(item.item_tax_amount, item.precision("item_tax_amount")),
 									"remarks": self.remarks or _("Accounting Entry for Stock"),
@@ -1074,7 +1384,15 @@ class PurchaseInvoice(BuyingController):
 	def update_gross_purchase_amount_for_linked_assets(self, item):
 		assets = frappe.db.get_all(
 			"Asset",
+<<<<<<< HEAD
 			filters={"purchase_invoice": self.name, "item_code": item.item_code},
+=======
+			filters={
+				"purchase_invoice": self.name,
+				"item_code": item.item_code,
+				"purchase_invoice_item": ("in", [item.name, ""]),
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fields=["name", "asset_quantity"],
 		)
 		for asset in assets:
@@ -1084,7 +1402,11 @@ class PurchaseInvoice(BuyingController):
 				asset.name,
 				{
 					"gross_purchase_amount": purchase_amount,
+<<<<<<< HEAD
 					"purchase_receipt_amount": purchase_amount,
+=======
+					"purchase_amount": purchase_amount,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				},
 			)
 
@@ -1234,6 +1556,34 @@ class PurchaseInvoice(BuyingController):
 				)
 			)
 
+<<<<<<< HEAD
+=======
+	def make_gl_entries_for_tax_withholding(self, gl_entries):
+		"""
+		Tax withholding amount is not part of supplier invoice.
+		Separate supplier GL Entry for correct reporting.
+		"""
+		if not self.apply_tds:
+			return
+
+		for row in self.get("taxes"):
+			if not row.is_tax_withholding_account or not row.tax_amount:
+				continue
+
+			base_tds_amount = row.base_tax_amount_after_discount_amount
+			tds_amount = row.tax_amount_after_discount_amount
+
+			self.add_supplier_gl_entry(gl_entries, base_tds_amount, tds_amount)
+			self.add_supplier_gl_entry(
+				gl_entries,
+				-base_tds_amount,
+				-tds_amount,
+				against_account=row.account_head,
+				remarks=_("TDS Deducted"),
+				skip_merge=True,
+			)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def make_payment_gl_entries(self, gl_entries):
 		# Make Cash GL Entries
 		if cint(self.is_paid) and self.cash_bank_account and self.paid_amount:
@@ -1327,10 +1677,36 @@ class PurchaseInvoice(BuyingController):
 		# eg: rounding_adjustment = 0.01 and exchange rate = 0.05 and precision of base_rounding_adjustment is 2
 		# 	then base_rounding_adjustment becomes zero and error is thrown in GL Entry
 		if not self.is_internal_transfer() and self.rounding_adjustment and self.base_rounding_adjustment:
+<<<<<<< HEAD
 			round_off_account, round_off_cost_center = get_round_off_account_and_cost_center(
 				self.company, "Purchase Invoice", self.name, self.use_company_roundoff_cost_center
 			)
 
+=======
+			(
+				round_off_account,
+				round_off_cost_center,
+				round_off_for_opening,
+			) = get_round_off_account_and_cost_center(
+				self.company, "Purchase Invoice", self.name, self.use_company_roundoff_cost_center
+			)
+
+			if self.is_opening == "Yes" and self.rounding_adjustment:
+				if not round_off_for_opening:
+					frappe.throw(
+						_(
+							"Opening Invoice has rounding adjustment of {0}.<br><br> '{1}' account is required to post these values. Please set it in Company: {2}.<br><br> Or, '{3}' can be enabled to not post any rounding adjustment."
+						).format(
+							frappe.bold(self.rounding_adjustment),
+							frappe.bold("Round Off for Opening"),
+							get_link_to_form("Company", self.company),
+							frappe.bold("Disable Rounded Total"),
+						)
+					)
+				else:
+					round_off_account = round_off_for_opening
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			gl_entries.append(
 				self.get_gl_dict(
 					{
@@ -1397,6 +1773,10 @@ class PurchaseInvoice(BuyingController):
 			"Unreconcile Payment Entries",
 			"Payment Ledger Entry",
 			"Tax Withheld Vouchers",
+<<<<<<< HEAD
+=======
+			"Serial and Batch Bundle",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 		self.update_advance_tax_references(cancel=1)
 
@@ -1413,7 +1793,15 @@ class PurchaseInvoice(BuyingController):
 		for proj, value in projects.items():
 			res = frappe.qb.from_(pj).select(pj.total_purchase_cost).where(pj.name == proj).for_update().run()
 			current_purchase_cost = res and res[0][0] or 0
+<<<<<<< HEAD
 			frappe.db.set_value("Project", proj, "total_purchase_cost", current_purchase_cost + value)
+=======
+			# frappe.db.set_value("Project", proj, "total_purchase_cost", current_purchase_cost + value)
+			project_doc = frappe.get_doc("Project", proj)
+			project_doc.total_purchase_cost = current_purchase_cost + value
+			project_doc.calculate_gross_margin()
+			project_doc.db_update()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_supplier_invoice(self):
 		if self.bill_date:

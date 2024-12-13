@@ -1,6 +1,7 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
+<<<<<<< HEAD
 import json
 
 import frappe
@@ -11,6 +12,18 @@ from frappe.utils import add_days, flt, nowdate
 from erpnext.accounts.doctype.payment_entry.payment_entry import (
 	InvalidPaymentEntry,
 	get_outstanding_reference_documents,
+=======
+
+import frappe
+from frappe import qb
+from frappe.tests import IntegrationTestCase, UnitTestCase
+from frappe.utils import add_days, flt, nowdate
+
+from erpnext.accounts.doctype.account.test_account import create_account
+from erpnext.accounts.doctype.payment_entry.payment_entry import (
+	get_outstanding_reference_documents,
+	get_party_details,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	get_payment_entry,
 	get_reference_details,
 )
@@ -22,6 +35,7 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import (
 	create_sales_invoice,
 	create_sales_invoice_against_cost_center,
 )
+<<<<<<< HEAD
 from erpnext.accounts.general_ledger import make_gl_entries, make_reverse_gl_entries
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.setup.doctype.employee.test_employee import make_employee
@@ -30,6 +44,24 @@ test_dependencies = ["Item"]
 
 
 class TestPaymentEntry(FrappeTestCase):
+=======
+from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
+from erpnext.setup.doctype.employee.test_employee import make_employee
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Currency Exchange"]
+
+
+class UnitTestPaymentEntry(UnitTestCase):
+	"""
+	Unit tests for PaymentEntry.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPaymentEntry(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def tearDown(self):
 		frappe.db.rollback()
 
@@ -83,7 +115,11 @@ class TestPaymentEntry(FrappeTestCase):
 
 		expected_gle = dict(
 			(d[0], d)
+<<<<<<< HEAD
 			for d in [["_Test Receivable USD - _TC", 0, 5500, so.name], ["Cash - _TC", 5500.0, 0, None]]
+=======
+			for d in [["_Test Receivable USD - _TC", 0, 5500, so.name], [pe.paid_to, 5500.0, 0, None]]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		self.validate_gl_entries(pe.name, expected_gle)
@@ -384,7 +420,11 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(si.payment_schedule[0].outstanding, 0)
 		self.assertEqual(si.payment_schedule[0].discounted_amount, 50)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{
 			"allow_multi_currency_invoices_against_single_party_account": 1,
@@ -480,6 +520,7 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(pe.deductions[0].account, "Write Off - _TC")
 
 		# Exchange loss
+<<<<<<< HEAD
 		self.assertEqual(pe.difference_amount, 300.0)
 
 		pe.append(
@@ -490,6 +531,11 @@ class TestPaymentEntry(FrappeTestCase):
 				"amount": 300.0,
 			},
 		)
+=======
+		self.assertEqual(pe.deductions[-1].amount, 300.0)
+		pe.deductions[-1].account = "_Test Exchange Gain/Loss - _TC"
+		pe.deductions[-1].cost_center = "_Test Cost Center - _TC"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		pe.insert()
 		pe.submit()
@@ -553,6 +599,7 @@ class TestPaymentEntry(FrappeTestCase):
 		pe.reference_no = "1"
 		pe.reference_date = "2016-01-01"
 
+<<<<<<< HEAD
 		self.assertEqual(pe.difference_amount, 100)
 
 		pe.append(
@@ -563,6 +610,12 @@ class TestPaymentEntry(FrappeTestCase):
 				"amount": 100,
 			},
 		)
+=======
+		self.assertEqual(pe.deductions[0].amount, 100)
+		pe.deductions[0].account = "_Test Exchange Gain/Loss - _TC"
+		pe.deductions[0].cost_center = "_Test Cost Center - _TC"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pe.insert()
 		pe.submit()
 
@@ -611,12 +664,18 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(flt(pe.references[0].exchange_gain_loss, 2), -94.74)
 
 	def test_payment_entry_retrieves_last_exchange_rate(self):
+<<<<<<< HEAD
 		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import (
 			save_new_records,
 			test_records,
 		)
 
 		save_new_records(test_records)
+=======
+		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import save_new_records
+
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		pe = frappe.new_doc("Payment Entry")
 		pe.payment_type = "Pay"
@@ -655,6 +714,7 @@ class TestPaymentEntry(FrappeTestCase):
 		pe.set_exchange_rate()
 		pe.set_amounts()
 
+<<<<<<< HEAD
 		self.assertEqual(pe.difference_amount, 500)
 
 		pe.append(
@@ -665,6 +725,11 @@ class TestPaymentEntry(FrappeTestCase):
 				"amount": 500,
 			},
 		)
+=======
+		self.assertEqual(pe.deductions[0].amount, 500)
+		pe.deductions[0].account = "_Test Exchange Gain/Loss - _TC"
+		pe.deductions[0].cost_center = "_Test Cost Center - _TC"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		pe.insert()
 		pe.submit()
@@ -681,6 +746,7 @@ class TestPaymentEntry(FrappeTestCase):
 		self.validate_gl_entries(pe.name, expected_gle)
 
 	def test_payment_against_negative_sales_invoice(self):
+<<<<<<< HEAD
 		pe1 = frappe.new_doc("Payment Entry")
 		pe1.payment_type = "Pay"
 		pe1.company = "_Test Company"
@@ -692,6 +758,8 @@ class TestPaymentEntry(FrappeTestCase):
 
 		self.assertRaises(InvalidPaymentEntry, pe1.validate)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		si1 = create_sales_invoice()
 
 		# create full payment entry against si1
@@ -749,8 +817,11 @@ class TestPaymentEntry(FrappeTestCase):
 
 		# pay more than outstanding against si1
 		pe3 = get_payment_entry("Sales Invoice", si1.name, bank_account="_Test Cash - _TC")
+<<<<<<< HEAD
 		pe3.paid_amount = pe3.received_amount = 300
 		self.assertRaises(InvalidPaymentEntry, pe3.validate)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# pay negative outstanding against si1
 		pe3.paid_to = "Debtors - _TC"
@@ -968,7 +1039,55 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(pe.cost_center, si.cost_center)
 		self.assertEqual(flt(expected_account_balance), account_balance)
 		self.assertEqual(flt(expected_party_balance), party_balance)
+<<<<<<< HEAD
 		self.assertEqual(flt(expected_party_account_balance), party_account_balance)
+=======
+		self.assertEqual(flt(expected_party_account_balance, 2), flt(party_account_balance, 2))
+
+	def test_gl_of_multi_currency_payment_transaction(self):
+		from erpnext.setup.doctype.currency_exchange.test_currency_exchange import save_new_records
+
+		save_new_records(self.globalTestRecords["Currency Exchange"])
+		paid_from = create_account(
+			parent_account="Current Liabilities - _TC",
+			account_name="_Test Cash USD",
+			company="_Test Company",
+			account_type="Cash",
+			account_currency="USD",
+		)
+		payment_entry = create_payment_entry(
+			party="_Test Supplier USD",
+			paid_from=paid_from,
+			paid_to="_Test Payable USD - _TC",
+			paid_amount=100,
+			save=True,
+		)
+		payment_entry.source_exchange_rate = 84.4
+		payment_entry.target_exchange_rate = 84.4
+		payment_entry.save()
+		payment_entry = payment_entry.submit()
+		gle = qb.DocType("GL Entry")
+		gl_entries = (
+			qb.from_(gle)
+			.select(
+				gle.account,
+				gle.debit,
+				gle.credit,
+				gle.debit_in_account_currency,
+				gle.credit_in_account_currency,
+				gle.debit_in_transaction_currency,
+				gle.credit_in_transaction_currency,
+			)
+			.orderby(gle.account)
+			.where(gle.voucher_no == payment_entry.name)
+			.run()
+		)
+		expected_gl_entries = (
+			(paid_from, 0.0, 8440.0, 0.0, 100.0, 0.0, 100.0),
+			("_Test Payable USD - _TC", 8440.0, 0.0, 100.0, 0.0, 100.0, 0.0),
+		)
+		self.assertEqual(gl_entries, expected_gl_entries)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_multi_currency_payment_entry_with_taxes(self):
 		payment_entry = create_payment_entry(
@@ -1075,6 +1194,11 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertRaises(frappe.ValidationError, pe_draft.submit)
 
 	def test_details_update_on_reference_table(self):
+<<<<<<< HEAD
+=======
+		from erpnext.accounts.party import get_party_account
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		so = make_sales_order(
 			customer="_Test Customer USD", currency="USD", qty=1, rate=100, do_not_submit=True
 		)
@@ -1091,6 +1215,12 @@ class TestPaymentEntry(FrappeTestCase):
 			so.doctype, so.name, pe.paid_from_account_currency, "Customer", so.customer
 		)
 		expected_response = {
+<<<<<<< HEAD
+=======
+			"account": get_party_account("Customer", so.customer, so.company),
+			"account_type": None,  # only applies for Reverse Payment Entry
+			"payment_type": None,  # only applies for Reverse Payment Entry
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"total_amount": 5000.0,
 			"outstanding_amount": 5000.0,
 			"exchange_rate": 1.0,
@@ -1099,7 +1229,11 @@ class TestPaymentEntry(FrappeTestCase):
 		}
 		self.assertDictEqual(ref_details, expected_response)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,
@@ -1194,7 +1328,11 @@ class TestPaymentEntry(FrappeTestCase):
 		si3.cancel()
 		si3.delete()
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,
@@ -1295,6 +1433,7 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(references[1].payment_term, "Basic Amount Receivable")
 		self.assertEqual(references[2].payment_term, "Tax Receivable")
 
+<<<<<<< HEAD
 	def test_partial_cancel_for_payment_entry(self):
 		si = create_sales_invoice()
 
@@ -1366,6 +1505,514 @@ class TestPaymentEntry(FrappeTestCase):
 		self.assertEqual(out_str, expected_out_str)
 
 	@change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+=======
+	def test_receive_payment_from_payable_party_type(self):
+		"""
+		Checks GL entries generated while receiving payments from a Payable Party Type.
+		"""
+		pe = create_payment_entry(
+			party_type="Supplier",
+			party="_Test Supplier",
+			payment_type="Receive",
+			paid_from="Creditors - _TC",
+			paid_to="_Test Cash - _TC",
+			save=True,
+			submit=True,
+		)
+		self.voucher_no = pe.name
+		self.expected_gle = [
+			{"account": "Creditors - _TC", "debit": 0.0, "credit": 1000.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		self.check_gl_entries()
+
+	def test_payment_against_partial_return_invoice(self):
+		"""
+		Checks GL entries generated for partial return invoice payments.
+		"""
+		si = create_sales_invoice(qty=10, rate=10, customer="_Test Customer")
+		credit_note = create_sales_invoice(
+			qty=-4, rate=10, customer="_Test Customer", is_return=1, return_against=si.name
+		)
+		pe = create_payment_entry(
+			party_type="Customer",
+			party="_Test Customer",
+			payment_type="Receive",
+			paid_from="Debtors - _TC",
+			paid_to="_Test Cash - _TC",
+		)
+		pe.set(
+			"references",
+			[
+				{
+					"reference_doctype": "Sales Invoice",
+					"reference_name": si.name,
+					"due_date": si.get("due_date"),
+					"total_amount": si.grand_total,
+					"outstanding_amount": si.outstanding_amount,
+					"allocated_amount": si.outstanding_amount,
+				},
+				{
+					"reference_doctype": "Sales Invoice",
+					"reference_name": credit_note.name,
+					"due_date": credit_note.get("due_date"),
+					"total_amount": credit_note.grand_total,
+					"outstanding_amount": credit_note.outstanding_amount,
+					"allocated_amount": credit_note.outstanding_amount,
+				},
+			],
+		)
+		pe.save()
+		pe.submit()
+		self.assertEqual(pe.total_allocated_amount, 60)
+		self.assertEqual(pe.unallocated_amount, 940)
+		self.voucher_no = pe.name
+		self.expected_gle = [
+			{"account": "Debtors - _TC", "debit": 40.0, "credit": 0.0},
+			{"account": "Debtors - _TC", "debit": 0.0, "credit": 940.0},
+			{"account": "Debtors - _TC", "debit": 0.0, "credit": 100.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		self.check_gl_entries()
+
+	def test_ledger_entries_for_advance_as_liability(self):
+		company = "_Test Company"
+
+		advance_account = create_account(
+			parent_account="Current Assets - _TC",
+			account_name="Advances Received",
+			company=company,
+			account_type="Receivable",
+		)
+
+		frappe.db.set_value(
+			"Company",
+			company,
+			{
+				"book_advance_payments_in_separate_party_account": 1,
+				"default_advance_received_account": advance_account,
+			},
+		)
+		# Advance Payment
+		pe = create_payment_entry(
+			party_type="Customer",
+			party="_Test Customer",
+			payment_type="Receive",
+			paid_from="Debtors - _TC",
+			paid_to="_Test Cash - _TC",
+		)
+		pe.save()  # use save() to trigger set_liability_account()
+		pe.submit()
+
+		# Normal Invoice
+		si = create_sales_invoice(qty=10, rate=100, customer="_Test Customer")
+
+		pre_reconciliation_gle = [
+			{"account": advance_account, "debit": 0.0, "credit": 1000.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		pre_reconciliation_ple = [
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": -1000.0,
+			}
+		]
+
+		self.voucher_no = pe.name
+		self.expected_gle = pre_reconciliation_gle
+		self.expected_ple = pre_reconciliation_ple
+		self.check_gl_entries()
+		self.check_pl_entries()
+
+		# Partially reconcile advance against invoice
+		pr = frappe.get_doc("Payment Reconciliation")
+		pr.company = company
+		pr.party_type = "Customer"
+		pr.party = "_Test Customer"
+		pr.receivable_payable_account = si.debit_to
+		pr.default_advance_account = advance_account
+		pr.payment_name = pe.name
+		pr.invoice_name = si.name
+		pr.get_unreconciled_entries()
+
+		self.assertEqual(len(pr.invoices), 1)
+		self.assertEqual(len(pr.payments), 1)
+
+		invoices = [x.as_dict() for x in pr.get("invoices")]
+		payments = [x.as_dict() for x in pr.get("payments")]
+		pr.allocate_entries(frappe._dict({"invoices": invoices, "payments": payments}))
+		pr.allocation[0].allocated_amount = 400
+		pr.reconcile()
+
+		# assert General and Payment Ledger entries post partial reconciliation
+		self.expected_gle = [
+			{"account": si.debit_to, "debit": 0.0, "credit": 400.0},
+			{"account": advance_account, "debit": 400.0, "credit": 0.0},
+			{"account": advance_account, "debit": 0.0, "credit": 1000.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		self.expected_ple = [
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": -1000.0,
+			},
+			{
+				"account": si.debit_to,
+				"voucher_no": pe.name,
+				"against_voucher_no": si.name,
+				"amount": -400.0,
+			},
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": 400.0,
+			},
+		]
+		self.check_gl_entries()
+		self.check_pl_entries()
+
+		# Unreconcile
+		(
+			frappe.get_doc(
+				{
+					"doctype": "Unreconcile Payment",
+					"company": company,
+					"voucher_type": pe.doctype,
+					"voucher_no": pe.name,
+					"allocations": [{"reference_doctype": si.doctype, "reference_name": si.name}],
+				}
+			)
+			.save()
+			.submit()
+		)
+
+		self.voucher_no = pe.name
+		self.expected_gle = pre_reconciliation_gle
+		self.expected_ple = pre_reconciliation_ple
+		self.check_gl_entries()
+		self.check_pl_entries()
+
+	def test_advance_as_liability_against_order(self):
+		from erpnext.buying.doctype.purchase_order.purchase_order import (
+			make_purchase_invoice as _make_purchase_invoice,
+		)
+		from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
+
+		company = "_Test Company"
+
+		advance_account = create_account(
+			parent_account="Current Liabilities - _TC",
+			account_name="Advances Paid",
+			company=company,
+			account_type="Liability",
+		)
+
+		frappe.db.set_value(
+			"Company",
+			company,
+			{
+				"book_advance_payments_in_separate_party_account": 1,
+				"default_advance_paid_account": advance_account,
+			},
+		)
+
+		po = create_purchase_order(supplier="_Test Supplier")
+		pe = get_payment_entry("Purchase Order", po.name, bank_account="Cash - _TC")
+		pe.save().submit()
+
+		pre_reconciliation_gle = [
+			{"account": "Cash - _TC", "debit": 0.0, "credit": 5000.0},
+			{"account": advance_account, "debit": 5000.0, "credit": 0.0},
+		]
+
+		self.voucher_no = pe.name
+		self.expected_gle = pre_reconciliation_gle
+		self.check_gl_entries()
+
+		# Make Purchase Invoice against the order
+		pi = _make_purchase_invoice(po.name)
+		pi.append(
+			"advances",
+			{
+				"reference_type": pe.doctype,
+				"reference_name": pe.name,
+				"reference_row": pe.references[0].name,
+				"advance_amount": 5000,
+				"allocated_amount": 5000,
+			},
+		)
+		pi.save().submit()
+
+		# # assert General and Payment Ledger entries post partial reconciliation
+		self.expected_gle = [
+			{"account": pi.credit_to, "debit": 5000.0, "credit": 0.0},
+			{"account": "Cash - _TC", "debit": 0.0, "credit": 5000.0},
+			{"account": advance_account, "debit": 5000.0, "credit": 0.0},
+			{"account": advance_account, "debit": 0.0, "credit": 5000.0},
+		]
+
+		self.voucher_no = pe.name
+		self.check_gl_entries()
+
+	def check_pl_entries(self):
+		ple = frappe.qb.DocType("Payment Ledger Entry")
+		pl_entries = (
+			frappe.qb.from_(ple)
+			.select(ple.account, ple.voucher_no, ple.against_voucher_no, ple.amount)
+			.where((ple.voucher_no == self.voucher_no) & (ple.delinked == 0))
+			.orderby(ple.creation)
+		).run(as_dict=True)
+		for row in range(len(self.expected_ple)):
+			for field in ["account", "voucher_no", "against_voucher_no", "amount"]:
+				self.assertEqual(self.expected_ple[row][field], pl_entries[row][field])
+
+	def check_gl_entries(self):
+		gle = frappe.qb.DocType("GL Entry")
+		gl_entries = (
+			frappe.qb.from_(gle)
+			.select(
+				gle.account,
+				gle.debit,
+				gle.credit,
+			)
+			.where((gle.voucher_no == self.voucher_no) & (gle.is_cancelled == 0))
+			.orderby(gle.account, gle.debit, gle.credit, order=frappe.qb.desc)
+		).run(as_dict=True)
+		for row in range(len(self.expected_gle)):
+			for field in ["account", "debit", "credit"]:
+				self.assertEqual(self.expected_gle[row][field], gl_entries[row][field])
+
+	def test_reverse_payment_reconciliation(self):
+		customer = create_customer(frappe.generate_hash(length=10), "INR")
+		pe = create_payment_entry(
+			party_type="Customer",
+			party=customer,
+			payment_type="Receive",
+			paid_from="Debtors - _TC",
+			paid_to="_Test Cash - _TC",
+		)
+		pe.submit()
+
+		reverse_pe = create_payment_entry(
+			party_type="Customer",
+			party=customer,
+			payment_type="Pay",
+			paid_from="_Test Cash - _TC",
+			paid_to="Debtors - _TC",
+		)
+		reverse_pe.submit()
+
+		pr = frappe.get_doc("Payment Reconciliation")
+		pr.company = "_Test Company"
+		pr.party_type = "Customer"
+		pr.party = customer
+		pr.receivable_payable_account = "Debtors - _TC"
+		pr.get_unreconciled_entries()
+		self.assertEqual(len(pr.invoices), 1)
+		self.assertEqual(len(pr.payments), 1)
+
+		self.assertEqual(reverse_pe.name, pr.invoices[0].invoice_number)
+		self.assertEqual(pe.name, pr.payments[0].reference_name)
+
+		invoices = [x.as_dict() for x in pr.invoices]
+		payments = [pr.payments[0].as_dict()]
+		pr.allocate_entries(frappe._dict({"invoices": invoices, "payments": payments}))
+		pr.reconcile()
+		self.assertEqual(len(pr.invoices), 0)
+		self.assertEqual(len(pr.payments), 0)
+
+	def test_advance_reverse_payment_reconciliation(self):
+		company = "_Test Company"
+		customer = create_customer(frappe.generate_hash(length=10), "INR")
+		advance_account = create_account(
+			parent_account="Current Liabilities - _TC",
+			account_name="Advances Received",
+			company=company,
+			account_type="Receivable",
+		)
+
+		frappe.db.set_value(
+			"Company",
+			company,
+			{
+				"book_advance_payments_in_separate_party_account": 1,
+				"default_advance_received_account": advance_account,
+			},
+		)
+		# Reverse Payment(essentially an Invoice)
+		reverse_pe = create_payment_entry(
+			party_type="Customer",
+			party=customer,
+			payment_type="Pay",
+			paid_from="_Test Cash - _TC",
+			paid_to=advance_account,
+		)
+		reverse_pe.save()  # use save() to trigger set_liability_account()
+		reverse_pe.submit()
+
+		# Advance Payment
+		pe = create_payment_entry(
+			party_type="Customer",
+			party=customer,
+			payment_type="Receive",
+			paid_from=advance_account,
+			paid_to="_Test Cash - _TC",
+		)
+		pe.save()  # use save() to trigger set_liability_account()
+		pe.submit()
+
+		# Partially reconcile advance against invoice
+		pr = frappe.get_doc("Payment Reconciliation")
+		pr.company = company
+		pr.party_type = "Customer"
+		pr.party = customer
+		pr.receivable_payable_account = "Debtors - _TC"
+		pr.default_advance_account = advance_account
+		pr.get_unreconciled_entries()
+
+		self.assertEqual(len(pr.invoices), 1)
+		self.assertEqual(len(pr.payments), 1)
+
+		invoices = [x.as_dict() for x in pr.get("invoices")]
+		payments = [x.as_dict() for x in pr.get("payments")]
+		pr.allocate_entries(frappe._dict({"invoices": invoices, "payments": payments}))
+		pr.allocation[0].allocated_amount = 400
+		pr.reconcile()
+
+		# assert General and Payment Ledger entries post partial reconciliation
+		self.expected_gle = [
+			{"account": advance_account, "debit": 400.0, "credit": 0.0},
+			{"account": advance_account, "debit": 0.0, "credit": 1000.0},
+			{"account": advance_account, "debit": 0.0, "credit": 400.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		self.expected_ple = [
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": -1000.0,
+			},
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": reverse_pe.name,
+				"amount": -400.0,
+			},
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": 400.0,
+			},
+		]
+		self.voucher_no = pe.name
+		self.check_gl_entries()
+		self.check_pl_entries()
+
+		# Unreconcile
+		(
+			frappe.get_doc(
+				{
+					"doctype": "Unreconcile Payment",
+					"company": company,
+					"voucher_type": pe.doctype,
+					"voucher_no": pe.name,
+					"allocations": [
+						{"reference_doctype": reverse_pe.doctype, "reference_name": reverse_pe.name}
+					],
+				}
+			)
+			.save()
+			.submit()
+		)
+
+		# assert General and Payment Ledger entries post unreconciliation
+		self.expected_gle = [
+			{"account": advance_account, "debit": 0.0, "credit": 1000.0},
+			{"account": "_Test Cash - _TC", "debit": 1000.0, "credit": 0.0},
+		]
+		self.expected_ple = [
+			{
+				"account": advance_account,
+				"voucher_no": pe.name,
+				"against_voucher_no": pe.name,
+				"amount": -1000.0,
+			},
+		]
+		self.voucher_no = pe.name
+		self.check_gl_entries()
+		self.check_pl_entries()
+
+	def test_opening_flag_for_advance_as_liability(self):
+		company = "_Test Company"
+
+		advance_account = create_account(
+			parent_account="Current Assets - _TC",
+			account_name="Advances Received",
+			company=company,
+			account_type="Receivable",
+		)
+
+		# Enable Advance in separate party account
+		frappe.db.set_value(
+			"Company",
+			company,
+			{
+				"book_advance_payments_in_separate_party_account": 1,
+				"default_advance_received_account": advance_account,
+			},
+		)
+		# Advance Payment
+		adv = create_payment_entry(
+			party_type="Customer",
+			party="_Test Customer",
+			payment_type="Receive",
+			paid_from="Debtors - _TC",
+			paid_to="_Test Cash - _TC",
+		)
+		adv.is_opening = "Yes"
+		adv.save()  # use save() to trigger set_liability_account()
+		adv.submit()
+
+		gl_with_opening_set = frappe.db.get_all(
+			"GL Entry", filters={"voucher_no": adv.name, "is_opening": "Yes"}
+		)
+		# 'Is Opening' can be 'Yes' for Advances in separate party account
+		self.assertNotEqual(gl_with_opening_set, [])
+
+		# Disable Advance in separate party account
+		frappe.db.set_value(
+			"Company",
+			company,
+			{
+				"book_advance_payments_in_separate_party_account": 0,
+				"default_advance_received_account": None,
+			},
+		)
+		payment = create_payment_entry(
+			party_type="Customer",
+			party="_Test Customer",
+			payment_type="Receive",
+			paid_from="Debtors - _TC",
+			paid_to="_Test Cash - _TC",
+		)
+		payment.is_opening = "Yes"
+		payment.save()
+		payment.submit()
+		gl_with_opening_set = frappe.db.get_all(
+			"GL Entry", filters={"voucher_no": payment.name, "is_opening": "Yes"}
+		)
+		# 'Is Opening' should always be 'No' for normal advance payments
+		self.assertEqual(gl_with_opening_set, [])
+
+	@IntegrationTestCase.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_delete_linked_exchange_gain_loss_journal(self):
 		from erpnext.accounts.doctype.account.test_account import create_account
 		from erpnext.accounts.doctype.opening_invoice_creation_tool.test_opening_invoice_creation_tool import (
@@ -1456,6 +2103,13 @@ def create_payment_entry(**args):
 	payment_entry.reference_no = "Test001"
 	payment_entry.reference_date = nowdate()
 
+<<<<<<< HEAD
+=======
+	get_party_details(
+		payment_entry.company, payment_entry.party_type, payment_entry.party, payment_entry.posting_date
+	)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if args.get("save"):
 		payment_entry.save()
 		if args.get("submit"):

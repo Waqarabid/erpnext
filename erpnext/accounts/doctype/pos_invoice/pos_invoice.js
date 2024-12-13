@@ -1,9 +1,16 @@
 // Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
+<<<<<<< HEAD
 {% include 'erpnext/selling/sales_common.js' %};
 frappe.provide("erpnext.accounts");
 
+=======
+frappe.provide("erpnext.accounts");
+erpnext.sales_common.setup_selling_controller();
+
+erpnext.accounts.pos.setup("POS Invoice");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnext.selling.SellingController {
 	settings = {};
 
@@ -20,25 +27,61 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 
 	onload(doc) {
 		super.onload();
+<<<<<<< HEAD
 		this.frm.ignore_doctypes_on_cancel_all = ['POS Invoice Merge Log', 'POS Closing Entry'];
 
 		if(doc.__islocal && doc.is_pos && frappe.get_route_str() !== 'point-of-sale') {
+=======
+		this.frm.ignore_doctypes_on_cancel_all = [
+			"POS Invoice Merge Log",
+			"POS Closing Entry",
+			"Serial and Batch Bundle",
+		];
+
+		if (doc.__islocal && doc.is_pos && frappe.get_route_str() !== "point-of-sale") {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.frm.script_manager.trigger("is_pos");
 			this.frm.refresh_fields();
 		}
 
+<<<<<<< HEAD
 		this.frm.set_query("set_warehouse", function(doc) {
 			return {
 				filters: {
 					company: doc.company ? doc.company : '',
 				}
 			}
+=======
+		this.frm.set_query("set_warehouse", function (doc) {
+			return {
+				filters: {
+					company: doc.company ? doc.company : "",
+				},
+			};
+		});
+
+		this.frm.set_query("item_code", "items", function (doc) {
+			return {
+				query: "erpnext.accounts.doctype.pos_invoice.pos_invoice.item_query",
+				filters: {
+					has_variants: ["=", 0],
+					is_sales_item: ["=", 1],
+					disabled: ["=", 0],
+					is_fixed_asset: ["=", 0],
+					pos_profile: ["=", doc.pos_profile],
+				},
+			};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		});
 
 		erpnext.accounts.dimensions.setup_dimension_filters(this.frm, this.frm.doctype);
 	}
 
 	onload_post_render(frm) {
+<<<<<<< HEAD
+=======
+		super.onload_post_render();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.pos_profile(frm);
 	}
 
@@ -46,12 +89,18 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 		super.refresh();
 
 		if (doc.docstatus == 1 && !doc.is_return) {
+<<<<<<< HEAD
 			this.frm.add_custom_button(__('Return'), this.make_sales_return, __('Create'));
 			this.frm.page.set_inner_btn_group_as_primary(__('Create'));
+=======
+			this.frm.add_custom_button(__("Return"), this.make_sales_return.bind(this), __("Create"));
+			this.frm.page.set_inner_btn_group_as_primary(__("Create"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		if (doc.is_return && doc.__islocal) {
 			this.frm.return_print_format = "Sales Invoice Return";
+<<<<<<< HEAD
 			this.frm.set_value('consolidated_invoice', '');
 		}
 
@@ -66,6 +115,25 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 				}
 			}
 		}).bind(this));
+=======
+			this.frm.set_value("consolidated_invoice", "");
+		}
+
+		this.frm.set_query(
+			"customer",
+			function () {
+				const customer_groups = this.settings?.customer_groups;
+
+				if (!customer_groups?.length) return {};
+
+				return {
+					filters: {
+						customer_group: ["in", customer_groups],
+					},
+				};
+			}.bind(this)
+		);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	is_pos() {
@@ -73,19 +141,32 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	}
 
 	async set_pos_data() {
+<<<<<<< HEAD
 		if(this.frm.doc.is_pos) {
 			this.frm.set_value("allocate_advances_automatically", 0);
 			if(!this.frm.doc.company) {
+=======
+		if (this.frm.doc.is_pos) {
+			this.frm.set_value("allocate_advances_automatically", 0);
+			if (!this.frm.doc.company) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				this.frm.set_value("is_pos", 0);
 				frappe.msgprint(__("Please specify Company to proceed"));
 			} else {
 				const r = await this.frm.call({
 					doc: this.frm.doc,
 					method: "set_missing_values",
+<<<<<<< HEAD
 					freeze: true
 				});
 				if(!r.exc) {
 					if(r.message) {
+=======
+					freeze: true,
+				});
+				if (!r.exc) {
+					if (r.message) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						this.frm.pos_print_format = r.message.print_format || "";
 						this.frm.meta.default_print_format = r.message.print_format || "";
 						this.frm.doc.campaign = r.message.campaign;
@@ -102,17 +183,28 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	}
 
 	customer() {
+<<<<<<< HEAD
 		if (!this.frm.doc.customer) return
 		const pos_profile = this.frm.doc.pos_profile;
 		if(this.frm.updating_party_details) return;
 		erpnext.utils.get_party_details(this.frm,
 			"erpnext.accounts.party.get_party_details", {
+=======
+		if (!this.frm.doc.customer) return;
+		const pos_profile = this.frm.doc.pos_profile;
+		if (this.frm.updating_party_details) return;
+		erpnext.utils.get_party_details(
+			this.frm,
+			"erpnext.accounts.party.get_party_details",
+			{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				posting_date: this.frm.doc.posting_date,
 				party: this.frm.doc.customer,
 				party_type: "Customer",
 				account: this.frm.doc.debit_to,
 				price_list: this.frm.doc.selling_price_list,
 				pos_profile: pos_profile,
+<<<<<<< HEAD
 				company_address: this.frm.doc.company_address
 			}, () => {
 				this.apply_pricing_rule();
@@ -121,13 +213,29 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 
 	pos_profile(frm) {
 		if (!frm.pos_profile || frm.pos_profile == '') {
+=======
+				company_address: this.frm.doc.company_address,
+			},
+			() => {
+				this.apply_pricing_rule();
+			}
+		);
+	}
+
+	pos_profile(frm) {
+		if (!frm.pos_profile || frm.pos_profile == "") {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.update_customer_groups_settings([]);
 			return;
 		}
 
 		frappe.call({
 			method: "erpnext.selling.page.point_of_sale.point_of_sale.get_pos_profile_data",
+<<<<<<< HEAD
 			args: { "pos_profile": frm.pos_profile },
+=======
+			args: { pos_profile: frm.pos_profile },
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			callback: ({ message: profile }) => {
 				this.update_customer_groups_settings(profile?.customer_groups);
 				this.frm.set_value("company", profile?.company);
@@ -136,6 +244,7 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	}
 
 	update_customer_groups_settings(customer_groups) {
+<<<<<<< HEAD
 		this.settings.customer_groups = customer_groups?.map((group) => group.name)
 	}
 
@@ -147,6 +256,19 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 		if(this.frm.doc.paid_amount > this.frm.doc.grand_total){
 			this.calculate_write_off_amount();
 		}else {
+=======
+		this.settings.customer_groups = customer_groups?.map((group) => group.name);
+	}
+
+	amount() {
+		this.write_off_outstanding_amount_automatically();
+	}
+
+	change_amount() {
+		if (this.frm.doc.paid_amount > this.frm.doc.grand_total) {
+			this.calculate_write_off_amount();
+		} else {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			this.frm.set_value("change_amount", 0.0);
 			this.frm.set_value("base_change_amount", 0.0);
 		}
@@ -154,7 +276,11 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 		this.frm.refresh_fields();
 	}
 
+<<<<<<< HEAD
 	loyalty_amount(){
+=======
+	loyalty_amount() {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.calculate_outstanding_amount();
 		this.frm.refresh_field("outstanding_amount");
 		this.frm.refresh_field("paid_amount");
@@ -165,8 +291,17 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 		if (cint(this.frm.doc.write_off_outstanding_amount_automatically)) {
 			frappe.model.round_floats_in(this.frm.doc, ["grand_total", "paid_amount"]);
 			// this will make outstanding amount 0
+<<<<<<< HEAD
 			this.frm.set_value("write_off_amount",
 				flt(this.frm.doc.grand_total - this.frm.doc.paid_amount - this.frm.doc.total_advance, precision("write_off_amount"))
+=======
+			this.frm.set_value(
+				"write_off_amount",
+				flt(
+					this.frm.doc.grand_total - this.frm.doc.paid_amount - this.frm.doc.total_advance,
+					precision("write_off_amount")
+				)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			);
 		}
 
@@ -177,6 +312,7 @@ erpnext.selling.POSInvoiceController = class POSInvoiceController extends erpnex
 	make_sales_return() {
 		frappe.model.open_mapped_doc({
 			method: "erpnext.accounts.doctype.pos_invoice.pos_invoice.make_sales_return",
+<<<<<<< HEAD
 			frm: cur_frm
 		})
 	}
@@ -190,45 +326,88 @@ frappe.ui.form.on('POS Invoice', {
 	},
 
 	loyalty_points: function(frm) {
+=======
+			frm: this.frm,
+		});
+	}
+};
+
+extend_cscript(cur_frm.cscript, new erpnext.selling.POSInvoiceController({ frm: cur_frm }));
+
+frappe.ui.form.on("POS Invoice", {
+	redeem_loyalty_points: function (frm) {
+		frm.events.get_loyalty_details(frm);
+	},
+
+	loyalty_points: function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.redemption_conversion_factor) {
 			frm.events.set_loyalty_points(frm);
 		} else {
 			frappe.call({
 				method: "erpnext.accounts.doctype.loyalty_program.loyalty_program.get_redeemption_factor",
 				args: {
+<<<<<<< HEAD
 					"loyalty_program": frm.doc.loyalty_program
 				},
 				callback: function(r) {
+=======
+					loyalty_program: frm.doc.loyalty_program,
+				},
+				callback: function (r) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					if (r) {
 						frm.redemption_conversion_factor = r.message;
 						frm.events.set_loyalty_points(frm);
 					}
+<<<<<<< HEAD
 				}
+=======
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
 
+<<<<<<< HEAD
 	get_loyalty_details: function(frm) {
+=======
+	get_loyalty_details: function (frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.customer && frm.doc.redeem_loyalty_points) {
 			frappe.call({
 				method: "erpnext.accounts.doctype.loyalty_program.loyalty_program.get_loyalty_program_details",
 				args: {
+<<<<<<< HEAD
 					"customer": frm.doc.customer,
 					"loyalty_program": frm.doc.loyalty_program,
 					"expiry_date": frm.doc.posting_date,
 					"company": frm.doc.company
 				},
 				callback: function(r) {
+=======
+					customer: frm.doc.customer,
+					loyalty_program: frm.doc.loyalty_program,
+					expiry_date: frm.doc.posting_date,
+					company: frm.doc.company,
+				},
+				callback: function (r) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					if (r) {
 						frm.set_value("loyalty_redemption_account", r.message.expense_account);
 						frm.set_value("loyalty_redemption_cost_center", r.message.cost_center);
 						frm.redemption_conversion_factor = r.message.conversion_factor;
 					}
+<<<<<<< HEAD
 				}
+=======
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	},
 
+<<<<<<< HEAD
 	set_loyalty_points: function(frm) {
 		if (frm.redemption_conversion_factor) {
 			let loyalty_amount = flt(frm.redemption_conversion_factor*flt(frm.doc.loyalty_points), precision("loyalty_amount"));
@@ -236,6 +415,19 @@ frappe.ui.form.on('POS Invoice', {
 			if (frm.doc.grand_total && (remaining_amount < loyalty_amount)) {
 				let redeemable_points = parseInt(remaining_amount/frm.redemption_conversion_factor);
 				frappe.throw(__("You can only redeem max {0} points in this order.",[redeemable_points]));
+=======
+	set_loyalty_points: function (frm) {
+		if (frm.redemption_conversion_factor) {
+			let loyalty_amount = flt(
+				frm.redemption_conversion_factor * flt(frm.doc.loyalty_points),
+				precision("loyalty_amount")
+			);
+			var remaining_amount =
+				flt(frm.doc.grand_total) - flt(frm.doc.total_advance) - flt(frm.doc.write_off_amount);
+			if (frm.doc.grand_total && remaining_amount < loyalty_amount) {
+				let redeemable_points = parseInt(remaining_amount / frm.redemption_conversion_factor);
+				frappe.throw(__("You can only redeem max {0} points in this order.", [redeemable_points]));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 			frm.set_value("loyalty_amount", loyalty_amount);
 		}
@@ -243,6 +435,7 @@ frappe.ui.form.on('POS Invoice', {
 
 	request_for_payment: function (frm) {
 		if (!frm.doc.contact_mobile) {
+<<<<<<< HEAD
 			frappe.throw(__('Please enter mobile number first.'));
 		}
 		frm.dirty();
@@ -256,10 +449,26 @@ frappe.ui.form.on('POS Invoice', {
 				.fail(() => {
 					frappe.dom.unfreeze();
 					frappe.msgprint(__('Payment request failed'));
+=======
+			frappe.throw(__("Please enter mobile number first."));
+		}
+		frm.dirty();
+		frm.save().then(() => {
+			frappe.dom.freeze(__("Waiting for payment..."));
+			frappe
+				.call({
+					method: "create_payment_request",
+					doc: frm.doc,
+				})
+				.fail(() => {
+					frappe.dom.unfreeze();
+					frappe.msgprint(__("Payment request failed"));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				})
 				.then(({ message }) => {
 					const payment_request_name = message.name;
 					setTimeout(() => {
+<<<<<<< HEAD
 						frappe.db.get_value('Payment Request', payment_request_name, ['status', 'grand_total']).then(({ message }) => {
 							if (message.status != 'Paid') {
 								frappe.dom.unfreeze();
@@ -282,4 +491,34 @@ frappe.ui.form.on('POS Invoice', {
 				});
 		});
 	}
+=======
+						frappe.db
+							.get_value("Payment Request", payment_request_name, ["status", "grand_total"])
+							.then(({ message }) => {
+								if (message.status != "Paid") {
+									frappe.dom.unfreeze();
+									frappe.msgprint({
+										message: __(
+											"Payment Request took too long to respond. Please try requesting for payment again."
+										),
+										title: __("Request Timeout"),
+									});
+								} else if (frappe.dom.freeze_count != 0) {
+									frappe.dom.unfreeze();
+									frm.reload_doc();
+									cur_pos.payment.events.submit_invoice();
+
+									frappe.show_alert({
+										message: __("Payment of {0} received successfully.", [
+											format_currency(message.grand_total, frm.doc.currency, 0),
+										]),
+										indicator: "green",
+									});
+								}
+							});
+					}, 60000);
+				});
+		});
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });

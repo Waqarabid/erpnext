@@ -29,7 +29,10 @@ frappe.query_reports["Sales Payment Summary"] = {
 			label: __("Owner"),
 			fieldtype: "Link",
 			options: "User",
+<<<<<<< HEAD
 			defaults: user,
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "is_pos",

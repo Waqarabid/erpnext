@@ -2,7 +2,10 @@
 # License: GNU General Public License v3. See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe import _
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import cstr, getdate
 
 
@@ -33,6 +36,7 @@ def create_fiscal_year_and_company(args):
 		).insert()
 
 
+<<<<<<< HEAD
 def enable_shopping_cart(args):  # nosemgrep
 	# Needs price_lists
 	frappe.get_doc(
@@ -47,6 +51,8 @@ def enable_shopping_cart(args):  # nosemgrep
 	).insert()
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_fy_details(fy_start_date, fy_end_date):
 	start_year = getdate(fy_start_date).year
 	if start_year == getdate(fy_end_date).year:

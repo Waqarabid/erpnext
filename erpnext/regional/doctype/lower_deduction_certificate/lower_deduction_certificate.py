@@ -11,13 +11,40 @@ from erpnext.accounts.utils import get_fiscal_year
 
 
 class LowerDeductionCertificate(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		certificate_limit: DF.Currency
+		certificate_no: DF.Data
+		company: DF.Link
+		fiscal_year: DF.Link
+		pan_no: DF.Data
+		rate: DF.Percent
+		supplier: DF.Link
+		tax_withholding_category: DF.Link
+		valid_from: DF.Date
+		valid_upto: DF.Date
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_dates()
 		self.validate_supplier_against_tax_category()
 
 	def validate_dates(self):
 		if getdate(self.valid_upto) < getdate(self.valid_from):
+<<<<<<< HEAD
 			frappe.throw(_("Valid Upto date cannot be before Valid From date"))
+=======
+			frappe.throw(_("Valid Up To date cannot be before Valid From date"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		fiscal_year = get_fiscal_year(fiscal_year=self.fiscal_year, as_dict=True)
 
@@ -25,7 +52,11 @@ class LowerDeductionCertificate(Document):
 			frappe.throw(_("Valid From date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
 
 		if not (fiscal_year.year_start_date <= getdate(self.valid_upto) <= fiscal_year.year_end_date):
+<<<<<<< HEAD
 			frappe.throw(_("Valid Upto date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
+=======
+			frappe.throw(_("Valid Up To date not in Fiscal Year {0}").format(frappe.bold(self.fiscal_year)))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_supplier_against_tax_category(self):
 		duplicate_certificate = frappe.db.get_value(

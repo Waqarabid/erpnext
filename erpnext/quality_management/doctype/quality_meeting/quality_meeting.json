@@ -48,7 +48,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2021-02-27 16:36:45.657883",
+=======
+ "modified": "2024-03-27 13:10:29.470120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Quality Management",
  "name": "Quality Meeting",
@@ -74,13 +78,25 @@
    "print": 1,
    "read": 1,
    "report": 1,
+<<<<<<< HEAD
    "role": "All",
+=======
+   "role": "Desk User",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "share": 1,
    "write": 1
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

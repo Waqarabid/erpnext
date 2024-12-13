@@ -3,7 +3,11 @@
 
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, flt, today
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
@@ -11,7 +15,11 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sal
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 
 
+<<<<<<< HEAD
 class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
+=======
+class TestExchangeRateRevaluation(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_usd_receivable_account()
@@ -35,7 +43,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		company_doc.unrealized_exchange_gain_loss_account = company_doc.exchange_gain_loss_account
 		company_doc.save()
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1, "allow_stale": 0},
 	)
@@ -60,7 +72,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		si.save().submit()
 
 		err = frappe.new_doc("Exchange Rate Revaluation")
+<<<<<<< HEAD
 		err.company = (self.company,)
+=======
+		err.company = self.company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		err.posting_date = today()
 		accounts = err.get_accounts_data()
 		err.extend("accounts", accounts)
@@ -88,7 +104,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		)[0]
 		self.assertEqual(acc_balance.balance, 8500.0)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1, "allow_stale": 0},
 	)
@@ -124,7 +144,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		frappe.get_doc("Journal Entry", je).cancel()
 
 		err = frappe.new_doc("Exchange Rate Revaluation")
+<<<<<<< HEAD
 		err.company = (self.company,)
+=======
+		err.company = self.company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		err.posting_date = today()
 		err.fetch_and_calculate_accounts_data()
 		err = err.save().submit()
@@ -158,7 +182,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		self.assertEqual(acc_balance.balance, 0.0)
 		self.assertEqual(acc_balance.balance_in_account_currency, 0.0)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1, "allow_stale": 0},
 	)
@@ -188,7 +216,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 
 		pe = get_payment_entry(si.doctype, si.name)
 		pe.paid_amount = 95
+<<<<<<< HEAD
 		pe.source_exchange_rate = 84.211
+=======
+		pe.source_exchange_rate = 84.2105
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		pe.received_amount = 8000
 		pe.references = []
 		pe.save().submit()
@@ -206,7 +238,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		self.assertEqual(flt(acc_balance.balance_in_account_currency, precision), 5.0)  # in USD
 
 		err = frappe.new_doc("Exchange Rate Revaluation")
+<<<<<<< HEAD
 		err.company = (self.company,)
+=======
+		err.company = self.company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		err.posting_date = today()
 		err.fetch_and_calculate_accounts_data()
 		err.set_total_gain_loss()
@@ -229,7 +265,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		row = next(x for x in je.accounts if x.account == self.debtors_usd)
 		self.assertEqual(flt(row.credit_in_account_currency, precision), 5.0)  # in USD
 		row = next(x for x in je.accounts if x.account != self.debtors_usd)
+<<<<<<< HEAD
 		self.assertEqual(flt(row.debit_in_account_currency, precision), 421.06)  # in INR
+=======
+		self.assertEqual(flt(row.debit_in_account_currency, precision), 421.05)  # in INR
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# total_debit and total_credit will be 0.0, as JV is posting only to account currency fields
 		self.assertEqual(flt(je.total_debit, precision), 0.0)
@@ -247,7 +287,11 @@ class TestExchangeRateRevaluation(AccountsTestMixin, FrappeTestCase):
 		self.assertEqual(flt(acc_balance.balance, precision), 0.0)
 		self.assertEqual(flt(acc_balance.balance_in_account_currency, precision), 0.0)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1, "allow_stale": 0},
 	)

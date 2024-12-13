@@ -18,6 +18,28 @@ from erpnext.accounts.utils import (
 
 
 class UnreconcilePayment(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.unreconcile_payment_entries.unreconcile_payment_entries import (
+			UnreconcilePaymentEntries,
+		)
+
+		allocations: DF.Table[UnreconcilePaymentEntries]
+		amended_from: DF.Link | None
+		company: DF.Link | None
+		voucher_no: DF.DynamicLink | None
+		voucher_type: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.supported_types = ["Payment Entry", "Journal Entry"]
 		if self.voucher_type not in self.supported_types:
@@ -65,7 +87,13 @@ class UnreconcilePayment(Document):
 			update_voucher_outstanding(
 				alloc.reference_doctype, alloc.reference_name, alloc.account, alloc.party_type, alloc.party
 			)
+<<<<<<< HEAD
 			if doc.doctype in frappe.get_hooks("advance_payment_doctypes"):
+=======
+			if doc.doctype in frappe.get_hooks("advance_payment_payable_doctypes") + frappe.get_hooks(
+				"advance_payment_receivable_doctypes"
+			):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				doc.set_total_advance_paid()
 
 			frappe.db.set_value("Unreconcile Payment Entries", alloc.name, "unlinked", True)

@@ -19,6 +19,11 @@
   "party_type",
   "party",
   "party_name",
+<<<<<<< HEAD
+=======
+  "book_advance_payments_in_separate_party_account",
+  "reconcile_on_advance_payment_date",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_11",
   "bank_account",
   "party_bank_account",
@@ -54,7 +59,10 @@
   "section_break_34",
   "total_allocated_amount",
   "base_total_allocated_amount",
+<<<<<<< HEAD
   "set_exchange_gain_loss",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_36",
   "unallocated_amount",
   "difference_amount",
@@ -86,12 +94,21 @@
   "status",
   "custom_remarks",
   "remarks",
+<<<<<<< HEAD
+=======
+  "base_in_words",
+  "is_opening",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_16",
   "letter_head",
   "print_heading",
   "bank",
   "bank_account_no",
   "payment_order",
+<<<<<<< HEAD
+=======
+  "in_words",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "subscription_section",
   "auto_repeat",
   "amended_from",
@@ -147,6 +164,10 @@
    "reqd": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_on_submit": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -222,6 +243,10 @@
    "fieldname": "party_balance",
    "fieldtype": "Currency",
    "label": "Party Balance",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "print_hide": 1,
    "read_only": 1
   },
@@ -385,11 +410,14 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "set_exchange_gain_loss",
    "fieldtype": "Button",
    "label": "Set Exchange Gain / Loss"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break_36",
    "fieldtype": "Column Break"
   },
@@ -473,6 +501,10 @@
    "label": "More Information"
   },
   {
+<<<<<<< HEAD
+=======
+   "allow_on_submit": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "project",
    "fieldtype": "Link",
    "label": "Project",
@@ -595,6 +627,10 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
+<<<<<<< HEAD
+=======
+   "no_copy": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "options": "\nDraft\nSubmitted\nCancelled",
    "read_only": 1
   },
@@ -736,6 +772,53 @@
    "fieldname": "get_outstanding_orders",
    "fieldtype": "Button",
    "label": "Get Outstanding Orders"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "fetch_from": "company.book_advance_payments_in_separate_party_account",
+   "fieldname": "book_advance_payments_in_separate_party_account",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Book Advance Payments in Separate Party Account",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_in_words",
+   "fieldtype": "Small Text",
+   "label": "In Words (Company Currency)",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "in_words",
+   "fieldtype": "Small Text",
+   "label": "In Words",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "company.reconcile_on_advance_payment_date",
+   "fieldname": "reconcile_on_advance_payment_date",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Reconcile on Advance Payment Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "No",
+   "depends_on": "eval: doc.book_advance_payments_in_separate_party_account == 1",
+   "fieldname": "is_opening",
+   "fieldtype": "Select",
+   "label": "Is Opening",
+   "options": "No\nYes",
+   "print_hide": 1,
+   "search_index": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "index_web_pages_for_search": 1,
@@ -749,7 +832,11 @@
    "table_fieldname": "payment_entries"
   }
  ],
+<<<<<<< HEAD
  "modified": "2023-11-23 12:07:20.887885",
+=======
+ "modified": "2024-11-07 11:19:19.320883",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Entry",
@@ -790,9 +877,17 @@
   }
  ],
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
  "track_changes": 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

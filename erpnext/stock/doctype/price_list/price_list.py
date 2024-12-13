@@ -9,13 +9,38 @@ from frappe.utils import cint
 
 
 class PriceList(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.stock.doctype.price_list_country.price_list_country import PriceListCountry
+
+		buying: DF.Check
+		countries: DF.Table[PriceListCountry]
+		currency: DF.Link
+		enabled: DF.Check
+		price_list_name: DF.Data
+		price_not_uom_dependent: DF.Check
+		selling: DF.Check
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if not cint(self.buying) and not cint(self.selling):
 			throw(_("Price List must be applicable for Buying or Selling"))
 
+<<<<<<< HEAD
 		if not self.is_new():
 			self.check_impact_on_shopping_cart()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_update(self):
 		self.set_default_if_missing()
 		self.update_item_price()
@@ -23,11 +48,19 @@ class PriceList(Document):
 
 	def set_default_if_missing(self):
 		if cint(self.selling):
+<<<<<<< HEAD
 			if not frappe.db.get_value("Selling Settings", None, "selling_price_list"):
 				frappe.set_value("Selling Settings", "Selling Settings", "selling_price_list", self.name)
 
 		elif cint(self.buying):
 			if not frappe.db.get_value("Buying Settings", None, "buying_price_list"):
+=======
+			if not frappe.db.get_single_value("Selling Settings", "selling_price_list"):
+				frappe.set_value("Selling Settings", "Selling Settings", "selling_price_list", self.name)
+
+		elif cint(self.buying):
+			if not frappe.db.get_single_value("Buying Settings", "buying_price_list"):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.set_value("Buying Settings", "Buying Settings", "buying_price_list", self.name)
 
 	def update_item_price(self):
@@ -37,6 +70,7 @@ class PriceList(Document):
 			(self.currency, cint(self.buying), cint(self.selling), self.name),
 		)
 
+<<<<<<< HEAD
 	def check_impact_on_shopping_cart(self):
 		"Check if Price List currency change impacts E Commerce Cart."
 		from erpnext.e_commerce.doctype.e_commerce_settings.e_commerce_settings import (
@@ -50,6 +84,8 @@ class PriceList(Document):
 		if currency_changed and affects_cart:
 			validate_cart_settings()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def on_trash(self):
 		self.delete_price_list_details_key()
 

@@ -11,6 +11,32 @@ from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 
 
 class AccountClosingBalance(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		account_currency: DF.Link | None
+		closing_date: DF.Date | None
+		company: DF.Link | None
+		cost_center: DF.Link | None
+		credit: DF.Currency
+		credit_in_account_currency: DF.Currency
+		debit: DF.Currency
+		debit_in_account_currency: DF.Currency
+		finance_book: DF.Link | None
+		is_period_closing_voucher_entry: DF.Check
+		period_closing_voucher: DF.Link | None
+		project: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	pass
 
 
@@ -90,9 +116,15 @@ def get_previous_closing_entries(company, closing_date, accounting_dimensions):
 	entries = []
 	last_period_closing_voucher = frappe.db.get_all(
 		"Period Closing Voucher",
+<<<<<<< HEAD
 		filters={"docstatus": 1, "company": company, "posting_date": ("<", closing_date)},
 		fields=["name"],
 		order_by="posting_date desc",
+=======
+		filters={"docstatus": 1, "company": company, "period_end_date": ("<", closing_date)},
+		fields=["name"],
+		order_by="period_end_date desc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		limit=1,
 	)
 

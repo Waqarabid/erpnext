@@ -9,6 +9,11 @@ import frappe
 from frappe import _
 from frappe.utils import cstr, flt
 
+<<<<<<< HEAD
+=======
+from erpnext.utilities.product import get_item_codes_by_attributes
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 class ItemVariantExistsError(frappe.ValidationError):
 	pass
@@ -24,7 +29,12 @@ class ItemTemplateCannotHaveStock(frappe.ValidationError):
 
 @frappe.whitelist()
 def get_variant(template, args=None, variant=None, manufacturer=None, manufacturer_part_no=None):
+<<<<<<< HEAD
 	"""Validates Attributes and their Values, then looks for an exactly
+=======
+	"""
+	Validates Attributes and their Values, then looks for an exactly
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	matching Item Variant
 
 	:param item: Template Item
@@ -34,6 +44,7 @@ def get_variant(template, args=None, variant=None, manufacturer=None, manufactur
 
 	if item_template.variant_based_on == "Manufacturer" and manufacturer:
 		return make_variant_based_on_manufacturer(item_template, manufacturer, manufacturer_part_no)
+<<<<<<< HEAD
 	else:
 		if isinstance(args, str):
 			args = json.loads(args)
@@ -41,6 +52,17 @@ def get_variant(template, args=None, variant=None, manufacturer=None, manufactur
 		if not args:
 			frappe.throw(_("Please specify at least one attribute in the Attributes table"))
 		return find_variant(template, args, variant)
+=======
+
+	if isinstance(args, str):
+		args = json.loads(args)
+
+	attribute_args = {k: v for k, v in args.items() if k != "use_template_image"}
+	if not attribute_args:
+		frappe.throw(_("Please specify at least one attribute in the Attributes table"))
+
+	return find_variant(template, args, variant)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def make_variant_based_on_manufacturer(template, manufacturer, manufacturer_part_no):
@@ -52,7 +74,15 @@ def make_variant_based_on_manufacturer(template, manufacturer, manufacturer_part
 
 	copy_attributes_to_variant(template, variant)
 
+<<<<<<< HEAD
 	variant.item_code = append_number_if_name_exists("Item", template.name)
+=======
+	variant_name = f"{template.name} - {manufacturer}"
+	if manufacturer_part_no:
+		variant_name += f" - {manufacturer_part_no}"
+
+	variant.item_code = append_number_if_name_exists("Item", variant_name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	variant.flags.ignore_mandatory = True
 	variant.save()
 
@@ -141,7 +171,11 @@ def validate_item_attribute_value(attributes_list, attribute, attribute_value, i
 			)
 			msg += "<br>" + _(
 				"To still proceed with editing this Attribute Value, enable {0} in Item Variant Settings."
+<<<<<<< HEAD
 			).format(frappe.bold("Allow Rename Attribute Value"))
+=======
+			).format(frappe.bold(_("Allow Rename Attribute Value")))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			frappe.throw(msg, InvalidItemAttributeValueError, title=_("Edit Not Allowed"))
 
@@ -167,6 +201,7 @@ def get_attribute_values(item):
 
 
 def find_variant(template, args, variant_item_code=None):
+<<<<<<< HEAD
 	conditions = [
 		"""(iv_attribute.attribute={} and iv_attribute.attribute_value={})""".format(
 			frappe.db.escape(key), frappe.db.escape(cstr(value))
@@ -178,6 +213,8 @@ def find_variant(template, args, variant_item_code=None):
 
 	from erpnext.e_commerce.variant_selector.utils import get_item_codes_by_attributes
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	possible_variants = [i for i in get_item_codes_by_attributes(args, template) if i != variant_item_code]
 
 	for variant in possible_variants:
@@ -200,7 +237,12 @@ def find_variant(template, args, variant_item_code=None):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def create_variant(item, args):
+=======
+def create_variant(item, args, use_template_image=False):
+	use_template_image = frappe.parse_json(use_template_image)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	if isinstance(args, str):
 		args = json.loads(args)
 
@@ -214,13 +256,25 @@ def create_variant(item, args):
 
 	variant.set("attributes", variant_attributes)
 	copy_attributes_to_variant(template, variant)
+<<<<<<< HEAD
+=======
+
+	if use_template_image and template.image:
+		variant.image = template.image
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	make_variant_item_code(template.item_code, template.item_name, variant)
 
 	return variant
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def enqueue_multiple_variant_creation(item, args):
+=======
+def enqueue_multiple_variant_creation(item, args, use_template_image=False):
+	use_template_image = frappe.parse_json(use_template_image)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	# There can be innumerable attribute combinations, enqueue
 	if isinstance(args, str):
 		variants = json.loads(args)
@@ -231,27 +285,48 @@ def enqueue_multiple_variant_creation(item, args):
 		frappe.throw(_("Please do not create more than 500 items at a time"))
 		return
 	if total_variants < 10:
+<<<<<<< HEAD
 		return create_multiple_variants(item, args)
+=======
+		return create_multiple_variants(item, args, use_template_image)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	else:
 		frappe.enqueue(
 			"erpnext.controllers.item_variant.create_multiple_variants",
 			item=item,
 			args=args,
+<<<<<<< HEAD
+=======
+			use_template_image=use_template_image,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			now=frappe.flags.in_test,
 		)
 		return "queued"
 
 
+<<<<<<< HEAD
 def create_multiple_variants(item, args):
+=======
+def create_multiple_variants(item, args, use_template_image=False):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	count = 0
 	if isinstance(args, str):
 		args = json.loads(args)
 
+<<<<<<< HEAD
+=======
+	template_item = frappe.get_doc("Item", item)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	args_set = generate_keyed_value_combinations(args)
 
 	for attribute_values in args_set:
 		if not get_variant(item, args=attribute_values):
 			variant = create_variant(item, attribute_values)
+<<<<<<< HEAD
+=======
+			if use_template_image and template_item.image:
+				variant.image = template_item.image
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			variant.save()
 			count += 1
 

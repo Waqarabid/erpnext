@@ -23,6 +23,15 @@ frappe.query_reports["Sales Register"] = {
 			options: "Customer",
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "customer_group",
+			label: __("Customer Group"),
+			fieldtype: "Link",
+			options: "Customer Group",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "company",
 			label: __("Company"),
 			fieldtype: "Link",

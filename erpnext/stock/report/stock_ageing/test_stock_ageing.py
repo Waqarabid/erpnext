@@ -2,16 +2,26 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.stock.report.stock_ageing.stock_ageing import FIFOSlots, format_report_data
 
 
+<<<<<<< HEAD
 class TestStockAgeing(FrappeTestCase):
 	def setUp(self) -> None:
 		self.filters = frappe._dict(
 			company="_Test Company", to_date="2021-12-10", range1=30, range2=60, range3=90
 		)
+=======
+class TestStockAgeing(IntegrationTestCase):
+	def setUp(self) -> None:
+		self.filters = frappe._dict(company="_Test Company", to_date="2021-12-10", ranges=["30", "60", "90"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_normal_inward_outward_queue(self):
 		"Reference: Case 1 in stock_ageing_fifo_logic.md (same wh)"

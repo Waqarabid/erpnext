@@ -8,11 +8,19 @@ import frappe
 from frappe import _, bold
 from frappe.core.doctype.role.role import get_users
 from frappe.model.document import Document
+<<<<<<< HEAD
+=======
+from frappe.query_builder.functions import Sum
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, cint, flt, formatdate, get_datetime, getdate
 
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.controllers.item_variant import ItemTemplateCannotHaveStock
 from erpnext.stock.doctype.inventory_dimension.inventory_dimension import get_inventory_dimensions
+<<<<<<< HEAD
+=======
+from erpnext.stock.serial_batch_bundle import SerialBatchBundle
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.stock_ledger import get_previous_sle
 
 
@@ -24,10 +32,61 @@ class BackDatedStockTransaction(frappe.ValidationError):
 	pass
 
 
+<<<<<<< HEAD
+=======
+class InventoryDimensionNegativeStockError(frappe.ValidationError):
+	pass
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 exclude_from_linked_with = True
 
 
 class StockLedgerEntry(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		actual_qty: DF.Float
+		auto_created_serial_and_batch_bundle: DF.Check
+		batch_no: DF.Data | None
+		company: DF.Link | None
+		dependant_sle_voucher_detail_no: DF.Data | None
+		fiscal_year: DF.Data | None
+		has_batch_no: DF.Check
+		has_serial_no: DF.Check
+		incoming_rate: DF.Currency
+		is_adjustment_entry: DF.Check
+		is_cancelled: DF.Check
+		item_code: DF.Link | None
+		outgoing_rate: DF.Currency
+		posting_date: DF.Date | None
+		posting_datetime: DF.Datetime | None
+		posting_time: DF.Time | None
+		project: DF.Link | None
+		qty_after_transaction: DF.Float
+		recalculate_rate: DF.Check
+		serial_and_batch_bundle: DF.Link | None
+		serial_no: DF.LongText | None
+		stock_queue: DF.LongText | None
+		stock_uom: DF.Link | None
+		stock_value: DF.Currency
+		stock_value_difference: DF.Currency
+		to_rename: DF.Check
+		valuation_rate: DF.Currency
+		voucher_detail_no: DF.Data | None
+		voucher_no: DF.DynamicLink | None
+		voucher_type: DF.Link | None
+		warehouse: DF.Link | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def autoname(self):
 		"""
 		Temporarily name doc for fast insertion
@@ -42,7 +101,10 @@ class StockLedgerEntry(Document):
 		from erpnext.stock.utils import validate_disabled_warehouse, validate_warehouse_company
 
 		self.validate_mandatory()
+<<<<<<< HEAD
 		self.validate_item()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.validate_batch()
 		validate_disabled_warehouse(self.warehouse)
 		validate_warehouse_company(self.warehouse, self.company)
@@ -52,6 +114,7 @@ class StockLedgerEntry(Document):
 		self.validate_with_last_transaction_posting_time()
 		self.validate_inventory_dimension_negative_stock()
 
+<<<<<<< HEAD
 	def set_posting_datetime(self):
 		from erpnext.stock.utils import get_combine_datetime
 
@@ -65,10 +128,27 @@ class StockLedgerEntry(Document):
 		extra_cond = ""
 		kwargs = {}
 
+=======
+	def set_posting_datetime(self, save=False):
+		from erpnext.stock.utils import get_combine_datetime
+
+		if save:
+			posting_datetime = get_combine_datetime(self.posting_date, self.posting_time)
+			if not self.posting_datetime or self.posting_datetime != posting_datetime:
+				self.db_set("posting_datetime", posting_datetime)
+		else:
+			self.posting_datetime = get_combine_datetime(self.posting_date, self.posting_time)
+
+	def validate_inventory_dimension_negative_stock(self):
+		if self.is_cancelled or self.actual_qty >= 0:
+			return
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		dimensions = self._get_inventory_dimensions()
 		if not dimensions:
 			return
 
+<<<<<<< HEAD
 		for dimension, values in dimensions.items():
 			kwargs[dimension] = values.get("value")
 			extra_cond += f" and {dimension} = %({dimension})s"
@@ -103,17 +183,59 @@ class StockLedgerEntry(Document):
 
 		msg = _(
 			"{0} units of {1} are required in {2}{3}, on {4} {5} for {6} to complete the transaction."
+=======
+		flt_precision = cint(frappe.db.get_default("float_precision")) or 2
+		for dimension, values in dimensions.items():
+			dimension_value = values.get("value")
+			available_qty = self.get_available_qty_after_prev_transaction(dimension, dimension_value)
+
+			diff = flt(available_qty + flt(self.actual_qty), flt_precision)  # qty after current transaction
+			if diff < 0 and abs(diff) > 0.0001:
+				self.throw_validation_error(diff, dimension, dimension_value)
+
+	def get_available_qty_after_prev_transaction(self, dimension, dimension_value):
+		sle = frappe.qb.DocType("Stock Ledger Entry")
+		available_qty = (
+			frappe.qb.from_(sle)
+			.select(Sum(sle.actual_qty))
+			.where(
+				(sle.item_code == self.item_code)
+				& (sle.warehouse == self.warehouse)
+				& (sle.posting_datetime < self.posting_datetime)
+				& (sle.company == self.company)
+				& (sle.is_cancelled == 0)
+				& (sle[dimension] == dimension_value)
+			)
+		).run()
+
+		return available_qty[0][0] or 0
+
+	def throw_validation_error(self, diff, dimension, dimension_value):
+		msg = _(
+			"{0} units of {1} are required in {2} with the inventory dimension: {3} ({4}) on {5} {6} for {7} to complete the transaction."
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		).format(
 			abs(diff),
 			frappe.get_desk_link("Item", self.item_code),
 			frappe.get_desk_link("Warehouse", self.warehouse),
+<<<<<<< HEAD
 			dimension_msg,
+=======
+			frappe.bold(dimension),
+			frappe.bold(dimension_value),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			self.posting_date,
 			self.posting_time,
 			frappe.get_desk_link(self.voucher_type, self.voucher_no),
 		)
 
+<<<<<<< HEAD
 		frappe.throw(msg, title=_("Inventory Dimension Negative Stock"))
+=======
+		frappe.throw(
+			msg, title=_("Inventory Dimension Negative Stock"), exc=InventoryDimensionNegativeStockError
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def _get_inventory_dimensions(self):
 		inv_dimensions = get_inventory_dimensions()
@@ -128,6 +250,7 @@ class StockLedgerEntry(Document):
 		return inv_dimension_dict
 
 	def on_submit(self):
+<<<<<<< HEAD
 		self.set_posting_datetime()
 		self.check_stock_frozen_date()
 		self.calculate_batch_qty()
@@ -148,6 +271,24 @@ class StockLedgerEntry(Document):
 				or 0
 			)
 			frappe.db.set_value("Batch", self.batch_no, "batch_qty", batch_qty)
+=======
+		self.set_posting_datetime(save=True)
+		self.check_stock_frozen_date()
+
+		# Added to handle few test cases where serial_and_batch_bundles are not required
+		if frappe.flags.in_test and frappe.flags.ignore_serial_batch_bundle_validation:
+			return
+
+		if not self.get("via_landed_cost_voucher"):
+			SerialBatchBundle(
+				sle=self,
+				item_code=self.item_code,
+				warehouse=self.warehouse,
+				company=self.company,
+			)
+
+		self.validate_serial_batch_no_bundle()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def validate_mandatory(self):
 		mandatory = ["warehouse", "posting_date", "voucher_type", "voucher_no", "company"]
@@ -158,6 +299,7 @@ class StockLedgerEntry(Document):
 		if self.voucher_type != "Stock Reconciliation" and not self.actual_qty:
 			frappe.throw(_("Actual Qty is mandatory"))
 
+<<<<<<< HEAD
 	def validate_item(self):
 		item_det = frappe.db.sql(
 			"""select name, item_name, has_batch_no, docstatus,
@@ -199,6 +341,50 @@ class StockLedgerEntry(Document):
 			)
 
 		self.stock_uom = item_det.stock_uom
+=======
+	def validate_serial_batch_no_bundle(self):
+		if self.is_cancelled == 1:
+			return
+
+		item_detail = frappe.get_cached_value(
+			"Item",
+			self.item_code,
+			["has_serial_no", "has_batch_no", "is_stock_item", "has_variants", "stock_uom"],
+			as_dict=1,
+		)
+
+		values_to_be_change = {}
+		if self.has_batch_no != item_detail.has_batch_no:
+			values_to_be_change["has_batch_no"] = item_detail.has_batch_no
+
+		if self.has_serial_no != item_detail.has_serial_no:
+			values_to_be_change["has_serial_no"] = item_detail.has_serial_no
+
+		if values_to_be_change:
+			self.db_set(values_to_be_change)
+
+		if not item_detail:
+			self.throw_error_message(f"Item {self.item_code} not found")
+
+		if item_detail.has_variants:
+			self.throw_error_message(
+				f"Stock cannot exist for Item {self.item_code} since has variants",
+				ItemTemplateCannotHaveStock,
+			)
+
+		if item_detail.is_stock_item != 1:
+			self.throw_error_message("Item {0} must be a stock Item").format(self.item_code)
+
+		if item_detail.has_serial_no or item_detail.has_batch_no:
+			if not self.serial_and_batch_bundle:
+				self.throw_error_message(f"Serial No / Batch No are mandatory for Item {self.item_code}")
+
+		if self.serial_and_batch_bundle and not item_detail.has_serial_no and not item_detail.has_batch_no:
+			self.throw_error_message(f"Serial No and Batch No are not allowed for Item {self.item_code}")
+
+	def throw_error_message(self, message, exception=frappe.ValidationError):
+		frappe.throw(_(message), exception)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def check_stock_frozen_date(self):
 		stock_settings = frappe.get_cached_doc("Stock Settings")

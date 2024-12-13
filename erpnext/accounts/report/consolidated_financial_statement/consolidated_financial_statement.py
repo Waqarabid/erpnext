@@ -7,7 +7,11 @@ from collections import defaultdict
 import frappe
 from frappe import _
 from frappe.query_builder import Criterion
+<<<<<<< HEAD
 from frappe.utils import cint, flt, getdate
+=======
+from frappe.utils import flt, getdate
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 import erpnext
 from erpnext.accounts.report.balance_sheet.balance_sheet import (
@@ -57,11 +61,14 @@ def execute(filters=None):
 	elif filters.get("report") == "Profit and Loss Statement":
 		data, message, chart, report_summary = get_profit_loss_data(fiscal_year, companies, columns, filters)
 	else:
+<<<<<<< HEAD
 		if cint(frappe.db.get_single_value("Accounts Settings", "use_custom_cash_flow")):
 			from erpnext.accounts.report.cash_flow.custom_cash_flow import execute as execute_custom
 
 			return execute_custom(filters=filters)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		data, report_summary = get_cash_flow_data(fiscal_year, companies, filters)
 
 	return columns, data, message, chart, report_summary
@@ -271,6 +278,10 @@ def get_account_type_based_data(account_type, companies, fiscal_year, filters):
 	filters.end_date = fiscal_year.year_end_date
 
 	for company in companies:
+<<<<<<< HEAD
+=======
+		filters.company = company
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amount = get_account_type_based_gl_data(company, filters)
 
 		if amount and account_type == "Depreciation":

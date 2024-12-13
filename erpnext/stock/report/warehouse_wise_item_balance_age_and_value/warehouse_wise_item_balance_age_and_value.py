@@ -112,6 +112,7 @@ def validate_filters(filters):
 
 
 def get_warehouse_list(filters):
+<<<<<<< HEAD
 	from frappe.core.doctype.user_permission.user_permission import get_permitted_documents
 
 	wh = frappe.qb.DocType("Warehouse")
@@ -124,6 +125,25 @@ def get_warehouse_list(filters):
 		query = query.where(wh.name == filters.get("warehouse"))
 
 	return query.run(as_dict=True)
+=======
+	if not filters.get("warehouse"):
+		return frappe.get_all(
+			"Warehouse",
+			filters={"company": filters.get("company"), "is_group": 0},
+			fields=["name"],
+			order_by="name",
+		)
+
+	warehouse = frappe.qb.DocType("Warehouse")
+	lft, rgt = frappe.db.get_value("Warehouse", filters.get("warehouse"), ["lft", "rgt"])
+
+	return (
+		frappe.qb.from_(warehouse)
+		.select("name")
+		.where((warehouse.lft >= lft) & (warehouse.rgt <= rgt))
+		.run(as_dict=True)
+	)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def add_warehouse_column(columns, warehouse_list):

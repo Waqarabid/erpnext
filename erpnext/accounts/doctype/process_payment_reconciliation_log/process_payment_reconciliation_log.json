@@ -110,7 +110,11 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-11-02 11:32:12.254018",
+=======
+ "modified": "2024-03-27 13:10:18.769659",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Process Payment Reconciliation Log",
@@ -143,7 +147,11 @@
   }
  ],
  "search_fields": "allocated, reconciled, total_allocations, reconciled_entries",
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": []
 }

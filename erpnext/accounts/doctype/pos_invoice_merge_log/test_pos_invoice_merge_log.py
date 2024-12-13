@@ -1,11 +1,18 @@
 # Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import json
 import unittest
 
 import frappe
 from frappe.tests.utils import change_settings
+=======
+import json
+
+import frappe
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.pos_closing_entry.test_pos_closing_entry import init_user_and_profile
 from erpnext.accounts.doctype.pos_invoice.pos_invoice import make_sales_return
@@ -13,10 +20,34 @@ from erpnext.accounts.doctype.pos_invoice.test_pos_invoice import create_pos_inv
 from erpnext.accounts.doctype.pos_invoice_merge_log.pos_invoice_merge_log import (
 	consolidate_pos_invoices,
 )
+<<<<<<< HEAD
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 
 
 class TestPOSInvoiceMergeLog(unittest.TestCase):
+=======
+from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+	get_serial_nos_from_bundle,
+)
+from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
+
+
+class UnitTestPosInvoiceMergeLog(UnitTestCase):
+	"""
+	Unit tests for PosInvoiceMergeLog.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestPOSInvoiceMergeLog(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+		cls.enterClassContext(cls.change_settings("Selling Settings", validate_selling_price=0))
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_consolidated_invoice_creation(self):
 		frappe.db.sql("delete from `tabPOS Invoice`")
 
@@ -119,6 +150,10 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 				},
 			)
 			inv.insert()
+<<<<<<< HEAD
+=======
+			inv.payments[0].amount = inv.grand_total
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			inv.submit()
 
 			inv2 = create_pos_invoice(qty=1, rate=100, do_not_save=True)
@@ -135,6 +170,10 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 				},
 			)
 			inv2.insert()
+<<<<<<< HEAD
+=======
+			inv2.payments[0].amount = inv.grand_total
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			inv2.submit()
 
 			consolidate_pos_invoices()
@@ -142,6 +181,7 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 
 			consolidated_invoice = frappe.get_doc("Sales Invoice", inv.consolidated_invoice)
 			item_wise_tax_detail = json.loads(consolidated_invoice.get("taxes")[0].item_wise_tax_detail)
+<<<<<<< HEAD
 
 			tax_rate, amount = item_wise_tax_detail.get("_Test Item")
 			self.assertEqual(tax_rate, 9)
@@ -150,6 +190,21 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 			tax_rate2, amount2 = item_wise_tax_detail.get("_Test Item 2")
 			self.assertEqual(tax_rate2, 5)
 			self.assertEqual(amount2, 5)
+=======
+			expected_item_wise_tax_detail = {
+				"_Test Item": {
+					"tax_rate": 9,
+					"tax_amount": 9,
+					"net_amount": 100,
+				},
+				"_Test Item 2": {
+					"tax_rate": 5,
+					"tax_amount": 5,
+					"net_amount": 100,
+				},
+			}
+			self.assertEqual(item_wise_tax_detail, expected_item_wise_tax_detail)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		finally:
 			frappe.set_user("Administrator")
 			frappe.db.sql("delete from `tabPOS Profile`")
@@ -285,7 +340,11 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 			frappe.db.sql("delete from `tabPOS Profile`")
 			frappe.db.sql("delete from `tabPOS Invoice`")
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"System Settings", {"number_format": "#,###.###", "currency_precision": 3, "float_precision": 3}
 	)
 	def test_consolidation_round_off_error_3(self):
@@ -395,20 +454,32 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 		The second and third POS Invoice should be consolidated with a single Merge Log
 		"""
 
+<<<<<<< HEAD
 		from erpnext.stock.doctype.serial_no.test_serial_no import get_serial_nos
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_serialized_item
 
 		frappe.db.sql("delete from `tabPOS Invoice`")
 
 		try:
+<<<<<<< HEAD
 			se = make_serialized_item()
 			serial_no = get_serial_nos(se.get("items")[0].serial_no)[0]
+=======
+			se = make_serialized_item(self)
+			serial_no = get_serial_nos_from_bundle(se.get("items")[0].serial_and_batch_bundle)[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 			init_user_and_profile()
 
 			pos_inv = create_pos_invoice(
 				item_code="_Test Serialized Item With Series",
+<<<<<<< HEAD
 				serial_no=serial_no,
+=======
+				serial_no=[serial_no],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				qty=1,
 				rate=100,
 				do_not_submit=1,
@@ -422,7 +493,11 @@ class TestPOSInvoiceMergeLog(unittest.TestCase):
 
 			pos_inv2 = create_pos_invoice(
 				item_code="_Test Serialized Item With Series",
+<<<<<<< HEAD
 				serial_no=serial_no,
+=======
+				serial_no=[serial_no],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				qty=1,
 				rate=100,
 				do_not_submit=1,

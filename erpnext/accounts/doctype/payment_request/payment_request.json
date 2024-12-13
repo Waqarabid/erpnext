@@ -7,12 +7,23 @@
  "field_order": [
   "payment_request_type",
   "transaction_date",
+<<<<<<< HEAD
   "column_break_2",
   "naming_series",
+=======
+  "failed_reason",
+  "column_break_2",
+  "naming_series",
+  "company",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "mode_of_payment",
   "party_details",
   "party_type",
   "party",
+<<<<<<< HEAD
+=======
+  "party_name",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "column_break_4",
   "reference_doctype",
   "reference_name",
@@ -50,13 +61,22 @@
   "message",
   "message_examples",
   "mute_email",
+<<<<<<< HEAD
   "payment_url",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_7",
   "payment_gateway",
   "payment_account",
   "payment_channel",
   "payment_order",
+<<<<<<< HEAD
   "amended_from"
+=======
+  "amended_from",
+  "column_break_pnyv",
+  "payment_url"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -238,13 +258,42 @@
    "label": "SWIFT Number"
   },
   {
+<<<<<<< HEAD
+=======
+   "collapsible": 1,
+   "fieldname": "accounting_dimensions_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Dimensions"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "dimension_col_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "depends_on": "eval: doc.payment_request_type == 'Inward'",
    "fieldname": "recipient_and_message",
    "fieldtype": "Section Break",
    "label": "Recipient Message And Payment Details"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "print_format",
    "fieldtype": "Select",
    "label": "Print Format"
@@ -256,7 +305,11 @@
    "label": "To"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "subject",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -293,18 +346,30 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_request_type == 'Inward' || doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_request_type == 'Inward' || doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_10",
    "fieldtype": "Section Break"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "message",
    "fieldtype": "Text",
    "label": "Message"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval: doc.payment_channel != \"Phone\"",
+=======
+   "depends_on": "eval: doc.payment_channel == \"Email\" || (!doc.payment_channel)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "message_examples",
    "fieldtype": "HTML",
    "label": "Message Examples",
@@ -324,9 +389,16 @@
   },
   {
    "fieldname": "payment_url",
+<<<<<<< HEAD
    "fieldtype": "Small Text",
    "hidden": 1,
    "label": "payment_url",
+=======
+   "fieldtype": "Data",
+   "label": "Payment URL",
+   "length": 500,
+   "options": "URL",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "read_only": 1
   },
   {
@@ -351,6 +423,17 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "payment_gateway_account.payment_channel",
+   "fieldname": "payment_channel",
+   "fieldtype": "Select",
+   "label": "Payment Channel",
+   "options": "\nEmail\nPhone\nOther",
+   "read_only": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "payment_order",
    "fieldtype": "Link",
    "label": "Payment Order",
@@ -367,6 +450,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fetch_from": "payment_gateway_account.payment_channel",
    "fieldname": "payment_channel",
    "fieldtype": "Select",
@@ -397,6 +481,17 @@
    "options": "Project"
   },
   {
+=======
+   "fieldname": "failed_reason",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reason for Failure",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "depends_on": "eval: doc.docstatus === 1",
    "description": "Amount in party's bank account currency",
    "fieldname": "outstanding_amount",
@@ -408,18 +503,45 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pnyv",
+   "fieldtype": "Column Break"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "party_account_currency",
    "fieldtype": "Link",
    "label": "Party Account Currency",
    "options": "Currency",
    "read_only": 1
+<<<<<<< HEAD
+=======
+  },
+  {
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "label": "Party Name",
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-09-16 17:50:54.440090",
+=======
+ "modified": "2024-10-23 12:23:40.117336",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Request",
@@ -455,7 +577,14 @@
   }
  ],
  "show_preview_popup": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

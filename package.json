@@ -13,7 +13,10 @@
   },
   "devDependencies": {},
   "dependencies": {
+<<<<<<< HEAD
     "html2canvas": "^1.1.4",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
     "onscan.js": "^1.5.2"
   }
 }

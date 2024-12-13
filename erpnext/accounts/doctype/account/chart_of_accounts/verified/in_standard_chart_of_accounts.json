@@ -36,6 +36,7 @@
                 }
             },
             "Fixed Assets": {
+<<<<<<< HEAD
                 "Capital Equipments": {
                     "account_type": "Fixed Asset"
                 },
@@ -46,6 +47,18 @@
                     "account_type": "Fixed Asset"
                 },
                 "Office Equipments": {
+=======
+                "Capital Equipment": {
+                    "account_type": "Fixed Asset"
+                },
+                "Electronic Equipment": {
+                    "account_type": "Fixed Asset"
+                },
+                "Furniture and Fixtures": {
+                    "account_type": "Fixed Asset"
+                },
+                "Office Equipment": {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                     "account_type": "Fixed Asset"
                 },
                 "Plants and Machineries": {
@@ -109,7 +122,12 @@
                 "Utility Expenses": {},
                 "Write Off": {},
                 "Exchange Gain/Loss": {},
+<<<<<<< HEAD
                 "Gain/Loss on Asset Disposal": {}
+=======
+                "Gain/Loss on Asset Disposal": {},
+                "Impairment": {}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
             },
             "root_type": "Expense"
         },
@@ -132,7 +150,12 @@
         "Source of Funds (Liabilities)": {
             "Capital Account": {
                 "Reserves and Surplus": {},
+<<<<<<< HEAD
                 "Shareholders Funds": {}
+=======
+                "Shareholders Funds": {},
+                "Revaluation Surplus": {}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
             },
             "Current Liabilities": {
                 "Accounts Payable": {

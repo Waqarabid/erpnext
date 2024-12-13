@@ -32,6 +32,9 @@ def get_data():
 			{"label": _("Manufacture"), "items": ["Production Plan", "Work Order", "Item Manufacturer"]},
 			{"label": _("Traceability"), "items": ["Serial No", "Batch"]},
 			{"label": _("Stock Movement"), "items": ["Stock Entry", "Stock Reconciliation"]},
+<<<<<<< HEAD
 			{"label": _("E-commerce"), "items": ["Website Item"]},
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		],
 	}

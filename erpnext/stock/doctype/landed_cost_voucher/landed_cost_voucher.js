@@ -1,6 +1,7 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
+<<<<<<< HEAD
 {% include 'erpnext/stock/landed_taxes_and_charges_common.js' %};
 
 frappe.provide("erpnext.stock");
@@ -26,6 +27,35 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 					filters: filters
 				}
 			};
+=======
+frappe.provide("erpnext.stock");
+
+erpnext.landed_cost_taxes_and_charges.setup_triggers("Landed Cost Voucher");
+erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.StockController {
+	setup() {
+		var me = this;
+		this.frm.fields_dict.purchase_receipts.grid.get_field("receipt_document").get_query = function (
+			doc,
+			cdt,
+			cdn
+		) {
+			var d = locals[cdt][cdn];
+
+			var filters = [
+				[d.receipt_document_type, "docstatus", "=", "1"],
+				[d.receipt_document_type, "company", "=", me.frm.doc.company],
+			];
+
+			if (d.receipt_document_type == "Purchase Invoice") {
+				filters.push(["Purchase Invoice", "update_stock", "=", "1"]);
+			}
+
+			if (!me.frm.doc.company) frappe.msgprint(__("Please enter company first"));
+			return {
+				filters: filters,
+			};
+		};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		this.frm.add_fetch("receipt_document", "supplier", "supplier");
 		this.frm.add_fetch("receipt_document", "posting_date", "posting_date");
@@ -33,8 +63,12 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 	}
 
 	refresh() {
+<<<<<<< HEAD
 		var help_content =
 			`<br><br>
+=======
+		var help_content = `<br><br>
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			<table class="table table-bordered" style="background-color: var(--scrollbar-track-color);">
 				<tr><td>
 					<h4>
@@ -71,15 +105,25 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 
 	get_items_from_purchase_receipts() {
 		var me = this;
+<<<<<<< HEAD
 		if(!this.frm.doc.purchase_receipts.length) {
+=======
+		if (!this.frm.doc.purchase_receipts.length) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			frappe.msgprint(__("Please enter Purchase Receipt first"));
 		} else {
 			return this.frm.call({
 				doc: me.frm.doc,
 				method: "get_items_from_purchase_receipts",
+<<<<<<< HEAD
 				callback: function(r, rt) {
 					me.set_applicable_charges_for_item();
 				}
+=======
+				callback: function (r, rt) {
+					me.set_applicable_charges_for_item();
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			});
 		}
 	}
@@ -91,7 +135,11 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 
 	set_total_taxes_and_charges() {
 		var total_taxes_and_charges = 0.0;
+<<<<<<< HEAD
 		$.each(this.frm.doc.taxes || [], function(i, d) {
+=======
+		$.each(this.frm.doc.taxes || [], function (i, d) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			total_taxes_and_charges += flt(d.base_amount);
 		});
 		this.frm.set_value("total_taxes_and_charges", total_taxes_and_charges);
@@ -100,6 +148,7 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 	set_applicable_charges_for_item() {
 		var me = this;
 
+<<<<<<< HEAD
 		if(this.frm.doc.taxes.length) {
 			var total_item_cost = 0.0;
 			var based_on = this.frm.doc.distribute_charges_based_on.toLowerCase();
@@ -119,22 +168,57 @@ erpnext.stock.LandedCostVoucher = class LandedCostVoucher extends erpnext.stock.
 				if (total_charges != this.frm.doc.total_taxes_and_charges){
 					var diff = this.frm.doc.total_taxes_and_charges - flt(total_charges)
 					this.frm.doc.items.slice(-1)[0].applicable_charges += diff
+=======
+		if (this.frm.doc.taxes.length) {
+			var total_item_cost = 0.0;
+			var based_on = this.frm.doc.distribute_charges_based_on.toLowerCase();
+
+			if (based_on != "distribute manually") {
+				$.each(this.frm.doc.items || [], function (i, d) {
+					total_item_cost += flt(d[based_on]);
+				});
+
+				var total_charges = 0.0;
+				$.each(this.frm.doc.items || [], function (i, item) {
+					item.applicable_charges =
+						(flt(item[based_on]) * flt(me.frm.doc.total_taxes_and_charges)) /
+						flt(total_item_cost);
+					item.applicable_charges = flt(
+						item.applicable_charges,
+						precision("applicable_charges", item)
+					);
+					total_charges += item.applicable_charges;
+				});
+
+				if (total_charges != this.frm.doc.total_taxes_and_charges) {
+					var diff = this.frm.doc.total_taxes_and_charges - flt(total_charges);
+					this.frm.doc.items.slice(-1)[0].applicable_charges += diff;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 				refresh_field("items");
 			}
 		}
 	}
+<<<<<<< HEAD
 	distribute_charges_based_on (frm) {
+=======
+	distribute_charges_based_on(frm) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		this.set_applicable_charges_for_item();
 	}
 
 	items_remove() {
+<<<<<<< HEAD
 		this.trigger('set_applicable_charges_for_item');
+=======
+		this.trigger("set_applicable_charges_for_item");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 };
 
 cur_frm.script_manager.make(erpnext.stock.LandedCostVoucher);
 
+<<<<<<< HEAD
 frappe.ui.form.on('Landed Cost Taxes and Charges', {
 	expense_account: function(frm, cdt, cdn) {
 		frm.events.set_account_currency(frm, cdt, cdn);
@@ -143,4 +227,14 @@ frappe.ui.form.on('Landed Cost Taxes and Charges', {
 	amount: function(frm, cdt, cdn) {
 		frm.events.set_base_amount(frm, cdt, cdn);
 	}
+=======
+frappe.ui.form.on("Landed Cost Taxes and Charges", {
+	expense_account: function (frm, cdt, cdn) {
+		frm.events.set_account_currency(frm, cdt, cdn);
+	},
+
+	amount: function (frm, cdt, cdn) {
+		frm.events.set_base_amount(frm, cdt, cdn);
+	},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 });

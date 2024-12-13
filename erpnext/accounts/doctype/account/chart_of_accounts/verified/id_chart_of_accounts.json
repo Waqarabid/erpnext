@@ -69,8 +69,12 @@
                 "Persediaan Barang": {
                     "Persediaan Barang": {
                         "account_number": "1141.000", 
+<<<<<<< HEAD
                         "account_type": "Stock", 
                         "is_group": 1
+=======
+                        "account_type": "Stock"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                     }, 
                     "Uang Muka Pembelian": {
                         "Uang Muka Pembelian": {
@@ -670,7 +674,12 @@
             }, 
             "Penjualan Barang Dagangan": {
                 "Penjualan": {
+<<<<<<< HEAD
                     "account_number": "4110.000"
+=======
+                    "account_number": "4110.000",
+                    "account_type": "Income Account"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
                 }, 
                 "Potongan Penjualan": {
                     "account_number": "4130.000"

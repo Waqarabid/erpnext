@@ -7,7 +7,10 @@ import os
 from pathlib import Path
 
 import frappe
+<<<<<<< HEAD
 from frappe import _
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.desk.doctype.global_search_settings.global_search_settings import (
 	update_global_search_doctypes,
 )
@@ -18,6 +21,17 @@ from erpnext.accounts.doctype.account.account import RootNotEditable
 from erpnext.regional.address_template.setup import set_up_address_templates
 
 
+<<<<<<< HEAD
+=======
+def _(x, *args, **kwargs):
+	"""Redefine the translation function to return the string as is.
+
+	We want to create english records but still mark the strings as translatable.
+	The respective DocTypes have 'Translate Link Fields' enabled."""
+	return x
+
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def read_lines(filename: str) -> list[str]:
 	"""Return a list of lines from a file in the data directory."""
 	return (Path(__file__).parent.parent / "data" / filename).read_text().splitlines()
@@ -66,6 +80,7 @@ def install(country=None):
 			"parent_item_group": _("All Item Groups"),
 		},
 		# Stock Entry Type
+<<<<<<< HEAD
 		{"doctype": "Stock Entry Type", "name": "Material Issue", "purpose": "Material Issue"},
 		{"doctype": "Stock Entry Type", "name": "Material Receipt", "purpose": "Material Receipt"},
 		{
@@ -89,6 +104,56 @@ def install(country=None):
 			"doctype": "Stock Entry Type",
 			"name": "Material Consumption for Manufacture",
 			"purpose": "Material Consumption for Manufacture",
+=======
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Material Issue"),
+			"purpose": "Material Issue",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Material Receipt"),
+			"purpose": "Material Receipt",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Material Transfer"),
+			"purpose": "Material Transfer",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Manufacture"),
+			"purpose": "Manufacture",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Repack"),
+			"purpose": "Repack",
+			"is_standard": 1,
+		},
+		{"doctype": "Stock Entry Type", "name": "Disassemble", "purpose": "Disassemble", "is_standard": 1},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Send to Subcontractor"),
+			"purpose": "Send to Subcontractor",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Material Transfer for Manufacture"),
+			"purpose": "Material Transfer for Manufacture",
+			"is_standard": 1,
+		},
+		{
+			"doctype": "Stock Entry Type",
+			"name": _("Material Consumption for Manufacture"),
+			"purpose": "Material Consumption for Manufacture",
+			"is_standard": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		# territory: with two default territories, one for home country and one named Rest of the World
 		{
@@ -250,9 +315,15 @@ def install(country=None):
 		{"doctype": "Opportunity Type", "name": _("Sales")},
 		{"doctype": "Opportunity Type", "name": _("Support")},
 		{"doctype": "Opportunity Type", "name": _("Maintenance")},
+<<<<<<< HEAD
 		{"doctype": "Project Type", "project_type": "Internal"},
 		{"doctype": "Project Type", "project_type": "External"},
 		{"doctype": "Project Type", "project_type": "Other"},
+=======
+		{"doctype": "Project Type", "project_type": _("Internal")},
+		{"doctype": "Project Type", "project_type": _("External")},
+		{"doctype": "Project Type", "project_type": _("Other")},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		{"doctype": "Print Heading", "print_heading": _("Credit Note")},
 		{"doctype": "Print Heading", "print_heading": _("Debit Note")},
 		# Share Management
@@ -270,7 +341,11 @@ def install(country=None):
 		("Designation", "designation_name", "designation.txt"),
 		("Sales Stage", "stage_name", "sales_stage.txt"),
 		("Industry Type", "industry", "industry_type.txt"),
+<<<<<<< HEAD
 		("Lead Source", "source_name", "lead_source.txt"),
+=======
+		("UTM Source", "name", "marketing_source.txt"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		("Sales Partner Type", "sales_partner_type", "sales_partner_type.txt"),
 	):
 		records += [{"doctype": doctype, title_field: title} for title in read_lines(filename)]
@@ -334,6 +409,7 @@ def add_uom_data():
 		open(frappe.get_app_path("erpnext", "setup", "setup_wizard", "data", "uom_data.json")).read()
 	)
 	for d in uoms:
+<<<<<<< HEAD
 		if not frappe.db.exists("UOM", _(d.get("uom_name"))):
 			frappe.get_doc(
 				{
@@ -344,6 +420,12 @@ def add_uom_data():
 					"enabled": 1,
 				}
 			).db_insert()
+=======
+		if not frappe.db.exists("UOM", d.get("uom_name")):
+			doc = frappe.new_doc("UOM")
+			doc.update(d)
+			doc.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# bootstrap uom conversion factors
 	uom_conversions = json.loads(
@@ -352,19 +434,34 @@ def add_uom_data():
 		).read()
 	)
 	for d in uom_conversions:
+<<<<<<< HEAD
 		if not frappe.db.exists("UOM Category", _(d.get("category"))):
 			frappe.get_doc({"doctype": "UOM Category", "category_name": _(d.get("category"))}).db_insert()
 
 		if not frappe.db.exists(
 			"UOM Conversion Factor",
 			{"from_uom": _(d.get("from_uom")), "to_uom": _(d.get("to_uom"))},
+=======
+		if not frappe.db.exists("UOM Category", d.get("category")):
+			frappe.get_doc({"doctype": "UOM Category", "category_name": d.get("category")}).db_insert()
+
+		if not frappe.db.exists(
+			"UOM Conversion Factor",
+			{"from_uom": d.get("from_uom"), "to_uom": d.get("to_uom")},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		):
 			frappe.get_doc(
 				{
 					"doctype": "UOM Conversion Factor",
+<<<<<<< HEAD
 					"category": _(d.get("category")),
 					"from_uom": _(d.get("from_uom")),
 					"to_uom": _(d.get("to_uom")),
+=======
+					"category": d.get("category"),
+					"from_uom": d.get("from_uom"),
+					"to_uom": d.get("to_uom"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					"value": d.get("value"),
 				}
 			).db_insert()
@@ -452,7 +549,10 @@ def install_defaults(args=None):  # nosemgrep
 
 	set_global_defaults(args)
 	update_stock_settings()
+<<<<<<< HEAD
 	update_shopping_cart_settings(args)
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	args.update({"set_default": 1})
 	create_bank_account(args)
@@ -477,17 +577,27 @@ def update_stock_settings():
 	stock_settings.item_naming_by = "Item Code"
 	stock_settings.valuation_method = "FIFO"
 	stock_settings.default_warehouse = frappe.db.get_value("Warehouse", {"warehouse_name": _("Stores")})
+<<<<<<< HEAD
 	stock_settings.stock_uom = _("Nos")
 	stock_settings.auto_indent = 1
 	stock_settings.auto_insert_price_list_rate_if_missing = 1
 	stock_settings.automatically_set_serial_nos_based_on_fifo = 1
+=======
+	stock_settings.stock_uom = "Nos"
+	stock_settings.auto_indent = 1
+	stock_settings.auto_insert_price_list_rate_if_missing = 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	stock_settings.set_qty_in_transactions_based_on_serial_no_input = 1
 	stock_settings.save()
 
 
 def create_bank_account(args):
 	if not args.get("bank_account"):
+<<<<<<< HEAD
 		return
+=======
+		args["bank_account"] = _("Bank Account")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	company_name = args.get("company_name")
 	bank_account_group = frappe.db.get_value(
@@ -526,6 +636,7 @@ def create_bank_account(args):
 			pass
 
 
+<<<<<<< HEAD
 def update_shopping_cart_settings(args):  # nosemgrep
 	shopping_cart = frappe.get_doc("E Commerce Settings")
 	shopping_cart.update(
@@ -540,6 +651,8 @@ def update_shopping_cart_settings(args):  # nosemgrep
 	shopping_cart.update_single(shopping_cart.get_valid_dict())
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_fy_details(fy_start_date, fy_end_date):
 	start_year = getdate(fy_start_date).year
 	if start_year == getdate(fy_end_date).year:

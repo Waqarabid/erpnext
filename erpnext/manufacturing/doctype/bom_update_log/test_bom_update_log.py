@@ -2,7 +2,11 @@
 # See license.txt
 
 import frappe
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.manufacturing.doctype.bom_update_log.bom_update_log import (
 	BOMMissingError,
@@ -13,6 +17,7 @@ from erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool import (
 	enqueue_update_cost,
 )
 
+<<<<<<< HEAD
 test_records = frappe.get_test_records("BOM")
 
 
@@ -21,6 +26,26 @@ class TestBOMUpdateLog(FrappeTestCase):
 
 	def setUp(self):
 		bom_doc = frappe.copy_doc(test_records[0])
+=======
+
+class UnitTestBomUpdateLog(UnitTestCase):
+	"""
+	Unit tests for BomUpdateLog.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["BOM"]
+
+
+class TestBOMUpdateLog(IntegrationTestCase):
+	"Test BOM Update Tool Operations via BOM Update Log."
+
+	def setUp(self):
+		bom_doc = frappe.copy_doc(self.globalTestRecords["BOM"][0])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		bom_doc.items[1].item_code = "_Test Item"
 		bom_doc.insert()
 

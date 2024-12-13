@@ -1,7 +1,10 @@
 {
  "actions": [],
  "creation": "2013-06-24 15:49:57",
+<<<<<<< HEAD
  "description": "Settings for Accounts",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "doctype": "DocType",
  "document_type": "Other",
  "editable_grid": 1,
@@ -13,6 +16,10 @@
   "unlink_advance_payment_on_cancelation_of_order",
   "column_break_13",
   "delete_linked_ledger_entries",
+<<<<<<< HEAD
+=======
+  "enable_immutable_ledger",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "invoicing_features_section",
   "check_supplier_invoice_uniqueness",
   "automatically_fetch_payment_terms",
@@ -21,8 +28,11 @@
   "allow_multi_currency_invoices_against_single_party_account",
   "journals_section",
   "merge_similar_account_heads",
+<<<<<<< HEAD
   "report_setting_section",
   "use_custom_cash_flow",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "deferred_accounting_settings_section",
   "book_deferred_entries_based_on",
   "column_break_18",
@@ -34,6 +44,10 @@
   "column_break_19",
   "add_taxes_from_item_tax_template",
   "book_tax_discount_loss",
+<<<<<<< HEAD
+=======
+  "round_row_wise_tax",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "print_settings",
   "show_inclusive_tax_in_print",
   "show_taxes_as_table_in_print",
@@ -56,6 +70,11 @@
   "post_change_gl_entries",
   "assets_tab",
   "asset_settings_section",
+<<<<<<< HEAD
+=======
+  "calculate_depr_using_total_days",
+  "column_break_gjcc",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "book_asset_depreciation_entry_automatically",
   "closing_settings_tab",
   "period_closing_settings_section",
@@ -63,17 +82,31 @@
   "ignore_account_closing_balance",
   "column_break_25",
   "frozen_accounts_modifier",
+<<<<<<< HEAD
   "report_settings_sb",
   "banking_tab",
   "enable_party_matching",
   "enable_fuzzy_matching",
   "tab_break_dpet",
   "show_balance_in_coa",
+=======
+  "tab_break_dpet",
+  "show_balance_in_coa",
+  "banking_tab",
+  "enable_party_matching",
+  "enable_fuzzy_matching",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "reports_tab",
   "remarks_section",
   "general_ledger_remarks_length",
   "column_break_lvjk",
+<<<<<<< HEAD
   "receivable_payable_remarks_length"
+=======
+  "receivable_payable_remarks_length",
+  "payment_request_settings",
+  "create_pr_in_draft_status"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -108,7 +141,11 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
    "description": "Enabling ensure each Purchase Invoice has a unique value in Supplier Invoice No. field",
+=======
+   "description": "Enabling this ensures each Purchase Invoice has a unique value in Supplier Invoice No. field within a particular fiscal year",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "check_supplier_invoice_uniqueness",
    "fieldtype": "Check",
    "label": "Check Supplier Invoice Number Uniqueness"
@@ -186,6 +223,7 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
    "description": "Only select this if you have set up the Cash Flow Mapper documents",
    "fieldname": "use_custom_cash_flow",
    "fieldtype": "Check",
@@ -193,6 +231,8 @@
   },
   {
    "default": "0",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "description": "Payment Terms from orders will be fetched into the invoices as is",
    "fieldname": "automatically_fetch_payment_terms",
    "fieldtype": "Check",
@@ -350,11 +390,14 @@
    "label": "POS"
   },
   {
+<<<<<<< HEAD
    "fieldname": "report_setting_section",
    "fieldtype": "Section Break",
    "label": "Report Setting"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "description": "Enabling this will allow creation of multi-currency invoices against single party account in company currency",
    "fieldname": "allow_multi_currency_invoices_against_single_party_account",
@@ -362,6 +405,20 @@
    "label": "Allow multi-currency invoices against single party account "
   },
   {
+<<<<<<< HEAD
+=======
+   "fieldname": "tab_break_dpet",
+   "fieldtype": "Tab Break",
+   "label": "Chart Of Accounts"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_balance_in_coa",
+   "fieldtype": "Check",
+   "label": "Show Balances in Chart Of Accounts"
+  },
+  {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "default": "0",
    "description": "Split Early Payment Discount Loss into Income and Tax Loss",
    "fieldname": "book_tax_discount_loss",
@@ -425,6 +482,7 @@
    "label": "Ignore Account Closing Balance"
   },
   {
+<<<<<<< HEAD
    "fieldname": "tab_break_dpet",
    "fieldtype": "Tab Break",
    "label": "Chart Of Accounts"
@@ -434,6 +492,13 @@
    "fieldname": "show_balance_in_coa",
    "fieldtype": "Check",
    "label": "Show Balances in Chart Of Accounts"
+=======
+   "default": "0",
+   "description": "Tax Amount will be rounded on a row(items) level",
+   "fieldname": "round_row_wise_tax",
+   "fieldtype": "Check",
+   "label": "Round Tax Amount Row-wise"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "fieldname": "reports_tab",
@@ -462,6 +527,39 @@
    "fieldname": "remarks_section",
    "fieldtype": "Section Break",
    "label": "Remarks Column Length"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "description": "On enabling this cancellation entries will be posted on the actual cancellation date and reports will consider cancelled entries as well",
+   "fieldname": "enable_immutable_ledger",
+   "fieldtype": "Check",
+   "label": "Enable Immutable Ledger"
+  },
+  {
+   "fieldname": "column_break_gjcc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Enable this option to calculate daily depreciation by considering the total number of days in the entire depreciation period, (including leap years) while using daily pro-rata based depreciation",
+   "fieldname": "calculate_depr_using_total_days",
+   "fieldtype": "Check",
+   "label": "Calculate daily depreciation using total days in depreciation period"
+  },
+  {
+   "description": "Payment Request created from Sales Order or Purchase Order will be in Draft status. When disabled document will be in unsaved state.",
+   "fieldname": "payment_request_settings",
+   "fieldtype": "Tab Break",
+   "label": "Payment Request"
+  },
+  {
+   "default": "1",
+   "fieldname": "create_pr_in_draft_status",
+   "fieldtype": "Check",
+   "label": "Create in Draft Status"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "icon-cog",
@@ -469,7 +567,11 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2024-01-22 12:10:10.151819",
+=======
+ "modified": "2024-07-26 06:48:52.714630",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounts Settings",
@@ -494,8 +596,16 @@
   }
  ],
  "quick_entry": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

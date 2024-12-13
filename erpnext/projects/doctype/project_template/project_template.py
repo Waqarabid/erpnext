@@ -9,6 +9,25 @@ from frappe.utils import get_link_to_form
 
 
 class ProjectTemplate(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.projects.doctype.project_template_task.project_template_task import (
+			ProjectTemplateTask,
+		)
+
+		project_type: DF.Link | None
+		tasks: DF.Table[ProjectTemplateTask]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_dependencies()
 

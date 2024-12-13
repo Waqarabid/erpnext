@@ -11,6 +11,7 @@ from frappe.contacts.address_and_contact import (
 	delete_contact_and_address,
 	load_address_and_contact,
 )
+<<<<<<< HEAD
 from frappe.desk.reportview import build_match_conditions, get_filters_cond
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.naming import set_name_by_naming_series, set_name_from_naming_options
@@ -22,12 +23,89 @@ from erpnext.accounts.party import (
 	get_dashboard_info,
 	validate_party_accounts,
 )
+=======
+from frappe.model.mapper import get_mapped_doc
+from frappe.model.naming import set_name_by_naming_series, set_name_from_naming_options
+from frappe.model.utils.rename_doc import update_linked_doctypes
+from frappe.utils import cint, cstr, flt, get_formatted_email, today
+from frappe.utils.user import get_users_with_role
+
+from erpnext.accounts.party import get_dashboard_info, validate_party_accounts
+from erpnext.controllers.website_list_for_contact import add_role_for_portal_user
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.utilities.transaction_base import TransactionBase
 
 
 class Customer(TransactionBase):
+<<<<<<< HEAD
 	def get_feed(self):
 		return self.customer_name
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.allowed_to_transact_with.allowed_to_transact_with import (
+			AllowedToTransactWith,
+		)
+		from erpnext.accounts.doctype.party_account.party_account import PartyAccount
+		from erpnext.selling.doctype.customer_credit_limit.customer_credit_limit import (
+			CustomerCreditLimit,
+		)
+		from erpnext.selling.doctype.sales_team.sales_team import SalesTeam
+		from erpnext.utilities.doctype.portal_user.portal_user import PortalUser
+
+		account_manager: DF.Link | None
+		accounts: DF.Table[PartyAccount]
+		companies: DF.Table[AllowedToTransactWith]
+		credit_limits: DF.Table[CustomerCreditLimit]
+		customer_details: DF.Text | None
+		customer_group: DF.Link | None
+		customer_name: DF.Data
+		customer_pos_id: DF.Data | None
+		customer_primary_address: DF.Link | None
+		customer_primary_contact: DF.Link | None
+		customer_type: DF.Literal["Company", "Individual", "Partnership"]
+		default_bank_account: DF.Link | None
+		default_commission_rate: DF.Float
+		default_currency: DF.Link | None
+		default_price_list: DF.Link | None
+		default_sales_partner: DF.Link | None
+		disabled: DF.Check
+		dn_required: DF.Check
+		email_id: DF.ReadOnly | None
+		gender: DF.Link | None
+		image: DF.AttachImage | None
+		industry: DF.Link | None
+		is_frozen: DF.Check
+		is_internal_customer: DF.Check
+		language: DF.Link | None
+		lead_name: DF.Link | None
+		loyalty_program: DF.Link | None
+		loyalty_program_tier: DF.Data | None
+		market_segment: DF.Link | None
+		mobile_no: DF.ReadOnly | None
+		naming_series: DF.Literal["CUST-.YYYY.-"]
+		opportunity_name: DF.Link | None
+		payment_terms: DF.Link | None
+		portal_users: DF.Table[PortalUser]
+		primary_address: DF.Text | None
+		prospect_name: DF.Link | None
+		represents_company: DF.Link | None
+		sales_team: DF.Table[SalesTeam]
+		salutation: DF.Link | None
+		so_required: DF.Check
+		tax_category: DF.Link | None
+		tax_id: DF.Data | None
+		tax_withholding_category: DF.Link | None
+		territory: DF.Link | None
+		website: DF.Data | None
+	# end: auto-generated types
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def onload(self):
 		"""Load address and contacts in `__onload`"""
@@ -45,7 +123,11 @@ class Customer(TransactionBase):
 		elif cust_master_name == "Naming Series":
 			set_name_by_naming_series(self)
 		else:
+<<<<<<< HEAD
 			self.name = set_name_from_naming_options(frappe.get_meta(self.doctype).autoname, self)
+=======
+			set_name_from_naming_options(frappe.get_meta(self.doctype).autoname, self)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def get_customer_name(self):
 		if frappe.db.get_value("Customer", self.customer_name) and not frappe.flags.in_import:
@@ -65,6 +147,10 @@ class Customer(TransactionBase):
 				),
 				title=_("Note"),
 				indicator="yellow",
+<<<<<<< HEAD
+=======
+				alert=True,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 			return new_customer_name
@@ -84,6 +170,11 @@ class Customer(TransactionBase):
 		self.check_customer_group_change()
 		self.validate_default_bank_account()
 		self.validate_internal_customer()
+<<<<<<< HEAD
+=======
+		self.add_role_for_user()
+		self.validate_currency_for_receivable_payable_and_advance_account()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# set loyalty program tier
 		if frappe.db.exists("Customer", self.name):
@@ -173,6 +264,13 @@ class Customer(TransactionBase):
 
 		self.update_customer_groups()
 
+<<<<<<< HEAD
+=======
+	def add_role_for_user(self):
+		for portal_user in self.portal_users:
+			add_role_for_portal_user(portal_user, "Customer")
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def update_customer_groups(self):
 		ignore_doctypes = ["Lead", "Opportunity", "POS Profile", "Tax Rule", "Pricing Rule"]
 		if frappe.flags.customer_group_changed:
@@ -187,6 +285,11 @@ class Customer(TransactionBase):
 				self.db_set("customer_primary_contact", contact.name)
 				self.db_set("mobile_no", self.mobile_no)
 				self.db_set("email_id", self.email_id)
+<<<<<<< HEAD
+=======
+		elif self.customer_primary_contact:
+			frappe.set_value("Contact", self.customer_primary_contact, "is_primary_contact", 1)  # ensure
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def create_primary_address(self):
 		from frappe.contacts.doctype.address.address import get_address_display
@@ -197,6 +300,11 @@ class Customer(TransactionBase):
 
 			self.db_set("customer_primary_address", address.name)
 			self.db_set("primary_address", address_display)
+<<<<<<< HEAD
+=======
+		elif self.customer_primary_address:
+			frappe.set_value("Address", self.customer_primary_address, "is_primary_address", 1)  # ensure
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def update_lead_status(self):
 		"""If Customer created from Lead, update lead status to "Converted"
@@ -313,6 +421,7 @@ class Customer(TransactionBase):
 			)
 
 
+<<<<<<< HEAD
 def create_contact(contact, party_type, party, email):
 	"""Create contact based on given contact name"""
 	first, middle, last = parse_full_name(contact)
@@ -330,6 +439,8 @@ def create_contact(contact, party_type, party, email):
 	return doc.insert()
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 @frappe.whitelist()
 def make_quotation(source_name, target_doc=None):
 	def set_missing_values(source, target):
@@ -455,6 +566,7 @@ def get_nested_links(link_doctype, link_name, ignore_permissions=False):
 	return links
 
 
+<<<<<<< HEAD
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
@@ -497,6 +609,8 @@ def get_customer_list(doctype, txt, searchfield, start, page_len, filters=None):
 	)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, extra_amount=0):
 	credit_limit = get_credit_limit(customer, company)
 	if not credit_limit:
@@ -507,12 +621,21 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 		customer_outstanding += flt(extra_amount)
 
 	if credit_limit > 0 and flt(customer_outstanding) > credit_limit:
+<<<<<<< HEAD
 		msgprint(
 			_("Credit limit has been crossed for customer {0} ({1}/{2})").format(
 				customer, customer_outstanding, credit_limit
 			)
 		)
 
+=======
+		message = _("Credit limit has been crossed for customer {0} ({1}/{2})").format(
+			customer, customer_outstanding, credit_limit
+		)
+
+		message += "<br><br>"
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		# If not authorized person raise exception
 		credit_controller_role = frappe.db.get_single_value("Accounts Settings", "credit_controller")
 		if not credit_controller_role or credit_controller_role not in frappe.get_roles():
@@ -533,7 +656,11 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 
 			user_list = "<br><br><ul><li>{}</li></ul>".format("<li>".join(credit_controller_users_formatted))
 
+<<<<<<< HEAD
 			message = _(
+=======
+			message += _(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"Please contact any of the following users to extend the credit limits for {0}: {1}"
 			).format(customer, user_list)
 
@@ -541,7 +668,11 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 			# prompt them to send out an email to the controller users
 			frappe.msgprint(
 				message,
+<<<<<<< HEAD
 				title="Notify",
+=======
+				title=_("Credit Limit Crossed"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				raise_exception=1,
 				primary_action={
 					"label": "Send Email",
@@ -558,6 +689,7 @@ def check_credit_limit(customer, company, ignore_outstanding_sales_order=False, 
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def send_emails(args):
 	args = json.loads(args)
 	subject = _("Credit limit reached for customer {0}").format(args.get("customer"))
@@ -565,11 +697,24 @@ def send_emails(args):
 		args.get("customer"), args.get("customer_outstanding"), args.get("credit_limit")
 	)
 	frappe.sendmail(recipients=args.get("credit_controller_users_list"), subject=subject, message=message)
+=======
+def send_emails(customer, customer_outstanding, credit_limit, credit_controller_users_list):
+	if isinstance(credit_controller_users_list, str):
+		credit_controller_users_list = json.loads(credit_controller_users_list)
+	subject = _("Credit limit reached for customer {0}").format(customer)
+	message = _("Credit limit has been crossed for customer {0} ({1}/{2})").format(
+		customer, customer_outstanding, credit_limit
+	)
+	frappe.sendmail(recipients=credit_controller_users_list, subject=subject, message=message)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):
 	# Outstanding based on GL Entries
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	cond = ""
 	if cost_center:
 		lft, rgt = frappe.get_cached_value("Cost Center", cost_center, ["lft", "rgt"])
@@ -702,9 +847,12 @@ def make_contact(args, is_primary_contact=1):
 	else:
 		values.update(
 			{
+<<<<<<< HEAD
 				"first_name": args.get("customer_name")
 				if args.doctype == "Customer"
 				else args.get("supplier_name"),
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"company_name": args.get(party_name_key),
 			}
 		)

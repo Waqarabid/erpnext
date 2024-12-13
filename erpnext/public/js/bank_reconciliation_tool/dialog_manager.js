@@ -87,6 +87,7 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 					const proposals_wrapper = this.dialog.fields_dict.payment_proposals.$wrapper;
 					proposals_wrapper.show();
 					this.dialog.fields_dict.no_matching_vouchers.$wrapper.hide();
+<<<<<<< HEAD
 					this.data = [];
 					data.forEach((row) => {
 						const reference_date = row[5] ? row[5] : row[8];
@@ -99,6 +100,9 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 							row[6],
 						]);
 					});
+=======
+					this.data = data.map((row) => this.format_row(row));
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					this.get_dt_columns();
 					this.get_datatable(proposals_wrapper);
 				} else {
@@ -130,6 +134,10 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 				name: __("Reference Date"),
 				editable: false,
 				width: 120,
+<<<<<<< HEAD
+=======
+				format: frappe.form.formatters.Date,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 			{
 				name: __("Remaining"),
@@ -149,6 +157,20 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 		];
 	}
 
+<<<<<<< HEAD
+=======
+	format_row(row) {
+		return [
+			row["doctype"],
+			row["name"],
+			row["reference_date"] || row["posting_date"],
+			format_currency(row["paid_amount"], row["currency"]),
+			row["reference_no"],
+			row["party"],
+		];
+	}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	get_datatable(proposals_wrapper) {
 		if (!this.datatable) {
 			const datatable_options = {
@@ -373,6 +395,17 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 				label: "Cost Center",
 				options: "Cost Center",
 				depends_on: "eval:doc.action=='Create Voucher' && doc.document_type=='Payment Entry'",
+<<<<<<< HEAD
+=======
+				get_query: () => {
+					return {
+						filters: {
+							is_group: 0,
+							company: this.company,
+						},
+					};
+				},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			},
 			{
 				fieldtype: "Section Break",

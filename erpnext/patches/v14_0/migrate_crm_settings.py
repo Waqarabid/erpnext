@@ -2,6 +2,7 @@ import frappe
 
 
 def execute():
+<<<<<<< HEAD
 	settings = frappe.db.get_value(
 		"Selling Settings",
 		"Selling Settings",
@@ -13,6 +14,13 @@ def execute():
 	if settings:
 		frappe.db.set_value(
 			"CRM Settings",
+=======
+	settings = frappe.db.get_singles_dict("Selling Settings", cast=True)
+
+	frappe.reload_doc("crm", "doctype", "crm_settings")
+	if settings:
+		frappe.db.set_single_value(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"CRM Settings",
 			{
 				"campaign_naming_by": settings.campaign_naming_by,

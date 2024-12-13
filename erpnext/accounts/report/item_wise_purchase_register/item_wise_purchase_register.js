@@ -24,6 +24,15 @@ frappe.query_reports["Item-wise Purchase Register"] = {
 			options: "Item",
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "item_group",
+			label: __("Item Group"),
+			fieldtype: "Link",
+			options: "Item Group",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "supplier",
 			label: __("Supplier"),
 			fieldtype: "Link",

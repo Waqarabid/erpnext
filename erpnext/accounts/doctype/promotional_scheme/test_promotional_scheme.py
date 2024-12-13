@@ -1,15 +1,26 @@
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.promotional_scheme.promotional_scheme import TransactionExists
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
 
+<<<<<<< HEAD
 class TestPromotionalScheme(unittest.TestCase):
+=======
+class TestPromotionalScheme(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		if frappe.db.exists("Promotional Scheme", "_Test Scheme"):
 			frappe.delete_doc("Promotional Scheme", "_Test Scheme")
@@ -132,6 +143,31 @@ class TestPromotionalScheme(unittest.TestCase):
 		price_rules = frappe.get_all("Pricing Rule", filters={"promotional_scheme": ps.name})
 		self.assertEqual(price_rules, [])
 
+<<<<<<< HEAD
+=======
+	def test_pricing_rule_for_product_discount_slabs(self):
+		ps = make_promotional_scheme()
+		ps.set("price_discount_slabs", [])
+		ps.set(
+			"product_discount_slabs",
+			[
+				{
+					"rule_description": "12+1",
+					"min_qty": 12,
+					"free_item": "_Test Item 2",
+					"free_qty": 1,
+					"is_recursive": 1,
+					"recurse_for": 12,
+				}
+			],
+		)
+		ps.save()
+		pr = frappe.get_doc("Pricing Rule", {"promotional_scheme_id": ps.product_discount_slabs[0].name})
+		self.assertSequenceEqual(
+			[pr.min_qty, pr.free_item, pr.free_qty, pr.recurse_for], [12, "_Test Item 2", 1, 12]
+		)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_validation_on_recurse_with_mixed_condition(self):
 		ps = make_promotional_scheme()
 		ps.set("price_discount_slabs", [])

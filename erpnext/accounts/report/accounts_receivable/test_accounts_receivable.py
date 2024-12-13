@@ -1,6 +1,10 @@
 import frappe
 from frappe import qb
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase, change_settings
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, flt, getdate, today
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
@@ -10,7 +14,11 @@ from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
 
+<<<<<<< HEAD
 class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
+=======
+class TestAccountsReceivable(AccountsTestMixin, IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		self.create_company()
 		self.create_customer()
@@ -83,10 +91,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			"party": [self.customer],
 			"report_date": add_days(today(), 2),
 			"based_on_payment_terms": 0,
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"show_remarks": False,
 		}
 
@@ -116,10 +128,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			"company": self.company,
 			"based_on_payment_terms": 1,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"show_remarks": True,
 		}
 
@@ -172,10 +188,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"show_remarks": True,
 		}
 
@@ -266,10 +286,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			"company": self.company,
 			"based_on_payment_terms": 0,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		report = execute(filters)
@@ -287,7 +311,11 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			],
 		)
 
+<<<<<<< HEAD
 	@change_settings(
+=======
+	@IntegrationTestCase.change_settings(
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1, "allow_stale": 0},
 	)
@@ -328,10 +356,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 		report = execute(filters)
 
@@ -397,10 +429,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 		report = execute(filters)
 		self.assertEqual(report[1], [])
@@ -416,10 +452,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"group_by_party": True,
 		}
 		report = execute(filters)[1]
@@ -493,10 +533,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"show_future_payments": True,
 		}
 		report = execute(filters)[1]
@@ -555,10 +599,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"sales_person": sales_person.name,
 			"show_sales_person": True,
 		}
@@ -575,10 +623,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"cost_center": self.cost_center,
 		}
 		report = execute(filters)[1]
@@ -593,10 +645,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"customer_group": cus_group,
 		}
 		report = execute(filters)[1]
@@ -618,10 +674,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"customer_group": cus_groups_list,  # Use the list of customer groups
 		}
 		report = execute(filters)[1]
@@ -660,10 +720,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"party_account": self.debit_to,
 		}
 		report = execute(filters)[1]
@@ -711,10 +775,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			"party_type": "Customer",
 			"party": [self.customer],
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"in_party_currency": 1,
 		}
 
@@ -754,10 +822,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			"party_type": "Customer",
 			"party": [self.customer1, self.customer3],
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		si1 = self.create_sales_invoice(no_payment_schedule=True, do_not_submit=True)
@@ -837,10 +909,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		report_ouput = execute(filters)[1]
@@ -903,10 +979,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 			{
 				"company": self.company,
 				"report_date": today(),
+<<<<<<< HEAD
 				"range1": 30,
 				"range2": 60,
 				"range3": 90,
 				"range4": 120,
+=======
+				"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"show_future_payments": True,
 				"in_party_currency": False,
 			}
@@ -965,10 +1045,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		# check invoice grand total and invoiced column's value for 3 payment terms
@@ -991,10 +1075,14 @@ class TestAccountsReceivable(AccountsTestMixin, FrappeTestCase):
 		filters = {
 			"company": self.company,
 			"report_date": today(),
+<<<<<<< HEAD
 			"range1": 30,
 			"range2": 60,
 			"range3": 90,
 			"range4": 120,
+=======
+			"range": "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		# check invoice grand total and invoiced column's value for 3 payment terms

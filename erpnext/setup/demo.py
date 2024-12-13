@@ -205,8 +205,16 @@ def clear_demo_record(document):
 		if key not in valid_columns:
 			filters.pop(key, None)
 
+<<<<<<< HEAD
 	doc = frappe.get_doc(document_type, filters)
 	doc.delete(ignore_permissions=True)
+=======
+	try:
+		doc = frappe.get_doc(document_type, filters)
+		doc.delete(ignore_permissions=True)
+	except frappe.exceptions.DoesNotExistError:
+		pass
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def delete_company(company):

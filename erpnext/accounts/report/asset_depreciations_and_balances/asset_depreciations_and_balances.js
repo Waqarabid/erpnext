@@ -26,10 +26,37 @@ frappe.query_reports["Asset Depreciations and Balances"] = {
 			reqd: 1,
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "group_by",
+			label: __("Group By"),
+			fieldtype: "Select",
+			options: ["Asset Category", "Asset"],
+			default: "Asset Category",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "asset_category",
 			label: __("Asset Category"),
 			fieldtype: "Link",
 			options: "Asset Category",
+<<<<<<< HEAD
+=======
+			depends_on: "eval: doc.group_by == 'Asset Category'",
+		},
+		{
+			fieldname: "asset",
+			label: __("Asset"),
+			fieldtype: "Link",
+			options: "Asset",
+			depends_on: "eval: doc.group_by == 'Asset'",
+		},
+		{
+			fieldname: "finance_book",
+			label: __("Finance Book"),
+			fieldtype: "Link",
+			options: "Finance Book",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 	],
 };

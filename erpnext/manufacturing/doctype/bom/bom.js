@@ -19,6 +19,23 @@ frappe.ui.form.on("BOM", {
 			};
 		});
 
+<<<<<<< HEAD
+=======
+		frm.set_query("bom_no", "operations", function (doc, cdt, cdn) {
+			let row = locals[cdt][cdn];
+			return {
+				query: "erpnext.controllers.queries.bom",
+				filters: {
+					currency: frm.doc.currency,
+					company: frm.doc.company,
+					item: row.finished_good,
+					is_active: 1,
+					docstatus: 1,
+				},
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("source_warehouse", "items", function () {
 			return {
 				filters: {
@@ -85,6 +102,30 @@ frappe.ui.form.on("BOM", {
 		frm.get_field("items").grid.set_multiple_add("item_code", "qty");
 	},
 
+<<<<<<< HEAD
+=======
+	default_source_warehouse(frm) {
+		if (frm.doc.default_source_warehouse) {
+			frm.doc.operations.forEach((d) => {
+				frappe.model.set_value(
+					d.doctype,
+					d.name,
+					"source_warehouse",
+					frm.doc.default_source_warehouse
+				);
+			});
+		}
+	},
+
+	default_target_warehouse(frm) {
+		if (frm.doc.default_source_warehouse) {
+			frm.doc.operations.forEach((d) => {
+				frappe.model.set_value(d.doctype, d.name, "fg_warehouse", frm.doc.default_target_warehouse);
+			});
+		}
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	refresh(frm) {
 		frm.toggle_enable("item", frm.doc.__islocal);
 
@@ -96,6 +137,7 @@ frappe.ui.form.on("BOM", {
 		});
 
 		if (!frm.is_new() && frm.doc.docstatus < 2) {
+<<<<<<< HEAD
 			frm.add_custom_button(__("Update Cost"), function () {
 				frm.events.update_cost(frm, true);
 			});
@@ -112,6 +154,37 @@ frappe.ui.form.on("BOM", {
 				let new_bom = frappe.model.copy_doc(frm.doc);
 				frappe.set_route("Form", "BOM", new_bom.name);
 			});
+=======
+			frm.add_custom_button(
+				__("Update Cost"),
+				function () {
+					frm.events.update_cost(frm, true);
+				},
+				__("Actions")
+			);
+
+			frm.add_custom_button(
+				__("Browse BOM"),
+				function () {
+					frappe.route_options = {
+						bom: frm.doc.name,
+					};
+					frappe.set_route("Tree", "BOM");
+				},
+				__("Actions")
+			);
+		}
+
+		if (!frm.is_new() && !frm.doc.docstatus == 0) {
+			frm.add_custom_button(
+				__("New Version"),
+				function () {
+					let new_bom = frappe.model.copy_doc(frm.doc);
+					frappe.set_route("Form", "BOM", new_bom.name);
+				},
+				__("Actions")
+			);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		if (frm.doc.docstatus == 1) {
@@ -364,7 +437,11 @@ frappe.ui.form.on("BOM", {
 			dialog.fields_dict.items.df.data.push({
 				item_code: d.item_code,
 				variant_item_code: "",
+<<<<<<< HEAD
 				qty: (d.qty / frm.doc.quantity) * (dialog.fields_dict.qty.value || 1),
+=======
+				qty: d.qty,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				source_warehouse: d.source_warehouse,
 				operation: d.operation,
 			});
@@ -432,6 +509,31 @@ frappe.ui.form.on("BOM", {
 	},
 });
 
+<<<<<<< HEAD
+=======
+frappe.ui.form.on("BOM Operation", {
+	bom_no(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+
+		if (row.bom_no && row.finished_good) {
+			frappe.call({
+				method: "add_materials_from_bom",
+				doc: frm.doc,
+				args: {
+					finished_good: row.finished_good,
+					bom_no: row.bom_no,
+					operation_row_id: row.idx,
+					qty: row.finished_good_qty,
+				},
+				callback(r) {
+					refresh_field("items");
+				},
+			});
+		}
+	},
+});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 erpnext.bom.BomController = class BomController extends erpnext.TransactionController {
 	conversion_rate(doc) {
 		if (this.frm.doc.currency === this.get_company_currency()) {
@@ -678,7 +780,11 @@ frappe.ui.form.on("BOM Operation", "operation", function (frm, cdt, cdn) {
 
 frappe.ui.form.on("BOM Operation", "workstation", function (frm, cdt, cdn) {
 	var d = locals[cdt][cdn];
+<<<<<<< HEAD
 
+=======
+	if (!d.workstation) return;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	frappe.call({
 		method: "frappe.client.get",
 		args: {
@@ -801,3 +907,91 @@ function trigger_process_loss_qty_prompt(frm, cdt, cdn, item_code) {
 		__("Set Quantity")
 	);
 }
+<<<<<<< HEAD
+=======
+
+frappe.ui.form.on("BOM Operation", {
+	add_raw_materials(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		frm.events._prompt_for_raw_materials(frm, row);
+	},
+});
+
+frappe.ui.form.on("BOM", {
+	_prompt_for_raw_materials(frm, row) {
+		let fields = frm.events.get_fields_for_prompt(frm, row);
+		frm._bom_rm_dialog = new frappe.ui.Dialog({
+			title: __("Add Raw Materials"),
+			fields: fields,
+			primary_action_label: __("Add"),
+			primary_action: () => {
+				let values = frm._bom_rm_dialog.get_values();
+				if (values) {
+					frm.events._add_raw_materials(frm, values);
+					frm._bom_rm_dialog.hide();
+				}
+			},
+		});
+
+		frm._bom_rm_dialog.show();
+	},
+
+	get_fields_for_prompt(frm, row) {
+		return [
+			{
+				label: __("Raw Materials"),
+				fieldname: "items",
+				fieldtype: "Table",
+				reqd: 1,
+				fields: [
+					{
+						label: __("Item"),
+						fieldname: "item_code",
+						fieldtype: "Link",
+						options: "Item",
+						reqd: 1,
+						in_list_view: 1,
+						change() {
+							let doc = this.doc;
+							doc.qty = 1.0;
+							this.grid.set_value("qty", 1.0, doc);
+						},
+						get_query() {
+							return {
+								filters: {
+									name: ["!=", row.finished_good],
+								},
+							};
+						},
+					},
+					{
+						label: __("Qty"),
+						fieldname: "qty",
+						default: 1.0,
+						fieldtype: "Float",
+						reqd: 1,
+						in_list_view: 1,
+					},
+				],
+			},
+			{
+				fieldname: "operation_row_id",
+				fieldtype: "Data",
+				hidden: 1,
+				default: row.idx,
+			},
+		];
+	},
+
+	_add_raw_materials(frm, values) {
+		frm.call({
+			method: "add_raw_materials",
+			doc: frm.doc,
+			args: {
+				operation_row_id: values.operation_row_id,
+				items: values.items,
+			},
+		});
+	},
+});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

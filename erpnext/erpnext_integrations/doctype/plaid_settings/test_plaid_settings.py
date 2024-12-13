@@ -1,10 +1,17 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 import json
 import unittest
 
 import frappe
+<<<<<<< HEAD
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils.response import json_handler
 
 from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
@@ -16,7 +23,11 @@ from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
 )
 
 
+<<<<<<< HEAD
 class TestPlaidSettings(unittest.TestCase):
+=======
+class TestPlaidSettings(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def setUp(self):
 		pass
 
@@ -31,7 +42,11 @@ class TestPlaidSettings(unittest.TestCase):
 				frappe.delete_doc(doctype, d.name, force=True)
 
 	def test_plaid_disabled(self):
+<<<<<<< HEAD
 		frappe.db.set_value("Plaid Settings", None, "enabled", 0)
+=======
+		frappe.db.set_single_value("Plaid Settings", "enabled", 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertTrue(get_plaid_configuration() == "disabled")
 
 	def test_add_account_type(self):
@@ -42,6 +57,7 @@ class TestPlaidSettings(unittest.TestCase):
 		add_account_subtype("loan")
 		self.assertEqual(frappe.get_doc("Bank Account Subtype", "loan").name, "loan")
 
+<<<<<<< HEAD
 	def test_parent_bank_account_validation(self):
 		if not frappe.db.exists("Bank", "Citi"):
 			frappe.get_doc({"doctype": "Bank", "bank_name": "Citi"}).insert()
@@ -83,6 +99,8 @@ class TestPlaidSettings(unittest.TestCase):
 		if group_bank_account:
 			frappe.db.set_value("Account", group_bank_account[0], "disabled", 0)
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_new_transaction(self):
 		if not frappe.db.exists("Bank", "Citi"):
 			frappe.get_doc({"doctype": "Bank", "bank_name": "Citi"}).insert()

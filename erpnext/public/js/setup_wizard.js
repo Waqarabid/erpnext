@@ -24,7 +24,10 @@ erpnext.setup.slides_settings = [
 				fieldtype: "Data",
 				reqd: 1,
 			},
+<<<<<<< HEAD
 			{ fieldtype: "Column Break" },
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			{
 				fieldname: "company_abbr",
 				label: __("Company Abbreviation"),
@@ -42,6 +45,18 @@ erpnext.setup.slides_settings = [
 			{ fieldname: "fy_start_date", label: __("Financial Year Begins On"), fieldtype: "Date", reqd: 1 },
 			// end date should be hidden (auto calculated)
 			{ fieldname: "fy_end_date", label: __("End Date"), fieldtype: "Date", reqd: 1, hidden: 1 },
+<<<<<<< HEAD
+=======
+			{ fieldtype: "Section Break" },
+			{
+				fieldname: "setup_demo",
+				label: __("Generate Demo Data for Exploration"),
+				fieldtype: "Check",
+				description: __(
+					"If checked, we will create demo data for you to explore the system. This demo data can be erased later."
+				),
+			},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		],
 
 		onload: function (slide) {

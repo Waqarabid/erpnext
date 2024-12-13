@@ -111,10 +111,18 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2020-11-25 20:39:19.973437",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Putaway Rule",
+=======
+ "modified": "2024-07-08 09:19:26.711470",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Putaway Rule",
+ "naming_rule": "Expression (old style)",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -130,6 +138,7 @@
    "write": 1
   },
   {
+<<<<<<< HEAD
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -140,6 +149,12 @@
    "role": "Stock User",
    "share": 1,
    "write": 1
+=======
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   },
   {
    "email": 1,
@@ -153,8 +168,14 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "title_field": "item_code",
  "track_changes": 1
 }

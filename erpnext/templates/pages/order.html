@@ -1,5 +1,9 @@
 {% extends "templates/web.html" %}
+<<<<<<< HEAD
 {% from "erpnext/templates/includes/order/order_macros.html" import item_name_and_description %}
+=======
+{% from "erpnext/templates/includes/macros.html" import product_image %}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 {% block breadcrumbs %}
 	{% include "templates/includes/breadcrumbs.html" %}
@@ -40,7 +44,11 @@
 					<p>
 						<a href="/api/method/erpnext.accounts.doctype.payment_request.payment_request.make_payment_request?dn={{ doc.name }}&dt={{ doc.doctype }}&submit_doc=1&order_type=Shopping Cart"
 							class="btn btn-primary btn-sm" id="pay-for-order">
+<<<<<<< HEAD
 							{{ _("Pay") }} {{doc.get_formatted("grand_total") }}
+=======
+							{{ _("Pay") }} {{ pay_amount }}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						</a>
 					</p>
 				</div>
@@ -130,6 +138,7 @@
 		</div>
 	</div>
 
+<<<<<<< HEAD
 	{% if enabled_checkout and ((doc.doctype=="Sales Order" and doc.per_billed <= 0)
 		or (doc.doctype=="Sales Invoice" and doc.outstanding_amount> 0)) %}
 		<div class="panel panel-default">
@@ -165,6 +174,8 @@
 		</div>
 	{% endif %}
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	{% if attachments %}
 		<div class="order-item-table">
 			<div class="row order-items order-item-header text-muted">
@@ -192,6 +203,7 @@
 	{% endif %}
 {% endblock %}
 
+<<<<<<< HEAD
 
 {% block script %}
 	<script> {% include "templates/pages/order.js" %}</script>
@@ -205,3 +217,29 @@
 		}
 	</script>
 {% endblock %}
+=======
+{% macro item_name_and_description(d) %}
+	<div class="row item_name_and_description">
+		<div class="col-xs-4 col-sm-2 order-image-col">
+			<div class="order-image h-100">
+				{% if d.thumbnail or d.image %}
+					{{ product_image(d.thumbnail or d.image, no_border=True) }}
+				{% else %}
+					<div class="no-image-cart-item" style="min-height: 100px;">
+						{{ frappe.utils.get_abbr(d.item_name) or "NA" }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col-xs-8 col-sm-10">
+			{{ d.item_code }}
+			<div class="text-muted small item-description">
+				{{ html2text(d.description or  "") | truncate(140) }}
+			</div>
+			<span class="text-muted mt-2 d-l-n order-qty">
+				{{ _("Qty ") }}({{ d.get_formatted("qty") }})
+			</span>
+		</div>
+	</div>
+{% endmacro %}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

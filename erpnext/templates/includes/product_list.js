@@ -27,10 +27,17 @@ window.get_product_list = function() {
 }
 
 window.render_product_list = function(data) {
+<<<<<<< HEAD
 	var table = $("#search-list .table");
 	if(data.length) {
 		if(!table.length)
 			var table = $("<table class='table'>").appendTo("#search-list");
+=======
+	let table = $("#search-list .table");
+	if(data.length) {
+		if(!table.length)
+			table = $("<table class='table'>").appendTo("#search-list");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		$.each(data, function(i, d) {
 			$(d).appendTo(table);
@@ -38,11 +45,21 @@ window.render_product_list = function(data) {
 	}
 	if(data.length < 10) {
 		if(!table) {
+<<<<<<< HEAD
 			$(".more-btn")
 				.replaceWith("<div class='alert alert-warning'>{{ _("No products found.") }}</div>");
 		} else {
 			$(".more-btn")
 				.replaceWith("<div class='text-muted'>{{ _("Nothing more to show.") }}</div>");
+=======
+			let message = __("No products found.");
+			$(".more-btn")
+				.replaceWith(`<div class='alert alert-warning'>{{ ${message} }}</div>`);
+		} else {
+			let message = __("Nothing more to show.");
+			$(".more-btn")
+				.replaceWith(`<div class='text-muted'>{{ ${message} }}</div>`);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 	} else {
 		$(".more-btn").toggle(true)

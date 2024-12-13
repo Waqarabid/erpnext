@@ -183,20 +183,45 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+<<<<<<< HEAD
   }
  ],
  "modified": "2023-05-24 14:47:20.243146",
+=======
+  },
+  {
+   "dependencies": "Asset Activity",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Asset Activity",
+   "link_count": 0,
+   "link_to": "Asset Activity",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-01-05 17:40:34.570041",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Assets",
  "number_cards": [],
  "owner": "Administrator",
+<<<<<<< HEAD
  "parent_page": "Accounting",
+=======
+ "parent_page": "",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "public": 1,
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
+<<<<<<< HEAD
  "sequence_id": 4.0,
+=======
+ "sequence_id": 7.0,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "shortcuts": [
   {
    "label": "Asset",

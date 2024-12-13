@@ -6,8 +6,11 @@ from urllib.parse import urlparse
 import frappe
 from frappe import _
 
+<<<<<<< HEAD
 from erpnext import get_default_company
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 def validate_webhooks_request(doctype, hmac_key, secret_key="secret"):
 	def innerfn(fn):
@@ -20,7 +23,11 @@ def validate_webhooks_request(doctype, hmac_key, secret_key="secret"):
 				).digest()
 			)
 
+<<<<<<< HEAD
 			if frappe.request.data and not sig == bytes(frappe.get_request_header(hmac_key).encode()):
+=======
+			if frappe.request.data and sig != bytes(frappe.get_request_header(hmac_key).encode()):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.throw(_("Unverified Webhook Data"))
 			frappe.set_user(settings.modified_by)
 
@@ -49,6 +56,7 @@ def get_webhook_address(connector_name, method, exclude_uri=False, force_https=F
 	return server_url
 
 
+<<<<<<< HEAD
 def create_mode_of_payment(gateway, payment_type="General"):
 	payment_gateway_account = frappe.db.get_value(
 		"Payment Gateway Account", {"payment_gateway": gateway}, ["payment_account"]
@@ -78,6 +86,8 @@ def create_mode_of_payment(gateway, payment_type="General"):
 		return frappe.get_doc("Mode of Payment", mode_of_payment)
 
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 def get_tracking_url(carrier, tracking_number):
 	# Return the formatted Tracking URL.
 	tracking_url = ""

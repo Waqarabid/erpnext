@@ -12,13 +12,22 @@
   "column_break0",
   "serial_no",
   "item_code",
+<<<<<<< HEAD
   "warehouse",
   "batch_no",
   "column_break1",
+=======
+  "batch_no",
+  "warehouse",
+  "purchase_rate",
+  "column_break1",
+  "status",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "item_name",
   "description",
   "item_group",
   "brand",
+<<<<<<< HEAD
   "sales_order",
   "purchase_details",
   "column_break2",
@@ -30,12 +39,15 @@
   "column_break3",
   "supplier",
   "supplier_name",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "asset_details",
   "asset",
   "asset_status",
   "column_break_24",
   "location",
   "employee",
+<<<<<<< HEAD
   "delivery_details",
   "delivery_document_type",
   "delivery_document_no",
@@ -46,6 +58,8 @@
   "customer_name",
   "invoice_details",
   "sales_invoice",
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "warranty_amc_details",
   "column_break6",
   "warranty_expiry_date",
@@ -54,10 +68,17 @@
   "maintenance_status",
   "warranty_period",
   "more_info",
+<<<<<<< HEAD
   "serial_no_details",
   "company",
   "status",
   "work_order"
+=======
+  "company",
+  "column_break_2cmm",
+  "work_order",
+  "purchase_document_no"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -91,6 +112,7 @@
    "reqd": 1
   },
   {
+<<<<<<< HEAD
    "description": "Warehouse can only be changed via Stock Entry / Delivery Note / Purchase Receipt",
    "fieldname": "warehouse",
    "fieldtype": "Link",
@@ -114,16 +136,27 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "column_break1",
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "item_code.item_name",
+   "fetch_if_empty": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item Name",
    "read_only": 1
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "item_code.description",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "description",
    "fieldtype": "Text",
    "label": "Description",
@@ -151,6 +184,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
@@ -229,6 +263,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "asset_details",
    "fieldtype": "Section Break",
    "label": "Asset Details"
@@ -270,6 +306,7 @@
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "delivery_details",
    "fieldtype": "Section Break",
    "label": "Delivery Details",
@@ -345,6 +382,8 @@
    "read_only": 1
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "warranty_amc_details",
    "fieldtype": "Section Break",
    "label": "Warranty / AMC Details"
@@ -366,6 +405,10 @@
    "width": "150px"
   },
   {
+<<<<<<< HEAD
+=======
+   "fetch_from": "item_code.warranty_period",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "warranty_period",
    "fieldtype": "Int",
    "label": "Warranty Period (Days)",
@@ -401,6 +444,7 @@
    "label": "More Information"
   },
   {
+<<<<<<< HEAD
    "fieldname": "serial_no_details",
    "fieldtype": "Text Editor",
    "label": "Serial No Details"
@@ -408,6 +452,12 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+=======
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "label": "Company",
    "options": "Company",
    "remember_last_selected_value": 1,
@@ -416,24 +466,73 @@
    "set_only_once": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "status",
    "fieldtype": "Select",
+=======
+   "fieldname": "work_order",
+   "fieldtype": "Link",
+   "label": "Work Order",
+   "options": "Work Order"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch No",
+   "options": "Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_rate",
+   "fieldtype": "Float",
+   "label": "Incoming Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "in_standard_filter": 1,
    "label": "Status",
    "options": "\nActive\nInactive\nDelivered\nExpired",
    "read_only": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "work_order",
    "fieldtype": "Link",
    "label": "Work Order",
    "options": "Work Order"
+=======
+   "fieldname": "column_break_2cmm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purchase_document_no",
+   "fieldtype": "Data",
+   "label": "Creation Document No",
+   "no_copy": 1,
+   "read_only": 1
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-barcode",
  "idx": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-04-14 15:58:46.139887",
+=======
+ "modified": "2024-03-27 13:10:39.196284",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Serial No",
@@ -473,7 +572,11 @@
  ],
  "search_fields": "item_code",
  "show_name_in_global_search": 1,
+<<<<<<< HEAD
  "sort_field": "modified",
+=======
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

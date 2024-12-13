@@ -8,6 +8,27 @@ from frappe.model.document import Document
 
 
 class ItemTaxTemplate(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.item_tax_template_detail.item_tax_template_detail import (
+			ItemTaxTemplateDetail,
+		)
+
+		company: DF.Link
+		disabled: DF.Check
+		taxes: DF.Table[ItemTaxTemplateDetail]
+		title: DF.Data
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		self.validate_tax_accounts()
 
@@ -21,7 +42,11 @@ class ItemTaxTemplate(Document):
 		check_list = []
 		for d in self.get("taxes"):
 			if d.tax_type:
+<<<<<<< HEAD
 				account_type = frappe.db.get_value("Account", d.tax_type, "account_type")
+=======
+				account_type = frappe.get_cached_value("Account", d.tax_type, "account_type")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				if account_type not in [
 					"Tax",

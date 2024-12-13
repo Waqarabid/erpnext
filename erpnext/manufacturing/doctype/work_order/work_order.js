@@ -9,6 +9,11 @@ frappe.ui.form.on("Work Order", {
 			"Job Card": "Create Job Card",
 		};
 
+<<<<<<< HEAD
+=======
+		frm.ignore_doctypes_on_cancel_all = ["Serial and Batch Bundle"];
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		// Set query for warehouses
 		frm.set_query("wip_warehouse", function () {
 			return {
@@ -147,6 +152,7 @@ frappe.ui.form.on("Work Order", {
 				frm.doc.operations &&
 				frm.doc.operations.length
 			) {
+<<<<<<< HEAD
 				const not_completed = frm.doc.operations.filter((d) => {
 					if (d.status != "Completed") {
 						return true;
@@ -154,6 +160,9 @@ frappe.ui.form.on("Work Order", {
 				});
 
 				if (not_completed && not_completed.length) {
+=======
+				if (frm.doc.__onload?.show_create_job_card_button) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					frm.add_custom_button(__("Create Job Card"), () => {
 						frm.trigger("make_job_card");
 					}).addClass("btn-primary");
@@ -181,6 +190,7 @@ frappe.ui.form.on("Work Order", {
 			}
 		}
 
+<<<<<<< HEAD
 		if (
 			frm.doc.status == "Completed" &&
 			frm.doc.__onload.backflush_raw_materials_based_on == "Material Transferred for Manufacture"
@@ -188,6 +198,32 @@ frappe.ui.form.on("Work Order", {
 			frm.add_custom_button(__("Create BOM"), () => {
 				frm.trigger("make_bom");
 			});
+=======
+		if (frm.doc.status == "Completed") {
+			if (frm.doc.__onload.backflush_raw_materials_based_on == "Material Transferred for Manufacture") {
+				frm.add_custom_button(
+					__("BOM"),
+					() => {
+						frm.trigger("make_bom");
+					},
+					__("Create")
+				);
+			}
+		}
+
+		if (
+			frm.doc.docstatus === 1 &&
+			["Closed", "Completed"].includes(frm.doc.status) &&
+			frm.doc.produced_qty > 0
+		) {
+			frm.add_custom_button(
+				__("Disassemble Order"),
+				() => {
+					frm.trigger("make_disassembly_order");
+				},
+				__("Create")
+			);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		frm.trigger("add_custom_button_to_return_components");
@@ -275,6 +311,21 @@ frappe.ui.form.on("Work Order", {
 						label: __("Sequence Id"),
 						read_only: 1,
 					},
+<<<<<<< HEAD
+=======
+					{
+						fieldtype: "Check",
+						fieldname: "skip_material_transfer",
+						label: __("Skip Material Transfer"),
+						read_only: 1,
+					},
+					{
+						fieldtype: "Check",
+						fieldname: "backflush_from_wip_warehouse",
+						label: __("Backflush Materials From WIP Warehouse"),
+						read_only: 1,
+					},
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				],
 				data: operations_data,
 				in_place_edit: true,
@@ -315,6 +366,11 @@ frappe.ui.form.on("Work Order", {
 						qty: pending_qty,
 						pending_qty: pending_qty,
 						sequence_id: data.sequence_id,
+<<<<<<< HEAD
+=======
+						skip_material_transfer: data.skip_material_transfer,
+						backflush_from_wip_warehouse: data.backflush_from_wip_warehouse,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					});
 				}
 			}
@@ -335,6 +391,26 @@ frappe.ui.form.on("Work Order", {
 		});
 	},
 
+<<<<<<< HEAD
+=======
+	make_disassembly_order(frm) {
+		erpnext.work_order
+			.show_prompt_for_qty_input(frm, "Disassemble")
+			.then((data) => {
+				return frappe.xcall("erpnext.manufacturing.doctype.work_order.work_order.make_stock_entry", {
+					work_order_id: frm.doc.name,
+					purpose: "Disassemble",
+					qty: data.qty,
+					target_warehouse: data.target_warehouse,
+				});
+			})
+			.then((stock_entry) => {
+				frappe.model.sync(stock_entry);
+				frappe.set_route("Form", stock_entry.doctype, stock_entry.name);
+			});
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	show_progress_for_items: function (frm) {
 		var bars = [];
 		var message = "";
@@ -613,6 +689,7 @@ erpnext.work_order = {
 				);
 			}
 
+<<<<<<< HEAD
 			const show_start_btn =
 				frm.doc.skip_transfer || frm.doc.transfer_material_against == "Job Card" ? 0 : 1;
 
@@ -629,6 +706,27 @@ erpnext.work_order = {
 						erpnext.work_order.make_se(frm, "Material Transfer for Manufacture");
 					});
 					start_btn.addClass("btn-primary");
+=======
+			if (!frm.doc.track_semi_finished_goods) {
+				const show_start_btn =
+					frm.doc.skip_transfer || frm.doc.transfer_material_against == "Job Card" ? 0 : 1;
+
+				if (show_start_btn) {
+					let pending_to_transfer = frm.doc.required_items.some(
+						(item) => flt(item.transferred_qty) < flt(item.required_qty)
+					);
+					if (pending_to_transfer && frm.doc.status != "Stopped") {
+						frm.has_start_btn = true;
+						frm.add_custom_button(__("Create Pick List"), function () {
+							erpnext.work_order.create_pick_list(frm);
+						});
+
+						var start_btn = frm.add_custom_button(__("Start"), function () {
+							erpnext.work_order.make_se(frm, "Material Transfer for Manufacture");
+						});
+						start_btn.addClass("btn-primary");
+					}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			}
 
@@ -670,7 +768,11 @@ erpnext.work_order = {
 						if (flt(doc.produced_qty) < flt(doc.material_transferred_for_manufacturing)) {
 							frm.has_finish_btn = true;
 
+<<<<<<< HEAD
 							var finish_btn = frm.add_custom_button(__("Finish"), function () {
+=======
+							let finish_btn = frm.add_custom_button(__("Finish"), function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 								erpnext.work_order.make_se(frm, "Manufacture");
 							});
 
@@ -694,7 +796,11 @@ erpnext.work_order = {
 					}
 				} else {
 					if (flt(doc.produced_qty) < flt(doc.qty)) {
+<<<<<<< HEAD
 						var finish_btn = frm.add_custom_button(__("Finish"), function () {
+=======
+						let finish_btn = frm.add_custom_button(__("Finish"), function () {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 							erpnext.work_order.make_se(frm, "Manufacture");
 						});
 						finish_btn.addClass("btn-primary");
@@ -743,6 +849,13 @@ erpnext.work_order = {
 
 	get_max_transferable_qty: (frm, purpose) => {
 		let max = 0;
+<<<<<<< HEAD
+=======
+		if (purpose === "Disassemble") {
+			return flt(frm.doc.produced_qty);
+		}
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		if (frm.doc.skip_transfer) {
 			max = flt(frm.doc.qty) - flt(frm.doc.produced_qty);
 		} else {
@@ -757,6 +870,7 @@ erpnext.work_order = {
 
 	show_prompt_for_qty_input: function (frm, purpose) {
 		let max = this.get_max_transferable_qty(frm, purpose);
+<<<<<<< HEAD
 		return new Promise((resolve, reject) => {
 			frappe.prompt(
 				{
@@ -766,6 +880,40 @@ erpnext.work_order = {
 					description: __("Max: {0}", [max]),
 					default: max,
 				},
+=======
+
+		let fields = [
+			{
+				fieldtype: "Float",
+				label: __("Qty for {0}", [__(purpose)]),
+				fieldname: "qty",
+				description: __("Max: {0}", [max]),
+				default: max,
+			},
+		];
+
+		if (purpose === "Disassemble") {
+			fields.push({
+				fieldtype: "Link",
+				options: "Warehouse",
+				fieldname: "target_warehouse",
+				label: __("Target Warehouse"),
+				default: frm.doc.source_warehouse || frm.doc.wip_warehouse,
+				get_query() {
+					return {
+						filters: {
+							company: frm.doc.company,
+							is_group: 0,
+						},
+					};
+				},
+			});
+		}
+
+		return new Promise((resolve, reject) => {
+			frappe.prompt(
+				fields,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				(data) => {
 					max += (frm.doc.qty * (frm.doc.__onload.overproduction_percentage || 0.0)) / 100;
 
@@ -812,14 +960,24 @@ erpnext.work_order = {
 	},
 
 	make_consumption_se: function (frm, backflush_raw_materials_based_on) {
+<<<<<<< HEAD
 		if (!frm.doc.skip_transfer) {
 			var max =
+=======
+		let max = 0;
+		if (!frm.doc.skip_transfer) {
+			max =
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				backflush_raw_materials_based_on === "Material Transferred for Manufacture"
 					? flt(frm.doc.material_transferred_for_manufacturing) - flt(frm.doc.produced_qty)
 					: flt(frm.doc.qty) - flt(frm.doc.produced_qty);
 			// flt(frm.doc.qty) - flt(frm.doc.material_transferred_for_manufacturing);
 		} else {
+<<<<<<< HEAD
 			var max = flt(frm.doc.qty) - flt(frm.doc.produced_qty);
+=======
+			max = flt(frm.doc.qty) - flt(frm.doc.produced_qty);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		frappe.call({

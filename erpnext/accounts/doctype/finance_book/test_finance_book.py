@@ -1,19 +1,34 @@
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
+<<<<<<< HEAD
 
 import unittest
 
 import frappe
+=======
+import unittest
+
+import frappe
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 
 
+<<<<<<< HEAD
 class TestFinanceBook(unittest.TestCase):
+=======
+class TestFinanceBook(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_finance_book(self):
 		finance_book = create_finance_book()
 
 		# create jv entry
+<<<<<<< HEAD
 		jv = make_journal_entry("_Test Bank - _TC", "_Test Receivable - _TC", 100, save=False)
+=======
+		jv = make_journal_entry("_Test Bank - _TC", "Debtors - _TC", 100, save=False)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		jv.accounts[1].update({"party_type": "Customer", "party": "_Test Customer"})
 

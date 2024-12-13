@@ -10,7 +10,21 @@ from erpnext.utilities.transaction_base import TransactionBase
 
 
 class AuthorizationControl(TransactionBase):
+<<<<<<< HEAD
 	def get_appr_user_role(self, det, doctype_name, total, based_on, condition, item, company):
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+	# end: auto-generated types
+
+	def get_appr_user_role(self, det, doctype_name, total, based_on, condition, master_name, company):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		amt_list, appr_users, appr_roles = [], [], []
 		_users, _roles = "", ""
 		if det:
@@ -46,6 +60,7 @@ class AuthorizationControl(TransactionBase):
 			if not has_common(appr_roles, frappe.get_roles()) and not has_common(
 				appr_users, [session["user"]]
 			):
+<<<<<<< HEAD
 				frappe.msgprint(_("Not authroized since {0} exceeds limits").format(_(based_on)))
 				frappe.throw(_("Can be approved by {0}").format(comma_or(appr_roles + appr_users)))
 
@@ -54,6 +69,16 @@ class AuthorizationControl(TransactionBase):
 		add_cond1, add_cond2 = "", ""
 		if based_on == "Itemwise Discount":
 			add_cond1 += " and master_name = " + frappe.db.escape(cstr(item))
+=======
+				frappe.msgprint(_("Not authorized since {0} exceeds limits").format(_(based_on)))
+				frappe.throw(_("Can be approved by {0}").format(comma_or(appr_roles + appr_users)))
+
+	def validate_auth_rule(self, doctype_name, total, based_on, cond, company, master_name=""):
+		chk = 1
+		add_cond1, add_cond2 = "", ""
+		if based_on in ["Itemwise Discount", "Item Group wise Discount"]:
+			add_cond1 += " and master_name = " + frappe.db.escape(cstr(master_name))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			itemwise_exists = frappe.db.sql(
 				"""select value from `tabAuthorization Rule`
 				where transaction = {} and value <= {}
@@ -75,11 +100,19 @@ class AuthorizationControl(TransactionBase):
 
 			if itemwise_exists:
 				self.get_appr_user_role(
+<<<<<<< HEAD
 					itemwise_exists, doctype_name, total, based_on, cond + add_cond1, item, company
 				)
 				chk = 0
 		if chk == 1:
 			if based_on == "Itemwise Discount":
+=======
+					itemwise_exists, doctype_name, total, based_on, cond + add_cond1, master_name, company
+				)
+				chk = 0
+		if chk == 1:
+			if based_on in ["Itemwise Discount", "Item Group wise Discount"]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				add_cond2 += " and ifnull(master_name,'') = ''"
 
 			appr = frappe.db.sql(
@@ -99,7 +132,13 @@ class AuthorizationControl(TransactionBase):
 					(doctype_name, total, based_on),
 				)
 
+<<<<<<< HEAD
 			self.get_appr_user_role(appr, doctype_name, total, based_on, cond + add_cond2, item, company)
+=======
+			self.get_appr_user_role(
+				appr, doctype_name, total, based_on, cond + add_cond2, master_name, company
+			)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def bifurcate_based_on_type(self, doctype_name, total, av_dis, based_on, doc_obj, val, company):
 		add_cond = ""
@@ -127,6 +166,15 @@ class AuthorizationControl(TransactionBase):
 					self.validate_auth_rule(
 						doctype_name, t.discount_percentage, based_on, add_cond, company, t.item_code
 					)
+<<<<<<< HEAD
+=======
+		elif based_on == "Item Group wise Discount":
+			if doc_obj:
+				for t in doc_obj.get("items"):
+					self.validate_auth_rule(
+						doctype_name, t.discount_percentage, based_on, add_cond, company, t.item_group
+					)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		else:
 			self.validate_auth_rule(doctype_name, auth_value, based_on, add_cond, company)
 
@@ -152,6 +200,10 @@ class AuthorizationControl(TransactionBase):
 			"Average Discount",
 			"Customerwise Discount",
 			"Itemwise Discount",
+<<<<<<< HEAD
+=======
+			"Item Group wise Discount",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		]
 
 		# Check for authorization set for individual user
@@ -170,7 +222,14 @@ class AuthorizationControl(TransactionBase):
 
 		# Remove user specific rules from global authorization rules
 		for r in based_on:
+<<<<<<< HEAD
 			if r in final_based_on and r != "Itemwise Discount":
+=======
+			if r in final_based_on and r not in [
+				"Itemwise Discount",
+				"Item Group wise Discount",
+			]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				final_based_on.remove(r)
 
 		# Check for authorization set on particular roles
@@ -197,7 +256,14 @@ class AuthorizationControl(TransactionBase):
 
 		# Remove role specific rules from global authorization rules
 		for r in based_on:
+<<<<<<< HEAD
 			if r in final_based_on and r != "Itemwise Discount":
+=======
+			if r in final_based_on and r not in [
+				"Itemwise Discount",
+				"Item Group wise Discount",
+			]:
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				final_based_on.remove(r)
 
 		# Check for global authorization

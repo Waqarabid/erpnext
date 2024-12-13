@@ -58,10 +58,17 @@ frappe.ui.form.on("Timesheet", {
 		}
 
 		if (frm.doc.docstatus < 1) {
+<<<<<<< HEAD
 			let button = "Start Timer";
 			$.each(frm.doc.time_logs || [], function (i, row) {
 				if (row.from_time <= frappe.datetime.now_datetime() && !row.completed) {
 					button = "Resume Timer";
+=======
+			let button = __("Start Timer");
+			$.each(frm.doc.time_logs || [], function (i, row) {
+				if (row.from_time <= frappe.datetime.now_datetime() && !row.completed) {
+					button = __("Resume Timer");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			});
 
@@ -113,6 +120,10 @@ frappe.ui.form.on("Timesheet", {
 
 		frm.trigger("setup_filters");
 		frm.trigger("set_dynamic_field_label");
+<<<<<<< HEAD
+=======
+		frm.trigger("set_route_options_for_new_task");
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	customer: function (frm) {
@@ -197,6 +208,17 @@ frappe.ui.form.on("Timesheet", {
 		frm.refresh_fields();
 	},
 
+<<<<<<< HEAD
+=======
+	set_route_options_for_new_task: (frm) => {
+		let task_field = frm.get_docfield("time_logs", "task");
+
+		if (task_field) {
+			task_field.get_route_options_for_new_doc = (row) => ({ project: row.doc.project });
+		}
+	},
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	make_invoice: function (frm) {
 		let fields = [
 			{
@@ -287,6 +309,10 @@ frappe.ui.form.on("Timesheet Detail", {
 
 	hours: function (frm, cdt, cdn) {
 		calculate_end_time(frm, cdt, cdn);
+<<<<<<< HEAD
+=======
+		update_billing_hours(frm, cdt, cdn);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		calculate_billing_costing_amount(frm, cdt, cdn);
 		calculate_time_and_amount(frm);
 	},

@@ -53,6 +53,14 @@ frappe.query_reports["General Ledger"] = {
 			},
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "against_voucher_no",
+			label: __("Against Voucher No"),
+			fieldtype: "Data",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldtype: "Break",
 		},
 		{
@@ -190,6 +198,14 @@ frappe.query_reports["General Ledger"] = {
 			fieldtype: "Check",
 		},
 		{
+<<<<<<< HEAD
+=======
+			fieldname: "add_values_in_transaction_currency",
+			label: __("Add Columns in Transaction Currency"),
+			fieldtype: "Check",
+		},
+		{
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			fieldname: "show_remarks",
 			label: __("Show Remarks"),
 			fieldtype: "Check",

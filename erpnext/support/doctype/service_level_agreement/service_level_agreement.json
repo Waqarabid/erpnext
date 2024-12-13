@@ -192,7 +192,11 @@
   }
  ],
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-04-21 17:16:56.192560",
+=======
+ "modified": "2024-03-27 13:10:39.518860",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Support",
  "name": "Service Level Agreement",
@@ -213,10 +217,17 @@
   },
   {
    "read": 1,
+<<<<<<< HEAD
    "role": "All"
   }
  ],
  "sort_field": "modified",
+=======
+   "role": "Desk User"
+  }
+ ],
+ "sort_field": "creation",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1

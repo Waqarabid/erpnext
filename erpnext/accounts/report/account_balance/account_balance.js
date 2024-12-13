@@ -1,6 +1,9 @@
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 frappe.query_reports["Account Balance"] = {
 	filters: [
@@ -39,7 +42,11 @@ frappe.query_reports["Account Balance"] = {
 				{ value: "Asset Received But Not Billed", label: __("Asset Received But Not Billed") },
 				{ value: "Bank", label: __("Bank") },
 				{ value: "Cash", label: __("Cash") },
+<<<<<<< HEAD
 				{ value: "Chargeble", label: __("Chargeble") },
+=======
+				{ value: "Chargeable", label: __("Chargeable") },
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				{ value: "Capital Work in Progress", label: __("Capital Work in Progress") },
 				{ value: "Cost of Goods Sold", label: __("Cost of Goods Sold") },
 				{ value: "Depreciation", label: __("Depreciation") },

@@ -6,7 +6,11 @@ import json
 import frappe
 from frappe import utils
 from frappe.model.docstatus import DocStatus
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase, UnitTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import (
 	get_linked_payments,
@@ -16,6 +20,7 @@ from erpnext.accounts.doctype.payment_entry.test_payment_entry import get_paymen
 from erpnext.accounts.doctype.pos_profile.test_pos_profile import make_pos_profile
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
+<<<<<<< HEAD
 
 test_dependencies = ["Item", "Cost Center"]
 
@@ -31,6 +36,24 @@ class TestBankTransaction(FrappeTestCase):
 		]:
 			frappe.db.delete(dt)
 
+=======
+from erpnext.tests.utils import if_lending_app_installed
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Cost Center"]
+
+
+class UnitTestBankTransaction(UnitTestCase):
+	"""
+	Unit tests for BankTransaction.
+	Use this class for testing individual functions and methods.
+	"""
+
+	pass
+
+
+class TestBankTransaction(IntegrationTestCase):
+	def setUp(self):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		make_pos_profile()
 
 		# generate and use a uniq hash identifier for 'Bank Account' and it's linked GL 'Account' to avoid validation error
@@ -55,7 +78,11 @@ class TestBankTransaction(FrappeTestCase):
 			from_date=bank_transaction.date,
 			to_date=utils.today(),
 		)
+<<<<<<< HEAD
 		self.assertTrue(linked_payments[0][6] == "Conrad Electronic")
+=======
+		self.assertTrue(linked_payments[0]["party"] == "Conrad Electronic")
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# This test validates a simple reconciliation leading to the clearance of the bank transaction and the payment
 	def test_reconcile(self):
@@ -124,7 +151,11 @@ class TestBankTransaction(FrappeTestCase):
 			from_date=bank_transaction.date,
 			to_date=utils.today(),
 		)
+<<<<<<< HEAD
 		self.assertTrue(linked_payments[0][3])
+=======
+		self.assertTrue(linked_payments[0]["paid_amount"])
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	# Check error if already reconciled
 	def test_already_reconciled(self):
@@ -191,8 +222,14 @@ class TestBankTransaction(FrappeTestCase):
 			is not None
 		)
 
+<<<<<<< HEAD
 	def test_matching_loan_repayment(self):
 		from erpnext.loan_management.doctype.loan.test_loan import create_loan_accounts
+=======
+	@if_lending_app_installed
+	def test_matching_loan_repayment(self):
+		from lending.loan_management.doctype.loan.test_loan import create_loan_accounts
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		create_loan_accounts()
 		bank_account = frappe.get_doc(
@@ -218,7 +255,11 @@ class TestBankTransaction(FrappeTestCase):
 		repayment_entry = create_loan_and_repayment()
 
 		linked_payments = get_linked_payments(bank_transaction.name, ["loan_repayment", "exact_match"])
+<<<<<<< HEAD
 		self.assertEqual(linked_payments[0][2], repayment_entry.name)
+=======
+		self.assertEqual(linked_payments[0]["name"], repayment_entry.name)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def create_bank_account(
@@ -441,6 +482,7 @@ def add_vouchers(gl_account="_Test Bank - _TC"):
 	si.submit()
 
 
+<<<<<<< HEAD
 def create_loan_and_repayment():
 	from erpnext.loan_management.doctype.loan.test_loan import (
 		create_loan,
@@ -454,6 +496,24 @@ def create_loan_and_repayment():
 	from erpnext.setup.doctype.employee.test_employee import make_employee
 
 	create_loan_type(
+=======
+@if_lending_app_installed
+def create_loan_and_repayment():
+	from lending.loan_management.doctype.loan.test_loan import (
+		create_loan,
+		create_loan_product,
+		create_repayment_entry,
+		make_loan_disbursement_entry,
+	)
+	from lending.loan_management.doctype.process_loan_interest_accrual.process_loan_interest_accrual import (
+		process_loan_interest_accrual_for_term_loans,
+	)
+
+	from erpnext.setup.doctype.employee.test_employee import make_employee
+
+	create_loan_product(
+		"Personal Loan",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		"Personal Loan",
 		500000,
 		8.4,
@@ -474,7 +534,11 @@ def create_loan_and_repayment():
 			"applicant_type": "Employee",
 			"company": "_Test Company",
 			"applicant": applicant,
+<<<<<<< HEAD
 			"loan_type": "Personal Loan",
+=======
+			"loan_product": "Personal Loan",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			"loan_amount": 5000,
 			"repayment_method": "Repay Fixed Amount per Period",
 			"monthly_repayment_amount": 500,

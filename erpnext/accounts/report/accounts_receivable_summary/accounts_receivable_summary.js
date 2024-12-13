@@ -24,6 +24,7 @@ frappe.query_reports["Accounts Receivable Summary"] = {
 			default: "Due Date",
 		},
 		{
+<<<<<<< HEAD
 			fieldname: "range1",
 			label: __("Ageing Range 1"),
 			fieldtype: "Int",
@@ -50,6 +51,12 @@ frappe.query_reports["Accounts Receivable Summary"] = {
 			fieldtype: "Int",
 			default: "120",
 			reqd: 1,
+=======
+			fieldname: "range",
+			label: __("Ageing Range"),
+			fieldtype: "Data",
+			default: "30, 60, 90, 120",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 		{
 			fieldname: "finance_book",

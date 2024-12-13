@@ -20,15 +20,22 @@ frappe.ui.form.on("Project", {
 	onload: function (frm) {
 		const so = frm.get_docfield("sales_order");
 		so.get_route_options_for_new_doc = () => {
+<<<<<<< HEAD
 			if (frm.is_new()) return;
+=======
+			if (frm.is_new()) return {};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			return {
 				customer: frm.doc.customer,
 				project_name: frm.doc.name,
 			};
 		};
 
+<<<<<<< HEAD
 		frm.set_query("customer", "erpnext.controllers.queries.customer_query");
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.set_query("user", "users", function () {
 			return {
 				query: "erpnext.projects.doctype.project.project.get_users_for_project",

@@ -4,15 +4,31 @@
 # ERPNext - web based ERP (http://erpnext.com)
 # For license information, please see license.txt
 
+<<<<<<< HEAD
 
 import frappe
 from frappe.tests.utils import FrappeTestCase, change_settings
 from frappe.utils import add_days, cstr, flt, nowdate, nowtime, random_string
+=======
+import json
+
+import frappe
+from frappe.tests import IntegrationTestCase
+from frappe.utils import add_days, cstr, flt, nowdate, nowtime
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.utils import get_stock_and_account_balance
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
+<<<<<<< HEAD
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
+=======
+from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
+	get_batch_from_bundle,
+	get_serial_nos_from_bundle,
+	make_serial_batch_bundle,
+)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.stock_reconciliation.stock_reconciliation import (
 	EmptyStockReconciliationItemsError,
 	get_items,
@@ -23,12 +39,20 @@ from erpnext.stock.tests.test_utils import StockTestMixin
 from erpnext.stock.utils import get_incoming_rate, get_stock_value_on, get_valuation_method
 
 
+<<<<<<< HEAD
 class TestStockReconciliation(FrappeTestCase, StockTestMixin):
+=======
+class TestStockReconciliation(IntegrationTestCase, StockTestMixin):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	@classmethod
 	def setUpClass(cls):
 		create_batch_or_serial_no_items()
 		super().setUpClass()
+<<<<<<< HEAD
 		frappe.db.set_value("Stock Settings", None, "allow_negative_stock", 1)
+=======
+		frappe.db.set_single_value("Stock Settings", "allow_negative_stock", 1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def tearDown(self):
 		frappe.local.future_sle = {}
@@ -157,15 +181,28 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			item_code=serial_item_code, warehouse=serial_warehouse, qty=5, rate=200
 		)
 
+<<<<<<< HEAD
 		serial_nos = get_serial_nos(sr.items[0].serial_no)
+=======
+		serial_nos = frappe.get_doc(
+			"Serial and Batch Bundle", sr.items[0].serial_and_batch_bundle
+		).get_serial_nos()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertEqual(len(serial_nos), 5)
 
 		args = {
 			"item_code": serial_item_code,
 			"warehouse": serial_warehouse,
+<<<<<<< HEAD
 			"posting_date": nowdate(),
 			"posting_time": nowtime(),
 			"serial_no": sr.items[0].serial_no,
+=======
+			"qty": -5,
+			"posting_date": add_days(sr.posting_date, 1),
+			"posting_time": nowtime(),
+			"serial_and_batch_bundle": sr.items[0].serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		valuation_rate = get_incoming_rate(args)
@@ -174,18 +211,34 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		to_delete_records.append(sr.name)
 
 		sr = create_stock_reconciliation(
+<<<<<<< HEAD
 			item_code=serial_item_code, warehouse=serial_warehouse, qty=5, rate=300
 		)
 
 		serial_nos1 = get_serial_nos(sr.items[0].serial_no)
 		self.assertEqual(len(serial_nos1), 5)
+=======
+			item_code=serial_item_code, warehouse=serial_warehouse, qty=5, rate=300, serial_no=serial_nos
+		)
+
+		sn_doc = frappe.get_doc("Serial and Batch Bundle", sr.items[0].serial_and_batch_bundle)
+
+		self.assertEqual(len(sn_doc.get_serial_nos()), 5)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		args = {
 			"item_code": serial_item_code,
 			"warehouse": serial_warehouse,
+<<<<<<< HEAD
 			"posting_date": nowdate(),
 			"posting_time": nowtime(),
 			"serial_no": sr.items[0].serial_no,
+=======
+			"qty": -5,
+			"posting_date": add_days(sr.posting_date, 1),
+			"posting_time": nowtime(),
+			"serial_and_batch_bundle": sr.items[0].serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		valuation_rate = get_incoming_rate(args)
@@ -198,6 +251,7 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			stock_doc = frappe.get_doc("Stock Reconciliation", d)
 			stock_doc.cancel()
 
+<<<<<<< HEAD
 	def test_stock_reco_for_merge_serialized_item(self):
 		to_delete_records = []
 
@@ -244,20 +298,44 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			stock_doc = frappe.get_doc("Stock Reconciliation", d)
 			stock_doc.cancel()
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_stock_reco_for_batch_item(self):
 		to_delete_records = []
 
 		# Add new serial nos
+<<<<<<< HEAD
 		item_code = "Stock-Reco-batch-Item-1"
 		warehouse = "_Test Warehouse for Stock Reco2 - _TC"
+=======
+		item_code = "Stock-Reco-batch-Item-123"
+		warehouse = "_Test Warehouse for Stock Reco2 - _TC"
+		self.make_item(
+			item_code,
+			frappe._dict(
+				{
+					"is_stock_item": 1,
+					"has_batch_no": 1,
+					"create_new_batch": 1,
+					"batch_number_series": "SRBI123-.#####",
+				}
+			),
+		)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		sr = create_stock_reconciliation(
 			item_code=item_code, warehouse=warehouse, qty=5, rate=200, do_not_save=1
 		)
 		sr.save()
 		sr.submit()
+<<<<<<< HEAD
 
 		batch_no = sr.items[0].batch_no
+=======
+		sr.load_from_db()
+
+		batch_no = get_batch_from_bundle(sr.items[0].serial_and_batch_bundle)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertTrue(batch_no)
 		to_delete_records.append(sr.name)
 
@@ -270,7 +348,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			"warehouse": warehouse,
 			"posting_date": nowdate(),
 			"posting_time": nowtime(),
+<<<<<<< HEAD
 			"batch_no": batch_no,
+=======
+			"serial_and_batch_bundle": sr1.items[0].serial_and_batch_bundle,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		valuation_rate = get_incoming_rate(args)
@@ -303,14 +385,21 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 
 		sr = create_stock_reconciliation(item_code=item.item_code, warehouse=warehouse, qty=1, rate=100)
 
+<<<<<<< HEAD
 		batch_no = sr.items[0].batch_no
 
 		serial_nos = get_serial_nos(sr.items[0].serial_no)
+=======
+		batch_no = get_batch_from_bundle(sr.items[0].serial_and_batch_bundle)
+
+		serial_nos = get_serial_nos_from_bundle(sr.items[0].serial_and_batch_bundle)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		self.assertEqual(len(serial_nos), 1)
 		self.assertEqual(frappe.db.get_value("Serial No", serial_nos[0], "batch_no"), batch_no)
 
 		sr.cancel()
 
+<<<<<<< HEAD
 		self.assertEqual(frappe.db.get_value("Serial No", serial_nos[0], "status"), "Inactive")
 		self.assertTrue(frappe.db.exists("Batch", batch_no))
 
@@ -337,6 +426,9 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		)
 
 		self.assertEqual(qty_after_transaction, 20)
+=======
+		self.assertEqual(frappe.db.get_value("Serial No", serial_nos[0], "warehouse"), None)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_stock_reco_for_serial_and_batch_item_with_future_dependent_entry(self):
 		"""
@@ -363,13 +455,22 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		stock_reco = create_stock_reconciliation(
 			item_code=item.item_code, warehouse=warehouse, qty=1, rate=100
 		)
+<<<<<<< HEAD
 		batch_no = stock_reco.items[0].batch_no
 		reco_serial_no = get_serial_nos(stock_reco.items[0].serial_no)[0]
+=======
+		batch_no = get_batch_from_bundle(stock_reco.items[0].serial_and_batch_bundle)
+		reco_serial_no = get_serial_nos_from_bundle(stock_reco.items[0].serial_and_batch_bundle)[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		stock_entry = make_stock_entry(
 			item_code=item.item_code, target=warehouse, qty=1, basic_rate=100, batch_no=batch_no
 		)
+<<<<<<< HEAD
 		serial_no_2 = get_serial_nos(stock_entry.items[0].serial_no)[0]
+=======
+		serial_no_2 = get_serial_nos_from_bundle(stock_entry.items[0].serial_and_batch_bundle)[0]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# Check Batch qty after 2 transactions
 		batch_qty = get_batch_qty(batch_no, warehouse, item.item_code)
@@ -384,11 +485,18 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 
 		# Check if Serial No from Stock Reconcilation is intact
 		self.assertEqual(frappe.db.get_value("Serial No", reco_serial_no, "batch_no"), batch_no)
+<<<<<<< HEAD
 		self.assertEqual(frappe.db.get_value("Serial No", reco_serial_no, "status"), "Active")
 
 		# Check if Serial No from Stock Entry is Unlinked and Inactive
 		self.assertEqual(frappe.db.get_value("Serial No", serial_no_2, "batch_no"), None)
 		self.assertEqual(frappe.db.get_value("Serial No", serial_no_2, "status"), "Inactive")
+=======
+		self.assertTrue(frappe.db.get_value("Serial No", reco_serial_no, "warehouse"))
+
+		# Check if Serial No from Stock Entry is Unlinked and Inactive
+		self.assertFalse(frappe.db.get_value("Serial No", serial_no_2, "warehouse"))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		stock_reco.cancel()
 
@@ -467,7 +575,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		assertBalance(pr2, 11)
 		assertBalance(sr4, 6)  # check if future stock reco is unaffected
 
+<<<<<<< HEAD
 	@change_settings("Stock Settings", {"allow_negative_stock": 0})
+=======
+	@IntegrationTestCase.change_settings("Stock Settings", {"allow_negative_stock": 0})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_backdated_stock_reco_future_negative_stock(self):
 		"""
 		Test if a backdated stock reco causes future negative stock and is blocked.
@@ -516,7 +628,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		dn2.cancel()
 		pr1.cancel()
 
+<<<<<<< HEAD
 	@change_settings("Stock Settings", {"allow_negative_stock": 0})
+=======
+	@IntegrationTestCase.change_settings("Stock Settings", {"allow_negative_stock": 0})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_backdated_stock_reco_cancellation_future_negative_stock(self):
 		"""
 		Test if a backdated stock reco cancellation that causes future negative stock is blocked.
@@ -601,10 +717,31 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 	def test_valid_batch(self):
 		create_batch_item_with_batch("Testing Batch Item 1", "001")
 		create_batch_item_with_batch("Testing Batch Item 2", "002")
+<<<<<<< HEAD
 		sr = create_stock_reconciliation(
 			item_code="Testing Batch Item 1", qty=1, rate=100, batch_no="002", do_not_save=True
 		)
 		self.assertRaises(frappe.ValidationError, sr.save)
+=======
+
+		doc = frappe.get_doc(
+			{
+				"doctype": "Serial and Batch Bundle",
+				"item_code": "Testing Batch Item 1",
+				"warehouse": "_Test Warehouse - _TC",
+				"voucher_type": "Stock Reconciliation",
+				"entries": [
+					{
+						"batch_no": "002",
+						"qty": 1,
+						"incoming_rate": 100,
+					}
+				],
+			}
+		)
+
+		self.assertRaises(frappe.ValidationError, doc.save)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_serial_no_cancellation(self):
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
@@ -612,18 +749,29 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		item = create_item("Stock-Reco-Serial-Item-9", is_stock_item=1)
 		if not item.has_serial_no:
 			item.has_serial_no = 1
+<<<<<<< HEAD
 			item.serial_no_series = "SRS9.####"
+=======
+			item.serial_no_series = "PSRS9.####"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			item.save()
 
 		item_code = item.name
 		warehouse = "_Test Warehouse - _TC"
 
 		se1 = make_stock_entry(item_code=item_code, target=warehouse, qty=10, basic_rate=700)
+<<<<<<< HEAD
 
 		serial_nos = get_serial_nos(se1.items[0].serial_no)
 		# reduce 1 item
 		serial_nos.pop()
 		new_serial_nos = "\n".join(serial_nos)
+=======
+		serial_nos = get_serial_nos_from_bundle(se1.items[0].serial_and_batch_bundle)
+		# reduce 1 item
+		serial_nos.pop()
+		new_serial_nos = serial_nos
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		sr = create_stock_reconciliation(
 			item_code=item.name, warehouse=warehouse, serial_no=new_serial_nos, qty=9
@@ -645,10 +793,26 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		item_code = item.name
 		warehouse = "_Test Warehouse - _TC"
 
+<<<<<<< HEAD
 		sr = create_stock_reconciliation(
 			item_code=item.name,
 			warehouse=warehouse,
 			serial_no="SR-CREATED-SR-NO",
+=======
+		if not frappe.db.exists("Serial No", "SR-CREATED-SR-NO"):
+			frappe.get_doc(
+				{
+					"doctype": "Serial No",
+					"item_code": item_code,
+					"serial_no": "SR-CREATED-SR-NO",
+				}
+			).insert()
+
+		sr = create_stock_reconciliation(
+			item_code=item.name,
+			warehouse=warehouse,
+			serial_no=["SR-CREATED-SR-NO"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			qty=1,
 			do_not_submit=True,
 			rate=100,
@@ -676,7 +840,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 				"has_serial_no": 1,
 				"has_batch_no": 1,
 				"serial_no_series": "SRS9.####",
+<<<<<<< HEAD
 				"batch_number_series": "BNS9.####",
+=======
+				"batch_number_series": "BNS90.####",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"create_new_batch": 1,
 			},
 		)
@@ -700,7 +868,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		self.assertEqual(flt(sl_entry.actual_qty), 1.0)
 		self.assertEqual(flt(sl_entry.qty_after_transaction), 1.0)
 
+<<<<<<< HEAD
 	@change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+=======
+	@IntegrationTestCase.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_backdated_stock_reco_entry(self):
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 
@@ -709,7 +881,11 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			{
 				"is_stock_item": 1,
 				"has_batch_no": 1,
+<<<<<<< HEAD
 				"batch_number_series": "BNS9.####",
+=======
+				"batch_number_series": "BNS91.####",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"create_new_batch": 1,
 			},
 		).name
@@ -721,10 +897,19 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			item_code=item_code, posting_time="09:00:00", target=warehouse, qty=100, basic_rate=700
 		)
 
+<<<<<<< HEAD
 		# Removed 50 Qty, Balace Qty 50
 		se2 = make_stock_entry(
 			item_code=item_code,
 			batch_no=se1.items[0].batch_no,
+=======
+		batch_no = get_batch_from_bundle(se1.items[0].serial_and_batch_bundle)
+
+		# Removed 50 Qty, Balace Qty 50
+		se2 = make_stock_entry(
+			item_code=item_code,
+			batch_no=batch_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			posting_time="10:00:00",
 			source=warehouse,
 			qty=50,
@@ -736,15 +921,34 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 			item_code=item_code,
 			posting_time="11:00:00",
 			warehouse=warehouse,
+<<<<<<< HEAD
 			batch_no=se1.items[0].batch_no,
+=======
+			batch_no=batch_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			qty=100,
 			rate=100,
 		)
 
+<<<<<<< HEAD
 		# Removed 50 Qty, Balace Qty 50
 		make_stock_entry(
 			item_code=item_code,
 			batch_no=se1.items[0].batch_no,
+=======
+		sle = frappe.get_all(
+			"Stock Ledger Entry",
+			filters={"is_cancelled": 0, "voucher_no": stock_reco.name, "actual_qty": ("<", 0)},
+			fields=["actual_qty"],
+		)
+
+		self.assertEqual(flt(sle[0].actual_qty), flt(-50.0))
+
+		# Removed 50 Qty, Balace Qty 50
+		make_stock_entry(
+			item_code=item_code,
+			batch_no=batch_no,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			posting_time="12:00:00",
 			source=warehouse,
 			qty=50,
@@ -761,12 +965,17 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		sle = frappe.get_all(
 			"Stock Ledger Entry",
 			filters={"item_code": item_code, "warehouse": warehouse, "is_cancelled": 0},
+<<<<<<< HEAD
 			fields=["qty_after_transaction"],
+=======
+			fields=["qty_after_transaction", "actual_qty", "voucher_type", "voucher_no"],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			order_by="posting_time desc, creation desc",
 		)
 
 		self.assertEqual(flt(sle[0].qty_after_transaction), flt(50.0))
 
+<<<<<<< HEAD
 	def test_backdated_stock_reco_entry_with_batch(self):
 		item_code = self.make_item(
 			"Test New Batch Item ABCVSD",
@@ -820,6 +1029,15 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		for row in sles:
 			if row.actual_qty < 0:
 				self.assertEqual(row.actual_qty, -60)
+=======
+		sle = frappe.get_all(
+			"Stock Ledger Entry",
+			filters={"is_cancelled": 0, "voucher_no": stock_reco.name, "actual_qty": ("<", 0)},
+			fields=["actual_qty"],
+		)
+
+		self.assertEqual(flt(sle[0].actual_qty), flt(-100.0))
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_update_stock_reconciliation_while_reposting(self):
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
@@ -865,6 +1083,7 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		sr1.load_from_db()
 		self.assertEqual(sr1.difference_amount, 10000)
 
+<<<<<<< HEAD
 	@change_settings("Stock Settings", {"allow_negative_stock": 0})
 	def test_negative_stock_reco_for_batch(self):
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
@@ -877,10 +1096,37 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 				"batch_number_series": "BNS9.####",
 				"create_new_batch": 1,
 			},
+=======
+	def test_make_stock_zero_for_serial_batch_item(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
+		serial_item = self.make_item(
+			properties={"is_stock_item": 1, "has_serial_no": 1, "serial_no_series": "DJJ.####"}
+		).name
+		batch_item = self.make_item(
+			properties={
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"batch_number_series": "BDJJ.####",
+				"create_new_batch": 1,
+			}
+		).name
+
+		serial_batch_item = self.make_item(
+			properties={
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"batch_number_series": "ADJJ.####",
+				"create_new_batch": 1,
+				"has_serial_no": 1,
+				"serial_no_series": "SN-ADJJ.####",
+			}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		).name
 
 		warehouse = "_Test Warehouse - _TC"
 
+<<<<<<< HEAD
 		# Added 100 Qty, Balace Qty 100
 		se = make_stock_entry(
 			item_code=item_code,
@@ -1052,6 +1298,39 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 
 		self.assertEqual(sr.items[0].current_qty, se2.items[0].qty)
 		self.assertEqual(len(sr.items[0].current_serial_no.split("\n")), sr.items[0].current_qty)
+=======
+		for item_code in [serial_item, batch_item, serial_batch_item]:
+			make_stock_entry(
+				item_code=item_code,
+				target=warehouse,
+				qty=10,
+				basic_rate=100,
+			)
+
+			_reco = create_stock_reconciliation(
+				item_code=item_code,
+				warehouse=warehouse,
+				qty=0.0,
+			)
+
+			serial_batch_bundle = frappe.get_all(
+				"Stock Ledger Entry",
+				{"item_code": item_code, "warehouse": warehouse, "is_cancelled": 0, "voucher_no": _reco.name},
+				"serial_and_batch_bundle",
+			)
+
+			self.assertEqual(len(serial_batch_bundle), 1)
+
+			_reco.cancel()
+
+			serial_batch_bundle = frappe.get_all(
+				"Stock Ledger Entry",
+				{"item_code": item_code, "warehouse": warehouse, "is_cancelled": 0, "voucher_no": _reco.name},
+				"serial_and_batch_bundle",
+			)
+
+			self.assertEqual(len(serial_batch_bundle), 0)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_backdated_purchase_receipt_with_stock_reco(self):
 		item_code = self.make_item(
@@ -1071,14 +1350,22 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		)
 		pr1.reload()
 
+<<<<<<< HEAD
 		serial_nos = sorted(get_serial_nos(pr1.items[0].serial_no))[:5]
+=======
+		serial_nos = sorted(get_serial_nos_from_bundle(pr1.items[0].serial_and_batch_bundle))[:5]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		# Step - 2: Create a Stock Reconciliation
 		sr1 = create_stock_reconciliation(
 			item_code=item_code,
 			warehouse=warehouse,
 			qty=5,
+<<<<<<< HEAD
 			serial_no="\n".join(serial_nos),
+=======
+			serial_no=serial_nos,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 
 		data = frappe.get_all(
@@ -1119,6 +1406,7 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		active_serial_no = frappe.get_all("Serial No", filters={"status": "Active", "item_code": item_code})
 		self.assertEqual(len(active_serial_no), 5)
 
+<<<<<<< HEAD
 	def test_stock_reco_for_serialized_item_with_different_warehouse(self):
 		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 
@@ -1145,6 +1433,409 @@ class TestStockReconciliation(FrappeTestCase, StockTestMixin):
 		sr.items[0].serial_no += f"\n{serial_nos[0]}"
 		sr.save()
 		self.assertRaises(frappe.ValidationError, sr.submit)
+=======
+	def test_balance_qty_for_batch_with_backdated_stock_reco_and_future_entries(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
+		item = self.make_item(
+			"Test Batch Item Original Test",
+			{
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"create_new_batch": 1,
+				"batch_number_series": "TEST-BATCH-SRWFEE-.###",
+			},
+		)
+
+		warehouse = "_Test Warehouse - _TC"
+		se1 = make_stock_entry(
+			item_code=item.name,
+			target=warehouse,
+			qty=50,
+			basic_rate=100,
+			posting_date=add_days(nowdate(), -2),
+		)
+		batch1 = get_batch_from_bundle(se1.items[0].serial_and_batch_bundle)
+
+		se2 = make_stock_entry(
+			item_code=item.name,
+			target=warehouse,
+			qty=50,
+			basic_rate=100,
+			posting_date=add_days(nowdate(), -2),
+		)
+		batch2 = get_batch_from_bundle(se2.items[0].serial_and_batch_bundle)
+
+		se3 = make_stock_entry(
+			item_code=item.name,
+			target=warehouse,
+			qty=100,
+			basic_rate=100,
+			posting_date=add_days(nowdate(), -2),
+		)
+		batch3 = get_batch_from_bundle(se3.items[0].serial_and_batch_bundle)
+
+		se3 = make_stock_entry(
+			item_code=item.name,
+			target=warehouse,
+			qty=100,
+			basic_rate=100,
+			posting_date=nowdate(),
+		)
+
+		sle = frappe.get_all(
+			"Stock Ledger Entry",
+			filters={
+				"item_code": item.name,
+				"warehouse": warehouse,
+				"is_cancelled": 0,
+				"voucher_no": se3.name,
+			},
+			fields=["qty_after_transaction"],
+			order_by="posting_time desc, creation desc",
+		)
+
+		self.assertEqual(flt(sle[0].qty_after_transaction), flt(300.0))
+
+		sr = create_stock_reconciliation(
+			item_code=item.name,
+			warehouse=warehouse,
+			qty=0,
+			batch_no=batch1,
+			posting_date=add_days(nowdate(), -1),
+			use_serial_batch_fields=1,
+			do_not_save=1,
+		)
+
+		for batch in [batch2, batch3]:
+			sr.append(
+				"items",
+				{
+					"item_code": item.name,
+					"warehouse": warehouse,
+					"qty": 0,
+					"batch_no": batch,
+					"use_serial_batch_fields": 1,
+				},
+			)
+
+		sr.save()
+		sr.submit()
+
+		sle = frappe.get_all(
+			"Stock Ledger Entry",
+			filters={
+				"item_code": item.name,
+				"warehouse": warehouse,
+				"is_cancelled": 0,
+				"voucher_no": se3.name,
+			},
+			fields=["qty_after_transaction"],
+			order_by="posting_time desc, creation desc",
+		)
+
+		self.assertEqual(flt(sle[0].qty_after_transaction), flt(100.0))
+
+	def test_stock_reco_and_backdated_purchase_receipt(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
+		item = self.make_item(
+			"Test Batch Item Original STOCK RECO Test",
+			{
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"create_new_batch": 1,
+				"batch_number_series": "TEST-BATCH-SRCOSRWFEE-.###",
+			},
+		)
+
+		warehouse = "_Test Warehouse - _TC"
+
+		sr = create_stock_reconciliation(
+			item_code=item.name,
+			warehouse=warehouse,
+			qty=100,
+			rate=100,
+		)
+
+		sr.reload()
+		self.assertTrue(sr.items[0].serial_and_batch_bundle)
+		self.assertFalse(sr.items[0].current_serial_and_batch_bundle)
+		batch = get_batch_from_bundle(sr.items[0].serial_and_batch_bundle)
+
+		se1 = make_stock_entry(
+			item_code=item.name,
+			target=warehouse,
+			qty=50,
+			basic_rate=100,
+			posting_date=add_days(nowdate(), -2),
+		)
+
+		batch1 = get_batch_from_bundle(se1.items[0].serial_and_batch_bundle)
+		self.assertFalse(batch1 == batch)
+
+		sr.reload()
+		self.assertTrue(sr.items[0].serial_and_batch_bundle)
+		self.assertFalse(sr.items[0].current_serial_and_batch_bundle)
+
+	def test_not_reconcile_all_batch(self):
+		from erpnext.stock.doctype.batch.batch import get_batch_qty
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
+		item = self.make_item(
+			"Test Batch Item Not Reconcile All Serial Batch",
+			{
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"create_new_batch": 1,
+				"batch_number_series": "TEST-BATCH-NRALL-SRCOSRWFEE-.###",
+			},
+		)
+
+		warehouse = "_Test Warehouse - _TC"
+
+		batches = []
+		for qty in [10, 20, 30]:
+			se = make_stock_entry(
+				item_code=item.name,
+				target=warehouse,
+				qty=qty,
+				basic_rate=100 + qty,
+				posting_date=nowdate(),
+			)
+
+			batch_no = get_batch_from_bundle(se.items[0].serial_and_batch_bundle)
+			batches.append(frappe._dict({"batch_no": batch_no, "qty": qty}))
+
+		sr = create_stock_reconciliation(
+			item_code=item.name,
+			warehouse=warehouse,
+			qty=100,
+			rate=1000,
+			reconcile_all_serial_batch=0,
+			batch_no=batches[0].batch_no,
+		)
+
+		sr.reload()
+		self.assertEqual(sr.difference_amount, 98900.0)
+
+		self.assertTrue(sr.items[0].current_valuation_rate)
+		current_sabb = sr.items[0].current_serial_and_batch_bundle
+		doc = frappe.get_doc("Serial and Batch Bundle", current_sabb)
+		for row in doc.entries:
+			self.assertEqual(row.batch_no, batches[0].batch_no)
+			self.assertEqual(row.qty, batches[0].qty * -1)
+
+		batch_qty = get_batch_qty(batches[0].batch_no, warehouse, item.name)
+		self.assertEqual(batch_qty, 100)
+
+		for row in frappe.get_all("Repost Item Valuation", filters={"voucher_no": sr.name}):
+			rdoc = frappe.get_doc("Repost Item Valuation", row.name)
+			rdoc.cancel()
+			rdoc.delete()
+
+		sr.cancel()
+
+		for row in frappe.get_all(
+			"Serial and Batch Bundle", fields=["docstatus"], filters={"voucher_no": sr.name}
+		):
+			self.assertEqual(row.docstatus, 2)
+
+	def test_not_reconcile_all_serial_nos(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+		from erpnext.stock.utils import get_incoming_rate
+
+		item = self.make_item(
+			"Test Serial NO Item Not Reconcile All Serial Batch",
+			{
+				"is_stock_item": 1,
+				"has_serial_no": 1,
+				"serial_no_series": "SNN-TEST-BATCH-NRALL-S-.###",
+			},
+		)
+
+		warehouse = "_Test Warehouse - _TC"
+
+		serial_nos = []
+		for qty in [5, 5, 5]:
+			se = make_stock_entry(
+				item_code=item.name,
+				target=warehouse,
+				qty=qty,
+				basic_rate=100 + qty,
+				posting_date=nowdate(),
+			)
+
+			serial_nos.extend(get_serial_nos_from_bundle(se.items[0].serial_and_batch_bundle))
+
+		sr = create_stock_reconciliation(
+			item_code=item.name,
+			warehouse=warehouse,
+			qty=5,
+			rate=1000,
+			reconcile_all_serial_batch=0,
+			serial_no=serial_nos[0:5],
+		)
+
+		sr.reload()
+		current_sabb = sr.items[0].current_serial_and_batch_bundle
+		doc = frappe.get_doc("Serial and Batch Bundle", current_sabb)
+		for row in doc.entries:
+			self.assertEqual(row.serial_no, serial_nos[row.idx - 1])
+
+		sabb = sr.items[0].serial_and_batch_bundle
+		doc = frappe.get_doc("Serial and Batch Bundle", sabb)
+		for row in doc.entries:
+			self.assertEqual(row.qty, 1)
+			self.assertAlmostEqual(row.incoming_rate, 1000.00)
+			self.assertEqual(row.serial_no, serial_nos[row.idx - 1])
+
+	def test_stock_reco_with_legacy_batch(self):
+		from erpnext.stock.doctype.batch.batch import get_batch_qty
+
+		batch_item_code = self.make_item(
+			"Test Batch Item Legacy Batch 1",
+			{
+				"is_stock_item": 1,
+				"has_batch_no": 1,
+				"create_new_batch": 1,
+				"batch_number_series": "BH1-NRALL-S-.###",
+			},
+		).name
+
+		warehouse = "_Test Warehouse - _TC"
+
+		frappe.flags.ignore_serial_batch_bundle_validation = True
+		frappe.flags.use_serial_and_batch_fields = True
+
+		batch_id = "BH1-NRALL-S-0001"
+		if not frappe.db.exists("Batch", batch_id):
+			batch_doc = frappe.get_doc(
+				{
+					"doctype": "Batch",
+					"batch_id": batch_id,
+					"item": batch_item_code,
+					"use_batchwise_valuation": 0,
+				}
+			).insert(ignore_permissions=True)
+
+			self.assertTrue(batch_doc.use_batchwise_valuation)
+
+		stock_queue = []
+		qty_after_transaction = 0
+		balance_value = 0
+		i = 0
+		for qty, valuation in {10: 100, 20: 200}.items():
+			i += 1
+			stock_queue.append([qty, valuation])
+			qty_after_transaction += qty
+			balance_value += qty_after_transaction * valuation
+
+			doc = frappe.get_doc(
+				{
+					"doctype": "Stock Ledger Entry",
+					"posting_date": add_days(nowdate(), -2 * i),
+					"posting_time": nowtime(),
+					"batch_no": batch_id,
+					"incoming_rate": valuation,
+					"qty_after_transaction": qty_after_transaction,
+					"stock_value_difference": valuation * qty,
+					"balance_value": balance_value,
+					"valuation_rate": balance_value / qty_after_transaction,
+					"actual_qty": qty,
+					"item_code": batch_item_code,
+					"warehouse": "_Test Warehouse - _TC",
+					"stock_queue": json.dumps(stock_queue),
+				}
+			)
+
+			doc.flags.ignore_permissions = True
+			doc.flags.ignore_mandatory = True
+			doc.flags.ignore_links = True
+			doc.flags.ignore_validate = True
+			doc.submit()
+			doc.reload()
+
+		frappe.flags.ignore_serial_batch_bundle_validation = False
+		frappe.flags.use_serial_and_batch_fields = False
+
+		batch_doc = frappe.get_doc("Batch", batch_id)
+
+		qty = get_batch_qty(batch_id, warehouse, batch_item_code)
+		self.assertEqual(qty, 30)
+
+		sr = create_stock_reconciliation(
+			item_code=batch_item_code,
+			posting_date=add_days(nowdate(), -3),
+			posting_time=nowtime(),
+			warehouse=warehouse,
+			qty=100,
+			rate=1000,
+			reconcile_all_serial_batch=0,
+			batch_no=batch_id,
+			use_serial_batch_fields=1,
+		)
+
+		self.assertEqual(sr.items[0].current_qty, 20)
+		self.assertEqual(sr.items[0].qty, 100)
+
+		qty = get_batch_qty(batch_id, warehouse, batch_item_code)
+		self.assertEqual(qty, 110)
+
+	def test_skip_reposting_for_entries_after_stock_reco(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
+		item_code = create_item("Test Item For Skip Reposting After Stock Reco", is_stock_item=1).name
+
+		warehouse = "_Test Warehouse - _TC"
+
+		make_stock_entry(
+			posting_date="2024-11-01",
+			posting_time="11:00",
+			item_code=item_code,
+			target=warehouse,
+			qty=10,
+			basic_rate=100,
+		)
+
+		create_stock_reconciliation(
+			posting_date="2024-11-02",
+			posting_time="11:00",
+			item_code=item_code,
+			warehouse=warehouse,
+			qty=20,
+			rate=100,
+		)
+
+		se = make_stock_entry(
+			posting_date="2024-11-03",
+			posting_time="11:00",
+			item_code=item_code,
+			source=warehouse,
+			qty=15,
+		)
+
+		stock_value_difference = frappe.db.get_value(
+			"Stock Ledger Entry", {"voucher_no": se.name, "is_cancelled": 0}, "stock_value_difference"
+		)
+
+		self.assertEqual(stock_value_difference, 1500.00 * -1)
+
+		make_stock_entry(
+			posting_date="2024-10-29",
+			posting_time="11:00",
+			item_code=item_code,
+			target=warehouse,
+			qty=10,
+			basic_rate=100,
+		)
+
+		stock_value_difference = frappe.db.get_value(
+			"Stock Ledger Entry", {"voucher_no": se.name, "is_cancelled": 0}, "stock_value_difference"
+		)
+
+		self.assertEqual(stock_value_difference, 1500.00 * -1)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 
 def create_batch_item_with_batch(item_name, batch_id):
@@ -1169,7 +1860,11 @@ def insert_existing_sle(warehouse, item_code="_Test Item"):
 		posting_time="02:00",
 		item_code=item_code,
 		target=warehouse,
+<<<<<<< HEAD
 		qty=15,
+=======
+		qty=10,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		basic_rate=700,
 	)
 
@@ -1244,15 +1939,55 @@ def create_stock_reconciliation(**args):
 		or frappe.get_cached_value("Cost Center", filters={"is_group": 0, "company": sr.company})
 	)
 
+<<<<<<< HEAD
+=======
+	bundle_id = None
+	if not args.use_serial_batch_fields and (args.batch_no or args.serial_no) and args.qty:
+		batches = frappe._dict({})
+		if args.batch_no:
+			batches[args.batch_no] = args.qty
+
+		bundle_id = make_serial_batch_bundle(
+			frappe._dict(
+				{
+					"item_code": args.item_code or "_Test Item",
+					"warehouse": args.warehouse or "_Test Warehouse - _TC",
+					"qty": args.qty,
+					"voucher_type": "Stock Reconciliation",
+					"batches": batches,
+					"rate": args.rate,
+					"serial_nos": args.serial_no,
+					"posting_date": sr.posting_date,
+					"posting_time": sr.posting_time,
+					"type_of_transaction": "Inward" if args.qty > 0 else "Outward",
+					"company": args.company or "_Test Company",
+					"do_not_submit": True,
+				}
+			)
+		).name
+
+	if args.reconcile_all_serial_batch is None:
+		args.reconcile_all_serial_batch = 1
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	sr.append(
 		"items",
 		{
 			"item_code": args.item_code or "_Test Item",
 			"warehouse": args.warehouse or "_Test Warehouse - _TC",
 			"qty": args.qty,
+<<<<<<< HEAD
 			"valuation_rate": args.rate,
 			"serial_no": args.serial_no,
 			"batch_no": args.batch_no,
+=======
+			"reconcile_all_serial_batch": args.reconcile_all_serial_batch,
+			"valuation_rate": args.rate,
+			"serial_no": args.serial_no if args.use_serial_batch_fields else None,
+			"batch_no": args.batch_no if args.use_serial_batch_fields else None,
+			"serial_and_batch_bundle": bundle_id,
+			"use_serial_batch_fields": args.use_serial_batch_fields,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		},
 	)
 
@@ -1263,6 +1998,12 @@ def create_stock_reconciliation(**args):
 				sr.submit()
 		except EmptyStockReconciliationItemsError:
 			pass
+<<<<<<< HEAD
+=======
+
+		sr.load_from_db()
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	return sr
 
 
@@ -1282,4 +2023,8 @@ def set_valuation_method(item_code, valuation_method):
 			)
 
 
+<<<<<<< HEAD
 test_dependencies = ["Item", "Warehouse"]
+=======
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "Warehouse"]
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

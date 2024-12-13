@@ -88,6 +88,7 @@ frappe.ui.form.on("Item Group", {
 				frappe.set_route("List", "Item", { item_group: frm.doc.name });
 			});
 		}
+<<<<<<< HEAD
 
 		frappe.model.with_doctype("Website Item", () => {
 			const web_item_meta = frappe.get_meta("Website Item");
@@ -102,6 +103,8 @@ frappe.ui.form.on("Item Group", {
 				valid_fields
 			);
 		});
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	},
 
 	set_root_readonly: function (frm) {

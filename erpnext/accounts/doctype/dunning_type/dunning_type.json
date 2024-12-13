@@ -1,23 +1,41 @@
 {
  "actions": [],
  "allow_rename": 1,
+<<<<<<< HEAD
  "autoname": "field:dunning_type",
+=======
+ "beta": 1,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "creation": "2019-12-04 04:59:08.003664",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "dunning_type",
+<<<<<<< HEAD
   "overdue_interval_section",
   "start_day",
   "column_break_4",
   "end_day",
+=======
+  "is_default",
+  "column_break_3",
+  "company",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   "section_break_6",
   "dunning_fee",
   "column_break_8",
   "rate_of_interest",
   "text_block_section",
+<<<<<<< HEAD
   "dunning_letter_text"
+=======
+  "dunning_letter_text",
+  "section_break_9",
+  "income_account",
+  "column_break_13",
+  "cost_center"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -46,10 +64,13 @@
    "options": "Dunning Letter Text"
   },
   {
+<<<<<<< HEAD
    "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "section_break_6",
    "fieldtype": "Section Break"
   },
@@ -58,6 +79,7 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "overdue_interval_section",
    "fieldtype": "Section Break",
    "label": "Overdue Interval"
@@ -73,10 +95,13 @@
    "label": "End Day"
   },
   {
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "rate_of_interest",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Rate of Interest (%) Yearly"
+<<<<<<< HEAD
   }
  ],
  "links": [],
@@ -84,6 +109,59 @@
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Dunning Type",
+=======
+  },
+  {
+   "default": "0",
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Is Default"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break",
+   "label": "Accounting Details"
+  },
+  {
+   "fieldname": "income_account",
+   "fieldtype": "Link",
+   "label": "Income Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "links": [
+  {
+   "link_doctype": "Dunning",
+   "link_fieldname": "dunning_type"
+  }
+ ],
+ "modified": "2024-03-27 13:08:19.584112",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Dunning Type",
+ "naming_rule": "By script",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "owner": "Administrator",
  "permissions": [
   {
@@ -123,7 +201,13 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "track_changes": 1
 }

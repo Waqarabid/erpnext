@@ -6,7 +6,11 @@ import frappe
 from frappe import _, scrub
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
+<<<<<<< HEAD
 from frappe.utils.background_jobs import enqueue
+=======
+from frappe.utils.background_jobs import enqueue, is_job_enqueued
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_accounting_dimensions,
@@ -14,6 +18,28 @@ from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 
 
 class OpeningInvoiceCreationTool(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.opening_invoice_creation_tool_item.opening_invoice_creation_tool_item import (
+			OpeningInvoiceCreationToolItem,
+		)
+
+		company: DF.Link
+		cost_center: DF.Link | None
+		create_missing_party: DF.Check
+		invoice_type: DF.Literal["Sales", "Purchase"]
+		invoices: DF.Table[OpeningInvoiceCreationToolItem]
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		"""Load the Opening Invoice summary"""
 		summary, max_count = self.get_opening_invoice_summary()
@@ -153,7 +179,11 @@ class OpeningInvoiceCreationTool(Document):
 			income_expense_account_field = (
 				"income_account" if row.party_type == "Customer" else "expense_account"
 			)
+<<<<<<< HEAD
 			default_uom = frappe.db.get_single_value("Stock Settings", "stock_uom") or _("Nos")
+=======
+			default_uom = frappe.db.get_single_value("Stock Settings", "stock_uom") or "Nos"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			rate = flt(row.outstanding_amount) / flt(row.qty)
 
 			item_dict = frappe._dict(
@@ -207,20 +237,33 @@ class OpeningInvoiceCreationTool(Document):
 		if len(invoices) < 50:
 			return start_import(invoices)
 		else:
+<<<<<<< HEAD
 			from frappe.core.page.background_jobs.background_jobs import get_info
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			from frappe.utils.scheduler import is_scheduler_inactive
 
 			if is_scheduler_inactive() and not frappe.flags.in_test:
 				frappe.throw(_("Scheduler is inactive. Cannot import data."), title=_("Scheduler Inactive"))
 
+<<<<<<< HEAD
 			enqueued_jobs = [d.get("job_name") for d in get_info()]
 			if self.name not in enqueued_jobs:
+=======
+			job_id = f"opening_invoice::{self.name}"
+
+			if not is_job_enqueued(job_id):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				enqueue(
 					start_import,
 					queue="default",
 					timeout=6000,
 					event="opening_invoice_creation",
+<<<<<<< HEAD
 					job_name=self.name,
+=======
+					job_id=job_id,
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					invoices=invoices,
 					now=frappe.conf.developer_mode or frappe.flags.in_test,
 				)
@@ -251,7 +294,11 @@ def start_import(invoices):
 				errors, "<a href='/app/List/Error Log' class='variant-click'>Error Log</a>"
 			),
 			indicator="red",
+<<<<<<< HEAD
 			title=_("Error Occured"),
+=======
+			title=_("Error Occurred"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		)
 	return names
 

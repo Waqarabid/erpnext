@@ -8,9 +8,12 @@ frappe.ui.form.on("Bank", {
 	},
 	refresh: function (frm) {
 		add_fields_to_mapping_table(frm);
+<<<<<<< HEAD
 
 		frappe.dynamic_link = { doc: frm.doc, fieldname: "name", doctype: "Bank" };
 
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.toggle_display(["address_html", "contact_html"], !frm.doc.__islocal);
 
 		if (frm.doc.__islocal) {
@@ -106,6 +109,10 @@ erpnext.integrations.refreshPlaidLink = class refreshPlaidLink {
 
 	onScriptLoaded(me) {
 		me.linkHandler = Plaid.create({
+<<<<<<< HEAD
+=======
+			// eslint-disable-line no-undef
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			env: me.plaid_env,
 			token: me.token,
 			onSuccess: me.plaid_success,

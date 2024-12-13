@@ -30,8 +30,15 @@
   "allow_multiple_items",
   "allow_against_multiple_purchase_orders",
   "allow_sales_order_creation_for_expired_quotation",
+<<<<<<< HEAD
   "hide_tax_id",
   "enable_discount_accounting"
+=======
+  "dont_reserve_sales_order_qty_on_sales_return",
+  "hide_tax_id",
+  "enable_discount_accounting",
+  "enable_cutoff_date_on_bulk_delivery_note_creation"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  ],
  "fields": [
   {
@@ -184,6 +191,15 @@
   },
   {
    "default": "0",
+<<<<<<< HEAD
+=======
+   "fieldname": "dont_reserve_sales_order_qty_on_sales_return",
+   "fieldtype": "Check",
+   "label": "Don't Reserve Sales Order Qty on Sales Return"
+  },
+  {
+   "default": "0",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
    "fieldname": "allow_negative_rates_for_items",
    "fieldtype": "Check",
    "label": "Allow Negative rates for Items"
@@ -193,6 +209,15 @@
    "fieldname": "blanket_order_allowance",
    "fieldtype": "Float",
    "label": "Blanket Order Allowance (%)"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_cutoff_date_on_bulk_delivery_note_creation",
+   "fieldtype": "Check",
+   "label": "Enable Cut-Off Date on Bulk Delivery Note Creation"
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
   }
  ],
  "icon": "fa fa-cog",
@@ -200,7 +225,11 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2023-10-25 14:03:03.966701",
+=======
+ "modified": "2024-03-27 13:10:38.633352",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling Settings",
@@ -225,8 +254,16 @@
    "write": 1
   }
  ],
+<<<<<<< HEAD
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1
 }
+=======
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

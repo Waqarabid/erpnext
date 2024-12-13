@@ -160,6 +160,10 @@ erpnext.StockAnalytics = class StockAnalytics extends erpnext.StockGridReport {
 		this.serialized_buying_rates = this.get_serialized_buying_rates();
 
 		for (var i = 0, j = data.length; i < j; i++) {
+<<<<<<< HEAD
+=======
+			let diff = 0;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			var sl = data[i];
 			sl.posting_datetime = sl.posting_date + " " + sl.posting_time;
 			var posting_datetime = frappe.datetime.str_to_obj(sl.posting_datetime);
@@ -176,11 +180,16 @@ erpnext.StockAnalytics = class StockAnalytics extends erpnext.StockGridReport {
 					var is_fifo = valuation_method == "FIFO";
 
 					if (sl.voucher_type == "Stock Reconciliation") {
+<<<<<<< HEAD
 						var diff = sl.qty_after_transaction * sl.valuation_rate - item.closing_qty_value;
+=======
+						diff = sl.qty_after_transaction * sl.valuation_rate - item.closing_qty_value;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						wh.fifo_stack = [[sl.qty_after_transaction, sl.valuation_rate, sl.posting_date]];
 						wh.balance_qty = sl.qty_after_transaction;
 						wh.balance_value = sl.valuation_rate * sl.qty_after_transaction;
 					} else {
+<<<<<<< HEAD
 						var diff = me.get_value_diff(wh, sl, is_fifo);
 					}
 				} else {
@@ -188,6 +197,15 @@ erpnext.StockAnalytics = class StockAnalytics extends erpnext.StockGridReport {
 						var diff = sl.qty_after_transaction - item.closing_qty_value;
 					} else {
 						var diff = sl.qty;
+=======
+						diff = me.get_value_diff(wh, sl, is_fifo);
+					}
+				} else {
+					if (sl.voucher_type == "Stock Reconciliation") {
+						diff = sl.qty_after_transaction - item.closing_qty_value;
+					} else {
+						diff = sl.qty;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 					}
 				}
 

@@ -20,6 +20,33 @@ class CanNotBeDefaultDimension(frappe.ValidationError):
 
 
 class InventoryDimension(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		apply_to_all_doctypes: DF.Check
+		condition: DF.Code | None
+		dimension_name: DF.Data
+		disabled: DF.Check
+		document_type: DF.Link | None
+		fetch_from_parent: DF.Literal[None]
+		istable: DF.Check
+		mandatory_depends_on: DF.SmallText | None
+		reference_document: DF.Link
+		reqd: DF.Check
+		source_fieldname: DF.Data | None
+		target_fieldname: DF.Data | None
+		type_of_transaction: DF.Literal["", "Inward", "Outward", "Both"]
+		validate_negative_stock: DF.Check
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def onload(self):
 		if not self.is_new() and frappe.db.has_column("Stock Ledger Entry", self.target_fieldname):
 			self.set_onload("has_stock_ledger", self.has_stock_ledger())
@@ -83,6 +110,10 @@ class InventoryDimension(Document):
 					self.source_fieldname,
 					f"to_{self.source_fieldname}",
 					f"from_{self.source_fieldname}",
+<<<<<<< HEAD
+=======
+					f"rejected_{self.source_fieldname}",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				],
 			)
 		}
@@ -147,12 +178,20 @@ class InventoryDimension(Document):
 		if label_start_with:
 			label = f"{label_start_with} {self.dimension_name}"
 
+<<<<<<< HEAD
 		return [
+=======
+		dimension_fields = [
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			dict(
 				fieldname="inventory_dimension",
 				fieldtype="Section Break",
 				insert_after=self.get_insert_after_fieldname(doctype),
+<<<<<<< HEAD
 				label="Inventory Dimension",
+=======
+				label=_("Inventory Dimension"),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				collapsible=1,
 			),
 			dict(
@@ -160,23 +199,56 @@ class InventoryDimension(Document):
 				fieldtype="Link",
 				insert_after="inventory_dimension",
 				options=self.reference_document,
+<<<<<<< HEAD
 				label=label,
+=======
+				label=_(label),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				search_index=1,
 				reqd=self.reqd,
 				mandatory_depends_on=self.mandatory_depends_on,
 			),
 		]
 
+<<<<<<< HEAD
+=======
+		if doctype in ["Purchase Invoice Item", "Purchase Receipt Item"]:
+			dimension_fields.append(
+				dict(
+					fieldname="rejected_" + self.source_fieldname,
+					fieldtype="Link",
+					insert_after=self.source_fieldname,
+					options=self.reference_document,
+					label=_("Rejected " + self.dimension_name),
+					search_index=1,
+					reqd=self.reqd,
+					mandatory_depends_on=self.mandatory_depends_on,
+				)
+			)
+
+		return dimension_fields
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def add_custom_fields(self):
 		custom_fields = {}
 
 		dimension_fields = []
 		if self.apply_to_all_doctypes:
 			for doctype in get_inventory_documents():
+<<<<<<< HEAD
 				dimension_fields = self.get_dimension_fields(doctype[0])
 				self.add_transfer_field(doctype[0], dimension_fields)
 				custom_fields.setdefault(doctype[0], dimension_fields)
 		else:
+=======
+				if field_exists(doctype[0], self.source_fieldname):
+					continue
+
+				dimension_fields = self.get_dimension_fields(doctype[0])
+				self.add_transfer_field(doctype[0], dimension_fields)
+				custom_fields.setdefault(doctype[0], dimension_fields)
+		elif not field_exists(self.document_type, self.source_fieldname):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			dimension_fields = self.get_dimension_fields()
 
 			self.add_transfer_field(self.document_type, dimension_fields)
@@ -195,6 +267,7 @@ class InventoryDimension(Document):
 			dimension_field["fieldname"] = self.target_fieldname
 			custom_fields["Stock Ledger Entry"] = dimension_field
 
+<<<<<<< HEAD
 		filter_custom_fields = {}
 		if custom_fields:
 			for doctype, fields in custom_fields.items():
@@ -206,6 +279,10 @@ class InventoryDimension(Document):
 						filter_custom_fields.setdefault(doctype, []).append(field)
 
 		create_custom_fields(filter_custom_fields)
+=======
+		if custom_fields:
+			create_custom_fields(custom_fields)
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def add_transfer_field(self, doctype, dimension_fields):
 		if doctype not in [

@@ -6,6 +6,10 @@ import copy
 
 import frappe
 from frappe import _
+<<<<<<< HEAD
+=======
+from frappe.desk.reportview import get_match_cond
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.model.document import Document
 from frappe.utils import add_days, add_months, format_date, getdate, today
 from frappe.utils.jinja import validate_template
@@ -22,6 +26,64 @@ from erpnext.accounts.report.general_ledger.general_ledger import execute as get
 
 
 class ProcessStatementOfAccounts(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		from erpnext.accounts.doctype.process_statement_of_accounts_customer.process_statement_of_accounts_customer import (
+			ProcessStatementOfAccountsCustomer,
+		)
+		from erpnext.accounts.doctype.psoa_cost_center.psoa_cost_center import PSOACostCenter
+		from erpnext.accounts.doctype.psoa_project.psoa_project import PSOAProject
+
+		account: DF.Link | None
+		ageing_based_on: DF.Literal["Due Date", "Posting Date"]
+		based_on_payment_terms: DF.Check
+		body: DF.TextEditor | None
+		cc_to: DF.Link | None
+		collection_name: DF.DynamicLink | None
+		company: DF.Link
+		cost_center: DF.TableMultiSelect[PSOACostCenter]
+		currency: DF.Link | None
+		customer_collection: DF.Literal["", "Customer Group", "Territory", "Sales Partner", "Sales Person"]
+		customers: DF.Table[ProcessStatementOfAccountsCustomer]
+		enable_auto_email: DF.Check
+		filter_duration: DF.Int
+		finance_book: DF.Link | None
+		frequency: DF.Literal["Weekly", "Monthly", "Quarterly"]
+		from_date: DF.Date | None
+		group_by: DF.Literal["", "Group by Voucher", "Group by Voucher (Consolidated)"]
+		ignore_cr_dr_notes: DF.Check
+		ignore_exchange_rate_revaluation_journals: DF.Check
+		include_ageing: DF.Check
+		include_break: DF.Check
+		letter_head: DF.Link | None
+		orientation: DF.Literal["Landscape", "Portrait"]
+		payment_terms_template: DF.Link | None
+		pdf_name: DF.Data | None
+		posting_date: DF.Date | None
+		primary_mandatory: DF.Check
+		project: DF.TableMultiSelect[PSOAProject]
+		report: DF.Literal["General Ledger", "Accounts Receivable"]
+		sales_partner: DF.Link | None
+		sales_person: DF.Link | None
+		sender: DF.Link | None
+		show_net_values_in_party_account: DF.Check
+		show_remarks: DF.Check
+		start_date: DF.Date | None
+		subject: DF.Data | None
+		terms_and_conditions: DF.Link | None
+		territory: DF.Link | None
+		to_date: DF.Date | None
+	# end: auto-generated types
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def validate(self):
 		if not self.subject:
 			self.subject = "Statement Of Accounts for {{ customer.customer_name }}"
@@ -229,7 +291,11 @@ def get_customers_based_on_territory_or_customer_group(customer_collection, coll
 	return frappe.get_list(
 		"Customer",
 		fields=["name", "customer_name", "email_id"],
+<<<<<<< HEAD
 		filters=[[fields_dict[customer_collection], "IN", selected]],
+=======
+		filters=[["disabled", "=", 0], [fields_dict[customer_collection], "IN", selected]],
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	)
 
 
@@ -315,8 +381,11 @@ def fetch_customers(customer_collection, collection_name, primary_mandatory):
 		if int(primary_mandatory):
 			if primary_email == "":
 				continue
+<<<<<<< HEAD
 		elif (billing_email == "") and (primary_email == ""):
 			continue
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		customer_list.append(
 			{
@@ -353,8 +422,15 @@ def get_customer_emails(customer_name, primary_mandatory, billing_and_primary=Tr
 			link.link_doctype='Customer'
 			and link.link_name=%s
 			and contact.is_billing_contact=1
+<<<<<<< HEAD
 		ORDER BY
 			contact.creation desc""",
+=======
+			{mcond}
+		ORDER BY
+			contact.creation desc
+		""".format(mcond=get_match_cond("Contact")),
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		customer_name,
 	)
 
@@ -418,6 +494,10 @@ def send_emails(document_name, from_scheduler=False, posting_date=None):
 				reference_doctype="Process Statement Of Accounts",
 				reference_name=document_name,
 				attachments=attachments,
+<<<<<<< HEAD
+=======
+				expose_recipients="header",
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			)
 
 		if doc.enable_auto_email and from_scheduler:

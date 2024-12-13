@@ -5,8 +5,13 @@ frappe.provide("erpnext.assets");
 
 erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.stock.StockController {
 	setup() {
+<<<<<<< HEAD
 		this.setup_posting_date_time_check();
 		this.frm.ignore_doctypes_on_cancel_all = ["Asset Movement"];
+=======
+		this.frm.ignore_doctypes_on_cancel_all = ["Serial and Batch Bundle", "Asset Movement"];
+		this.setup_posting_date_time_check();
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	onload() {
@@ -64,6 +69,21 @@ erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.s
 			};
 		});
 
+<<<<<<< HEAD
+=======
+		me.frm.set_query("serial_and_batch_bundle", "stock_items", (doc, cdt, cdn) => {
+			let row = locals[cdt][cdn];
+			return {
+				filters: {
+					item_code: row.item_code,
+					voucher_type: doc.doctype,
+					voucher_no: ["in", [doc.name, ""]],
+					is_cancelled: 0,
+				},
+			};
+		});
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		me.frm.set_query("item_code", "stock_items", function () {
 			return erpnext.queries.item({ is_stock_item: 1 });
 		});
@@ -108,6 +128,20 @@ erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.s
 				},
 			};
 		});
+<<<<<<< HEAD
+=======
+
+		let sbb_field = me.frm.get_docfield("stock_items", "serial_and_batch_bundle");
+		if (sbb_field) {
+			sbb_field.get_route_options_for_new_doc = (row) => {
+				return {
+					item_code: row.doc.item_code,
+					warehouse: row.doc.warehouse,
+					voucher_type: me.frm.doc.doctype,
+				};
+			};
+		}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	target_item_code() {
@@ -299,7 +333,11 @@ erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.s
 				method: "erpnext.assets.doctype.asset_capitalization.asset_capitalization.get_consumed_stock_item_details",
 				child: row,
 				args: {
+<<<<<<< HEAD
 					args: {
+=======
+					ctx: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						item_code: row.item_code,
 						warehouse: row.warehouse,
 						stock_qty: flt(row.stock_qty),
@@ -327,7 +365,11 @@ erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.s
 				method: "erpnext.assets.doctype.asset_capitalization.asset_capitalization.get_consumed_asset_details",
 				child: row,
 				args: {
+<<<<<<< HEAD
 					args: {
+=======
+					ctx: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						asset: row.asset,
 						doctype: me.frm.doc.doctype,
 						name: me.frm.doc.name,
@@ -354,7 +396,11 @@ erpnext.assets.AssetCapitalization = class AssetCapitalization extends erpnext.s
 				method: "erpnext.assets.doctype.asset_capitalization.asset_capitalization.get_service_item_details",
 				child: row,
 				args: {
+<<<<<<< HEAD
 					args: {
+=======
+					ctx: {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 						item_code: row.item_code,
 						qty: flt(row.qty),
 						expense_account: row.expense_account,

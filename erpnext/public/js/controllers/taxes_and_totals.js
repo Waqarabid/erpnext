@@ -26,7 +26,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 			item.discount_amount = flt(item.rate_with_margin) * flt(item.discount_percentage) / 100;
 		}
 
+<<<<<<< HEAD
 		if (item.discount_amount) {
+=======
+		if (item.discount_amount > 0) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			item_rate = flt((item.rate_with_margin) - (item.discount_amount), precision('rate', item));
 			item.discount_percentage = 100 * flt(item.discount_amount) / flt(item.rate_with_margin);
 		}
@@ -128,7 +132,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 	calculate_item_values() {
 		var me = this;
 		if (!this.discount_amount_applied) {
+<<<<<<< HEAD
 			for (const item of this.frm._items || []) {
+=======
+			for (const item of this.frm.doc.items || []) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				frappe.model.round_floats_in(item);
 				item.net_rate = item.rate;
 				item.qty = item.qty === undefined ? (me.frm.doc.is_return ? -1 : 1) : item.qty;
@@ -183,9 +191,15 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 
 			$.each(tax_fields, function(i, fieldname) { tax[fieldname] = 0.0; });
 
+<<<<<<< HEAD
 			if (!this.discount_amount_applied && cur_frm) {
 				cur_frm.cscript.validate_taxes_and_charges(tax.doctype, tax.name);
 				me.validate_inclusive_tax(tax);
+=======
+			if (!this.discount_amount_applied) {
+				erpnext.accounts.taxes.validate_taxes_and_charges(tax.doctype, tax.name);
+				erpnext.accounts.taxes.validate_inclusive_tax(tax, this.frm);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			}
 			frappe.model.round_floats_in(tax);
 		});
@@ -196,7 +210,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 		frappe.flags.round_off_applicable_accounts = [];
 
 		if (me.frm.doc.company) {
+<<<<<<< HEAD
 			return frappe.call({
+=======
+			frappe.call({
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				"method": "erpnext.controllers.taxes_and_totals.get_round_off_applicable_accounts",
 				"args": {
 					"company": me.frm.doc.company,
@@ -209,6 +227,16 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 				}
 			});
 		}
+<<<<<<< HEAD
+=======
+
+		frappe.call({
+			method: "erpnext.controllers.taxes_and_totals.get_rounding_tax_settings",
+			callback: function(r) {
+				frappe.flags.round_off_settings = r.message;
+			}
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	determine_exclusive_rate() {
@@ -220,7 +248,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 		});
 		if(has_inclusive_tax==false) return;
 
+<<<<<<< HEAD
 		$.each(me.frm._items || [], function(n, item) {
+=======
+		$.each(this.frm.doc.items || [], function(n, item) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			var item_tax_map = me._load_item_tax_rate(item.item_tax_rate);
 			var cumulated_tax_fraction = 0.0;
 			var total_inclusive_tax_amount_per_qty = 0;
@@ -329,6 +361,10 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 					child.charge_type = "On Net Total";
 					child.account_head = tax;
 					child.rate = 0;
+<<<<<<< HEAD
+=======
+					child.set_by_item_tax_template = true;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 				}
 			});
 		}
@@ -351,6 +387,12 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 			$.each(me.frm.doc["taxes"] || [], function(i, tax) {
 				// tax_amount represents the amount of tax for the current step
 				var current_tax_amount = me.get_current_tax_amount(item, tax, item_tax_map);
+<<<<<<< HEAD
+=======
+				if (frappe.flags.round_row_wise_tax) {
+					current_tax_amount = flt(current_tax_amount, precision("tax_amount", tax));
+				}
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 				// Adjust divisional loss to the last item
 				if (tax.charge_type == "Actual") {
@@ -437,6 +479,10 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 	get_current_tax_amount(item, tax, item_tax_map) {
 		var tax_rate = this._get_tax_rate(tax, item_tax_map);
 		var current_tax_amount = 0.0;
+<<<<<<< HEAD
+=======
+		var current_net_amount = 0.0;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		// To set row_id by default as previous row.
 		if(["On Previous Row Amount", "On Previous Row Total"].includes(tax.charge_type)) {
@@ -449,12 +495,17 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 			}
 		}
 		if(tax.charge_type == "Actual") {
+<<<<<<< HEAD
+=======
+			current_net_amount = item.net_amount
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			// distribute the tax amount proportionally to each item row
 			var actual = flt(tax.tax_amount, precision("tax_amount", tax));
 			current_tax_amount = this.frm.doc.net_total ?
 				((item.net_amount / this.frm.doc.net_total) * actual) : 0.0;
 
 		} else if(tax.charge_type == "On Net Total") {
+<<<<<<< HEAD
 			current_tax_amount = (tax_rate / 100.0) * item.net_amount;
 		} else if(tax.charge_type == "On Previous Row Amount") {
 			current_tax_amount = (tax_rate / 100.0) *
@@ -464,17 +515,41 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 			current_tax_amount = (tax_rate / 100.0) *
 				this.frm.doc["taxes"][cint(tax.row_id) - 1].grand_total_for_current_item;
 		} else if (tax.charge_type == "On Item Quantity") {
+=======
+			if (tax.account_head in item_tax_map) {
+				current_net_amount = item.net_amount
+			};
+			current_tax_amount = (tax_rate / 100.0) * item.net_amount;
+		} else if(tax.charge_type == "On Previous Row Amount") {
+			current_net_amount = this.frm.doc["taxes"][cint(tax.row_id) - 1].tax_amount_for_current_item
+			current_tax_amount = (tax_rate / 100.0) *
+				this.frm.doc["taxes"][cint(tax.row_id) - 1].tax_amount_for_current_item;
+		} else if(tax.charge_type == "On Previous Row Total") {
+			current_net_amount = this.frm.doc["taxes"][cint(tax.row_id) - 1].grand_total_for_current_item
+			current_tax_amount = (tax_rate / 100.0) *
+				this.frm.doc["taxes"][cint(tax.row_id) - 1].grand_total_for_current_item;
+		} else if (tax.charge_type == "On Item Quantity") {
+			// don't sum current net amount due to the field being a currency field
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 			current_tax_amount = tax_rate * item.qty;
 		}
 
 		if (!tax.dont_recompute_tax) {
+<<<<<<< HEAD
 			this.set_item_wise_tax(item, tax, tax_rate, current_tax_amount);
+=======
+			this.set_item_wise_tax(item, tax, tax_rate, current_tax_amount, current_net_amount);
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		}
 
 		return current_tax_amount;
 	}
 
+<<<<<<< HEAD
 	set_item_wise_tax(item, tax, tax_rate, current_tax_amount) {
+=======
+	set_item_wise_tax(item, tax, tax_rate, current_tax_amount, current_net_amount) {
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		// store tax breakup for each item
 		let tax_detail = tax.item_wise_tax_detail;
 		let key = item.item_code || item.item_name;
@@ -485,10 +560,31 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 		}
 
 		let item_wise_tax_amount = current_tax_amount * this.frm.doc.conversion_rate;
+<<<<<<< HEAD
 		if (tax_detail && tax_detail[key])
 			item_wise_tax_amount += tax_detail[key][1];
 
 		tax_detail[key] = [tax_rate, flt(item_wise_tax_amount, precision("base_tax_amount", tax))];
+=======
+		let item_wise_net_amount = current_net_amount * this.frm.doc.conversion_rate;
+		if (frappe.flags.round_row_wise_tax) {
+			item_wise_tax_amount = flt(item_wise_tax_amount, precision("tax_amount", tax));
+			item_wise_net_amount = flt(item_wise_net_amount, precision("net_amount", tax));
+			if (tax_detail && tax_detail[key]) {
+				item_wise_tax_amount += flt(tax_detail[key].tax_amount, precision("tax_amount", tax));
+				item_wise_net_amount += flt(tax_detail[key].net_amount, precision("net_amount", tax));
+			}
+		} else if (tax_detail && tax_detail[key]) {
+			item_wise_tax_amount += tax_detail[key].tax_amount;
+			item_wise_net_amount += tax_detail[key].net_amount;
+		}
+
+		tax_detail[key] = {
+			tax_rate: tax_rate,
+			tax_amount: flt(item_wise_tax_amount, precision("base_tax_amount", tax)),
+			net_amount: flt(item_wise_net_amount, precision("base_net_amount", tax)),
+		};
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	}
 
 	round_off_totals(tax) {
@@ -626,7 +722,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 
 	_cleanup() {
 		this.frm.doc.base_in_words = this.frm.doc.in_words = "";
+<<<<<<< HEAD
 		let items = this.frm._items;
+=======
+		let items = this.frm.doc.items;
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		if(items && items.length) {
 			if(!frappe.meta.get_docfield(items[0].doctype, "item_tax_amount", this.frm.doctype)) {
@@ -828,6 +928,7 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 			);
 		}
 
+<<<<<<< HEAD
 		if(!this.frm.doc.is_return){
 			this.frm.doc.payments.find(payment => {
 				if (payment.default) {
@@ -835,6 +936,15 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 				}
 			});
 		}
+=======
+		this.frm.doc.payments.find(payment => {
+			if (payment.default) {
+				payment.amount = total_amount_to_pay;
+			} else {
+				payment.amount = 0
+			}
+		});
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 		this.frm.refresh_fields();
 	}

@@ -5,13 +5,24 @@
 import frappe
 from frappe import qb
 from frappe.query_builder.functions import Sum
+<<<<<<< HEAD
 from frappe.tests.utils import FrappeTestCase
+=======
+from frappe.tests import IntegrationTestCase
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from frappe.utils import add_days, getdate, nowdate
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.payment_entry.test_payment_entry import create_payment_entry
+<<<<<<< HEAD
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.accounts.party import get_party_account
+=======
+from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
+from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
+from erpnext.accounts.party import get_party_account
+from erpnext.buying.doctype.purchase_order.test_purchase_order import prepare_data_for_internal_transfer
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 from erpnext.stock.doctype.item.test_item import create_item
 
 
@@ -44,7 +55,11 @@ def make_supplier(supplier_name, currency=None):
 		return supplier_name
 
 
+<<<<<<< HEAD
 class TestAccountsController(FrappeTestCase):
+=======
+class TestAccountsController(IntegrationTestCase):
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	"""
 	Test Exchange Gain/Loss booking on various scenarios.
 	Test Cases are numbered for better organization
@@ -55,6 +70,10 @@ class TestAccountsController(FrappeTestCase):
 	40 series - Company default Cost center is unset
 	50 series - Journals against Journals
 	60 series - Journals against Payment Entries
+<<<<<<< HEAD
+=======
+	70 series - Advances in Separate party account. Both Party and Advance account are in Foreign currency.
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	90 series - Dimension inheritence
 	"""
 
@@ -114,6 +133,7 @@ class TestAccountsController(FrappeTestCase):
 		self.supplier = make_supplier("_Test MC Supplier USD", "USD")
 
 	def create_account(self):
+<<<<<<< HEAD
 		account_name = "Debtors USD"
 		if not frappe.db.get_value(
 			"Account", filters={"account_name": account_name, "company": self.company}
@@ -155,6 +175,104 @@ class TestAccountsController(FrappeTestCase):
 			)
 			acc = frappe.get_doc("Account", name)
 		self.creditors_usd = acc.name
+=======
+		accounts = [
+			frappe._dict(
+				{
+					"attribute_name": "debtors_usd",
+					"name": "Debtors USD",
+					"account_type": "Receivable",
+					"account_currency": "USD",
+					"parent_account": "Accounts Receivable - " + self.company_abbr,
+				}
+			),
+			frappe._dict(
+				{
+					"attribute_name": "creditors_usd",
+					"name": "Creditors USD",
+					"account_type": "Payable",
+					"account_currency": "USD",
+					"parent_account": "Accounts Payable - " + self.company_abbr,
+				}
+			),
+			# Advance accounts under Asset and Liability header
+			frappe._dict(
+				{
+					"attribute_name": "advance_received_usd",
+					"name": "Advance Received USD",
+					"account_type": "Receivable",
+					"account_currency": "USD",
+					"parent_account": "Current Liabilities - " + self.company_abbr,
+				}
+			),
+			frappe._dict(
+				{
+					"attribute_name": "advance_paid_usd",
+					"name": "Advance Paid USD",
+					"account_type": "Payable",
+					"account_currency": "USD",
+					"parent_account": "Current Assets - " + self.company_abbr,
+				}
+			),
+		]
+
+		for x in accounts:
+			if not frappe.db.get_value("Account", filters={"account_name": x.name, "company": self.company}):
+				acc = frappe.new_doc("Account")
+				acc.account_name = x.name
+				acc.parent_account = x.parent_account
+				acc.company = self.company
+				acc.account_currency = x.account_currency
+				acc.account_type = x.account_type
+				acc.insert()
+			else:
+				name = frappe.db.get_value(
+					"Account",
+					filters={"account_name": x.name, "company": self.company},
+					fieldname="name",
+					pluck=True,
+				)
+				acc = frappe.get_doc("Account", name)
+			setattr(self, x.attribute_name, acc.name)
+
+	def setup_advance_accounts_in_party_master(self):
+		company = frappe.get_doc("Company", self.company)
+		company.book_advance_payments_in_separate_party_account = 1
+		company.save()
+
+		customer = frappe.get_doc("Customer", self.customer)
+		customer.append(
+			"accounts",
+			{
+				"company": self.company,
+				"account": self.debtors_usd,
+				"advance_account": self.advance_received_usd,
+			},
+		)
+		customer.save()
+
+		supplier = frappe.get_doc("Supplier", self.supplier)
+		supplier.append(
+			"accounts",
+			{
+				"company": self.company,
+				"account": self.creditors_usd,
+				"advance_account": self.advance_paid_usd,
+			},
+		)
+		supplier.save()
+
+	def remove_advance_accounts_from_party_master(self):
+		company = frappe.get_doc("Company", self.company)
+		company.book_advance_payments_in_separate_party_account = 0
+		company.save()
+		customer = frappe.get_doc("Customer", self.customer)
+		customer.accounts = []
+		customer.save()
+		supplier = frappe.get_doc("Supplier", self.supplier)
+		supplier.accounts = []
+		supplier.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def create_sales_invoice(
 		self,
@@ -218,6 +336,51 @@ class TestAccountsController(FrappeTestCase):
 		payment.posting_date = posting_date
 		return payment
 
+<<<<<<< HEAD
+=======
+	def create_purchase_invoice(
+		self,
+		qty=1,
+		rate=1,
+		conversion_rate=80,
+		posting_date=None,
+		do_not_save=False,
+		do_not_submit=False,
+	):
+		"""
+		Helper function to populate default values in purchase invoice
+		"""
+		if posting_date is None:
+			posting_date = nowdate()
+
+		pinv = make_purchase_invoice(
+			posting_date=posting_date,
+			qty=qty,
+			rate=rate,
+			company=self.company,
+			supplier=self.supplier,
+			item_code=self.item,
+			item_name=self.item,
+			cost_center=self.cost_center,
+			warehouse=self.warehouse,
+			parent_cost_center=self.cost_center,
+			update_stock=0,
+			currency="USD",
+			conversion_rate=conversion_rate,
+			is_pos=0,
+			is_return=0,
+			income_account=self.income_account,
+			expense_account=self.expense_account,
+			do_not_save=True,
+		)
+		pinv.credit_to = self.creditors_usd
+		if not do_not_save:
+			pinv.save()
+			if not do_not_submit:
+				pinv.submit()
+		return pinv
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def clear_old_entries(self):
 		doctype_list = [
 			"GL Entry",
@@ -705,6 +868,72 @@ class TestAccountsController(FrappeTestCase):
 		self.assertEqual(exc_je_for_si, [])
 		self.assertEqual(exc_je_for_pe, [])
 
+<<<<<<< HEAD
+=======
+	@IntegrationTestCase.change_settings(
+		"Stock Settings", {"allow_internal_transfer_at_arms_length_price": 1}
+	)
+	def test_16_internal_transfer_at_arms_length_price(self):
+		from erpnext.accounts.doctype.sales_invoice.sales_invoice import make_inter_company_purchase_invoice
+		from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
+
+		prepare_data_for_internal_transfer()
+		company = "_Test Company with perpetual inventory"
+		target_warehouse = create_warehouse("_Test Internal Warehouse New 1", company=company)
+		warehouse = create_warehouse("_Test Internal Warehouse New 2", company=company)
+		arms_length_price = 40
+
+		si = create_sales_invoice(
+			company=company,
+			customer="_Test Internal Customer 2",
+			debit_to="Debtors - TCP1",
+			target_warehouse=target_warehouse,
+			warehouse=warehouse,
+			income_account="Sales - TCP1",
+			expense_account="Cost of Goods Sold - TCP1",
+			cost_center="Main - TCP1",
+			update_stock=True,
+			do_not_save=True,
+			do_not_submit=True,
+		)
+
+		si.items[0].rate = arms_length_price
+		si.save()
+		# rate should not reset to incoming rate
+		self.assertEqual(si.items[0].rate, arms_length_price)
+
+		frappe.db.set_single_value("Stock Settings", "allow_internal_transfer_at_arms_length_price", 0)
+		si.items[0].rate = arms_length_price
+		si.save()
+		# rate should reset to incoming rate
+		self.assertEqual(si.items[0].rate, 100)
+
+		si.update_stock = 0
+		si.save()
+		si.submit()
+
+		pi = make_inter_company_purchase_invoice(si.name)
+		pi.update_stock = 1
+		pi.items[0].rate = arms_length_price
+		pi.items[0].warehouse = target_warehouse
+		pi.items[0].from_warehouse = warehouse
+		pi.save()
+
+		self.assertEqual(pi.items[0].rate, 100)
+		self.assertEqual(pi.items[0].valuation_rate, 100)
+
+		frappe.db.set_single_value("Stock Settings", "allow_internal_transfer_at_arms_length_price", 1)
+		pi = make_inter_company_purchase_invoice(si.name)
+		pi.update_stock = 1
+		pi.items[0].rate = arms_length_price
+		pi.items[0].warehouse = target_warehouse
+		pi.items[0].from_warehouse = warehouse
+		pi.save()
+
+		self.assertEqual(pi.items[0].rate, arms_length_price)
+		self.assertEqual(pi.items[0].valuation_rate, 100)
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 	def test_20_journal_against_sales_invoice(self):
 		# Invoice in Foreign Currency
 		si = self.create_sales_invoice(qty=1, conversion_rate=80, rate=1)
@@ -1285,6 +1514,7 @@ class TestAccountsController(FrappeTestCase):
 		frappe.db.set_value("Company", self.company, "cost_center", cc)
 
 	def setup_dimensions(self):
+<<<<<<< HEAD
 		if not frappe.db.exists("Accounting Dimension", {"document_type": "Department"}):
 			frappe.get_doc(
 				{
@@ -1332,6 +1562,20 @@ class TestAccountsController(FrappeTestCase):
 			dimension1 = frappe.get_doc("Accounting Dimension", "Location")
 			dimension1.disabled = 1
 			dimension1.save()
+=======
+		# create dimension
+		from erpnext.accounts.doctype.accounting_dimension.test_accounting_dimension import (
+			create_dimension,
+		)
+
+		create_dimension()
+		# make it non-mandatory
+		loc = frappe.get_doc("Accounting Dimension", "Location")
+		for x in loc.dimension_defaults:
+			x.mandatory_for_bs = False
+			x.mandatory_for_pl = False
+		loc.save()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_90_dimensions_filter(self):
 		"""
@@ -1403,7 +1647,10 @@ class TestAccountsController(FrappeTestCase):
 		pr.get_unreconciled_entries()
 		self.assertEqual(len(pr.invoices), 0)
 		self.assertEqual(len(pr.payments), 1)
+<<<<<<< HEAD
 		self.disable_dimensions()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_91_cr_note_should_inherit_dimension(self):
 		self.setup_dimensions()
@@ -1448,7 +1695,10 @@ class TestAccountsController(FrappeTestCase):
 						"Journal Entry Account", filters={"parent": x.parent}, pluck="department"
 					),
 				)
+<<<<<<< HEAD
 		self.disable_dimensions()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_92_dimension_inhertiance_exc_gain_loss(self):
 		# Sales Invoice in Foreign Currency
@@ -1486,7 +1736,10 @@ class TestAccountsController(FrappeTestCase):
 				pluck="department",
 			),
 		)
+<<<<<<< HEAD
 		self.disable_dimensions()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_93_dimension_inheritance_on_advance(self):
 		self.setup_dimensions()
@@ -1533,7 +1786,10 @@ class TestAccountsController(FrappeTestCase):
 				pluck="department",
 			),
 		)
+<<<<<<< HEAD
 		self.disable_dimensions()
+=======
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 
 	def test_50_journal_against_journal(self):
 		# Invoice in Foreign Currency
@@ -1737,3 +1993,126 @@ class TestAccountsController(FrappeTestCase):
 		# Exchange Gain/Loss Journal should've been cancelled
 		exc_je_for_je1 = self.get_journals_for(je1.doctype, je1.name)
 		self.assertEqual(exc_je_for_je1, [])
+<<<<<<< HEAD
+=======
+
+	def test_70_advance_payment_against_sales_invoice_in_foreign_currency(self):
+		"""
+		Customer advance booked under Liability
+		"""
+		self.setup_advance_accounts_in_party_master()
+
+		adv = self.create_payment_entry(amount=1, source_exc_rate=83)
+		adv.save()  # explicit 'save' is needed to trigger set_liability_account()
+		self.assertEqual(adv.paid_from, self.advance_received_usd)
+		adv.submit()
+
+		si = self.create_sales_invoice(qty=1, conversion_rate=80, rate=1, do_not_submit=True)
+		si.debit_to = self.debtors_usd
+		si.save().submit()
+		self.assert_ledger_outstanding(si.doctype, si.name, 80.0, 1.0)
+
+		pr = self.create_payment_reconciliation()
+		pr.receivable_payable_account = self.debtors_usd
+		pr.default_advance_account = self.advance_received_usd
+		pr.get_unreconciled_entries()
+		self.assertEqual(pr.invoices[0].invoice_number, si.name)
+		self.assertEqual(pr.payments[0].reference_name, adv.name)
+
+		# Allocate and Reconcile
+		invoices = [x.as_dict() for x in pr.invoices]
+		payments = [x.as_dict() for x in pr.payments]
+		pr.allocate_entries(frappe._dict({"invoices": invoices, "payments": payments}))
+		pr.reconcile()
+		self.assertEqual(len(pr.invoices), 0)
+		self.assertEqual(len(pr.payments), 0)
+		self.assert_ledger_outstanding(si.doctype, si.name, 0.0, 0.0)
+
+		# Exc Gain/Loss journal should've been creatad
+		exc_je_for_si = self.get_journals_for(si.doctype, si.name)
+		exc_je_for_adv = self.get_journals_for(adv.doctype, adv.name)
+		self.assertEqual(len(exc_je_for_si), 1)
+		self.assertEqual(len(exc_je_for_adv), 1)
+		self.assertEqual(exc_je_for_si, exc_je_for_adv)
+
+		adv.reload()
+		adv.cancel()
+		si.reload()
+		self.assert_ledger_outstanding(si.doctype, si.name, 80.0, 1.0)
+		# Exc Gain/Loss journal should've been cancelled
+		exc_je_for_si = self.get_journals_for(si.doctype, si.name)
+		exc_je_for_adv = self.get_journals_for(adv.doctype, adv.name)
+		self.assertEqual(len(exc_je_for_si), 0)
+		self.assertEqual(len(exc_je_for_adv), 0)
+
+		self.remove_advance_accounts_from_party_master()
+
+	def test_71_advance_payment_against_purchase_invoice_in_foreign_currency(self):
+		"""
+		Supplier advance booked under Asset
+		"""
+		self.setup_advance_accounts_in_party_master()
+
+		usd_amount = 1
+		inr_amount = 85
+		exc_rate = 85
+		adv = create_payment_entry(
+			company=self.company,
+			payment_type="Pay",
+			party_type="Supplier",
+			party=self.supplier,
+			paid_from=self.cash,
+			paid_to=self.advance_paid_usd,
+			paid_amount=inr_amount,
+		)
+		adv.source_exchange_rate = 1
+		adv.target_exchange_rate = exc_rate
+		adv.received_amount = usd_amount
+		adv.paid_amount = exc_rate * usd_amount
+		adv.posting_date = nowdate()
+		adv.save()
+		# Make sure that advance account is still set
+		self.assertEqual(adv.paid_to, self.advance_paid_usd)
+		adv.submit()
+
+		pi = self.create_purchase_invoice(qty=1, conversion_rate=83, rate=1)
+		self.assertEqual(pi.credit_to, self.creditors_usd)
+		self.assert_ledger_outstanding(pi.doctype, pi.name, 83.0, 1.0)
+
+		pr = self.create_payment_reconciliation()
+		pr.party_type = "Supplier"
+		pr.party = self.supplier
+		pr.receivable_payable_account = self.creditors_usd
+		pr.default_advance_account = self.advance_paid_usd
+		pr.get_unreconciled_entries()
+		self.assertEqual(pr.invoices[0].invoice_number, pi.name)
+		self.assertEqual(pr.payments[0].reference_name, adv.name)
+
+		# Allocate and Reconcile
+		invoices = [x.as_dict() for x in pr.invoices]
+		payments = [x.as_dict() for x in pr.payments]
+		pr.allocate_entries(frappe._dict({"invoices": invoices, "payments": payments}))
+		pr.reconcile()
+		self.assertEqual(len(pr.invoices), 0)
+		self.assertEqual(len(pr.payments), 0)
+		self.assert_ledger_outstanding(pi.doctype, pi.name, 0.0, 0.0)
+
+		# Exc Gain/Loss journal should've been creatad
+		exc_je_for_pi = self.get_journals_for(pi.doctype, pi.name)
+		exc_je_for_adv = self.get_journals_for(adv.doctype, adv.name)
+		self.assertEqual(len(exc_je_for_pi), 1)
+		self.assertEqual(len(exc_je_for_adv), 1)
+		self.assertEqual(exc_je_for_pi, exc_je_for_adv)
+
+		adv.reload()
+		adv.cancel()
+		pi.reload()
+		self.assert_ledger_outstanding(pi.doctype, pi.name, 83.0, 1.0)
+		# Exc Gain/Loss journal should've been cancelled
+		exc_je_for_pi = self.get_journals_for(pi.doctype, pi.name)
+		exc_je_for_adv = self.get_journals_for(adv.doctype, adv.name)
+		self.assertEqual(len(exc_je_for_pi), 0)
+		self.assertEqual(len(exc_je_for_adv), 0)
+
+		self.remove_advance_accounts_from_party_master()
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)

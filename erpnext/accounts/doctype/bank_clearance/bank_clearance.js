@@ -36,6 +36,10 @@ frappe.ui.form.on("Bank Clearance", {
 	refresh: function (frm) {
 		frm.disable_save();
 		frm.add_custom_button(__("Get Payment Entries"), () => frm.trigger("get_payment_entries"));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 125a352bc2 (fix: allow all dispatch address for drop ship invoice)
 		frm.change_custom_button_type(__("Get Payment Entries"), null, "primary");
 		if (frm.doc.payment_entries.length) {
 			frm.add_custom_button(__("Update Clearance Date"), () => frm.trigger("update_clearance_date"));

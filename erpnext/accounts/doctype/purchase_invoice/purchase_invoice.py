@@ -572,7 +572,7 @@ class PurchaseInvoice(BuyingController):
 					account_type = (
 						"capital_work_in_progress_account"
 						if is_cwip_accounting_enabled(item.asset_category)
-						else "fixed_asset_account"
+						else "asset_clearing_account"
 					)
 					account = get_asset_category_account(
 						account_type, item=item.item_code, company=self.company
@@ -580,23 +580,27 @@ class PurchaseInvoice(BuyingController):
 					if not account:
 						form_link = get_link_to_form("Asset Category", item.asset_category)
 						throw(
-							_("Please set Fixed Asset Account in {} against {}.").format(
-								form_link, self.company
-							),
+							_("Please set Asset Account in {} against {}.").format(form_link, self.company),
 							title=_("Missing Account"),
 						)
-				item.expense_account = account
-			elif not item.expense_account and for_validate:
-				throw(_("Expense account is mandatory for item {0}").format(item.item_code or item.item_name))
+				item.expense_account = None
+				item.asset_account = account
+			elif not (item.expense_account or item.asset_account) and for_validate:
+				throw(_("Expense Account is mandatory for item {0}").format(item.item_code or item.item_name))
 
 	def validate_expense_account(self):
 		for item in self.get("items"):
-			validate_account_head(item.idx, item.expense_account, self.company, _("Expense"))
+			if item.is_fixed_asset:
+				validate_account_head(item.idx, item.asset_account, self.company, _("Expense"))
+			else:
+				validate_account_head(item.idx, item.expense_account, self.company, _("Expense"))
 
 	def set_against_expense_account(self, force=False):
 		against_accounts = []
 		for item in self.get("items"):
-			if item.expense_account and (item.expense_account not in against_accounts):
+			if item.asset_account and item.is_fixed_asset and (item.asset_account not in against_accounts):
+				against_accounts.append(item.asset_account)
+			elif item.expense_account and (item.expense_account not in against_accounts):
 				against_accounts.append(item.expense_account)
 
 		self.against_expense_account = ",".join(against_accounts)
@@ -1042,7 +1046,7 @@ class PurchaseInvoice(BuyingController):
 							gl_entries.append(
 								self.get_gl_dict(
 									{
-										"account": item.expense_account,
+										"account": item.expense_account or item.asset_account,
 										"against": self.supplier,
 										"debit": warehouse_debit_amount,
 										"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
@@ -1096,11 +1100,14 @@ class PurchaseInvoice(BuyingController):
 						)
 
 				else:
-					expense_account = (
-						item.expense_account
-						if (not item.enable_deferred_expense or self.is_return)
-						else item.deferred_expense_account
-					)
+					if item.is_fixed_asset:
+						expense_account = item.asset_account
+					else:
+						expense_account = (
+							item.expense_account
+							if (not item.enable_deferred_expense or self.is_return)
+							else item.deferred_expense_account
+						)
 
 					dummy, amount = self.get_amount_and_base_amount(item, None)
 

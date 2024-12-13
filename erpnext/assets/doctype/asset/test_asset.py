@@ -540,7 +540,7 @@ class TestAsset(AssetSetup):
 		pr = make_purchase_receipt(item_code="Macbook Pro", qty=2, rate=200000.0, location="Test Location")
 		doc = make_invoice(pr.name)
 
-		self.assertEqual("Asset Received But Not Billed - _TC", doc.items[0].expense_account)
+		self.assertEqual("Asset Received But Not Billed - _TC", doc.items[0].asset_account)
 
 	# Capital Work In Progress
 	def test_cwip_accounting(self):
@@ -618,7 +618,10 @@ class TestAsset(AssetSetup):
 		)
 		asset_doc.submit()
 
-		expected_gle = (("_Test Fixed Asset - _TC", 5250.0, 0.0), ("CWIP Account - _TC", 0.0, 5250.0))
+		expected_gle = (
+			("_Test Fixed Asset - _TC", 5250.0, 0.0),
+			("CWIP Account - _TC", 0.0, 5250.0),
+		)
 
 		gle = get_gl_entries("Asset", asset_doc.name)
 		self.assertSequenceEqual(gle, expected_gle)
@@ -643,8 +646,12 @@ class TestAsset(AssetSetup):
 		asset_doc.available_for_use_date = nowdate()
 		asset_doc.calculate_depreciation = 0
 		asset_doc.submit()
+		expected_gle = (
+			("_Test Clearing Account - _TC", 0.0, 200000.0),
+			("_Test Fixed Asset - _TC", 200000.0, 0.0),
+		)
 		gle = get_gl_entries("Asset", asset_doc.name)
-		self.assertFalse(gle)
+		self.assertEqual(gle, expected_gle)
 
 		# case 1 -- PR with cwip disabled, Asset with cwip enabled
 		pr = make_purchase_receipt(item_code="Macbook Pro", qty=1, rate=200000.0, location="Test Location")
@@ -656,7 +663,7 @@ class TestAsset(AssetSetup):
 		asset_doc.calculate_depreciation = 0
 		asset_doc.submit()
 		gle = get_gl_entries("Asset", asset_doc.name)
-		self.assertFalse(gle)
+		self.assertTrue(gle)
 
 		# case 2 -- PR with cwip enabled, Asset with cwip disabled
 		pr = make_purchase_receipt(item_code="Macbook Pro", qty=1, rate=200000.0, location="Test Location")
@@ -680,7 +687,7 @@ class TestAsset(AssetSetup):
 		asset_doc.calculate_depreciation = 0
 		asset_doc.submit()
 		gle = get_gl_entries("Asset", asset_doc.name)
-		self.assertFalse(gle)
+		self.assertTrue(gle)
 
 		# case 4 -- PI with cwip enabled, Asset with cwip disabled
 		pi = make_purchase_invoice(
@@ -1775,6 +1782,7 @@ def create_asset_category(enable_cwip=1):
 		{
 			"company_name": "_Test Company",
 			"fixed_asset_account": "_Test Fixed Asset - _TC",
+			"asset_clearing_account": "_Test Clearing Account - _TC",
 			"accumulated_depreciation_account": "_Test Accumulated Depreciations - _TC",
 			"depreciation_expense_account": "_Test Depreciations - _TC",
 			"capital_work_in_progress_account": "CWIP Account - _TC",
@@ -1785,6 +1793,7 @@ def create_asset_category(enable_cwip=1):
 		{
 			"company_name": "_Test Company with perpetual inventory",
 			"fixed_asset_account": "_Test Fixed Asset - TCP1",
+			"asset_clearing_account": "_Test Clearing Account - _TC",
 			"accumulated_depreciation_account": "_Test Accumulated Depreciations - TCP1",
 			"depreciation_expense_account": "_Test Depreciations - TCP1",
 		},
